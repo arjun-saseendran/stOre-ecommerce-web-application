@@ -1,7 +1,7 @@
 {
-  "name": "store-ecommerce-app",
+  "name": "store-ecommerce-web-application",
   "version": "1.0.0",
-  "description": "store web application",
+  "description": "store ecommerce web application backend",
   "main": "index.js",
   "type": "module",
   "scripts": {
