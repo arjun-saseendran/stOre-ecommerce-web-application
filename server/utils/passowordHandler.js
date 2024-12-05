@@ -1,22 +1,16 @@
-import bcrypt, { hash } from "bcrypt";
+import bcrypt from "bcrypt";
 
 // for hashing and compare password
-export const passwordHandler = async (password, hashedPassword = null) => {
-  if (password) {
-    bcrypt.hash(password, 10, (error, hash) => {
-      if (!err) {
-        return hash;
-      } else {
-        console.log(error);
-      }
-    });
-  } else if (password && hashedPassword) {
-    bcrypt.compare(password, hashedPassword, function (error, result) {
-      if (!error) {
-        return result;
-      } else {
-        console.log(error);
-      }
-    });
+export const passwordHandler = async (password, hashingPassword = "") => {
+  try {
+    if (hashingPassword === "") {
+      const hashedPassword = await bcrypt.hash(password, 10);
+      return hashedPassword;
+    } else {
+      const matchedPassword = await bcrypt.compare(password, hash);
+      return matchedPassword;
+    }
+  } catch (error) {
+    console.log(error);
   }
 };

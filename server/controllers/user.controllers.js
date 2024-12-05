@@ -1,5 +1,6 @@
 import { User } from "../models/user.model.js";
 import { passwordHandler } from "../utils/passowordHandler.js";
+import bcrypt from "bcrypt";
 
 const signup = async (req, res) => {
   try {
@@ -14,10 +15,10 @@ const signup = async (req, res) => {
       return res.status(400).json({ message: "User already exist" });
     }
     // hashing password
-    const hashedPassword = passwordHandler(password);
+    const hashedPassword = await passwordHandler(password);
 
     // creating new user object
-    const newUser = new User({ name, email, mobile, hashedPassword });
+    const newUser = new User({ name, email, mobile, password: hashedPassword });
 
     // save new user to database
     await newUser.save();
@@ -29,5 +30,9 @@ const signup = async (req, res) => {
       .json({ message: error.message || "Internal server error" });
   }
 };
+
+const login = async () => {
+  
+}
 
 export { signup };
