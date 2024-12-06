@@ -3,7 +3,7 @@ import { passwordHandler } from "../utils/passowordHandler.js";
 import { generateToken } from "../utils/tokenHandler.js";
 
 // seller signup
-const sellerSignup = async (req, res) => {
+export const sellerSignup = async (req, res) => {
   try {
     // destructing data from request body
     const { name, email, password } = req.body;
@@ -36,7 +36,7 @@ const sellerSignup = async (req, res) => {
 };
 
 // seller login
-const sellerLogin = async (req, res) => {
+export const sellerLogin = async (req, res) => {
   try {
     const { email, password } = req.body;
 
@@ -84,16 +84,18 @@ const sellerLogin = async (req, res) => {
 };
 
 // seller profile details
-const sellerProfile = async (req, res) => {
+export const sellerProfile = async (req, res) => {
   try {
-   
-    const sellerProfileData = await Seller.findById(req.seller.id).select(
-      "-password"
-    );
+    // get seller id
+    const { id } = req.seller;
+    const sellerProfileData = await Seller.findById(id).select("-password");
 
     res
       .status(200)
-      .json({ message: "seller profile details fetched", data: sellerProfileData });
+      .json({
+        message: "seller profile details fetched",
+        data: sellerProfileData,
+      });
   } catch (error) {
     res
       .status(error.status || 500)
@@ -102,7 +104,7 @@ const sellerProfile = async (req, res) => {
 };
 
 // seller logout
-const sellerLogout = async (req, res) => {
+export const sellerLogout = async (req, res) => {
   // clearing token from cookies
   try {
     res.clearCookie("token");
@@ -116,19 +118,23 @@ const sellerLogout = async (req, res) => {
 };
 
 // update seller profile details
-const updatesellerProfile = async (req, res) => {
+export const updatesellerProfile = async (req, res) => {
   try {
-    
+    // get seller id
+    const { id } = req.seller;
 
     // update seller data
     const updatedSellerData = await Seller.findByIdAndUpdate(
-      req.seller.id,
+      id,
       req.body
     ).select("-password");
 
     res
       .status(200)
-      .json({ message: "seller profile details updated", data: updatedSellerData });
+      .json({
+        message: "seller profile details updated",
+        data: updatedSellerData,
+      });
   } catch (error) {
     res
       .status(error.status || 500)
@@ -137,7 +143,7 @@ const updatesellerProfile = async (req, res) => {
 };
 
 // checking seller
-const checkseller = async (req, res) => {
+export const checkseller = async (req, res) => {
   try {
     res.status(200).json({ message: "Autherized seller" });
   } catch (error) {
@@ -147,23 +153,15 @@ const checkseller = async (req, res) => {
   }
 };
 
-const deactivateseller = async (req, res) => {
+export const deactivateseller = async (req, res) => {
   try {
-    await Seller.findByIdAndUpdate(req.seller.id, { isActive: false });
+    // ger seller id
+    const { id } = req.seller;
+    await Seller.findByIdAndUpdate(id, { isActive: false });
     res.status(202).json({ message: "seller deactivated" });
   } catch (error) {
     res
       .status(error.status || 500)
       .json({ error: error.message || "Internal server error" });
   }
-};
-
-export {
-  sellerSignup,
-  sellerLogin,
-  sellerProfile,
-  sellerLogout,
-  updatesellerProfile,
-  checkseller,
-  deactivateseller,
 };
