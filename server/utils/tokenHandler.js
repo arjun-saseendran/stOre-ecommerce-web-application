@@ -12,4 +12,4 @@ const generateToken = (user, role) => {
   }
 };
 
-export {generateToken}
+export { generateToken };

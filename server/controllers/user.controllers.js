@@ -1,5 +1,6 @@
 import { User } from "../models/user.model.js";
 import { passwordHandler } from "../utils/passowordHandler.js";
+import { generateToken } from "../utils/tokenHandler.js";
 
 const userSignup = async (req, res) => {
   try {
@@ -62,16 +63,33 @@ const userLogin = async (req, res) => {
     }
 
     // generating token
-    const token = generateToken(user, 'user')
+    const token = generateToken(user, "user");
 
     // set token to cookie
-    res.cookie(token, 'token')
+    res.cookie(token, "token");
 
-    res.status(200).json({message: 'Login successfull', data: user})
-
+    res.status(200).json({ message: "Login successfull", data: user });
   } catch (error) {
-    res.status(error.status || 500).json({error: error.message || 'Internal server error'})
+    res
+      .status(error.status || 500)
+      .json({ error: error.message || "Internal server error" });
   }
 };
 
-export { signup, login };
+// user profile details
+const userProfile = async (req, res) => {
+  try {
+    // fetching userId
+    const { userId } = req.user.id;
+    const userData = await User.findById(userId).select("-password");
+    res
+      .status(200)
+      .json({ message: "user profile details fetched", data: userData });
+  } catch (error) {
+    res
+      .status(error.status || 500)
+      .json({ error: error.message || "Internal server error" });
+  }
+};
+
+export { userSignup, userLogin };
