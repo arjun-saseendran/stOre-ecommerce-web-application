@@ -123,7 +123,7 @@ const updatesellerProfile = async (req, res) => {
     // const { sellerId } = req.seller.id;
 
     // update seller data
-    const updatedsellerData = await seller.findByIdAndUpdate(
+    const updatedsellerData = await Seller.findByIdAndUpdate(
       req.seller.id,
       req.body
     ).select("-password");
@@ -151,7 +151,7 @@ const checkseller = async (req, res) => {
 
 const deactivateseller = async (req, res) => {
   try {
-    await seller.findByIdAndUpdate(req.seller.id, { isActive: false });
+    await Seller.findByIdAndUpdate(req.seller.id, { isActive: false });
     res.status(202).json({ message: "seller deactivated" });
   } catch (error) {
     res
