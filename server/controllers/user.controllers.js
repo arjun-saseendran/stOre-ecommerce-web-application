@@ -1,5 +1,5 @@
 import { User } from "../models/user.model.js";
-import { passwordHandler } from "../utils/passowordHandler.js";
+import { passwordHandler } from "../../passowordHandler.js";
 
 const userSignup = async (req, res) => {
   try {
