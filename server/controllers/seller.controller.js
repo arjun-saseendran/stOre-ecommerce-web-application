@@ -86,8 +86,7 @@ const sellerLogin = async (req, res) => {
 // seller profile details
 const sellerProfile = async (req, res) => {
   try {
-    // fetching sellerId
-    // const { sellerId } = req.seller.id;
+   
     const sellerProfileData = await Seller.findById(req.seller.id).select(
       "-password"
     );
@@ -119,18 +118,17 @@ const sellerLogout = async (req, res) => {
 // update seller profile details
 const updatesellerProfile = async (req, res) => {
   try {
-    // fetching sellerId
-    // const { sellerId } = req.seller.id;
+    
 
     // update seller data
-    const updatedsellerData = await Seller.findByIdAndUpdate(
+    const updatedSellerData = await Seller.findByIdAndUpdate(
       req.seller.id,
       req.body
     ).select("-password");
 
     res
       .status(200)
-      .json({ message: "seller profile details updated", data: updatedsellerData });
+      .json({ message: "seller profile details updated", data: updatedSellerData });
   } catch (error) {
     res
       .status(error.status || 500)

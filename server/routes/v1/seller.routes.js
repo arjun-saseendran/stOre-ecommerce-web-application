@@ -7,7 +7,7 @@ import {
   updatesellerProfile,
   checkseller,
   deactivateseller,
-} from "../../controllers/seller.controllers.js";
+} from "../../controllers/seller.controller.js";
 import { sellerAuth } from "../../middlewares/auth.seller.js";
 
 const sellerRouter = Router();

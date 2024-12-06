@@ -86,8 +86,7 @@ const userLogin = async (req, res) => {
 // user profile details
 const userProfile = async (req, res) => {
   try {
-    // fetching userId
-    // const { userId } = req.user.id;
+    
     const userProfileData = await User.findById(req.user.id).select(
       "-password"
     );
@@ -119,8 +118,7 @@ const userLogout = async (req, res) => {
 // update user profile details
 const updateUserProfile = async (req, res) => {
   try {
-    // fetching userId
-    // const { userId } = req.user.id;
+   
 
     // update user data
     const updatedUserData = await User.findByIdAndUpdate(
