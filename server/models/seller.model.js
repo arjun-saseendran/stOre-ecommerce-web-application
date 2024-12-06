@@ -22,6 +22,10 @@ const sellerSchema = new Schema(
       enum: ["seller", "admin"],
       default: "seller",
     },
+    isActive: {
+      type: Boolean,
+      default: true
+    },
     profilePicture: {
       type: String,
       default:

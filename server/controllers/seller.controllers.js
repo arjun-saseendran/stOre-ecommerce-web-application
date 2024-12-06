@@ -35,8 +35,8 @@ const sellerSignup = async (req, res) => {
   }
 };
 
-// user login
-const userLogin = async (req, res) => {
+// seller login
+const sellerLogin = async (req, res) => {
   try {
     const { email, password } = req.body;
 
@@ -45,37 +45,37 @@ const userLogin = async (req, res) => {
       return res.status(400).json({ error: "All fields are required" });
     }
 
-    // checking user
-    const user = await User.findOne({ email });
+    // checking seller
+    const seller = await Seller.findOne({ email });
 
-    if (!user) {
-      return res.status(400).json({ error: "User not exist" });
+    if (!seller) {
+      return res.status(400).json({ error: "Seller not exist" });
     }
 
     // checking password
-    const matchedPassword = await passwordHandler(password, user.password);
+    const matchedPassword = await passwordHandler(password, seller.password);
 
     if (!matchedPassword) {
       return res.status(400).json({ error: "Incorrect password" });
     }
 
-    // checking user profile
-    if (!user.isActive) {
-      return res.status(400).json({ error: "User profile deactivated" });
+    // checking seller profile
+    if (!seller.isActive) {
+      return res.status(400).json({ error: "Seller profile deactivated" });
     }
 
     // generating token
-    const token = generateToken(user, "user");
+    const token = generateToken(seller, "seller");
 
     // set token to cookie
     res.cookie("token", token);
 
     // exclude password
-    const { password: _, ...userWithoutPassword } = user.toObject();
+    const { password: _, ...sellerWithoutPassword } = seller.toObject();
 
     res
       .status(200)
-      .json({ message: "Login successfull", data: userWithoutPassword });
+      .json({ message: "Login successfull", data: sellerWithoutPassword });
   } catch (error) {
     res
       .status(error.status || 500)
@@ -83,18 +83,18 @@ const userLogin = async (req, res) => {
   }
 };
 
-// user profile details
-const userProfile = async (req, res) => {
+// seller profile details
+const sellerProfile = async (req, res) => {
   try {
-    // fetching userId
-    // const { userId } = req.user.id;
-    const userProfileData = await User.findById(req.user.id).select(
+    // fetching sellerId
+    // const { sellerId } = req.seller.id;
+    const sellerProfileData = await seller.findById(req.seller.id).select(
       "-password"
     );
 
     res
       .status(200)
-      .json({ message: "user profile details fetched", data: userProfileData });
+      .json({ message: "seller profile details fetched", data: sellerProfileData });
   } catch (error) {
     res
       .status(error.status || 500)
@@ -102,13 +102,13 @@ const userProfile = async (req, res) => {
   }
 };
 
-// user logout
-const userLogout = async (req, res) => {
+// seller logout
+const sellerLogout = async (req, res) => {
   // clearing token from cookies
   try {
     res.clearCookie("token");
 
-    res.status(200).json({ message: "User logout success" });
+    res.status(200).json({ message: "seller logout success" });
   } catch (error) {
     res
       .status(error.status || 500)
@@ -116,21 +116,21 @@ const userLogout = async (req, res) => {
   }
 };
 
-// update user profile details
-const updateUserProfile = async (req, res) => {
+// update seller profile details
+const updatesellerProfile = async (req, res) => {
   try {
-    // fetching userId
-    // const { userId } = req.user.id;
+    // fetching sellerId
+    // const { sellerId } = req.seller.id;
 
-    // update user data
-    const updatedUserData = await User.findByIdAndUpdate(
-      req.user.id,
+    // update seller data
+    const updatedsellerData = await seller.findByIdAndUpdate(
+      req.seller.id,
       req.body
     ).select("-password");
 
     res
       .status(200)
-      .json({ message: "user profile details updated", data: updatedUserData });
+      .json({ message: "seller profile details updated", data: updatedsellerData });
   } catch (error) {
     res
       .status(error.status || 500)
@@ -138,10 +138,10 @@ const updateUserProfile = async (req, res) => {
   }
 };
 
-// checking user
-const checkUser = async (req, res) => {
+// checking seller
+const checkseller = async (req, res) => {
   try {
-    res.status(200).json({ message: "Autherized user" });
+    res.status(200).json({ message: "Autherized seller" });
   } catch (error) {
     res
       .status(error.status || 500)
@@ -149,10 +149,10 @@ const checkUser = async (req, res) => {
   }
 };
 
-const deactivateUser = async (req, res) => {
+const deactivateseller = async (req, res) => {
   try {
-    await User.findByIdAndUpdate(req.user.id, { isActive: false });
-    res.status(202).json({ message: "User deactivated" });
+    await seller.findByIdAndUpdate(req.seller.id, { isActive: false });
+    res.status(202).json({ message: "seller deactivated" });
   } catch (error) {
     res
       .status(error.status || 500)
@@ -161,11 +161,11 @@ const deactivateUser = async (req, res) => {
 };
 
 export {
-  userSignup,
-  userLogin,
-  userProfile,
-  userLogout,
-  updateUserProfile,
-  checkUser,
-  deactivateUser,
+  sellerSignup,
+  sellerLogin,
+  sellerProfile,
+  sellerLogout,
+  updatesellerProfile,
+  checkseller,
+  deactivateseller,
 };
