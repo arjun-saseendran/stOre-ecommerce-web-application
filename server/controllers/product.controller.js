@@ -1,7 +1,7 @@
 import { Product } from "../models/product.model.js";
 
 // add product
-const addProduct = async (req, res) => {
+export const addProduct = async (req, res) => {
   try {
     // destructing data from request body
     const { title, description, price, stock } = req.body;
@@ -24,9 +24,11 @@ const addProduct = async (req, res) => {
 };
 
 // product details
-const productDetails = async (req, res) => {
+export const productDetails = async (req, res) => {
   try {
-    const productData = await Product.findById(req.param.id);
+    // get product id
+    const { id } = req.param;
+    const productData = await Product.findById(id);
 
     res
       .status(200)
@@ -39,11 +41,14 @@ const productDetails = async (req, res) => {
 };
 
 // update product details
-const updateProductData = async (req, res) => {
+export const updateProductData = async (req, res) => {
   try {
+    // get product id
+    const { id } = req.param;
+
     // update product data
     const updatedProductData = await Product.findByIdAndUpdate(
-      req.param.id,
+      id,
       req.body
     ).select("-password");
 
@@ -57,18 +62,16 @@ const updateProductData = async (req, res) => {
   }
 };
 
-const deleteProduct = async (req, res) => {
+export const deleteProduct = async (req, res) => {
   try {
-    const delProduct = await Product.findByIdAndDelete(req.param.id);
+    // get product id
+    const { id } = req.param;
+    const delProduct = await Product.findByIdAndDelete(id);
 
-    res
-      .status(200)
-      .json({ message: "Product details fetched", data: delProduct });
+    res.status(204).json({ message: "Product deleted", data: delProduct });
   } catch (error) {
     res
       .status(error.status || 500)
       .json({ error: error.message || "Internal server error" });
   }
 };
-
-export { addProduct, productDetails, updateProductData, deleteProduct };

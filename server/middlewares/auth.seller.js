@@ -13,16 +13,16 @@ export const sellerAuth = (req, res, next) => {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
     if (!decoded) {
-      return res.status(401).json({ error: "User not autherzied" });
+      return res.status(401).json({ error: "Seller not autherzied" });
     }
 
     // checking role
     if (decoded.role !== "seller" && decoded.role !== "admin") {
-      return res.status(404).json({ error: "User not autherzied" });
+      return res.status(404).json({ error: "Seller not autherzied" });
     }
 
     // set user
-    req.user = decoded;
+    req.seller = decoded;
     next();
   } catch (error) {
     res
