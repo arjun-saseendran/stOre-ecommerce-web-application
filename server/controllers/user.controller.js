@@ -3,7 +3,7 @@ import { passwordHandler } from "../utils/passowordHandler.js";
 import { generateToken } from "../utils/tokenHandler.js";
 
 // user signup
-const userSignup = async (req, res) => {
+export const userSignup = async (req, res) => {
   try {
     // destructing data from request body
     const { name, email, mobile, password } = req.body;
@@ -36,7 +36,7 @@ const userSignup = async (req, res) => {
 };
 
 // user login
-const userLogin = async (req, res) => {
+export const userLogin = async (req, res) => {
   try {
     const { email, password } = req.body;
 
@@ -84,12 +84,14 @@ const userLogin = async (req, res) => {
 };
 
 // user profile details
-const userProfile = async (req, res) => {
+export const userProfile = async (req, res) => {
   try {
-    
-    const userProfileData = await User.findById(req.user.id).select(
-      "-password"
-    );
+    // get user id
+    const { id } = req.user;
+
+    console.log(id);
+
+    const userProfileData = await User.findById(id).select("-password");
 
     res
       .status(200)
@@ -102,7 +104,7 @@ const userProfile = async (req, res) => {
 };
 
 // user logout
-const userLogout = async (req, res) => {
+export const userLogout = async (req, res) => {
   // clearing token from cookies
   try {
     res.clearCookie("token");
@@ -116,15 +118,15 @@ const userLogout = async (req, res) => {
 };
 
 // update user profile details
-const updateUserProfile = async (req, res) => {
+export const updateUserProfile = async (req, res) => {
   try {
-   
+    // get user id
+    const { id } = req.user;
 
     // update user data
-    const updatedUserData = await User.findByIdAndUpdate(
-      req.user.id,
-      req.body
-    ).select("-password");
+    const updatedUserData = await User.findByIdAndUpdate(id, req.body).select(
+      "-password"
+    );
 
     res
       .status(200)
@@ -137,7 +139,7 @@ const updateUserProfile = async (req, res) => {
 };
 
 // checking user
-const checkUser = async (req, res) => {
+export const checkUser = async (req, res) => {
   try {
     res.status(200).json({ message: "Autherized user" });
   } catch (error) {
@@ -147,24 +149,17 @@ const checkUser = async (req, res) => {
   }
 };
 
-const deactivateUser = async(req, res) => {
+export const deactivateUser = async (req, res) => {
   try {
-    
-  await User.findByIdAndUpdate(req.user.id, {isActive: false})
+    // get user id
+    const { id } = req.user;
+    await User.findByIdAndUpdate(id, { isActive: false });
     res.status(202).json({ message: "User deactivated" });
   } catch (error) {
-    res.status(error.status || 500)
+    res
+      .status(error.status || 500)
       .json({ error: error.message || "Internal server error" });
   }
-
-}
-
-export {
-  userSignup,
-  userLogin,
-  userProfile,
-  userLogout,
-  updateUserProfile,
-  checkUser,
-  deactivateUser
 };
+
+
