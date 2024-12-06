@@ -1,8 +1,6 @@
 import { Product } from "../models/product.model.js";
 
-
-
-// add product 
+// add product
 const addProduct = async (req, res) => {
   try {
     // destructing data from request body
@@ -10,8 +8,8 @@ const addProduct = async (req, res) => {
     if (!title || !description || !price || !stock) {
       return res.status(400).json({ message: "All fields required" });
     }
-    
-   // creating new product object
+
+    // creating new product object
     const newProduct = new Product({ title, description, price, stock });
 
     // save new product to database
@@ -25,13 +23,10 @@ const addProduct = async (req, res) => {
   }
 };
 
-
-
 // product details
 const productDetails = async (req, res) => {
   try {
-    
-    const productData= await Product.findById(req.param.id)
+    const productData = await Product.findById(req.param.id);
 
     res
       .status(200)
@@ -43,13 +38,9 @@ const productDetails = async (req, res) => {
   }
 };
 
-
-
 // update product details
 const updateProductData = async (req, res) => {
   try {
-    
-
     // update product data
     const updatedProductData = await Product.findByIdAndUpdate(
       req.param.id,
@@ -66,21 +57,18 @@ const updateProductData = async (req, res) => {
   }
 };
 
-const deleteProduct = async(req, res) => {
-    try {
-      const delProduct = await Product.findByIdAndDelete(req.param.id);
+const deleteProduct = async (req, res) => {
+  try {
+    const delProduct = await Product.findByIdAndDelete(req.param.id);
 
-      res
-        .status(200)
-        .json({ message: "Product details fetched", data: delProduct });
-    } catch (error) {
-      res
-        .status(error.status || 500)
-        .json({ error: error.message || "Internal server error" });
-    }
-
-}
-
-
+    res
+      .status(200)
+      .json({ message: "Product details fetched", data: delProduct });
+  } catch (error) {
+    res
+      .status(error.status || 500)
+      .json({ error: error.message || "Internal server error" });
+  }
+};
 
 export { addProduct, productDetails, updateProductData, deleteProduct };
