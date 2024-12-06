@@ -2,10 +2,13 @@ import { Cart } from "../models/cart.model.js";
 import { Product } from "../models/product.model.js";
 
 // add product to cart
-const addToCart = async (req, res) => {
+export const addToCart = async (req, res) => {
   try {
+    // get product id
+    const { id } = req.param;
+
     // get product
-    const addProduct = Product.findById(req.param.id);
+    const addProduct = Product.findById(id);
 
     // add product to cart
     const cartProduct = new Cart(addProduct);
@@ -22,9 +25,13 @@ const addToCart = async (req, res) => {
 };
 
 // remove product
-const removeProduct = async (req, res) => {
+export const removeProduct = async (req, res) => {
   try {
-    const removedProduct = await Cart.findByIdAndDelete(req.param.id);
+    // get product id
+    const { id } = req.param;
+
+    // remove product
+    const removedProduct = await Cart.findByIdAndDelete(id);
 
     res.status(204).json({ message: "Product removed", data: removedProduct });
   } catch (error) {
@@ -33,5 +40,3 @@ const removeProduct = async (req, res) => {
       .json({ error: error.message || "Internal server error" });
   }
 };
-
-export { addToCart, removeProduct };
