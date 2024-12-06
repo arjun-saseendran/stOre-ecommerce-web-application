@@ -88,7 +88,7 @@ const sellerProfile = async (req, res) => {
   try {
     // fetching sellerId
     // const { sellerId } = req.seller.id;
-    const sellerProfileData = await seller.findById(req.seller.id).select(
+    const sellerProfileData = await Seller.findById(req.seller.id).select(
       "-password"
     );
 
@@ -108,7 +108,7 @@ const sellerLogout = async (req, res) => {
   try {
     res.clearCookie("token");
 
-    res.status(200).json({ message: "seller logout success" });
+    res.status(200).json({ message: "Seller logout success" });
   } catch (error) {
     res
       .status(error.status || 500)
