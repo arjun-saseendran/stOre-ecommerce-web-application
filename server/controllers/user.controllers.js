@@ -92,4 +92,19 @@ const userProfile = async (req, res) => {
   }
 };
 
-export { userSignup, userLogin };
+// user logout
+const userLogout = async(req, res) => {
+
+  // clearing token from cookies
+  try {
+    res.clearCookie('token')
+  
+    res.status(200).json({message: 'User logout success'})
+  } catch (error) {
+    res.status(error.status || 500).json({error: error.message || 'Internal server error'})
+    
+  }
+}
+
+
+export { userSignup, userLogin, userProfile, userLogout };
