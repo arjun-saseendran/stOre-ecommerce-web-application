@@ -93,27 +93,28 @@ const userProfile = async (req, res) => {
 };
 
 // user logout
-const userLogout = async(req, res) => {
-
+const userLogout = async (req, res) => {
   // clearing token from cookies
   try {
-    res.clearCookie('token')
-  
-    res.status(200).json({message: 'User logout success'})
+    res.clearCookie("token");
+
+    res.status(200).json({ message: "User logout success" });
   } catch (error) {
-    res.status(error.status || 500).json({error: error.message || 'Internal server error'})
-    
+    res
+      .status(error.status || 500)
+      .json({ error: error.message || "Internal server error" });
   }
-}
+};
 
 // checking user
-const checkUser = async(req, res) => {
+const checkUser = async (req, res) => {
   try {
-    res.status(200).json({message: 'Autherized user'})
+    res.status(200).json({ message: "Autherized user" });
   } catch (error) {
-    res.status(error.status || 500).json({error: error.message || 'Internal server error'})
+    res
+      .status(error.status || 500)
+      .json({ error: error.message || "Internal server error" });
   }
-}
-
+};
 
 export { userSignup, userLogin, userProfile, userLogout, checkUser };
