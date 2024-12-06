@@ -106,5 +106,14 @@ const userLogout = async(req, res) => {
   }
 }
 
+// checking user
+const checkUser = async(req, res) => {
+  try {
+    res.status(200).json({message: 'Autherized user'})
+  } catch (error) {
+    res.status(error.status || 500).json({error: error.message || 'Internal server error'})
+  }
+}
 
-export { userSignup, userLogin, userProfile, userLogout };
+
+export { userSignup, userLogin, userProfile, userLogout, checkUser };
