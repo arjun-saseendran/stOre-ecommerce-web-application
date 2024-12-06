@@ -14,11 +14,7 @@ const userSchema = new Schema(
       unique: true,
       lowercase: true,
     },
-    role: {
-      type: String,
-      enum: ["user", "admin"],
-      default: "user",
-    },
+    
     mobile: {
       type: String,
       unique: true,
@@ -28,6 +24,10 @@ const userSchema = new Schema(
       type: String,
       required: true,
       miniLength: 4,
+    },
+    isActive: {
+      type: Boolean,
+      default: true
     },
     profilePicture: {
       type: String,

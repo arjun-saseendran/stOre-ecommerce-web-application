@@ -17,6 +17,11 @@ const sellerSchema = new Schema(
       required: true,
       miniLength: 6,
     },
+    role: {
+      type: String,
+      enum: ["seller", "admin"],
+      default: "seller",
+    },
     profilePicture: {
       type: String,
       default:
