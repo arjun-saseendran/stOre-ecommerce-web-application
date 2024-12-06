@@ -10,7 +10,7 @@ import {
 } from "../../controllers/seller.controller.js";
 import { sellerAuth } from "../../middlewares/auth.seller.js";
 
-const sellerRouter = Router();
+export const sellerRouter = Router();
 
 sellerRouter.post("/signup", sellerSignup);
 sellerRouter.post("/login", sellerLogin);
@@ -21,4 +21,4 @@ sellerRouter.put("/update-profile", sellerAuth, updatesellerProfile);
 sellerRouter.put("/deactivate", sellerAuth, deactivateseller);
 sellerRouter.get("/check-seller", sellerAuth, checkseller);
 
-export default sellerRouter;
+
