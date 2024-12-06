@@ -2,7 +2,7 @@ import { Cart } from "../models/cart.model.js";
 import { Product } from "../models/product.model.js";
 
 // add product to cart
-const addProductToCart = async (req, res) => {
+const addToCart = async (req, res) => {
   try {
     // get product
     const addProduct = Product.findById(req.param.id);
@@ -34,4 +34,4 @@ const removeProduct = async (req, res) => {
   }
 };
 
-export { addProductToCart, removeProduct };
+export { addToCart, removeProduct };
