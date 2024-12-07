@@ -27,7 +27,10 @@ export const sellerSignup = async (req, res) => {
     // save new seller to database
     await newSeller.save();
 
-    res.json({ message: "Seller created succfully", data: newSeller });
+    // exclude password
+    const { password: _, ...sellerWithoutPassword } = newSeller.toObject();
+
+    res.json({ message: "Seller created successfully", data: sellerWithoutPassword });
   } catch (error) {
     res
       .status(error.statusCode || 500)

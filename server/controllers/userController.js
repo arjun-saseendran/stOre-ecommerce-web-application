@@ -1,6 +1,6 @@
-import { User } from "../models/user.model.js";
-import { passwordHandler } from "../utils/passowordHandler.js";
-import { generateToken } from "../utils/tokenHandler.js";
+import { User } from "../models/userModel.js";
+import { passwordHandler } from "../utilities/passowordHandler.js";
+import { generateToken } from "../utilities/tokenHandler.js";
 
 // user signup
 export const userSignup = async (req, res) => {
@@ -27,7 +27,10 @@ export const userSignup = async (req, res) => {
     // save new user to database
     await newUser.save();
 
-    res.json({ message: "User created succfully", data: newUser });
+    // exclude password
+    const { password: _, ...userWithoutPassword } = newUser.toObject()
+
+    res.json({ message: "User created successfully", data: userWithoutPassword });
   } catch (error) {
     res
       .status(error.statusCode || 500)
@@ -88,8 +91,6 @@ export const userProfile = async (req, res) => {
   try {
     // get user id
     const { id } = req.user;
-
-    console.log(id);
 
     const userProfileData = await User.findById(id).select("-password");
 
@@ -161,5 +162,3 @@ export const deactivateUser = async (req, res) => {
       .json({ error: error.message || "Internal server error" });
   }
 };
-
-
