@@ -1,5 +1,5 @@
-import { Review } from "../models/review.model.js";
-import { Product } from "../models/product.model.js";
+import { Review } from "../models/reviewModel.js";
+import { Product } from "../models/productModel.js";
 
 export const reviewIncrement = async () => {
   try {

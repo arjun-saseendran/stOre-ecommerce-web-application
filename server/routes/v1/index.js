@@ -1,9 +1,9 @@
 import { Router } from "express";
-import {userRouter} from "./user.routes.js";
-import {sellerRouter} from "./seller.routes.js";
-import {productRouter} from "./product.routes.js";
-import {cartRouter} from './cart.routes.js'
-import { reviewRouter } from "./review.routes.js";
+import {userRouter} from "./userRoutes.js";
+import {sellerRouter} from "./sellerRoutes.js";
+import {productRouter} from "./productRoutes.js";
+import {cartRouter} from './cartRoutes.js'
+import { reviewRouter } from "./reviewRoutes.js";
 
 export const v1Router = Router()
 

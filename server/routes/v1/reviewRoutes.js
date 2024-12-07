@@ -1,5 +1,5 @@
 import {Router} from 'express'
-import { reviewIncrement } from '../../controllers/review.controller.js'
+import { reviewIncrement } from '../../controllers/reviewControllers.js'
 
 
 export const reviewRouter = Router()

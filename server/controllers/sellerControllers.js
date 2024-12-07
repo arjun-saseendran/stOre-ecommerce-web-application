@@ -1,4 +1,4 @@
-import { Seller } from "../models/seller.model.js";
+import { Seller } from "../models/sellerModel.js";
 import { passwordHandler } from "../utils/passowordHandler.js";
 import { generateToken } from "../utils/tokenHandler.js";
 

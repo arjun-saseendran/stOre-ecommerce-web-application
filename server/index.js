@@ -7,7 +7,10 @@ import { apiRouter } from "./routes/index.js";
 // configure .env
 dotenv.config();
 
+// configure app
 const app = express();
+
+// configure port
 const port = process.env.PORT;
 
 // connect database
@@ -20,6 +23,7 @@ app.use(cookieParser());
 // api v1 routes
 app.use("/api", apiRouter);
 
+// configure server
 app.listen(port, (error) => {
   if (error) {
     console.error(error);

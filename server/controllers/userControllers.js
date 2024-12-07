@@ -1,6 +1,6 @@
 import { User } from "../models/userModel.js";
-import { passwordHandler } from "../utilities/passowordHandler.js";
-import { generateToken } from "../utilities/tokenHandler.js";
+import { passwordHandler } from "../utils/passowordHandler.js";
+import { generateToken } from "../utils/tokenHandler.js";
 
 // user signup
 export const userSignup = async (req, res) => {
