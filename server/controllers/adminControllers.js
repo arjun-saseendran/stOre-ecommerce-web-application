@@ -90,7 +90,7 @@ export const activateSeller = async (req, res) => {
 export const deleteSeller = async (req, res) => {
   try {
     // Get seller id
-    const { sellerId } = req.seler;
+    const { sellerId } = req.seller;
 
     // Get seller
     const destroyedSeller = await Seller.findByIdAndDelete(userId);

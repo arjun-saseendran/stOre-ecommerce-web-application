@@ -1,4 +1,5 @@
 import jwt from "jsonwebtoken";
+import { catchErrorHandler } from "../utils/catchErrorHandler.js";
 
 export const sellerAuth = (req, res, next) => {
   try {
@@ -25,8 +26,7 @@ export const sellerAuth = (req, res, next) => {
     req.seller = decoded;
     next();
   } catch (error) {
-    res
-      .status(error.status || 500)
-      .json({ error: error.message || "Internal server error" });
+    // Handle catch error
+    catchErrorHandler(res, error);
   }
 };
