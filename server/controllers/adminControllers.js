@@ -20,42 +20,38 @@ export const renderAllUsers = async (req, res) => {
 
 // Acitvate user
 export const activateUser = async (req, res) => {
-   try {
-     // Get user id
-     const {userId} =  req.user
-     
-     // Get user
-     const inactiveUser = await User.findById(userId)
- 
-     // Acivate user
-     inactiveUser.isActive = true
+  try {
+    // Get user id
+    const { userId } = req.user;
 
-     res.status(202).json({message: 'User activated'})
- 
-   } catch (error) {
-     // Handle catch error
-     catchErrorHandler(res, error);
-   }
+    // Get user
+    const inactiveUser = await User.findById(userId);
 
-}
+    // Acivate user
+    inactiveUser.isActive = true;
+
+    res.status(202).json({ message: "User activated" });
+  } catch (error) {
+    // Handle catch error
+    catchErrorHandler(res, error);
+  }
+};
 
 // Delete user
-export const deleteUser = async(req, res) => {
-    try {
+export const deleteUser = async (req, res) => {
+  try {
+    // Get user id
+    const { userId } = req.user;
 
-        // Get user id
-        const {userId} = req.user
-        
-        // Get user
-        const destroyedUser = await User.findByIdAndDelete(userId)
+    // Get user
+    const destroyedUser = await User.findByIdAndDelete(userId);
 
-        res.status(204).json({message: 'User deleted', data: destroyedUser})
-        
-    } catch (error) {
-      // Handle catch error
-      catchErrorHandler(res, error);
-    }
-}
+    res.status(204).json({ message: "User deleted", data: destroyedUser });
+  } catch (error) {
+    // Handle catch error
+    catchErrorHandler(res, error);
+  }
+};
 // Display all sellers
 export const renderAllsellers = async (req, res) => {
   try {
@@ -73,39 +69,35 @@ export const renderAllsellers = async (req, res) => {
 
 // Acitvate seller
 export const activateSeller = async (req, res) => {
-   try {
-     // Get seller id
-     const {sellerId} =  req.seller
-     
-     // Get seller
-     const inactiveSeller = await User.findById(sellerId)
- 
-     // Acivate seller
-     inactiveSeller.isActive = true
+  try {
+    // Get seller id
+    const { sellerId } = req.seller;
 
-     res.status(202).json({message: 'Seller activated'})
- 
-   } catch (error) {
-     // Handle catch error
-     catchErrorHandler(res, error);
-   }
+    // Get seller
+    const inactiveSeller = await User.findById(sellerId);
 
-}
+    // Acivate seller
+    inactiveSeller.isActive = true;
 
-// Delete user
-export const deleteUser = async(req, res) => {
-    try {
+    res.status(202).json({ message: "Seller activated" });
+  } catch (error) {
+    // Handle catch error
+    catchErrorHandler(res, error);
+  }
+};
 
-        // Get user id
-        const {userId} = req.user
-        
-        // Get user
-        const destroyedUser = await User.findByIdAndDelete(userId)
+// Delete seller
+export const deleteSeller = async (req, res) => {
+  try {
+    // Get seller id
+    const { sellerId } = req.seler;
 
-        res.status(204).json({message: 'User deleted', data: destroyedUser})
-        
-    } catch (error) {
-      // Handle catch error
-      catchErrorHandler(res, error);
-    }
-}
+    // Get seller
+    const destroyedSeller = await Seller.findByIdAndDelete(userId);
+
+    res.status(204).json({ message: "Seller deleted", data: destroyedSeller });
+  } catch (error) {
+    // Handle catch error
+    catchErrorHandler(res, error);
+  }
+};
