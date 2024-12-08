@@ -38,3 +38,21 @@ export const activateUser = async (req, res) => {
    }
 
 }
+
+// Delete user
+export const deleteUser = async(req, res) => {
+    try {
+
+        // Get user id
+        const {userId} = req.user
+        
+        // Get user
+        const delUser = await User.findByIdAndDelete(userId)
+
+        res.status(204).json({message: 'User deleted'})
+        
+    } catch (error) {
+      // Handle catch error
+      catchErrorHandler(res, error);
+    }
+}
