@@ -47,9 +47,62 @@ export const deleteUser = async(req, res) => {
         const {userId} = req.user
         
         // Get user
-        const delUser = await User.findByIdAndDelete(userId)
+        const destroyedUser = await User.findByIdAndDelete(userId)
 
-        res.status(204).json({message: 'User deleted'})
+        res.status(204).json({message: 'User deleted', data: destroyedUser})
+        
+    } catch (error) {
+      // Handle catch error
+      catchErrorHandler(res, error);
+    }
+}
+// Display all sellers
+export const renderAllsellers = async (req, res) => {
+  try {
+    // Get all sellers
+    const allSellers = await Seller.find();
+
+    res
+      .status(200)
+      .json({ message: "All sellers fetched successfully", data: allSellers });
+  } catch (error) {
+    // Handle catch error
+    catchErrorHandler(res, error);
+  }
+};
+
+// Acitvate user
+export const activateUser = async (req, res) => {
+   try {
+     // Get user id
+     const {userId} =  req.user
+     
+     // Get user
+     const inactiveUser = await User.findById(userId)
+ 
+     // Acivate user
+     inactiveUser.isActive = true
+
+     res.status(202).json({message: 'User activated'})
+ 
+   } catch (error) {
+     // Handle catch error
+     catchErrorHandler(res, error);
+   }
+
+}
+
+// Delete user
+export const deleteUser = async(req, res) => {
+    try {
+
+        // Get user id
+        const {userId} = req.user
+        
+        // Get user
+        const destroyedUser = await User.findByIdAndDelete(userId)
+
+        res.status(204).json({message: 'User deleted', data: destroyedUser})
         
     } catch (error) {
       // Handle catch error
