@@ -71,19 +71,19 @@ export const renderAllsellers = async (req, res) => {
   }
 };
 
-// Acitvate user
-export const activateUser = async (req, res) => {
+// Acitvate seller
+export const activateSeller = async (req, res) => {
    try {
-     // Get user id
-     const {userId} =  req.user
+     // Get seller id
+     const {sellerId} =  req.seller
      
-     // Get user
-     const inactiveUser = await User.findById(userId)
+     // Get seller
+     const inactiveSeller = await User.findById(sellerId)
  
-     // Acivate user
-     inactiveUser.isActive = true
+     // Acivate seller
+     inactiveSeller.isActive = true
 
-     res.status(202).json({message: 'User activated'})
+     res.status(202).json({message: 'Seller activated'})
  
    } catch (error) {
      // Handle catch error
