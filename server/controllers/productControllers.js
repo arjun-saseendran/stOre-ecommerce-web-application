@@ -1,4 +1,5 @@
 import { Product } from "../models/productModel.js";
+import {catchErrorHandler} from '../utils/catchErrorHandler.js'
 
 // Add product
 export const addProduct = async (req, res) => {
@@ -17,11 +18,21 @@ export const addProduct = async (req, res) => {
 
     res.json({ message: "Product created succfully", data: newProduct });
   } catch (error) {
-    res
-      .status(error.statusCode || 500)
-      .json({ message: error.message || "Internal server error" });
+    // Handle catch error
+    catchErrorHandler(res, error);
   }
 };
+
+export const renderProducts = async(req, res) => {
+  try {
+    const products = await Product.find()
+    res.status(200).json({message: 'Products render successfully', data: products})
+    
+  } catch (error) {
+    // Handle catch error
+    catchErrorHandler(res, error);
+  }
+}
 
 // Product details
 export const productDetails = async (req, res) => {
@@ -34,9 +45,8 @@ export const productDetails = async (req, res) => {
       .status(200)
       .json({ message: "Product details fetched", data: productData });
   } catch (error) {
-    res
-      .status(error.status || 500)
-      .json({ error: error.message || "Internal server error" });
+    // Handle catch error
+    catchErrorHandler(res, error);
   }
 };
 
@@ -56,9 +66,8 @@ export const updateProductData = async (req, res) => {
       .status(200)
       .json({ message: "Product details updated", data: updatedProductData });
   } catch (error) {
-    res
-      .status(error.status || 500)
-      .json({ error: error.message || "Internal server error" });
+    // Handle catch error
+    catchErrorHandler(res, error);
   }
 };
 
@@ -70,8 +79,7 @@ export const deleteProduct = async (req, res) => {
 
     res.status(204).json({ message: "Product deleted", data: delProduct });
   } catch (error) {
-    res
-      .status(error.status || 500)
-      .json({ error: error.message || "Internal server error" });
+    // Handle catch error
+    catchErrorHandler(res, error);
   }
 };

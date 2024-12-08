@@ -49,8 +49,7 @@ export const removeProduct = async (req, res) => {
 
     res.status(204).json({ message: "Product removed", data: removedProduct });
   } catch (error) {
-    res
-      .status(error.status || 500)
-      .json({ error: error.message || "Internal server error" });
+    // Handle catch error
+    catchErrorHandler(res, error);
   }
 };
