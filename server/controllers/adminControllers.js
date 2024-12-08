@@ -17,3 +17,24 @@ export const renderAllUsers = async (req, res) => {
     catchErrorHandler(res, error);
   }
 };
+
+// Acitvate user
+export const activateUser = async (req, res) => {
+   try {
+     // Get user id
+     const {userId} =  req.user
+     
+     // Get user
+     const inactiveUser = await User.findById(userId)
+ 
+     // Acivate user
+     inactiveUser.isActive = true
+
+     res.status(202).json({message: 'User activated'})
+ 
+   } catch (error) {
+     // Handle catch error
+     catchErrorHandler(res, error);
+   }
+
+}
