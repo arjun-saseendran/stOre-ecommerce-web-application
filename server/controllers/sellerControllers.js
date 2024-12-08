@@ -1,6 +1,7 @@
 import { Seller } from "../models/sellerModel.js";
 import { passwordHandler } from "../utils/passowordHandler.js";
 import { generateToken } from "../utils/tokenHandler.js";
+import { catchErrorHandler } from "../utils/catchErrorHandler.js";
 
 // Seller signup
 export const sellerSignup = async (req, res) => {
@@ -19,7 +20,7 @@ export const sellerSignup = async (req, res) => {
         .select("-password");
     }
     // Hashing password
-    const hashedPassword = await passwordHandler(password);
+    const hashedPassword = await passwordHandler(password, undefined, res);
 
     // Creating new seller object
     const newSeller = new Seller({ name, email, password: hashedPassword });
@@ -30,11 +31,13 @@ export const sellerSignup = async (req, res) => {
     // Exclude password
     const { password: _, ...sellerWithoutPassword } = newSeller.toObject();
 
-    res.json({ message: "Seller created successfully", data: sellerWithoutPassword });
+    res.json({
+      message: "Seller created successfully",
+      data: sellerWithoutPassword,
+    });
   } catch (error) {
-    res
-      .status(error.statusCode || 500)
-      .json({ message: error.message || "Internal server error" });
+    // Handle catch error
+    catchErrorHandler(res, error);
   }
 };
 
@@ -56,7 +59,7 @@ export const sellerLogin = async (req, res) => {
     }
 
     // Checking password
-    const matchedPassword = await passwordHandler(password, seller.password);
+    const matchedPassword = await passwordHandler(password, seller.password,res);
 
     if (!matchedPassword) {
       return res.status(400).json({ error: "Incorrect password" });
@@ -68,7 +71,7 @@ export const sellerLogin = async (req, res) => {
     }
 
     // Generating token
-    const token = generateToken(seller, "seller");
+    const token = generateToken(seller, "seller", res);
 
     // Set token to cookie
     res.cookie("token", token);
@@ -80,9 +83,8 @@ export const sellerLogin = async (req, res) => {
       .status(200)
       .json({ message: "Login successfull", data: sellerWithoutPassword });
   } catch (error) {
-    res
-      .status(error.status || 500)
-      .json({ error: error.message || "Internal server error" });
+    // Handle catch error
+    catchErrorHandler(res, error);
   }
 };
 
@@ -93,16 +95,14 @@ export const sellerProfile = async (req, res) => {
     const { id } = req.seller;
     const sellerProfileData = await Seller.findById(id).select("-password");
 
-    res
-      .status(200)
-      .json({
-        message: "seller profile details fetched",
-        data: sellerProfileData,
-      });
+    res.status(200).json({
+      message: "seller profile details fetched",
+      data: sellerProfileData,
+    });
   } catch (error) {
-    res
-      .status(error.status || 500)
-      .json({ error: error.message || "Internal server error" });
+    res;
+    // Handle catch error
+    catchErrorHandler(res, error);
   }
 };
 
@@ -114,9 +114,8 @@ export const sellerLogout = async (req, res) => {
 
     res.status(200).json({ message: "Seller logout success" });
   } catch (error) {
-    res
-      .status(error.status || 500)
-      .json({ error: error.message || "Internal server error" });
+    // Handle catch error
+    catchErrorHandler(res, error);
   }
 };
 
@@ -132,16 +131,13 @@ export const updatesellerProfile = async (req, res) => {
       req.body
     ).select("-password");
 
-    res
-      .status(200)
-      .json({
-        message: "seller profile details updated",
-        data: updatedSellerData,
-      });
+    res.status(200).json({
+      message: "seller profile details updated",
+      data: updatedSellerData,
+    });
   } catch (error) {
-    res
-      .status(error.status || 500)
-      .json({ error: error.message || "Internal server error" });
+    // Handle catch error
+    catchErrorHandler(res, error);
   }
 };
 
@@ -150,9 +146,8 @@ export const checkseller = async (req, res) => {
   try {
     res.status(200).json({ message: "Autherized seller" });
   } catch (error) {
-    res
-      .status(error.status || 500)
-      .json({ error: error.message || "Internal server error" });
+    // Handle catch error
+    catchErrorHandler(res, error);
   }
 };
 
@@ -163,8 +158,7 @@ export const deactivateseller = async (req, res) => {
     await Seller.findByIdAndUpdate(id, { isActive: false });
     res.status(202).json({ message: "seller deactivated" });
   } catch (error) {
-    res
-      .status(error.status || 500)
-      .json({ error: error.message || "Internal server error" });
+    // Handle catch error
+    catchErrorHandler(res, error);
   }
 };

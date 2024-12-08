@@ -4,6 +4,7 @@ import {
   productDetails,
   updateProductData,
   deleteProduct,
+  renderProducts,
 } from "../../controllers/productControllers.js";
 
 // Configure router
@@ -11,6 +12,9 @@ export const productRouter = Router();
 
 // Add new product
 productRouter.post("/add-product", addProduct);
+
+// Display products
+productRouter.get('/products', renderProducts)
 
 // Dispaly product details
 productRouter.get("/product-details/:id", productDetails);

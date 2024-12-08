@@ -20,7 +20,7 @@ export const userSignup = async (req, res) => {
         .select("-password");
     }
     // Hashing password
-    const hashedPassword = await passwordHandler(password);
+    const hashedPassword = await passwordHandler(password, undefined, res);
 
     // Creating new user object
     const newUser = new User({ name, email, mobile, password: hashedPassword });
@@ -59,7 +59,7 @@ export const userLogin = async (req, res) => {
     }
 
     // Checking password
-    const matchedPassword = await passwordHandler(password, user.password);
+    const matchedPassword = await passwordHandler(password, user.password, res);
 
     if (!matchedPassword) {
       return res.status(400).json({ error: "Incorrect password" });
@@ -71,7 +71,7 @@ export const userLogin = async (req, res) => {
     }
 
     // Generating token
-    const token = generateToken(user, "user");
+    const token = generateToken(user, "user", res);
 
     // Set token to cookie
     res.cookie("token", token);

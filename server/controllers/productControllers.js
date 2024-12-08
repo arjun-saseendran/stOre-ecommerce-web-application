@@ -1,5 +1,5 @@
 import { Product } from "../models/productModel.js";
-import {catchErrorHandler} from '../utils/catchErrorHandler.js'
+import { catchErrorHandler } from "../utils/catchErrorHandler.js";
 
 // Add product
 export const addProduct = async (req, res) => {
@@ -23,16 +23,17 @@ export const addProduct = async (req, res) => {
   }
 };
 
-export const renderProducts = async(req, res) => {
+export const renderProducts = async (req, res) => {
   try {
-    const products = await Product.find()
-    res.status(200).json({message: 'Products render successfully', data: products})
-    
+    const products = await Product.find();
+    res
+      .status(200)
+      .json({ message: "Products render successfully", data: products });
   } catch (error) {
     // Handle catch error
     catchErrorHandler(res, error);
   }
-}
+};
 
 // Product details
 export const productDetails = async (req, res) => {

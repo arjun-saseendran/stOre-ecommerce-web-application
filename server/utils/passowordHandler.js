@@ -1,7 +1,8 @@
 import bcrypt from "bcrypt";
+import { catchErrorHandler } from "./catchErrorHandler.js";
 
 // For hashing and compare password
-export const passwordHandler = async (password, hashPassword = undefined) => {
+export const passwordHandler = async (password, hashPassword, res) => {
   try {
     if (hashPassword === undefined) {
       const hashedPassword = await bcrypt.hash(password, 10);
@@ -11,6 +12,7 @@ export const passwordHandler = async (password, hashPassword = undefined) => {
       return matchedPassword;
     }
   } catch (error) {
-    console.log(error);
+    // Handle catch error
+    catchErrorHandler(res, error);
   }
 };

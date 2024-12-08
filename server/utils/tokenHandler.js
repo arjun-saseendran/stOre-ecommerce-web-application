@@ -1,14 +1,14 @@
 import jwt from "jsonwebtoken";
+import { catchErrorHandler } from "./catchErrorHandler.js";
 
 // For generating token
-export const generateToken = (user, role) => {
+export const generateToken = (user, role, res) => {
   try {
     const token = jwt.sign({ id: user._id, role }, process.env.JWT_SECRET);
     return token;
   } catch (error) {
-    res
-      .status(error.status || 500)
-      .json({ error: error.message || "Internal server error" });
+    // Handle catch error
+    catchErrorHandler(res, error);
   }
 };
 
