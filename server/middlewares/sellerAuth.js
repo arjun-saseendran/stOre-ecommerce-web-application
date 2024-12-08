@@ -2,26 +2,26 @@ import jwt from "jsonwebtoken";
 
 export const sellerAuth = (req, res, next) => {
   try {
-    // get token
+    // Get token
     const { token } = req.cookies;
 
     if (!token) {
       return res.status(401).json({ error: "Token not provided" });
     }
 
-    // decoding token
+    // Decoding token
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
     if (!decoded) {
       return res.status(401).json({ error: "Seller not autherzied" });
     }
 
-    // checking role
+    // Checking role
     if (decoded.role !== "seller" && decoded.role !== "admin") {
       return res.status(404).json({ error: "User not autherzied" });
     }
 
-    // set user
+    // Set seller
     req.seller = decoded;
     next();
   } catch (error) {

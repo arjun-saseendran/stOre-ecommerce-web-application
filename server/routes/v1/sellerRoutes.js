@@ -10,31 +10,31 @@ import {
 } from "../../controllers/sellerControllers.js";
 import { sellerAuth } from "../../middlewares/sellerAuth.js";
 
-//configure router
+// Configure router
 export const sellerRouter = Router();
 
-// register new seller
+// Register new seller
 sellerRouter.post("/signup", sellerSignup);
 
-// login seller
+// Login seller
 sellerRouter.post("/login", sellerLogin);
 
-// logout seller
+// Logout seller
 sellerRouter.post("/logout", sellerAuth, sellerLogout);
 
-// display seller profile
+// Display seller profile
 sellerRouter.get("/profile", sellerAuth, sellerProfile);
 
-// update seller profile details
+// Update seller profile details
 sellerRouter.put("/update-profile", sellerAuth, updatesellerProfile);
 
-// reset seller profile password
+// Reset seller profile password
 // sellerRouter.put('/forgot-password', sellerForgotPassword)
 
-// deacivate seller profile
+// Deacivate seller profile
 sellerRouter.put("/deactivate", sellerAuth, deactivateseller);
 
-// check seller when routing
+// Check seller when routing
 sellerRouter.get("/check-seller", sellerAuth, checkseller);
 
 

@@ -1,13 +1,13 @@
 import { Router } from "express";
 import { addToCart, removeProduct } from "../../controllers/cartControllers.js";
 
-// configure router
+// Configure router
 export const cartRouter = Router();
 
-// add to product to cart
+// Add to product to cart
 cartRouter.post("/add-product-to-cart", addToCart);
 
-// remove porduct from cart
+// Remove porduct from cart
 cartRouter.delete("/remove-cart-product/:id", removeProduct);
 
 

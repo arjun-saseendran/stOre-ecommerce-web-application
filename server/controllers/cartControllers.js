@@ -1,19 +1,19 @@
 import { Cart } from "../models/cartModel.js";
 import { Product } from "../models/productModel.js";
 
-// add product to cart
+// Add product to cart
 export const addToCart = async (req, res) => {
   try {
-    // get product id
+    // Get product id
     const { id } = req.param;
 
-    // get product
+    // Get product
     const addProduct = Product.findById(id);
 
-    // add product to cart
+    // Add product to cart
     const cartProduct = new Cart(addProduct);
 
-    // save cart product to database
+    // Save cart product to database
     await cartProduct.save();
 
     res.json({ message: "Product added to cart", data: cartProduct });
@@ -24,13 +24,27 @@ export const addToCart = async (req, res) => {
   }
 };
 
-// remove product
+// Render cart products
+export const renderCartProducts = async(req, res) => {
+  try {
+
+    // Cart products
+    const cartProducts = await Cart.find()
+    res.status(200).json({message: 'Cart render successfully', data: cartProducts})
+    
+  } catch (error) {
+    res.status()
+    
+  }
+}
+
+// Remove product
 export const removeProduct = async (req, res) => {
   try {
-    // get product id
+    // Get product id
     const { id } = req.param;
 
-    // remove product
+    // Remove product
     const removedProduct = await Cart.findByIdAndDelete(id);
 
     res.status(204).json({ message: "Product removed", data: removedProduct });

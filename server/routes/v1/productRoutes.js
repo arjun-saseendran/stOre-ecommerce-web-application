@@ -6,19 +6,19 @@ import {
   deleteProduct,
 } from "../../controllers/productControllers.js";
 
-// configure router
+// Configure router
 export const productRouter = Router();
 
-// add new product
+// Add new product
 productRouter.post("/add-product", addProduct);
 
-// dispaly product details
+// Dispaly product details
 productRouter.get("/product-details/:id", productDetails);
 
-// update product details
+// Update product details
 productRouter.post("/update-product/:id", updateProductData);
 
-// delete product
+// Delete product
 productRouter.delete("/delete-product/:id", deleteProduct);
 
 

@@ -1,6 +1,6 @@
 import bcrypt from "bcrypt";
 
-// for hashing and compare password
+// For hashing and compare password
 export const passwordHandler = async (password, hashPassword = undefined) => {
   try {
     if (hashPassword === undefined) {

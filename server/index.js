@@ -4,26 +4,26 @@ import cookieParser from "cookie-parser";
 import { connectDB } from "./config/db.js";
 import { apiRouter } from "./routes/index.js";
 
-// configure .env
+// Configure .env
 dotenv.config();
 
-// configure app
+// Configure app
 const app = express();
 
-// configure port
+// Configure port
 const port = process.env.PORT;
 
-// connect database
+// Connect database
 connectDB();
 
-// common middlewares
+// Common middlewares
 app.use(express.json());
 app.use(cookieParser());
 
-// api v1 routes
+// Api v1 routes
 app.use("/api", apiRouter);
 
-// configure server
+// Configure server
 app.listen(port, (error) => {
   if (error) {
     console.error(error);

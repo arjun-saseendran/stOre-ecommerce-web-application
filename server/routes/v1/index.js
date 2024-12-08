@@ -5,7 +5,7 @@ import {productRouter} from "./productRoutes.js";
 import {cartRouter} from './cartRoutes.js'
 import { reviewRouter } from "./reviewRoutes.js";
 
-// configure router
+// Configure router
 export const v1Router = Router()
 
 v1Router.use('/user', userRouter)

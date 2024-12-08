@@ -1,18 +1,18 @@
 import { Product } from "../models/productModel.js";
 
-// add product
+// Add product
 export const addProduct = async (req, res) => {
   try {
-    // destructing data from request body
+    // Destructing data from request body
     const { title, description, price, stock } = req.body;
     if (!title || !description || !price || !stock) {
       return res.status(400).json({ message: "All fields required" });
     }
 
-    // creating new product object
+    // Creating new product object
     const newProduct = new Product({ title, description, price, stock });
 
-    // save new product to database
+    // Save new product to database
     await newProduct.save();
 
     res.json({ message: "Product created succfully", data: newProduct });
@@ -23,10 +23,10 @@ export const addProduct = async (req, res) => {
   }
 };
 
-// product details
+// Product details
 export const productDetails = async (req, res) => {
   try {
-    // get product id
+    // Get product id
     const { id } = req.param;
     const productData = await Product.findById(id);
 
@@ -40,13 +40,13 @@ export const productDetails = async (req, res) => {
   }
 };
 
-// update product details
+// Update product details
 export const updateProductData = async (req, res) => {
   try {
-    // get product id
+    // Get product id
     const { id } = req.param;
 
-    // update product data
+    // Update product data
     const updatedProductData = await Product.findByIdAndUpdate(
       id,
       req.body
@@ -64,7 +64,7 @@ export const updateProductData = async (req, res) => {
 
 export const deleteProduct = async (req, res) => {
   try {
-    // get product id
+    // Get product id
     const { id } = req.param;
     const delProduct = await Product.findByIdAndDelete(id);
 

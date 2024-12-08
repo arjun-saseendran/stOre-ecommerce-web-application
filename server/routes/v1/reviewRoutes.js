@@ -1,8 +1,8 @@
 import {Router} from 'express'
 import { reviewIncrement } from '../../controllers/reviewControllers.js'
 
-// configure router
+// Configure router
 export const reviewRouter = Router()
 
-// add review
+// Add review
 reviewRouter.post('/add-review', reviewIncrement)

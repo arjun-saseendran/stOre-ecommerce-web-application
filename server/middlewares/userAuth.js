@@ -2,20 +2,21 @@ import jwt from "jsonwebtoken";
 
 export const userAuth = async (req, res, next) => {
   try {
-    // get token
+    // Get token
     const { token } = req.cookies;
 
     if (!token) {
       return res.status(401).json({ error: "Token not provided" });
     }
 
-    // decoding token
+    // Decoding token
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
     if (!decoded) {
       return res.status(401).json({ error: "User not autherized" });
     }
 
+    // Set user
     req.user = decoded;
     next();
   } catch (error) {

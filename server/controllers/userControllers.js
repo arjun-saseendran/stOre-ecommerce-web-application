@@ -2,15 +2,15 @@ import { User } from "../models/userModel.js";
 import { passwordHandler } from "../utils/passowordHandler.js";
 import { generateToken } from "../utils/tokenHandler.js";
 
-// user signup
+// User signup
 export const userSignup = async (req, res) => {
   try {
-    // destructing data from request body
+    // Destructing data from request body
     const { name, email, mobile, password } = req.body;
     if (!name || !email || !mobile || !password) {
       return res.status(400).json({ message: "All fields required" });
     }
-    // checking user exists or not
+    // Checking user exists or not
     const userExist = await User.findOne({ email });
     if (userExist) {
       return res
@@ -18,19 +18,22 @@ export const userSignup = async (req, res) => {
         .json({ message: "User already exist" })
         .select("-password");
     }
-    // hashing password
+    // Hashing password
     const hashedPassword = await passwordHandler(password);
 
-    // creating new user object
+    // Creating new user object
     const newUser = new User({ name, email, mobile, password: hashedPassword });
 
-    // save new user to database
+    // Save new user to database
     await newUser.save();
 
-    // exclude password
-    const { password: _, ...userWithoutPassword } = newUser.toObject()
+    // Exclude password
+    const { password: _, ...userWithoutPassword } = newUser.toObject();
 
-    res.json({ message: "User created successfully", data: userWithoutPassword });
+    res.json({
+      message: "User created successfully",
+      data: userWithoutPassword,
+    });
   } catch (error) {
     res
       .status(error.statusCode || 500)
@@ -38,42 +41,42 @@ export const userSignup = async (req, res) => {
   }
 };
 
-// user login
+// User login
 export const userLogin = async (req, res) => {
   try {
     const { email, password } = req.body;
 
-    // checking fields
+    // Checking fields
     if (!email || !password) {
       return res.status(400).json({ error: "All fields are required" });
     }
 
-    // checking user
+    // Checking user
     const user = await User.findOne({ email });
 
     if (!user) {
       return res.status(400).json({ error: "User not exist" });
     }
 
-    // checking password
+    // Checking password
     const matchedPassword = await passwordHandler(password, user.password);
 
     if (!matchedPassword) {
       return res.status(400).json({ error: "Incorrect password" });
     }
 
-    // checking user profile
+    // Checking user profile
     if (!user.isActive) {
       return res.status(400).json({ error: "User profile deactivated" });
     }
 
-    // generating token
+    // Generating token
     const token = generateToken(user, "user");
 
-    // set token to cookie
+    // Set token to cookie
     res.cookie("token", token);
 
-    // exclude password
+    // Exclude password
     const { password: _, ...userWithoutPassword } = user.toObject();
 
     res
@@ -86,10 +89,10 @@ export const userLogin = async (req, res) => {
   }
 };
 
-// user profile details
+// User profile details
 export const userProfile = async (req, res) => {
   try {
-    // get user id
+    // Get user id
     const { id } = req.user;
 
     const userProfileData = await User.findById(id).select("-password");
@@ -104,7 +107,7 @@ export const userProfile = async (req, res) => {
   }
 };
 
-// user logout
+// User logout
 export const userLogout = async (req, res) => {
   // clearing token from cookies
   try {
@@ -118,13 +121,13 @@ export const userLogout = async (req, res) => {
   }
 };
 
-// update user profile details
+// Update user profile details
 export const updateUserProfile = async (req, res) => {
   try {
-    // get user id
+    // Get user id
     const { id } = req.user;
 
-    // update user data
+    // Update user data
     const updatedUserData = await User.findByIdAndUpdate(id, req.body).select(
       "-password"
     );
@@ -139,7 +142,7 @@ export const updateUserProfile = async (req, res) => {
   }
 };
 
-// checking user
+// Checking user
 export const checkUser = async (req, res) => {
   try {
     res.status(200).json({ message: "Autherized user" });
@@ -152,7 +155,7 @@ export const checkUser = async (req, res) => {
 
 export const deactivateUser = async (req, res) => {
   try {
-    // get user id
+    // Get user id
     const { id } = req.user;
     await User.findByIdAndUpdate(id, { isActive: false });
     res.status(202).json({ message: "User deactivated" });
