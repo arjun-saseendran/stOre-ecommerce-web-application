@@ -1,6 +1,7 @@
 import { User } from "../models/userModel.js";
 import { passwordHandler } from "../utils/passowordHandler.js";
 import { generateToken } from "../utils/tokenHandler.js";
+import { catchErrorHandler } from "../utils/catchErrorHandler.js";
 
 // User signup
 export const userSignup = async (req, res) => {
@@ -35,9 +36,8 @@ export const userSignup = async (req, res) => {
       data: userWithoutPassword,
     });
   } catch (error) {
-    res
-      .status(error.statusCode || 500)
-      .json({ message: error.message || "Internal server error" });
+    // Handle catch error
+    catchErrorHandler(res, error);
   }
 };
 
@@ -55,7 +55,7 @@ export const userLogin = async (req, res) => {
     const user = await User.findOne({ email });
 
     if (!user) {
-      return res.status(400).json({ error: "User not exist" });
+      return res.status(404).json({ error: "User not exist" });
     }
 
     // Checking password
@@ -83,9 +83,8 @@ export const userLogin = async (req, res) => {
       .status(200)
       .json({ message: "Login successfull", data: userWithoutPassword });
   } catch (error) {
-    res
-      .status(error.status || 500)
-      .json({ error: error.message || "Internal server error" });
+    // Handle catch error
+    catchErrorHandler(res, error);
   }
 };
 
@@ -101,9 +100,8 @@ export const userProfile = async (req, res) => {
       .status(200)
       .json({ message: "user profile details fetched", data: userProfileData });
   } catch (error) {
-    res
-      .status(error.status || 500)
-      .json({ error: error.message || "Internal server error" });
+    // Handle catch error
+    catchErrorHandler(res, error);
   }
 };
 
@@ -115,9 +113,8 @@ export const userLogout = async (req, res) => {
 
     res.status(200).json({ message: "User logout success" });
   } catch (error) {
-    res
-      .status(error.status || 500)
-      .json({ error: error.message || "Internal server error" });
+    // Handle catch error
+    catchErrorHandler(res, error);
   }
 };
 
@@ -136,9 +133,8 @@ export const updateUserProfile = async (req, res) => {
       .status(200)
       .json({ message: "user profile details updated", data: updatedUserData });
   } catch (error) {
-    res
-      .status(error.status || 500)
-      .json({ error: error.message || "Internal server error" });
+    // Handle catch error
+    catchErrorHandler(res, error);
   }
 };
 
@@ -147,9 +143,8 @@ export const checkUser = async (req, res) => {
   try {
     res.status(200).json({ message: "Autherized user" });
   } catch (error) {
-    res
-      .status(error.status || 500)
-      .json({ error: error.message || "Internal server error" });
+    // Handle catch error
+    catchErrorHandler(res, error);
   }
 };
 
@@ -160,8 +155,7 @@ export const deactivateUser = async (req, res) => {
     await User.findByIdAndUpdate(id, { isActive: false });
     res.status(202).json({ message: "User deactivated" });
   } catch (error) {
-    res
-      .status(error.status || 500)
-      .json({ error: error.message || "Internal server error" });
+    // Handle catch error
+    catchErrorHandler(res, error);
   }
 };

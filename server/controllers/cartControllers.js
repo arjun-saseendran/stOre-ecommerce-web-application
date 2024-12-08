@@ -1,5 +1,6 @@
 import { Cart } from "../models/cartModel.js";
 import { Product } from "../models/productModel.js";
+import {catchErrorHandler} from '../utils/catchErrorHandler.js'
 
 // Add product to cart
 export const addToCart = async (req, res) => {
@@ -18,9 +19,8 @@ export const addToCart = async (req, res) => {
 
     res.json({ message: "Product added to cart", data: cartProduct });
   } catch (error) {
-    res
-      .status(error.statusCode || 500)
-      .json({ message: error.message || "Internal server error" });
+    // Handle catch error
+    catchErrorHandler(res, error);
   }
 };
 
@@ -33,8 +33,8 @@ export const renderCartProducts = async(req, res) => {
     res.status(200).json({message: 'Cart render successfully', data: cartProducts})
     
   } catch (error) {
-    res.status()
-    
+    // Handle catch error
+    catchErrorHandler(res, error);
   }
 }
 
