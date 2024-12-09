@@ -7,14 +7,15 @@ export const addToCart = async (req, res) => {
   try {
     // Get product id
     const { id } = req.param;
+    
 
     // Get product
     const addProduct = Product.findById(id);
 
     // Add product to cart
-    const cartProduct = new Cart(addProduct);
+    const cartProduct = new Cart({addProduct, products: [{id}]});
 
-    // Save cart product to database
+   // Save cart product to database
     await cartProduct.save();
 
     res.json({ message: "Product added to cart", data: cartProduct });
