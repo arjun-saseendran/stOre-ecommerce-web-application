@@ -29,11 +29,12 @@ export const addProduct = async (req, res) => {
     // Save new product to database
     await newProduct.save();
 
-    // Get product id
-    const { _id } = newProduct;
-
     // Set product to seller
-    await Seller.findOneAndUpdate(sellerId, { products: _id });
+    await Seller.findOneAndUpdate(
+      sellerId,
+      { $push: { products: newProduct._id } },
+      { new: true }
+    );
 
     res.json({ message: "Product created succfully", data: newProduct });
   } catch (error) {
