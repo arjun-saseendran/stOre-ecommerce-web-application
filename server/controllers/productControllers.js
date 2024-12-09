@@ -1,4 +1,5 @@
 import { Product } from "../models/productModel.js";
+import { Seller } from "../models/sellerModel.js";
 import { catchErrorHandler } from "../utils/catchErrorHandler.js";
 
 // Add product
@@ -10,8 +11,20 @@ export const addProduct = async (req, res) => {
       return res.status(400).json({ message: "All fields required" });
     }
 
+    // Get seller id
+    const { sellerId } = req.seller;
+
+    // Get seller
+    const seller = await Seller.findById(sellerId);
+
     // Creating new product object
-    const newProduct = new Product({ title, description, price, stock });
+    const newProduct = new Product({
+      title,
+      description,
+      price,
+      stock,
+      seller: seller._id,
+    });
 
     // Save new product to database
     await newProduct.save();

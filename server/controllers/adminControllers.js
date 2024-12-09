@@ -1,6 +1,5 @@
 import { User } from "../models/userModel.js";
 import { Seller } from "../models/sellerModel.js";
-import { Product } from "../models/productModel.js";
 import { catchErrorHandler } from "../utils/catchErrorHandler.js";
 
 // Display all users
@@ -53,7 +52,7 @@ export const deleteUser = async (req, res) => {
   }
 };
 // Display all sellers
-export const renderAllsellers = async (req, res) => {
+export const renderAllSellers = async (req, res) => {
   try {
     // Get all sellers
     const allSellers = await Seller.find();
