@@ -7,10 +7,17 @@ import { catchErrorHandler } from "../utils/catchErrorHandler.js";
 export const userSignup = async (req, res) => {
   try {
     // Destructing data from request body
-    const { name, email, mobile, password } = req.body;
-    if (!name || !email || !mobile || !password) {
+    const { name, email, mobile, password, confirmPassword } = req.body;
+    if (!name || !email || !mobile || !password || !confirmPassword) {
       return res.status(400).json({ message: "All fields required" });
     }
+
+    // Check password and confirm password
+    if(password !== confirmPassword){
+      return res.status(400).json({message: 'Password and Confirm passwrod not match'})
+    }
+    
+    
     // Checking user exists or not
     const userExist = await User.findOne({ email });
     if (userExist) {

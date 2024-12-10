@@ -4,7 +4,7 @@ import {sellerRouter} from "./sellerRoutes.js";
 import {productRouter} from "./productRoutes.js";
 import {cartRouter} from './cartRoutes.js'
 import { reviewRouter } from "./reviewRoutes.js";
-import { adminRouter } from "./adminRoute.js";
+import { adminRouter } from "./adminRoutes.js";
 
 // Configure router
 export const v1Router = Router()
