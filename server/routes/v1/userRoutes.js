@@ -24,7 +24,7 @@ userRouter.put("/update-profile", userAuth,updateUserProfile);
 // userRouter.put('/forgot-password', userForgotPassword)
 
 // Decactivate user profile
-userRouter.put('/deactivate', userAuth, deactivateUser)
+userRouter.put('/deactivate-user', userAuth, deactivateUser)
 
 // Check user when routing
 userRouter.get('/check-user', userAuth, checkUser)
