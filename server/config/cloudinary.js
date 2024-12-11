@@ -1,12 +1,10 @@
-import {v2 as cloudinary} from 'cloudinary'
+import { v2 } from "cloudinary";
 
 // Cloudinary configuraion
-cloudinary.config({
+v2.config({
   cloud_name: process.env.CLOUD_NAME,
   api_key: process.env.CLOUD_API_KEY,
   api_secrect: process.env.CLOUD_API_SECRET,
 });
 
-export const cloudinaryInstance = v2
-
-
+export const cloudinaryInstance = v2;

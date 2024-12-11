@@ -1,12 +1,13 @@
 import { Product } from "../models/productModel.js";
 import { Seller } from "../models/sellerModel.js";
 import { catchErrorHandler } from "../utils/catchErrorHandler.js";
+import { cloudinaryInstance } from "../config/cloudinary.js";
 
 // Add product
 export const addProduct = async (req, res) => {
   try {
     // Destructing data from request body
-    const { title, description, price, stock } = req.body;
+    const { title, description, price, stock, image } = req.body;
     if (!title || !description || !price || !stock) {
       return res.status(400).json({ message: "All fields required" });
     }
@@ -17,12 +18,18 @@ export const addProduct = async (req, res) => {
     // Get seller
     const seller = await Seller.findById(sellerId);
 
+    // Handle upload image
+    const uploadResult = await cloudinaryInstance.uploader.upload(
+      req.file.path
+    );
+
     // Creating new product object
     const newProduct = new Product({
       title,
       description,
       price,
       stock,
+      image: uploadResult.url,
       seller: seller._id,
     });
 
