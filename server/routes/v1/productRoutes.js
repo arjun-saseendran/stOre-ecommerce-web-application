@@ -6,12 +6,13 @@ import {
   deleteProduct,
   renderProducts,
 } from "../../controllers/productControllers.js";
+import {upload} from '../../middlewares/multer.js'
 
 // Configure router
 export const productRouter = Router();
 
 // Add new product
-productRouter.post("/add-product", addProduct);
+productRouter.post("/add-product", upload.single('image'), addProduct);
 
 // Display products
 productRouter.get('/products', renderProducts)
