@@ -65,6 +65,11 @@ export const userLogin = async (req, res) => {
       return res.status(404).json({ error: "User not exist" });
     }
 
+    // Check user active
+    if(user.isActive === false){
+      return res.status(400).json({error: 'User is deactivated, contact support'})
+    }
+
     // Checking password
     const matchedPassword = await passwordHandler(password, user.password, res);
 
@@ -114,7 +119,7 @@ export const userProfile = async (req, res) => {
 
 // User logout
 export const userLogout = async (req, res) => {
-  // clearing token from cookies
+  // Clearing token from cookies
   try {
     res.clearCookie("token");
 
