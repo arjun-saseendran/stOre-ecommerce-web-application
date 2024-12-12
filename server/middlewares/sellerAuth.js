@@ -7,19 +7,19 @@ export const sellerAuth = (req, res, next) => {
     const { token } = req.cookies;
 
     if (!token) {
-      return res.status(401).json({ error: "Token not provided" });
+      return res.status(401).json({ message: "Token not provided" });
     }
 
     // Decoding token
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
     if (!decoded) {
-      return res.status(401).json({ error: "Seller not autherzied" });
+      return res.status(401).json({ message: "Seller not autherzied" });
     }
 
     // Checking role
     if (decoded.role !== "seller" && decoded.role !== "admin") {
-      return res.status(404).json({ error: "User not autherzied" });
+      return res.status(404).json({ message: "User not autherzied" });
     }
 
     // Set seller

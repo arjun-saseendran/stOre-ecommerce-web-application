@@ -48,26 +48,26 @@ export const sellerLogin = async (req, res) => {
 
     // Checking fields
     if (!email || !password) {
-      return res.status(400).json({ error: "All fields are required" });
+      return res.status(400).json({ message: "All fields are required" });
     }
 
     // Checking seller
     const seller = await Seller.findOne({ email });
 
     if (!seller) {
-      return res.status(400).json({ error: "Seller not exist" });
+      return res.status(400).json({ message: "Seller not exist" });
     }
 
     // Checking password
     const matchedPassword = await passwordHandler(password, seller.password,res);
 
     if (!matchedPassword) {
-      return res.status(400).json({ error: "Incorrect password" });
+      return res.status(400).json({ message: "Incorrect password" });
     }
 
     // Checking seller profile
     if (!seller.isActive) {
-      return res.status(400).json({ error: "Seller profile deactivated" });
+      return res.status(400).json({ message: "Seller profile deactivated" });
     }
 
     // Generating token

@@ -9,7 +9,7 @@ export const addReview = async (req, res) => {
 
     // Check rating
     if (rating < 0 && rating > 5) {
-      return res.status(400).json({ error: "Provide valid inuput" });
+      return res.status(400).json({ message: "Provide valid inuput" });
     }
 
     // Get product id

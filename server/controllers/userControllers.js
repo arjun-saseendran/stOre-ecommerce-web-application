@@ -55,31 +55,31 @@ export const userLogin = async (req, res) => {
 
     // Checking fields
     if (!email || !password) {
-      return res.status(400).json({ error: "All fields are required" });
+      return res.status(400).json({ message: "All fields are required" });
     }
 
     // Checking user
     const user = await User.findOne({ email });
 
     if (!user) {
-      return res.status(404).json({ error: "User not exist" });
+      return res.status(404).json({ message: "User not exist" });
     }
 
     // Check user active
     if(user.isActive === false){
-      return res.status(400).json({error: 'User is deactivated, contact support'})
+      return res.status(400).json({message: 'User is deactivated, contact support'})
     }
 
     // Checking password
     const matchedPassword = await passwordHandler(password, user.password, res);
 
     if (!matchedPassword) {
-      return res.status(400).json({ error: "Incorrect password" });
+      return res.status(400).json({ message: "Incorrect password" });
     }
 
     // Checking user profile
     if (!user.isActive) {
-      return res.status(400).json({ error: "User profile deactivated" });
+      return res.status(400).json({ message: "User profile deactivated" });
     }
 
     // Generating token
