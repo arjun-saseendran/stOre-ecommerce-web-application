@@ -1,17 +1,15 @@
-import React from 'react'
-import Signup from './pages/user/Signup';
+import UserHeader from '../src/components/UserHeader'
+import Banner from './components/Banner'
 
 function App() {
   return (
-    <>
-    
-     
-<Signup/>
+    <div>
 
+<UserHeader/>
+<Banner/>
+    </div>
 
-      
-    </>
-  );
+  )
 }
 
 export default App

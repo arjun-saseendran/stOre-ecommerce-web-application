@@ -1,5 +1,5 @@
 {
-  "name": "server",
+  "name": "backend",
   "version": "1.0.0",
   "description": "store ecommerce web application backend",
   "main": "index.js",
