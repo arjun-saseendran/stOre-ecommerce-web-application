@@ -9,12 +9,13 @@ import {
   deactivateseller,
 } from "../../controllers/sellerControllers.js";
 import { sellerAuth } from "../../middlewares/sellerAuth.js";
+import {upload} from '../../middlewares/multer.js'
 
 // Configure router
 export const sellerRouter = Router();
 
 // Register new seller
-sellerRouter.post("/signup", sellerSignup);
+sellerRouter.post("/signup", upload.single('profilePicture'), sellerSignup);
 
 // Login seller
 sellerRouter.post("/login", sellerLogin);

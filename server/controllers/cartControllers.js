@@ -6,7 +6,7 @@ import { catchErrorHandler } from "../utils/catchErrorHandler.js";
 export const addToCart = async (req, res) => {
   try {
     // Get user id
-    const { userId } = req.user;
+    const userId = req.user.id;
 
     // Get productId
     const { productId } = req.body;
@@ -33,21 +33,21 @@ export const addToCart = async (req, res) => {
     }
 
     // Check the product already in the cart
-    const productExists = cart.products.some((product) =>
+    const productExists = cart.products.find((product) =>
       product.productId.equals(productId)
     );
 
     // Handle product found in the cart
     if (productExists) {
       // Increase product quanitity
-      productExists.quantity++;
+      productExists.quantity += 1;
 
       // Recalculate total
       cart.calculateTotalPrice();
+    } else {
+      // Add product to cart
+      cart.products.push({ productId, price: product.price, quantity: 1 });
     }
-
-    // Add product to cart
-    cart.products.push({ productId, price: product.price });
 
     // Recalculate total
     cart.calculateTotalPrice();
@@ -67,7 +67,7 @@ export const addToCart = async (req, res) => {
 export const renderCart = async (req, res) => {
   try {
     // Get user id
-    const { userId } = req.user;
+    const userId = req.user.id;
 
     // Get cart
     const cart = await Cart.findOne({ userId }).populate("products.productId");
@@ -89,7 +89,7 @@ export const renderCart = async (req, res) => {
 export const removeProductFromCart = async (req, res) => {
   try {
     // Get user id
-    const { userId } = req.user;
+    const userId = req.user.id;
 
     // Get product id
     const { productId } = req.body;
@@ -103,9 +103,25 @@ export const removeProductFromCart = async (req, res) => {
     }
 
     // Remove product
-    cart.products = cart.products.filter(
-      (product) => !product.productId.equals(productId)
-    );
+    cart.products = cart.products
+      .map(
+        (product) => {
+          // Find product
+          if (product.productId.equals(productId)) {
+            // Check quantity greathan 1
+            if (product.quantity > 1) {
+              // Spred the array and decrese product quantity
+              return { ...product, quantity: product.quantity - 1 };
+            }
+            // Remove product when quantity reaches 0
+            return null;
+          }
+          // Keep other product unchanged
+          return product;
+        }
+        // Remove null entries
+      )
+      .filter(Boolean);
 
     // Recalculate total price
     cart.calculateTotalPrice();
@@ -114,7 +130,7 @@ export const removeProductFromCart = async (req, res) => {
     await cart.save();
 
     // Send response to frontend
-    res.status(204).json({ message: "Product removed", data: cart });
+    res.status(200).json({ message: "Product removed", data: cart, new: true });
   } catch (error) {
     // Handle catch error
     catchErrorHandler(res, error);
@@ -124,13 +140,13 @@ export const removeProductFromCart = async (req, res) => {
 export const clearCart = async (req, res) => {
   try {
     // Get user id
-    const { userId } = req.user;
+    const  userId  = req.user.id;
 
     // Find cart
     const cart = await Cart.findOne({ userId });
 
     // Set cart empty
-    cart.courses = [];
+    cart.products = [];
 
     // Recalulate total price
     cart.calculateTotalPrice();

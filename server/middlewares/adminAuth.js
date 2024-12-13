@@ -23,13 +23,9 @@ export const adminAuth = async (req, res, next) => {
       return res.status(404).json({ message: "User not autherzied" });
     }
 
-    // Check role on database
-    const admin = await Seller.findById(decoded.id);
-    if (admin.role === "admin") {
-      // Set admin
-      req.user = decoded;
-      next();
-    }
+    // Set admin
+    req.user = decoded;
+    next();
   } catch (error) {
     // Handle catch error
     catchErrorHandler(res, error);

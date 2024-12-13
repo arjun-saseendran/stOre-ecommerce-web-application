@@ -2,15 +2,24 @@ import { Seller } from "../models/sellerModel.js";
 import { passwordHandler } from "../utils/passowordHandler.js";
 import { generateToken } from "../utils/tokenHandler.js";
 import { catchErrorHandler } from "../utils/catchErrorHandler.js";
+import {cloudinaryInstance} from '../config/cloudinary.js'
 
 // Seller signup
 export const sellerSignup = async (req, res) => {
   try {
     // Destructing data from request body
     const { name, email, password } = req.body;
-    if (!name || !email || !password) {
+    if (!name || !email || !password || !confirmPassword) {
       return res.status(400).json({ message: "All fields required" });
     }
+
+    // Check password and confirm password
+    if (password !== confirmPassword) {
+      return res
+        .status(400)
+        .json({ message: "Password and Confirm passwrod not match" });
+    }
+
     // Checking seller exists or not
     const sellerExist = await Seller.findOne({ email });
     if (sellerExist) {
@@ -22,8 +31,18 @@ export const sellerSignup = async (req, res) => {
     // Hashing password
     const hashedPassword = await passwordHandler(password, undefined, res);
 
+    // Handle upload image
+    const uploadResult = await cloudinaryInstance.uploader.upload(
+      req.file.path
+    );
+
     // Creating new seller object
-    const newSeller = new Seller({ name, email, password: hashedPassword });
+    const newSeller = new Seller({
+      name,
+      email,
+      profilePicture: uploadResult.url,
+      password: hashedPassword,
+    });
 
     // Save new seller to database
     await newSeller.save();
@@ -92,8 +111,8 @@ export const sellerLogin = async (req, res) => {
 export const sellerProfile = async (req, res) => {
   try {
     // Get seller id
-    const { id } = req.seller;
-    const sellerProfileData = await Seller.findById(id).select("-password");
+    const  userId  = req.user;
+    const sellerProfileData = await Seller.findById(userId).select("-password");
 
     res.status(200).json({
       message: "seller profile details fetched",

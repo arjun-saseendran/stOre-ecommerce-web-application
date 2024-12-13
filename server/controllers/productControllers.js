@@ -3,6 +3,7 @@ import { Seller } from "../models/sellerModel.js";
 import { catchErrorHandler } from "../utils/catchErrorHandler.js";
 import { cloudinaryInstance } from "../config/cloudinary.js";
 
+
 // Add product
 export const addProduct = async (req, res) => {
   try {
@@ -13,7 +14,10 @@ export const addProduct = async (req, res) => {
     }
 
     // Get seller id
-    const { sellerId } = req.seller;
+    const { sellerId } = req.user;
+
+    console.log(req.user);
+    
 
     // Get seller
     const seller = await Seller.findById(sellerId);
@@ -30,7 +34,7 @@ export const addProduct = async (req, res) => {
       price,
       stock,
       image: uploadResult.url,
-      seller: seller._id,
+      seller: sellerId,
     });
 
     // Save new product to database

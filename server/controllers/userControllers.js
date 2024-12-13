@@ -2,6 +2,7 @@ import { User } from "../models/userModel.js";
 import { passwordHandler } from "../utils/passowordHandler.js";
 import { generateToken } from "../utils/tokenHandler.js";
 import { catchErrorHandler } from "../utils/catchErrorHandler.js";
+import { cloudinaryInstance } from "../config/cloudinary.js";
 
 // User signup
 export const userSignup = async (req, res) => {
@@ -13,11 +14,12 @@ export const userSignup = async (req, res) => {
     }
 
     // Check password and confirm password
-    if(password !== confirmPassword){
-      return res.status(400).json({message: 'Password and Confirm passwrod not match'})
+    if (password !== confirmPassword) {
+      return res
+        .status(400)
+        .json({ message: "Password and Confirm passwrod not match" });
     }
-    
-    
+
     // Checking user exists or not
     const userExist = await User.findOne({ email });
     if (userExist) {
@@ -29,8 +31,19 @@ export const userSignup = async (req, res) => {
     // Hashing password
     const hashedPassword = await passwordHandler(password, undefined, res);
 
+    // Handle upload image
+    const uploadResult = await cloudinaryInstance.uploader.upload(
+      req.file.path
+    );
+
     // Creating new user object
-    const newUser = new User({ name, email, mobile, password: hashedPassword });
+    const newUser = new User({
+      name,
+      email,
+      mobile,
+      profilePicture: uploadResult.url,
+      password: hashedPassword,
+    });
 
     // Save new user to database
     await newUser.save();
@@ -63,11 +76,6 @@ export const userLogin = async (req, res) => {
 
     if (!user) {
       return res.status(404).json({ message: "User not exist" });
-    }
-
-    // Check user active
-    if(user.isActive === false){
-      return res.status(400).json({message: 'User is deactivated, contact support'})
     }
 
     // Checking password
@@ -134,10 +142,10 @@ export const userLogout = async (req, res) => {
 export const updateUserProfile = async (req, res) => {
   try {
     // Get user id
-    const { id } = req.user;
+    const userId = req.user.id;
 
     // Update user data
-    const updatedUserData = await User.findByIdAndUpdate(id, req.body).select(
+    const updatedUserData = await User.findByIdAndUpdate(userId, req.body).select(
       "-password"
     );
 
@@ -164,7 +172,7 @@ export const deactivateUser = async (req, res) => {
   try {
     // Get user id
     const { id } = req.user;
-    await User.findByIdAndUpdate(id, { isActive: false },{new: true});
+    await User.findByIdAndUpdate(id, { isActive: false }, { new: true });
     res.status(202).json({ message: "User deactivated" });
   } catch (error) {
     // Handle catch error

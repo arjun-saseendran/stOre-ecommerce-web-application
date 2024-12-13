@@ -24,6 +24,7 @@ export const sellerAuth = (req, res, next) => {
 
     // Set seller
     req.user = decoded;
+
     next();
   } catch (error) {
     // Handle catch error

@@ -1,12 +1,13 @@
 import { Router } from "express";
 import {userSignup, userLogin, userLogout, userProfile, updateUserProfile, checkUser, deactivateUser } from '../../controllers/userControllers.js'
 import {userAuth} from '../../middlewares/userAuth.js'
+import { upload } from "../../middlewares/multer.js";
 
 // Configure router
 export const userRouter = Router();
 
 // Register new user
-userRouter.post('/signup', userSignup)
+userRouter.post('/signup', upload.single('profilePicture'), userSignup)
 
 // Login user
 userRouter.post('/login', userLogin)

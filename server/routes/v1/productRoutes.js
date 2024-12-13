@@ -7,12 +7,13 @@ import {
   renderProducts,
 } from "../../controllers/productControllers.js";
 import {upload} from '../../middlewares/multer.js'
+import { sellerAuth } from "../../middlewares/sellerAuth.js";
 
 // Configure router
 export const productRouter = Router();
 
 // Add new product
-productRouter.post("/add-product", upload.single('image'), addProduct);
+productRouter.post("/add-product", sellerAuth, upload.single('image'), addProduct);
 
 // Display products
 productRouter.get('/products', renderProducts)
