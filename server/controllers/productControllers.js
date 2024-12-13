@@ -84,13 +84,13 @@ export const productDetails = async (req, res) => {
 export const updateProductData = async (req, res) => {
   try {
     // Get product id
-    const { id } = req.params;
+    const productId = req.params.id;
 
     // Update product data
     const updatedProductData = await Product.findByIdAndUpdate(
-      id,
+      productId,
       req.body
-    ).select("-password");
+    );
 
     res
       .status(200)

@@ -22,7 +22,7 @@ productRouter.get('/products', renderProducts)
 productRouter.get("/product-details/:id", productDetails);
 
 // Update product details
-productRouter.post("/update-product/:id", updateProductData);
+productRouter.put("/update-product/:id", updateProductData);
 
 // Delete product
 productRouter.delete("/delete-product/:id", deleteProduct);
