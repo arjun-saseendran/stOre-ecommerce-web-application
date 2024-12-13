@@ -3,21 +3,19 @@ import { Seller } from "../models/sellerModel.js";
 import { catchErrorHandler } from "../utils/catchErrorHandler.js";
 import { cloudinaryInstance } from "../config/cloudinary.js";
 
-
 // Add product
 export const addProduct = async (req, res) => {
   try {
     // Destructing data from request body
-    const { title, description, price, stock, image } = req.body;
+    const { title, description, price, stock } = req.body;
     if (!title || !description || !price || !stock) {
       return res.status(400).json({ message: "All fields required" });
     }
 
     // Get seller id
-    const { sellerId } = req.user;
+    const sellerId = req.user.id;
 
     console.log(req.user);
-    
 
     // Get seller
     const seller = await Seller.findById(sellerId);
@@ -70,8 +68,8 @@ export const renderProducts = async (req, res) => {
 export const productDetails = async (req, res) => {
   try {
     // Get product id
-    const { id } = req.param;
-    const productData = await Product.findById(id);
+    const productId = req.params.id;
+    const productData = await Product.findById(productId);
 
     res
       .status(200)
@@ -86,7 +84,7 @@ export const productDetails = async (req, res) => {
 export const updateProductData = async (req, res) => {
   try {
     // Get product id
-    const { id } = req.param;
+    const { id } = req.params;
 
     // Update product data
     const updatedProductData = await Product.findByIdAndUpdate(
@@ -106,7 +104,7 @@ export const updateProductData = async (req, res) => {
 export const deleteProduct = async (req, res) => {
   try {
     // Get product id
-    const { id } = req.param;
+    const { id } = req.params;
     const delProduct = await Product.findByIdAndDelete(id);
 
     res.status(204).json({ message: "Product deleted", data: delProduct });
