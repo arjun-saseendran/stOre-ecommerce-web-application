@@ -35,3 +35,27 @@ export const addReview = async (req, res) => {
     catchErrorHandler(res, error);
   }
 };
+
+// Display product review
+const getProductReview = async(req, res) => {
+  try {
+
+    // Get product id
+    const {productId} = req.params
+
+    // Find reviews
+    const reviews = await Review.find({productId}).populate('userId', 'name').sort({createdAt: -1})
+
+    // Handle review not found
+    if(!reviews){
+      return res.status(404).json({message: 'No review found for this product'})
+    }
+
+    // Send response to frontend
+    res.status(200).json({message: 'Review fetched successfully', data: reviews})
+
+    
+  } catch (error) {
+    catchErrorHandler(res, error)
+  }
+}
