@@ -37,7 +37,7 @@ export const addReview = async (req, res) => {
 };
 
 // Display product review
-const getProductReview = async(req, res) => {
+export const getProductReview = async(req, res) => {
   try {
 
     // Get product id
@@ -56,6 +56,36 @@ const getProductReview = async(req, res) => {
 
     
   } catch (error) {
+    // Handle catch error
     catchErrorHandler(res, error)
   }
+}
+
+// Delete review
+export const deleteReview = async(req, res) => {
+try {
+  // Get review id
+  const {reviewId} = req.params
+
+  // Get user id
+  const {userId} = req.user
+
+  // Find and delete review
+  const review = await Review.findOneAndDelete({_id: reviewId, userId })
+
+  // Handle review not found
+  if(!review){
+    // Send response to frontend
+    res.status(404).json({message: 'Review not found or not authorized'})
+  }
+
+  // Send response to frontend
+  res.status(204).json({message: 'Review deleted successfully'})
+  
+} catch (error) {
+
+  // Handle catch error
+  catchErrorHandler(res, error)
+  
+}
 }
