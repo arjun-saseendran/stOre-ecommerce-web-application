@@ -37,55 +37,85 @@ export const addReview = async (req, res) => {
 };
 
 // Display product review
-export const getProductReview = async(req, res) => {
+export const getProductReview = async (req, res) => {
   try {
-
     // Get product id
-    const {productId} = req.params
+    const { productId } = req.params;
 
     // Find reviews
-    const reviews = await Review.find({productId}).populate('userId', 'name').sort({createdAt: -1})
+    const reviews = await Review.find({ productId })
+      .populate("userId", "name")
+      .sort({ createdAt: -1 });
 
     // Handle review not found
-    if(!reviews){
-      return res.status(404).json({message: 'No review found for this product'})
+    if (!reviews) {
+      return res
+        .status(404)
+        .json({ message: "No reviews found for this product" });
     }
 
     // Send response to frontend
-    res.status(200).json({message: 'Review fetched successfully', data: reviews})
-
-    
+    res
+      .status(200)
+      .json({ message: "Review fetched successfully", data: reviews });
   } catch (error) {
     // Handle catch error
-    catchErrorHandler(res, error)
+    catchErrorHandler(res, error);
   }
-}
+};
 
 // Delete review
-export const deleteReview = async(req, res) => {
-try {
-  // Get review id
-  const {reviewId} = req.params
+export const deleteReview = async (req, res) => {
+  try {
+    // Get review id
+    const { reviewId } = req.params;
 
-  // Get user id
-  const {userId} = req.user
+    // Get user id
+    const { userId } = req.user;
 
-  // Find and delete review
-  const review = await Review.findOneAndDelete({_id: reviewId, userId })
+    // Find and delete review
+    const review = await Review.findOneAndDelete({ _id: reviewId, userId });
 
-  // Handle review not found
-  if(!review){
+    // Handle review not found
+    if (!review) {
+      // Send response to frontend
+      res.status(404).json({ message: "Review not found or not authorized" });
+    }
+
     // Send response to frontend
-    res.status(404).json({message: 'Review not found or not authorized'})
+    res.status(204).json({ message: "Review deleted successfully" });
+  } catch (error) {
+    // Handle catch error
+    catchErrorHandler(res, error);
   }
+};
 
-  // Send response to frontend
-  res.status(204).json({message: 'Review deleted successfully'})
-  
-} catch (error) {
+// Get average rating
+export const getAverageRating = async (req, res) => {
+  try {
+    // Get product id
+    const { productId } = req.params;
 
-  // Handle catch error
-  catchErrorHandler(res, error)
-  
-}
-}
+    // Find reviews
+    const reviews = await Review.find({ productId });
+
+    // Handle reviews not found
+    if (!reviews.length) {
+      // Send response to frontend
+      return res
+        .status(404)
+        .json({ message: "No reviews found for this product" });
+    }
+
+    // Calculate average rating
+    const averageRating =
+      reviews.reduce((sum, review) => sum + review.rating, 0) / reviews.length;
+
+    // Send response to frontend
+    res
+      .status(200)
+      .json({ message: "Average rating fetched", data: averageRating });
+    // Handle catch error
+    catchErrorHandler(res, error);
+  } catch (error) {}
+};
