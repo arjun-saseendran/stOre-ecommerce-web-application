@@ -18,6 +18,10 @@ const cartSchema = new Schema(
           type: Number,
           required: true,
         },
+        quantity: {
+          type: Number,
+          required: true
+        }
       },
     ],
     totalPrice: {
@@ -31,7 +35,7 @@ const cartSchema = new Schema(
 
 cartSchema.methods.calculateTotalPrice = function(){
   this.totalPrice = this.products.reduce(
-    (total, product) => total + product.price, 0);
+    (total, product) => total + product.price * product.quantity, 0);
 };
 
 export const Cart = model("Cart", cartSchema);
