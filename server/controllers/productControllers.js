@@ -55,6 +55,11 @@ export const addProduct = async (req, res) => {
 export const renderProducts = async (req, res) => {
   try {
     const products = await Product.find();
+
+    // Check product cart empty
+    if (!products.length) {
+      return res.status(404).json({ message: "No product found" });
+    }
     res
       .status(200)
       .json({ message: "Products render successfully", data: products });
@@ -105,10 +110,15 @@ export const deleteProduct = async (req, res) => {
   try {
     // Get product id
     const productId = req.params.id;
-    const delProduct = await Product.findByIdAndDelete(productId);
+    const product = await Product.findByIdAndDelete(productId);
+
+    // Handle product not found
+    if (!product) {
+      return res.status(404).json({ message: "Product not found" });
+    }
 
     // Send response to frontend
-    res.status(204).json({ message: "Product deleted", data: delProduct });
+    res.status(200).json({ message: "Product deleted", data: product });
   } catch (error) {
     // Handle catch error
     catchErrorHandler(res, error);
