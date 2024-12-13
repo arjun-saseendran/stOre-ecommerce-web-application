@@ -6,7 +6,7 @@ import {
   sellerProfile,
   updatesellerProfile,
   checkseller,
-  deactivateseller,
+  deactivateSeller,
 } from "../../controllers/sellerControllers.js";
 import { sellerAuth } from "../../middlewares/sellerAuth.js";
 import {upload} from '../../middlewares/multer.js'
@@ -33,7 +33,7 @@ sellerRouter.put("/update-profile", sellerAuth, updatesellerProfile);
 // sellerRouter.put('/forgot-password', sellerForgotPassword)
 
 // Deacivate seller profile
-sellerRouter.put("/deactivate", sellerAuth, deactivateseller);
+sellerRouter.put("/deactivate-profile", sellerAuth, deactivateSeller);
 
 // Check seller when routing
 sellerRouter.get("/check-seller", sellerAuth, checkseller);

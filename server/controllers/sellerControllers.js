@@ -8,7 +8,7 @@ import {cloudinaryInstance} from '../config/cloudinary.js'
 export const sellerSignup = async (req, res) => {
   try {
     // Destructing data from request body
-    const { name, email, password } = req.body;
+    const { name, email, password, confirmPassword } = req.body;
     if (!name || !email || !password || !confirmPassword) {
       return res.status(400).json({ message: "All fields required" });
     }
@@ -111,7 +111,7 @@ export const sellerLogin = async (req, res) => {
 export const sellerProfile = async (req, res) => {
   try {
     // Get seller id
-    const  userId  = req.user;
+    const  userId  = req.user.id;
     const sellerProfileData = await Seller.findById(userId).select("-password");
 
     res.status(200).json({
@@ -142,11 +142,11 @@ export const sellerLogout = async (req, res) => {
 export const updatesellerProfile = async (req, res) => {
   try {
     // Get seller id
-    const { id } = req.seller;
+    const userId = req.user.id;
 
     // Update seller data
     const updatedSellerData = await Seller.findByIdAndUpdate(
-      id,
+      userId,
       req.body
     ).select("-password");
 
@@ -170,11 +170,11 @@ export const checkseller = async (req, res) => {
   }
 };
 
-export const deactivateseller = async (req, res) => {
+export const deactivateSeller = async (req, res) => {
   try {
     // ger seller id
-    const { id } = req.seller;
-    await Seller.findByIdAndUpdate(id, { isActive: false });
+    const userId = req.user.id;
+    await Seller.findByIdAndUpdate(userId, { isActive: false });
     res.status(202).json({ message: "seller deactivated" });
   } catch (error) {
     // Handle catch error
