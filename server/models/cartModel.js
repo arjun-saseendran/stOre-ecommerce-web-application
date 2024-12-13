@@ -29,11 +29,9 @@ const cartSchema = new Schema(
   { timestamps: true }
 );
 
-cartSchema.methods.calculateTotalPrice = () => {
+cartSchema.methods.calculateTotalPrice = function(){
   this.totalPrice = this.products.reduce(
-    (total, product) => total + product.price,
-    0
-  );
+    (total, product) => total + product.price, 0);
 };
 
 export const Cart = model("Cart", cartSchema);

@@ -28,10 +28,20 @@ export const addToCart = async (req, res) => {
 // Render cart products
 export const renderCartProducts = async(req, res) => {
   try {
+    
+    // Get user id
+    const {userId} = req.user
 
-    // Cart products
-    const cartProducts = await Cart.find()
-    res.status(200).json({message: 'Cart render successfully', data: cartProducts})
+    // Get cart
+    const cart = await Cart.findOne({userId}).populate('products.productId')
+
+    // Check cart exists
+    if(!cart){
+      return res.status(404).json({message: 'Cart not found'})
+    }
+    
+    // Display cart
+    res.status(200).json({message: 'Cart fetched successfully', data: cart})
     
   } catch (error) {
     // Handle catch error

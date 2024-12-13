@@ -1,14 +1,12 @@
-import UserHeader from '../src/components/UserHeader'
-import Banner from './components/Banner'
+import React from 'react'
+import UserHeader from './components/UserHeader'
 
-function App() {
+const App = () => {
   return (
     <div>
-
-<UserHeader/>
-<Banner/>
+      <UserHeader/>
+      
     </div>
-
   )
 }
 
