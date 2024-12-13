@@ -23,7 +23,7 @@ export const sellerAuth = (req, res, next) => {
     }
 
     // Set seller
-    req.seller = decoded;
+    req.user = decoded;
     next();
   } catch (error) {
     // Handle catch error

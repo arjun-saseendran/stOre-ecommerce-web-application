@@ -27,7 +27,7 @@ export const adminAuth = async (req, res, next) => {
     const admin = await Seller.findById(decoded.id);
     if (admin.role === "admin") {
       // Set admin
-      req.admin = decoded;
+      req.user = decoded;
       next();
     }
   } catch (error) {

@@ -70,7 +70,7 @@ export const renderAllSellers = async (req, res) => {
 export const activateSeller = async (req, res) => {
   try {
     // Get seller id
-    const { sellerId } = req.seller;
+    const { sellerId } = req.user;
 
     // Get seller
     const inactiveSeller = await User.findById(sellerId);
@@ -89,7 +89,7 @@ export const activateSeller = async (req, res) => {
 export const deleteSeller = async (req, res) => {
   try {
     // Get seller id
-    const { sellerId } = req.seller;
+    const { sellerId } = req.user;
 
     // Get seller
     const destroyedSeller = await Seller.findByIdAndDelete(userId);
