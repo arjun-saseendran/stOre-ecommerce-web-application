@@ -85,15 +85,34 @@ export const renderCart = async (req, res) => {
 };
 
 // Remove product
-export const removeProduct = async (req, res) => {
+export const removeProductFromCart = async (req, res) => {
   try {
+    // Get user id
+    const { userId } = req.user;
+
     // Get product id
-    const { id } = req.param;
+    const { productId } = req.body;
+
+    // Find the user's cart
+    let cart = await Cart.findOne({ userId });
+
+    // Handle cart not found
+    if (!cart) {
+      return res.status(404).json({ message: "Cart not found" });
+    }
 
     // Remove product
-    const removedProduct = await Cart.findByIdAndDelete(id);
+    cart.products = cart.products.filter(
+      (product) => !product.productId.equals(productId)
+    );
 
-    res.status(204).json({ message: "Product removed", data: removedProduct });
+    // Recalculate total price
+    cart.calculateTotalPrice();
+
+    // Save the cart
+    await cart.save();
+
+    res.status(204).json({ message: "Product removed", data: cart });
   } catch (error) {
     // Handle catch error
     catchErrorHandler(res, error);
