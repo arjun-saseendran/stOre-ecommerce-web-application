@@ -55,6 +55,7 @@ export const addToCart = async (req, res) => {
     // Save the cart
     await cart.save();
 
+    // Send response to frotend
     res.status(200).json({ message: "Product added to cart", data: cart });
   } catch (error) {
     // Handle catch error
@@ -112,9 +113,34 @@ export const removeProductFromCart = async (req, res) => {
     // Save the cart
     await cart.save();
 
+    // Send response to frontend
     res.status(204).json({ message: "Product removed", data: cart });
   } catch (error) {
     // Handle catch error
+    catchErrorHandler(res, error);
+  }
+};
+
+export const clearCart = async (req, res) => {
+  try {
+    // Get user id
+    const { userId } = req.user;
+
+    // Find cart
+    const cart = await Cart.findOne({ userId });
+
+    // Set cart empty
+    cart.courses = [];
+
+    // Recalulate total price
+    cart.calculateTotalPrice();
+
+    // Save cart
+    await cart.save();
+
+    // Send response to frontend
+    res.status(200).json({ message: "Cart cleared successfully", data: cart });
+  } catch (error) {
     catchErrorHandler(res, error);
   }
 };
