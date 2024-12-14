@@ -2,7 +2,7 @@ import { useState } from "react";
 
 function UserHeader() {
   // Menu toggle state
-  const [menuToggle, setMenuToggle] = useState(false);
+  const [menuToggle, setMenuToggle] = useState(true);
 
   // Handle menu toggle
   const handleMenuToggle = () => {
@@ -10,13 +10,13 @@ function UserHeader() {
     setMenuToggle(!menuToggle);
   };
   return (
-    <nav className="mt-5">
-      <div className="md:flex justify-between w-5/6 md:max-w-7xl mx-auto">
-        <div className="flex justify-between">
+    <nav className="bg-black h-20 w-full">
+      <div className="block md:flex justify-between items-center h-20 bg-black w-full">
+        <div className="flex justify-between items-center h-20 w-full bg-black">
           <div>
-            <span className="text-black font-bold text-4xl">stOre</span>
+            <span className="text-white font-bold text-4xl mx-5">stOre</span>
           </div>
-          <div className="md:hidden mt-2">
+          <div className="md:hidden mt-2 me-5">
             <button onClick={handleMenuToggle}>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -24,7 +24,7 @@ function UserHeader() {
                 viewBox="0 0 24 24"
                 strokeWidth={1.5}
                 stroke="currentColor"
-                className="size-6"
+                className="size-6 text-white"
               >
                 <path
                   strokeLinecap="round"
@@ -36,7 +36,7 @@ function UserHeader() {
           </div>
         </div>
         <div className={`flex justify-end ${menuToggle ? "block" : "hidden"}`}>
-          <ul className="md:flex md:space-x-8 space-y-8 md:space-y-0">
+          <ul className="md:flex md:space-x-7 space-y-8 md:space-y-0 bg-black">
             <li className="menu border-b-4">
               <a href="#">Home</a>
             </li>
@@ -56,14 +56,14 @@ function UserHeader() {
               {" "}
               <a href="#">Orders</a>
             </li>
-            <li className="px-4 py-2">
+            <li className="px-4 py-2 mx-5">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
                 viewBox="0 0 24 24"
                 strokeWidth={1.5}
                 stroke="currentColor"
-                className="size-6 text-black"
+                className="size-8  text-white"
               >
                 <path
                   strokeLinecap="round"

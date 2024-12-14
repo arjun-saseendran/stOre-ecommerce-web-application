@@ -2,6 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
+body{
+    margin: 0;
+    padding: 0;
+    background: #31363F;
+}
+
 .menu{
-    @apply text-xl hover:text-slate-400 transform ease-in-out duration-200 px-4 py-2 border-b-gray-400
+    @apply text-xl text-white hover:text-slate-400 transform ease-in-out duration-200 px-4 py-2 border-b-gray-400 
 }

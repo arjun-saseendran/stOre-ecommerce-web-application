@@ -1,11 +1,10 @@
-import React from 'react'
-import UserHeader from './pages/user/UserHeader'
+import UserHeader from '../src/pages/user/UserHeader'
 
 function App() {
   return (
-    <header>
-<UserHeader/>
-    </header>
+   <header>
+    <UserHeader/>
+   </header>
   )
 }
 
