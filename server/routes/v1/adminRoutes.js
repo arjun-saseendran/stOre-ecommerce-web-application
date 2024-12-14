@@ -9,10 +9,10 @@ export const adminRouter = Router()
 adminRouter.get('/users', adminAuth, renderAllUsers)
 
 // Activate user
-adminRouter.post('/activate-user', adminAuth, activateUser)
+adminRouter.post('/activate-user/:id', adminAuth, activateUser)
 
 // Delete user
-adminRouter.delete('/delete-user', adminAuth, deleteUser)
+adminRouter.delete('/delete-user/:id', adminAuth, deleteUser)
 
 // Display all sellers
 adminRouter.get('/sellers', adminAuth, renderAllSellers)

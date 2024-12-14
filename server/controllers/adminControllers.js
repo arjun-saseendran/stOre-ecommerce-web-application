@@ -21,7 +21,7 @@ export const renderAllUsers = async (req, res) => {
 export const activateUser = async (req, res) => {
   try {
     // Get user id
-    const  userId  = req.user.id;
+    const  userId  = req.params.id;
 
     // Get user
     const inactiveUser = await User.findById(userId);
@@ -40,12 +40,12 @@ export const activateUser = async (req, res) => {
 export const deleteUser = async (req, res) => {
   try {
     // Get user id
-    const  userId  = req.user.id;
+    const  userId  = req.params.id;
 
     // Get user
     const destroyedUser = await User.findByIdAndDelete(userId);
 
-    res.status(204).json({ message: "User deleted", data: destroyedUser });
+    res.status(200).json({ message: "User deleted", data: destroyedUser });
   } catch (error) {
     // Handle catch error
     catchErrorHandler(res, error);

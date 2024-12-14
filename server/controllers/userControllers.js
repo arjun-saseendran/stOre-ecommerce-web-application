@@ -171,8 +171,8 @@ export const checkUser = async (req, res) => {
 export const deactivateUser = async (req, res) => {
   try {
     // Get user id
-    const { id } = req.user;
-    await User.findByIdAndUpdate(id, { isActive: false }, { new: true });
+    const userId = req.user.id;
+    await User.findByIdAndUpdate(userId, { isActive: false }, { new: true });
     res.status(202).json({ message: "User deactivated" });
   } catch (error) {
     // Handle catch error
