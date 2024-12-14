@@ -19,7 +19,7 @@ export const adminAuth = async (req, res, next) => {
     }
 
     // Checking role
-    if (decoded.role !== "seller" && decoded.role !== "admin") {
+    if (decoded.role == "seller" || decoded.role == "user") {
       return res.status(404).json({ message: "User not autherzied" });
     }
 

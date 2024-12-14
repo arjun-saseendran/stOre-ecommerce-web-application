@@ -89,8 +89,8 @@ export const sellerLogin = async (req, res) => {
       return res.status(400).json({ message: "Seller profile deactivated" });
     }
 
-    // Generating token
-    const token = generateToken(seller, "seller", res);
+    // Generating token and set role
+    const token = generateToken(seller, seller.role, res);
 
     // Set token to cookie
     res.cookie("token", token);
