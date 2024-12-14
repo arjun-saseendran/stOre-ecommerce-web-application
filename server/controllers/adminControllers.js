@@ -70,10 +70,10 @@ export const renderAllSellers = async (req, res) => {
 export const activateSeller = async (req, res) => {
   try {
     // Get seller id
-    const { sellerId } = req.user;
+    const  sellerId  = req.params.id;
 
     // Get seller
-    const inactiveSeller = await User.findById(sellerId);
+    const inactiveSeller = await Seller.findById(sellerId);
 
     // Acivate seller
     inactiveSeller.isActive = true;
@@ -89,12 +89,12 @@ export const activateSeller = async (req, res) => {
 export const deleteSeller = async (req, res) => {
   try {
     // Get seller id
-    const { sellerId } = req.user;
+    const  sellerId  = req.params.id;
 
     // Get seller
-    const destroyedSeller = await Seller.findByIdAndDelete(userId);
+    const destroyedSeller = await Seller.findByIdAndDelete(sellerId);
 
-    res.status(204).json({ message: "Seller deleted", data: destroyedSeller });
+    res.status(202).json({ message: "Seller deleted", data: destroyedSeller });
   } catch (error) {
     // Handle catch error
     catchErrorHandler(res, error);

@@ -18,7 +18,7 @@ adminRouter.delete('/delete-user/:id', adminAuth, deleteUser)
 adminRouter.get('/sellers', adminAuth, renderAllSellers)
 
 // Activate seller
-adminRouter.post('/activate-user', adminAuth, activateSeller)
+adminRouter.post('/activate-seller/:id', adminAuth, activateSeller)
 
 // Delete seller
-adminRouter.delete('/delete-user', adminAuth, deleteSeller)
+adminRouter.delete('/delete-seller/:id', adminAuth, deleteSeller)
