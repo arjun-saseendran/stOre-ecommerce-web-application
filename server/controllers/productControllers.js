@@ -15,18 +15,13 @@ export const addProduct = async (req, res) => {
     // Get seller id
     const sellerId = req.user.id;
 
-    console.log(req.user);
-
-    // Get seller
-    const seller = await Seller.findById(sellerId);
-
     // Handle upload image
     const uploadResult = await cloudinaryInstance.uploader.upload(
       req.file.path
     );
 
     // Creating new product object
-    const newProduct = new Product({
+    const product = new Product({
       title,
       description,
       price,
@@ -36,16 +31,16 @@ export const addProduct = async (req, res) => {
     });
 
     // Save new product to database
-    await newProduct.save();
+    await product.save();
 
     // Set product to seller
     await Seller.findOneAndUpdate(
-      sellerId,
-      { $push: { products: newProduct._id } },
+      {_id:sellerId},
+      { $push: { products: product._id } },
       { new: true }
     );
 
-    res.json({ message: "Product created succfully", data: newProduct });
+    res.json({ message: "Product created succfully", data: product });
   } catch (error) {
     // Handle catch error
     catchErrorHandler(res, error);

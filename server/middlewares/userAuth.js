@@ -21,12 +21,6 @@ export const userAuth = async (req, res, next) => {
     // Set user
     req.user = decoded;
 
-    // Checking user profile
-    const user = await User.findById(req.user.id);
-    if (!user.isActive) {
-      return res.status(400).json({ message: "User profile deactivated" });
-    }
-
     next();
   } catch (error) {
     catchErrorHandler(res, error);

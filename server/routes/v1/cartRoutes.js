@@ -6,13 +6,13 @@ import {userAuth} from '../../middlewares/userAuth.js'
 export const cartRouter = Router();
 
 // Add to product to cart
-cartRouter.post("/add-to-cart", userAuth, addToCart);
+cartRouter.post("/add-product", userAuth, addToCart);
 
 // Display cart products
 cartRouter.get('/cart', userAuth, renderCart)
 
 // Remove porduct from cart
-cartRouter.delete("/remove-cart-product", userAuth, removeProductFromCart);
+cartRouter.delete("/remove-product", userAuth, removeProductFromCart);
 
 // Clear cart
 cartRouter.delete('/clear-cart', userAuth, clearCart)

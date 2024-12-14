@@ -14,10 +14,10 @@ export const reviewRouter = Router();
 reviewRouter.post("/add-review", userAuth, addReview);
 
 // Display product review
-reviewRouter.get("/get-review", userAuth, getProductReview);
+reviewRouter.get("/get-review/:id", userAuth, getProductReview);
 
 // Get average review
-reviewRouter.get("/get-avg-rating", userAuth, getAverageRating);
+reviewRouter.get("/get-avg-rating/:id", userAuth, getAverageRating);
 
 // Delete review
-reviewRouter.delete("/delete-reveiw", userAuth, deleteReview);
+reviewRouter.delete("/delete-review/:id", userAuth, deleteReview);
