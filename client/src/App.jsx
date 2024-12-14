@@ -1,12 +1,8 @@
 import React from 'react'
-import UserHeader from './components/UserHeader'
 
-const App = () => {
+function App() {
   return (
-    <div>
-      <UserHeader/>
-      
-    </div>
+    <div>App</div>
   )
 }
 
