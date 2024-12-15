@@ -12,7 +12,10 @@ function UserHeader() {
         <Navbar.Brand href="#">
           <span className="text-white h1">stOre</span>
         </Navbar.Brand>
-        <Navbar.Toggle aria-controls="navbarScroll" />
+        <Navbar.Toggle
+          className="bg-white"
+          aria-controls="navbarScroll"
+        />
         <Navbar.Collapse id="navbarScroll">
           <Nav className="me-auto my-2 my-lg-0" navbarScroll>
             <Nav.Link className="mt-2" href="#action1">

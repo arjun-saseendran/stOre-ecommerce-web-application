@@ -7,8 +7,8 @@ import { cloudinaryInstance } from "../config/cloudinary.js";
 export const addProduct = async (req, res) => {
   try {
     // Destructing data from request body
-    const { title, description, price, stock } = req.body;
-    if (!title || !description || !price || !stock) {
+    const { title, description, price, stock, category } = req.body;
+    if (!title || !description || !price || !stock || !category) {
       return res.status(400).json({ message: "All fields required" });
     }
 
@@ -26,6 +26,7 @@ export const addProduct = async (req, res) => {
       description,
       price,
       stock,
+      category,
       image: uploadResult.url,
       seller: sellerId,
     });
@@ -119,3 +120,16 @@ export const deleteProduct = async (req, res) => {
     catchErrorHandler(res, error);
   }
 };
+
+// Pagination
+
+const productMobile = async(req, res) => {
+  try {
+
+    // Filter by category
+    const page = await Product.find({})
+    
+  } catch (error) {
+    
+  }
+}
