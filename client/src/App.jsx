@@ -1,10 +1,13 @@
-import UserHeader from '../src/pages/user/UserHeader'
+import React from 'react'
+import UserHeader from './pages/user/UserHeader'
 
 function App() {
   return (
-   <header>
-    <UserHeader/>
-   </header>
+    <div>
+      <header>
+        <UserHeader/>
+      </header>
+      </div>
   )
 }
 
