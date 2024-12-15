@@ -19,7 +19,7 @@ function UserHeader() {
               <span className="text-white h5">Home</span>
             </Nav.Link>
             <Nav.Link className="mt-2" href="#action1">
-              <span className="text-white h5">Mobile</span>
+              <span className="text-white h5">iPhone</span>
             </Nav.Link>
             <Nav.Link className="mt-2" href="#action1">
               <span className="text-white h5">Mackbook</span>
@@ -28,10 +28,10 @@ function UserHeader() {
               <span className="text-white h5">iPad</span>
             </Nav.Link>
             <Nav.Link className="mt-2" href="#action1">
-              <span className="text-white h5">Airpod</span>
+              <span className="text-white h5">Airpods</span>
             </Nav.Link>
             <Nav.Link className="mt-2" href="#action1">
-              <span className="text-white h5">Accessories</span>
+              <span className="text-white h5">Apple Watch</span>
             </Nav.Link>
             <NavDropdown
               className="mt-2"

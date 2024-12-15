@@ -1,14 +1,19 @@
 import React from 'react'
 import UserHeader from './pages/user/UserHeader'
+import Banner from './components/Banner';
 
 function App() {
   return (
     <div>
       <header>
-        <UserHeader/>
+        <UserHeader />
       </header>
-      </div>
-  )
+
+      <section>
+        <Banner/>
+      </section>
+    </div>
+  );
 }
 
 export default App
