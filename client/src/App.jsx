@@ -1,6 +1,8 @@
-import React from 'react'
-import UserHeader from './pages/user/UserHeader'
-import Banner from './components/Banner';
+import React from "react";
+import UserHeader from "./pages/user/UserHeader";
+import Banner from "./components/Banner";
+import ProductContainer from "./components/ProductContainer";
+import Footer from "./pages/user/UserFooter";
 
 function App() {
   return (
@@ -10,10 +12,16 @@ function App() {
       </header>
 
       <section>
-        <Banner/>
+        <Banner />
       </section>
+      <section>
+        <ProductContainer />
+      </section>
+      <footer>
+        <Footer/>
+      </footer>
     </div>
   );
 }
 
-export default App
+export default App;

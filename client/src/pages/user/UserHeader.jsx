@@ -31,7 +31,7 @@ function UserHeader() {
               <span className="text-white h5">Airpods</span>
             </Nav.Link>
             <Nav.Link className="mt-2" href="#action1">
-              <span className="text-white h5">Apple Watch</span>
+              <span className="text-white h5">Watch</span>
             </Nav.Link>
             <NavDropdown
               className="mt-2"
@@ -57,6 +57,7 @@ function UserHeader() {
               placeholder="Search"
               className="me-2"
               aria-label="Search"
+              style={{ background: "#D9D9D9" }}
             />
             <Button variant="outline-light">Search</Button>
           </Form>
