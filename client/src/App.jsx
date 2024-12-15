@@ -1,26 +1,22 @@
 import React from "react";
 import UserHeader from "./pages/user/UserHeader";
-import Banner from "./components/Banner";
-import ProductContainer from "./components/ProductContainer";
 import Footer from "./pages/user/UserFooter";
+import UserForm from "./pages/user/UserForm";
 
 function App() {
   return (
-    <div>
+    <>
       <header>
         <UserHeader />
       </header>
-
-      <section>
-        <Banner />
-      </section>
-      <section>
-        <ProductContainer />
-      </section>
+<section>
+  <UserForm/>
+</section>
+      
       <footer>
         <Footer/>
       </footer>
-    </div>
+    </>
   );
 }
 

@@ -1,47 +1,31 @@
+import { useEffect, useState } from "react";
+import axios from "axios";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 
-
-import React from 'react'
+import ProductCard from "../components/ProductCard";
 
 function ProductContainer() {
+  const [products, setProducts] = useState([]);
+  useEffect(() => {
+    axios
+      .get("http://localhost:3000/api/v1/product/products")
+      .then((response) => setProducts(response.data.data));
+  }, []);
+  console.log(products);
+
   return (
     <Container>
-        <Row className="p-5">
-            <Col className="col-12 col-sm-6 col-md-4 col-xl-3">
-            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Commodi incidunt, explicabo tempora vero id soluta maxime laudantium tempore neque illum rerum libero repellat distinctio facere quibusdam laborum debitis provident! Dolorum.
-            </Col>
-            <Col className="col-12 col-sm-6 col-md-4 col-xl-3">
-            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Commodi incidunt, explicabo tempora vero id soluta maxime laudantium tempore neque illum rerum libero repellat distinctio facere quibusdam laborum debitis provident! Dolorum.
-            </Col>
-            <Col className="col-12 col-sm-6 col-md-4 col-xl-3">
-            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Commodi incidunt, explicabo tempora vero id soluta maxime laudantium tempore neque illum rerum libero repellat distinctio facere quibusdam laborum debitis provident! Dolorum.
-            </Col>
-            <Col className="col-12 col-sm-6 col-md-4 col-xl-3">
-            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Commodi incidunt, explicabo tempora vero id soluta maxime laudantium tempore neque illum rerum libero repellat distinctio facere quibusdam laborum debitis provident! Dolorum.
-            </Col>
-            <Col className="col-12 col-sm-6 col-md-4 col-xl-3">
-            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Commodi incidunt, explicabo tempora vero id soluta maxime laudantium tempore neque illum rerum libero repellat distinctio facere quibusdam laborum debitis provident! Dolorum.
-            </Col>
-            <Col className="col-12 col-sm-6 col-md-4 col-xl-3">
-            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Commodi incidunt, explicabo tempora vero id soluta maxime laudantium tempore neque illum rerum libero repellat distinctio facere quibusdam laborum debitis provident! Dolorum.
-            </Col>
-            <Col className="col-12 col-sm-6 col-md-4 col-xl-3">
-            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Commodi incidunt, explicabo tempora vero id soluta maxime laudantium tempore neque illum rerum libero repellat distinctio facere quibusdam laborum debitis provident! Dolorum.
-            </Col>
-            <Col className="col-12 col-sm-6 col-md-4 col-xl-3">
-            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Commodi incidunt, explicabo tempora vero id soluta maxime laudantium tempore neque illum rerum libero repellat distinctio facere quibusdam laborum debitis provident! Dolorum.
-            </Col>
-            <Col className="col-12 col-sm-6 col-md-4 col-xl-3">
-            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Commodi incidunt, explicabo tempora vero id soluta maxime laudantium tempore neque illum rerum libero repellat distinctio facere quibusdam laborum debitis provident! Dolorum.
-            </Col>
-            <Col className="col-12 col-sm-6 col-md-4 col-xl-3">
-            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Commodi incidunt, explicabo tempora vero id soluta maxime laudantium tempore neque illum rerum libero repellat distinctio facere quibusdam laborum debitis provident! Dolorum.
-            </Col>
-        </Row>
+      <Row className="mt-5">
+        {products.map((product) => (
+          <Col className="crd-col" xs={12} sm={6} md={6} xl={3} key={product._id} >
+            <ProductCard product={product} />
+          </Col>
+        ))}
+      </Row>
     </Container>
-  )
+  );
 }
 
-export default ProductContainer
+export default ProductContainer;

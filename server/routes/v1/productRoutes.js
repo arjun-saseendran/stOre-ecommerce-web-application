@@ -5,6 +5,7 @@ import {
   updateProductData,
   deleteProduct,
   renderProducts,
+  productCategory,
 } from "../../controllers/productControllers.js";
 import {upload} from '../../middlewares/multer.js'
 import { sellerAuth } from "../../middlewares/sellerAuth.js";
@@ -17,6 +18,9 @@ productRouter.post("/add-product", sellerAuth, upload.single('image'), addProduc
 
 // Display products
 productRouter.get('/products', renderProducts)
+
+// Display products by category
+productRouter.get('/category', productCategory)
 
 // Dispaly product details
 productRouter.get("/product-details/:id", productDetails);

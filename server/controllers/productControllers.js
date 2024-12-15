@@ -36,7 +36,7 @@ export const addProduct = async (req, res) => {
 
     // Set product to seller
     await Seller.findOneAndUpdate(
-      {_id:sellerId},
+      { _id: sellerId },
       { $push: { products: product._id } },
       { new: true }
     );
@@ -123,13 +123,18 @@ export const deleteProduct = async (req, res) => {
 
 // Pagination
 
-const productMobile = async(req, res) => {
+export const productCategory = async (req, res) => {
   try {
+    // Get category
+    const { category } = req.body;
 
     // Filter by category
-    const page = await Product.find({})
-    
+    const products = await Product.find({ category: category });
+
+    res
+      .status(200)
+      .json({ message: "Product category fetched succefully", data: products });
   } catch (error) {
-    
+    catchErrorHandler(res, error);
   }
-}
+};

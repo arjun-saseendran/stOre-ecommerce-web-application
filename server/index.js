@@ -1,5 +1,6 @@
 import express from "express";
 import dotenv from "dotenv";
+import cors from 'cors'
 import cookieParser from "cookie-parser";
 import { connectDB } from "./config/db.js";
 import { apiRouter } from "./routes/index.js";
@@ -9,6 +10,15 @@ dotenv.config();
 
 // Configure app
 const app = express();
+
+// Config cors
+app.use(
+  cors({
+    origin: process.env.CORS,
+    credentials: true,
+  })
+);
+
 
 // Configure port
 const port = process.env.PORT;
