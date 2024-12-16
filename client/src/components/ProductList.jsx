@@ -4,9 +4,9 @@ import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 
-import ProductCard from "../components/ProductCard";
+import ProductCard from "./ProductCard";
 
-function ProductContainer() {
+function ProductList() {
   const [products, setProducts] = useState([]);
   useEffect(() => {
     axios
@@ -17,9 +17,9 @@ function ProductContainer() {
 
   return (
     <Container>
-      <Row className="mt-5">
+      <Row className="mt-4">
         {products.map((product) => (
-          <Col className="crd-col" xs={12} sm={6} md={6} xl={3} key={product._id} >
+          <Col className="crd-col" xs={12} sm={6} md={4} xl={3} key={product._id} >
             <ProductCard product={product} />
           </Col>
         ))}
@@ -28,4 +28,4 @@ function ProductContainer() {
   );
 }
 
-export default ProductContainer;
+export default ProductList;
