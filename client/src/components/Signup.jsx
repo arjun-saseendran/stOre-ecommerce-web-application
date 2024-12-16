@@ -71,6 +71,9 @@ function Signup() {
             type="text"
             placeholder="Name"
             name="name"
+            required
+            minLength="3"
+            maxLength="30"
             onChange={(e) => handleInput(e, "name")}
           />
         </div>
@@ -80,6 +83,7 @@ function Signup() {
             type="text"
             placeholder="Email"
             name="email"
+            required
             onChange={(e) => handleInput(e, "email")}
           />
         </div>
@@ -89,6 +93,7 @@ function Signup() {
             type="mobile"
             placeholder="Mobile"
             name="mobile"
+            required
             onChange={(e) => handleInput(e, "mobile")}
           />
         </div>
@@ -98,6 +103,8 @@ function Signup() {
             type="password"
             placeholder="Password"
             name="password"
+            minLength="4"
+            required
             onChange={(e) => handleInput(e, "password")}
           />
         </div>
@@ -137,6 +144,12 @@ function Signup() {
             type="submit"
             value="Signup"
           />
+        </div>
+        <div>
+          <span className="text-secondary">Already have an account?</span>{" "}
+          <Link className="text-decoration-none text-black" to={"/login"}>
+            Login
+          </Link>
         </div>
       </form>
     </div>
