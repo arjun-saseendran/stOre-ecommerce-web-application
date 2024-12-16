@@ -2,13 +2,22 @@ import { createSlice } from "@reduxjs/toolkit";
 
 // Set initial vlaue
 const initialState = {
-    productByCategory: [],
+  category: "",
 }
 
 // Create categorySlice
-export const categorySlice = createSlice({
-name: 'productCategory',
-initialState,
+const categorySlice = createSlice({
+  name: "category",
+  initialState,
 
+  // Set category
+  reducers: {
+    setCategory: (state, action) => {
+      //Add data to category state
+      state.category = action.payload;
+    },
+  },
+});
 
-})
+export const { setCategory } = categorySlice.actions;
+export default categorySlice.reducer;

@@ -1,11 +1,9 @@
-import {configurStore} from '@reduxjs/toolkit'
-
+import { configureStore } from "@reduxjs/toolkit";
+import categoryReducer from "../features/categorySlice";
 
 // Config store
-export const store = configurStore({
-
-    reducers: {
-        
-    }
-
-})
+export const store = configureStore({
+  reducer: {
+    category: categoryReducer,
+  },
+});

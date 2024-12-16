@@ -4,10 +4,19 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import { apiCall } from "../utils/apiHandler";
 import ProductCard from "./ProductCard";
+import { useSelector } from "react-redux";
 
 function ProductList() {
+  // Get category state
+  const selectedCategory = useSelector((state) => state.category);
+
+  // Get apiUrl
   const apiUrl = import.meta.env.VITE_API_URL;
+
+  // Create products state for api products
   const [products, setProducts] = useState([]);
+
+  // Api call using useEffect hook
   useEffect(() => {
     (async () => {
       const [response, error] = await apiCall(
@@ -22,10 +31,17 @@ function ProductList() {
     })();
   }, []);
 
+  // Filter products based on selected category
+  const filterProducts = selectedCategory.category
+    ? products.filter(
+        (product) => product.category === selectedCategory.category
+      )
+    : products;
+
   return (
     <Container>
       <Row className="mt-4">
-        {products.map((product) => (
+        {filterProducts.map((product) => (
           <Col
             className="crd-col"
             xs={12}
