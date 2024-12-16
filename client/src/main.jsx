@@ -1,10 +1,12 @@
-import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
+import { StrictMode } from "react";
+import { createRoot } from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
-import './index.css'
+import "./index.css";
 import Root from "./routes/root.jsx";
-import App from './App.jsx';
+import App from "./App.jsx";
+import { store } from "./app/store.js";
+import { Provider } from "react-redux";
 
 const router = createBrowserRouter([
   {
@@ -17,20 +19,21 @@ const router = createBrowserRouter([
       },
       {
         path: "/",
-        element: ''
+        element: "",
       },
 
       {
         path: "",
-        element: ''
+        element: "",
       },
     ],
   },
 ]);
 
-
 createRoot(document.getElementById("root")).render(
   <StrictMode>
-    <RouterProvider router={router} />
+    <Provider store={store}>
+      <RouterProvider router={router} />
+    </Provider>
   </StrictMode>
 );

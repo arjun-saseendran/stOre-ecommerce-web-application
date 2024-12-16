@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const apiCall = async (
+export const apiCall = async (
   url,
   method,
   data = null,
@@ -16,10 +16,10 @@ const apiCall = async (
       withCredentials,
     });
 
-    return [response.data, null];
+    return [response.data.data, null];
   } catch (error) {
     return [null, error];
   }
 };
 
-export { apiCall };
+

@@ -20,7 +20,7 @@ productRouter.post("/add-product", sellerAuth, upload.single('image'), addProduc
 productRouter.get('/products', renderProducts)
 
 // Display products by category
-productRouter.get('/category', productCategory)
+productRouter.post('/category', productCategory)
 
 // Dispaly product details
 productRouter.get("/product-details/:id", productDetails);
