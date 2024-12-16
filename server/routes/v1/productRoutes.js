@@ -5,7 +5,6 @@ import {
   updateProductData,
   deleteProduct,
   renderProducts,
-  productCategory,
 } from "../../controllers/productControllers.js";
 import { upload } from "../../middlewares/multer.js";
 import { sellerAuth } from "../../middlewares/sellerAuth.js";

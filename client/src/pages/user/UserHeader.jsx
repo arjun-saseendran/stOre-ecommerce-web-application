@@ -24,8 +24,10 @@ function UserHeader() {
         <Navbar.Toggle className="bg-white" aria-controls="navbarScroll" />
         <Navbar.Collapse id="navbarScroll">
           <Nav className="me-auto my-2 my-lg-0" navbarScroll>
-            <Link className="mt-2 nav-link ">
-              <span className="text-white h5 hover">Home</span>
+            <Link to={"/"} className="mt-2 nav-link ">
+              <span onClick={()=> dispatch(setCategory(''))} className="text-white h5 hover">
+                Home
+              </span>
             </Link>
             <Link className="mt-2 nav-link">
               <span
@@ -82,7 +84,11 @@ function UserHeader() {
               </NavDropdown.Item>
               <NavDropdown.Divider />
               <NavDropdown.Item>
-                <span className="text-black hover">Cart</span>
+                <Link>
+                  <span className="text-black hover nav-link textdecoratin-none">
+                    Cart
+                  </span>
+                </Link>
               </NavDropdown.Item>
             </NavDropdown>
           </Nav>

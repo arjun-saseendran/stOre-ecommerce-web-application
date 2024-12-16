@@ -29,7 +29,7 @@ function ProductList() {
         console.log(error);
       }
     })();
-  }, []);
+  }, [apiUrl]);
 
   // Filter products based on selected category
   const filterProducts = selectedCategory.category
