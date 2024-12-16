@@ -20,7 +20,7 @@ function ProductList() {
   useEffect(() => {
     (async () => {
       const [response, error] = await apiCall(
-        `${apiUrl}/product/products`,
+        `${apiUrl}/api/v1/product/products`,
         "GET"
       );
       if (response) {
