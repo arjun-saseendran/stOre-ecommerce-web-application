@@ -10,7 +10,7 @@ function Root() {
       <header>
         <UserHeader />
       </header>
-      <Banner/>
+
       <main>
         <Outlet />
       </main>

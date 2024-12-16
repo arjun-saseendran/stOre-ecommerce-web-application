@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import { apiCall } from "../utils/apiHandler";
+import { apiHandler } from "../utils/apiHandler";
 import ProductCard from "./ProductCard";
 import { useSelector } from "react-redux";
 
@@ -19,7 +19,7 @@ function ProductList() {
   // Api call using useEffect hook
   useEffect(() => {
     (async () => {
-      const [response, error] = await apiCall(
+      const [response, error] = await apiHandler(
         `${apiUrl}/api/v1/product/products`,
         "GET"
       );

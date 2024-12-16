@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export const apiCall = async (
+export const apiHandler = async (
   url,
   method,
   data = null,
