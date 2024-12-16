@@ -121,20 +121,6 @@ export const deleteProduct = async (req, res) => {
   }
 };
 
-// Pagination
 
-export const productCategory = async (req, res) => {
-  try {
-    // Get category
-    const { category } = req.body;
 
-    // Filter by category
-    const products = await Product.find({ category: category });
 
-    res
-      .status(200)
-      .json({ message: "Product category fetched succefully", data: products });
-  } catch (error) {
-    catchErrorHandler(res, error);
-  }
-};

@@ -7,20 +7,22 @@ import {
   renderProducts,
   productCategory,
 } from "../../controllers/productControllers.js";
-import {upload} from '../../middlewares/multer.js'
+import { upload } from "../../middlewares/multer.js";
 import { sellerAuth } from "../../middlewares/sellerAuth.js";
 
 // Configure router
 export const productRouter = Router();
 
 // Add new product
-productRouter.post("/add-product", sellerAuth, upload.single('image'), addProduct);
+productRouter.post(
+  "/add-product",
+  sellerAuth,
+  upload.single("image"),
+  addProduct
+);
 
 // Display products
-productRouter.get('/products', renderProducts)
-
-// Display products by category
-productRouter.post('/category', productCategory)
+productRouter.get("/products", renderProducts);
 
 // Dispaly product details
 productRouter.get("/product-details/:id", productDetails);
@@ -30,5 +32,3 @@ productRouter.put("/update-product/:id", updateProductData);
 
 // Delete product
 productRouter.delete("/delete-product/:id", deleteProduct);
-
-
