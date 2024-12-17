@@ -1,17 +1,46 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Button from "react-bootstrap/Button";
 import Container from "react-bootstrap/Container";
 import Form from "react-bootstrap/Form";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import NavDropdown from "react-bootstrap/NavDropdown";
-import { Link } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import { setCategory } from "../../features/categorySlice";
+import { apiHandler } from "../../utils/apiHandler";
+import { setRole } from "../../features/roleSlice";
 
-function UserHeader() {
+const UserHeader = () => {
   // Config dispatch function
   const dispatch = useDispatch();
+
+  // Config navigate
+  const navigate = useNavigate();
+
+  // Check user
+  const { role } = useSelector((state) => state.role);
+
+  // Get api base url
+  const apiUrl = import.meta.env.VITE_API_URL;
+
+  // Handle logout
+  const handleLogout = async () => {
+    const [response, error] = await apiHandler(
+      `${apiUrl}/api/v1/user/logout`,
+      "POST"
+    );
+    if (response) {
+      console.log(response);
+    } else {
+      console.error(error);
+    }
+  };
+  useEffect(() => {
+    if (!role) {
+      navigate("/login");
+    }
+  }, [role]);
 
   return (
     <Navbar expand="lg" className="bg-black py-4">
@@ -25,7 +54,10 @@ function UserHeader() {
         <Navbar.Collapse id="navbarScroll">
           <Nav className="me-auto my-2 my-lg-0" navbarScroll>
             <Link to={"/"} className="mt-2 nav-link ">
-              <span onClick={()=> dispatch(setCategory(''))} className="text-white h5 hover">
+              <span
+                onClick={() => dispatch(setCategory(""))}
+                className="text-white h5 hover"
+              >
                 Home
               </span>
             </Link>
@@ -82,13 +114,21 @@ function UserHeader() {
               <NavDropdown.Item>
                 <span className="text-black hover">Wishlist</span>
               </NavDropdown.Item>
+
               <NavDropdown.Divider />
+
               <NavDropdown.Item>
-                <Link>
-                  <span className="text-black hover nav-link textdecoratin-none">
-                    Cart
-                  </span>
-                </Link>
+                <span className="text-black hover ">Cart</span>
+              </NavDropdown.Item>
+
+              <NavDropdown.Item onClick={() => dispatch(setRole(""))}>
+                <span
+                  role="button"
+                  className="text-black hover"
+                  onClick={handleLogout}
+                >
+                  Logout
+                </span>
               </NavDropdown.Item>
             </NavDropdown>
           </Nav>
@@ -122,6 +162,6 @@ function UserHeader() {
       </Container>
     </Navbar>
   );
-}
+};
 
 export default UserHeader;

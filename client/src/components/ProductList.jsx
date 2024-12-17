@@ -12,7 +12,7 @@ function ProductList() {
   const selectedCategory = useSelector((state) => state.category);
 
   // Check user
-  const role = useSelector((state) => state.role);
+  const { role } = useSelector((state) => state.role);
 
   // Get apiUrl
   const apiUrl = import.meta.env.VITE_API_URL;
@@ -26,7 +26,7 @@ function ProductList() {
     if (!role) {
       navigate("/login");
     }
-  }, [apiUrl]);
+  }, [role]);
 
   // Create products state for api products
   const [products, setProducts] = useState([]);
