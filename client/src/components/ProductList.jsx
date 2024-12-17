@@ -6,11 +6,13 @@ import { apiHandler } from "../utils/apiHandler";
 import ProductCard from "./ProductCard";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import Cookies from "universal-cookie";
 
 function ProductList() {
   // Get category state
   const selectedCategory = useSelector((state) => state.category);
+
+  // Check user
+  const role = useSelector((state) => state.role);
 
   // Get apiUrl
   const apiUrl = import.meta.env.VITE_API_URL;
@@ -18,16 +20,10 @@ function ProductList() {
   // Config navigate
   const navigate = useNavigate();
 
-  // Config cookies
-  const cookies = new Cookies();
-
-  // Check login
-  const token = cookies.get("token");
-
   // When page render
   useEffect(() => {
     // If not token redirct to login page
-    if (!token) {
+    if (!role) {
       navigate("/login");
     }
   }, [apiUrl]);
