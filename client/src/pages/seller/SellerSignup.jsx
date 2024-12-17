@@ -7,7 +7,7 @@ function SellerSignup() {
   const apiUrl = import.meta.env.VITE_API_URL;
 
   // Set seller
-  const [seller, setseller] = useState({});
+  const [seller, setSeller] = useState({});
   const navigate = useNavigate();
 
   // Handle submit
@@ -49,12 +49,12 @@ function SellerSignup() {
 
   // Get input
   const handleInput = (e, field) => {
-    setseller({ ...seller, [field]: e.target.value });
+    setSeller({ ...seller, [field]: e.target.value });
   };
 
   // Handle file
   const handleImage = (e) => {
-    setseller({ ...seller, profilePicture: e.target.files[0] });
+    setSeller({ ...seller, profilePicture: e.target.files[0] });
   };
 
   return (

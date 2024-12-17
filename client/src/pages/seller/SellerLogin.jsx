@@ -6,8 +6,8 @@ function SellerLogin() {
   // Get api base url
   const apiUrl = import.meta.env.VITE_API_URL;
 
-  // Set user data
-  const [user, setUser] = useState({});
+  // Set seller data
+  const [seller, setSeller] = useState({});
 
   // Set login
   const [login, setLogin] = useState(false);
@@ -27,9 +27,9 @@ function SellerLogin() {
 
     // Api call
     const [response, error] = await apiHandler(
-      `${apiUrl}/api/v1/user/login`,
+      `${apiUrl}/api/v1/seller/login`,
       "POST",
-      user,
+      seller,
       headers
     );
 
@@ -44,7 +44,7 @@ function SellerLogin() {
 
   // Get input
   const handleInput = (e, field) => {
-    setUser({ ...user, [field]: e.target.value });
+    setSeller({ ...seller, [field]: e.target.value });
   };
 
   // Check login
