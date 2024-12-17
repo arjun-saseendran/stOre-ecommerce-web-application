@@ -27,7 +27,7 @@ function ProductList() {
     if (!token) {
       navigate("/login");
     }
-  }, []);
+  }, [apiUrl]);
 
   // Get apiUrl
   const apiUrl = import.meta.env.VITE_API_URL;

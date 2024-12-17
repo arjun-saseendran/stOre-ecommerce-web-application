@@ -17,11 +17,6 @@ function Login() {
 
   // Handle submit
   const HandleSubmit = async (e) => {
-    // Set headers
-    const headers = {
-      "Content-Type": "application/json",
-    };
-
     // Block refresh page
     e.preventDefault();
 
@@ -29,8 +24,7 @@ function Login() {
     const [response, error] = await apiHandler(
       `${apiUrl}/api/v1/user/login`,
       "POST",
-      user,
-      headers
+      user
     );
 
     if (response) {
