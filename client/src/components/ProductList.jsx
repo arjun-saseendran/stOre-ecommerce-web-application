@@ -12,6 +12,9 @@ function ProductList() {
   // Get category state
   const selectedCategory = useSelector((state) => state.category);
 
+  // Get apiUrl
+  const apiUrl = import.meta.env.VITE_API_URL;
+
   // Config navigate
   const navigate = useNavigate();
 
@@ -28,9 +31,6 @@ function ProductList() {
       navigate("/login");
     }
   }, [apiUrl]);
-
-  // Get apiUrl
-  const apiUrl = import.meta.env.VITE_API_URL;
 
   // Create products state for api products
   const [products, setProducts] = useState([]);
