@@ -91,7 +91,7 @@ export const userLogin = async (req, res) => {
     }
 
     // Generating token
-    const token = generateToken(user, "user", res);
+    const token = generateToken(user, user.role, res);
 
     // Set token to cookie
     res.cookie("token", token);

@@ -1,8 +1,12 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { apiHandler } from "../../utils/apiHandler";
+import { useDispatch } from "react-redux";
+import { setRole } from "../../features/roleSlice";
 
 function Login() {
+  // Config dipatch function
+  const dispatch = useDispatch();
   // Get api base url
   const apiUrl = import.meta.env.VITE_API_URL;
 
@@ -30,6 +34,9 @@ function Login() {
     if (response) {
       // Set login
       setLogin(true);
+
+      // Set role
+      dispatch(setRole(response.role));
     } else {
       alert("Something went wrong! Try again!");
       console.log(error);
