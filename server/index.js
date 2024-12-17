@@ -12,18 +12,11 @@ dotenv.config();
 const app = express();
 
 // Config cors
-// app.use(
-//   cors({
-//     origin: process.env.CORS,
-//     credentials: true,
-//   })
-// );
-
 app.use(
   cors({
     origin: process.env.CORS,
-    methods: ["GET", "POST", "OPTIONS", "PUT", "DELETE"],
-    allowedHeaders: ["Content-Type", "Authorization"],
+    credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
   })
 );
 
