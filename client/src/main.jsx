@@ -9,6 +9,9 @@ import { store } from "./app/store.js";
 import { Provider } from "react-redux";
 import Login from './components/Login.jsx'
 import Signup from "./components/Signup.jsx";
+import AddNewProduct from "./pages/seller/AddNewProduct.jsx";
+import SellerSignup from "./pages/seller/SellerSignup.jsx";
+import SellerLogin from "./pages/seller/SellerLogin.jsx";
 
 const router = createBrowserRouter([
   {
@@ -20,12 +23,25 @@ const router = createBrowserRouter([
         element: <App />,
       },
       {
+        path: "/signup",
+        element: <Signup />,
+      },
+      {
         path: "/login",
         element: <Login />,
       },
       {
-        path: "/signup",
-        element: <Signup />,
+        path: "/seller-signup",
+        element: <SellerSignup/>,
+      },
+      {
+        path: "/seller-login",
+        element: <SellerLogin/>,
+      },
+
+      {
+        path: "/add-new-product",
+        element: <AddNewProduct />,
       },
     ],
   },

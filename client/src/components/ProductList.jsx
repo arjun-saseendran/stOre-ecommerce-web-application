@@ -5,16 +5,30 @@ import Col from "react-bootstrap/Col";
 import { apiHandler } from "../utils/apiHandler";
 import ProductCard from "./ProductCard";
 import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import Cookies from 'universal-cookie'
 
 function ProductList() {
   // Get category state
   const selectedCategory = useSelector((state) => state.category);
+
+  // Config navigate
+  const navigate = useNavigate()
+
+  // Config cookies
+  const cookies = new Cookies();
 
   // Get apiUrl
   const apiUrl = import.meta.env.VITE_API_URL;
 
   // Create products state for api products
   const [products, setProducts] = useState([]);
+
+  // Check login
+  const token = cookies.get('token')
+
+  // If not token redirct to login page
+  if(!token) navigate('/login')
 
   // Api call using useEffect hook
   useEffect(() => {

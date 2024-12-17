@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { apiHandler } from "../utils/apiHandler";
 
-function Login() {
+function SellerLogin() {
   // Get api base url
   const apiUrl = import.meta.env.VITE_API_URL;
 
@@ -51,8 +51,6 @@ function Login() {
   useEffect(() => {
     if (login) {
       navigate("/");
-    }else{
-      navigate('/login')
     }
   }, [login]);
 
@@ -102,4 +100,4 @@ function Login() {
   );
 }
 
-export default Login;
+export default SellerLogin;
