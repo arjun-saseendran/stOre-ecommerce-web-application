@@ -27,6 +27,7 @@ const productSchema = new Schema(
     },
     category: {
       type: String,
+      lowercase: true,
       required: true
     },
     seller: {

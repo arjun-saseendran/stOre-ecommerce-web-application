@@ -7,8 +7,8 @@ import Root from "./routes/root.jsx";
 import App from "./App.jsx";
 import { store } from "./app/store.js";
 import { Provider } from "react-redux";
-import Login from './components/Login.jsx'
-import Signup from "./components/Signup.jsx";
+import Login from './pages/user/Login.jsx'
+import Signup from "./pages/user/Signup.jsx";
 import AddNewProduct from "./pages/seller/AddNewProduct.jsx";
 import SellerSignup from "./pages/seller/SellerSignup.jsx";
 import SellerLogin from "./pages/seller/SellerLogin.jsx";

@@ -13,22 +13,24 @@ function ProductList() {
   const selectedCategory = useSelector((state) => state.category);
 
   // Config navigate
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   // Config cookies
   const cookies = new Cookies();
+
+  // Check login
+  const token = cookies.get("token");
+
+  // If not token redirct to login page
+  if (!token) {
+    navigate("/login");
+  }
 
   // Get apiUrl
   const apiUrl = import.meta.env.VITE_API_URL;
 
   // Create products state for api products
   const [products, setProducts] = useState([]);
-
-  // Check login
-  const token = cookies.get('token')
-
-  // If not token redirct to login page
-  if(!token) navigate('/login')
 
   // Api call using useEffect hook
   useEffect(() => {

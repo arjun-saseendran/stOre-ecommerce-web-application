@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { apiHandler } from "../utils/apiHandler";
+import { apiHandler } from "../../utils/apiHandler";
 
 function SellerLogin() {
   // Get api base url
@@ -91,7 +91,7 @@ function SellerLogin() {
         </div>
         <div>
           <span className="text-secondary">Don't have an account?</span>{" "}
-          <Link className="text-decoration-none text-black" to={"/signup"}>
+          <Link className="text-decoration-none text-black" to={"/seller-signup"}>
             Signup
           </Link>
         </div>

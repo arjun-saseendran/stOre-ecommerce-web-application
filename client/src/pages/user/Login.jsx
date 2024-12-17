@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { apiHandler } from "../utils/apiHandler";
+import { apiHandler } from "../../utils/apiHandler";
 
 function Login() {
   // Get api base url

@@ -8,8 +8,8 @@ import {cloudinaryInstance} from '../config/cloudinary.js'
 export const sellerSignup = async (req, res) => {
   try {
     // Destructing data from request body
-    const { name, email, password, confirmPassword } = req.body;
-    if (!name || !email || !password || !confirmPassword) {
+    const { name, email, password, mobile, confirmPassword } = req.body;
+    if (!name || !email || !mobile || !password || !confirmPassword) {
       return res.status(400).json({ message: "All fields required" });
     }
 
@@ -40,6 +40,7 @@ export const sellerSignup = async (req, res) => {
     const newSeller = new Seller({
       name,
       email,
+      mobile,
       profilePicture: uploadResult.url,
       password: hashedPassword,
     });

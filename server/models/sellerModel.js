@@ -12,6 +12,11 @@ const sellerSchema = new Schema(
       unique: true,
       lowercase: true,
     },
+    mobile: {
+      type: String,
+      unique: true,
+      required: true,
+    },
     password: {
       type: String,
       required: true,
@@ -24,7 +29,7 @@ const sellerSchema = new Schema(
     },
     isActive: {
       type: Boolean,
-      default: true
+      default: true,
     },
     profilePicture: {
       type: String,

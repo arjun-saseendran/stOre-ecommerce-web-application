@@ -41,7 +41,7 @@ export const addProduct = async (req, res) => {
       { new: true }
     );
 
-    res.json({ message: "Product created succfully", data: product });
+    res.json({ message: "Product created successfully", data: product });
   } catch (error) {
     // Handle catch error
     catchErrorHandler(res, error);

@@ -34,7 +34,7 @@ function AddNewProduct() {
       `${apiUrl}/api/v1/product/add-product`,
       "POST",
       product,
-      { ...headers }
+      headers
     );
 
     // Check response
@@ -113,7 +113,7 @@ function AddNewProduct() {
             type="text"
             placeholder="Category"
             name="category"
-            onChange={(e) => handleInput(e, "text")}
+            onChange={(e) => handleInput(e, "category")}
           />
         </div>
 
