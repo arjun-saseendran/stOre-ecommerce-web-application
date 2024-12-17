@@ -12,6 +12,7 @@ function Root() {
       </header>
 
       <main>
+        
         <Outlet />
       </main>
 

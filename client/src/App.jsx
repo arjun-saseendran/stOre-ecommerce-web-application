@@ -1,11 +1,13 @@
 import ProductList from '../src/components/ProductList'
-import Signup from './pages/user/Signup';
-import AddNewProduct from './pages/seller/AddNewProduct';
+import Banner from './components/Banner';
 
 function App() {
   return (
     <>
-      <ProductList/>
+      <section>
+        <Banner />
+      </section>
+      <ProductList />
     </>
   );
 }
