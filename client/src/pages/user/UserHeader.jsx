@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef } from "react";
 import Button from "react-bootstrap/Button";
 import Container from "react-bootstrap/Container";
 import Form from "react-bootstrap/Form";
@@ -14,6 +14,15 @@ import { setRole } from "../../features/roleSlice";
 const UserHeader = () => {
   // Config dispatch function
   const dispatch = useDispatch();
+
+  // Config ref
+  const inputValue = useRef()
+
+  // Search value
+  const searchResult = () => {
+   console.log(inputValue.current.value);
+    
+  }
 
   // Config navigate
   const navigate = useNavigate();
@@ -142,9 +151,10 @@ const UserHeader = () => {
               placeholder="Search"
               className="me-2"
               aria-label="Search"
+              ref={inputValue}
               style={{ background: "#D9D9D9" }}
             />
-            <Button variant="outline-light">Search</Button>
+            <Button variant="outline-light" onClick={searchResult}>Search</Button>
           </Form>
 
           <svg
