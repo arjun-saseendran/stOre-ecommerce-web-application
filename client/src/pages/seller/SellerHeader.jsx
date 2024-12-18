@@ -1,51 +1,14 @@
-import { useEffect, useState } from "react";
 import Button from "react-bootstrap/Button";
 import Container from "react-bootstrap/Container";
 import Form from "react-bootstrap/Form";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
-import NavDropdown from "react-bootstrap/NavDropdown";
-import { Link, useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+
+import { Link } from "react-router-dom";
+
 import { setCategory } from "../../features/categorySlice";
-import { apiHandler } from "../../utils/apiHandler";
-import { setRole } from "../../features/roleSlice";
 
-const UserHeader = () => {
-  // Config dispatch function
-  const dispatch = useDispatch();
-
-  // Config navigate
-  const navigate = useNavigate();
-
-  // Check user
-  const { role } = useSelector((state) => state.role);
-
-  // Get api base url
-  const apiUrl = import.meta.env.VITE_API_URL;
-
-  // Handle logout
-  const handleLogout = async () => {
-    const [response, error] = await apiHandler(
-      `${apiUrl}/api/v1/user/logout`,
-      "POST"
-    );
-    if (response) {
-      console.log(response);
-    } else {
-      console.error(error);
-    }
-  };
-  useEffect(() => {
-    if (!role) {
-      navigate("/login");
-    }
-  }, [role]);
-
-  const cartPage = () => {
-    navigate('/cart')
-  }
-
+function SellerHeader() {
   return (
     <Navbar expand="lg" className="bg-black py-4">
       <Container fluid>
@@ -106,35 +69,6 @@ const UserHeader = () => {
                 Watch
               </span>
             </Nav.Link>
-            <NavDropdown
-              className="mt-2"
-              title={<span className="text-white h5 hover ">Profile ↓</span>}
-              id="navbarScrollingDropdown"
-            >
-              <NavDropdown.Item>
-                <span className="text-black hover">Orders</span>
-              </NavDropdown.Item>
-              <NavDropdown.Divider />
-              <NavDropdown.Item>
-                <span className="text-black hover">Wishlist</span>
-              </NavDropdown.Item>
-
-              <NavDropdown.Divider />
-              
-                <NavDropdown.Item onClick={cartPage}>
-                  <span className="text-black hover ">Cart</span>
-                </NavDropdown.Item>
-              
-              <NavDropdown.Item onClick={() => dispatch(setRole(""))}>
-                <span
-                  role="button"
-                  className="text-black hover"
-                  onClick={handleLogout}
-                >
-                  Logout
-                </span>
-              </NavDropdown.Item>
-            </NavDropdown>
           </Nav>
           <Form className="d-flex">
             <Form.Control
@@ -166,6 +100,6 @@ const UserHeader = () => {
       </Container>
     </Navbar>
   );
-};
+}
 
-export default UserHeader;
+export default SellerHeader;

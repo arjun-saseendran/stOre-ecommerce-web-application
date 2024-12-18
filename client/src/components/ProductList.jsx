@@ -61,7 +61,7 @@ function ProductList() {
             className="crd-col"
             xs={12}
             sm={6}
-            md={4}
+            md={6}
             xl={3}
             key={product._id}
           >

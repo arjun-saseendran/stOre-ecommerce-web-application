@@ -50,7 +50,7 @@ function SellerLogin() {
   // Check login
   useEffect(() => {
     if (login) {
-      navigate("/");
+      navigate("/seller");
     }
   }, [login]);
 

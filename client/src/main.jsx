@@ -12,6 +12,7 @@ import Signup from "./pages/user/Signup.jsx";
 import AddNewProduct from "./pages/seller/AddNewProduct.jsx";
 import SellerSignup from "./pages/seller/SellerSignup.jsx";
 import SellerLogin from "./pages/seller/SellerLogin.jsx";
+import Cart from "./pages/user/Cart.jsx";
 
 const router = createBrowserRouter([
   {
@@ -32,16 +33,24 @@ const router = createBrowserRouter([
       },
       {
         path: "/seller-signup",
-        element: <SellerSignup/>,
+        element: <SellerSignup />,
       },
       {
         path: "/seller-login",
-        element: <SellerLogin/>,
+        element: <SellerLogin />,
       },
 
       {
         path: "/add-new-product",
         element: <AddNewProduct />,
+      },
+      {
+        path: "/seller",
+        element: <AddNewProduct />,
+      },
+      {
+        path: "/cart",
+        element: <Cart/>,
       },
     ],
   },

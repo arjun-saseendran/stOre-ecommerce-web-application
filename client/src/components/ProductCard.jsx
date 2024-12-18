@@ -1,7 +1,30 @@
 import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
+import { Link } from "react-router-dom";
+import { apiHandler } from "../utils/apiHandler";
 
 function ProductCard({ product }) {
+  // Get api url
+  const apiUrl = import.meta.env.VITE_API_URL;
+
+  const addToCart = async (productId) => {
+    console.log(productId);
+    
+    // Api call
+    const [response, error] = await apiHandler(
+      `${apiUrl}/api/v1/cart/add-product`,
+      "POST",
+      {productId}
+    );
+    if(response){
+      console.log(response);
+      
+    }else{
+      console.log(error);
+      
+    }
+  };
+
   return (
     <Card className="crd-box">
       <Card.Img
@@ -87,7 +110,7 @@ function ProductCard({ product }) {
           </span>
         </div>
 
-        <Button className="me-2" variant="dark">
+        <Button className="me-2 " variant="dark" onClick={()=> addToCart(product._id)}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
