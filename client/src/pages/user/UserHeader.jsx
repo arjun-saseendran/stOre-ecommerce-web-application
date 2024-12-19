@@ -12,6 +12,7 @@ import { apiHandler } from "../../utils/apiHandler";
 import { setRole } from "../../features/roleSlice";
 import { setSearchValue } from "../../features/searchSlice";
 
+
 const UserHeader = () => {
   // Config dispatch function
   const dispatch = useDispatch();
@@ -51,10 +52,6 @@ const UserHeader = () => {
     }
   }, [role]);
 
-  const cartPage = () => {
-    navigate("/cart");
-  };
-
   return (
     <Navbar expand="lg" className="bg-black py-4">
       <Container fluid>
@@ -77,18 +74,17 @@ const UserHeader = () => {
                 Home
               </span>
             </Link>
-            <Link className="mt-2 nav-link">
+            <Nav.Link className="mt-2">
               <span
                 onClick={() => {
                   dispatch(setCategory("mobile"));
                   dispatch(setSearchValue(""));
                 }}
                 className="text-white h5 hover"
-                role="button"
               >
                 iPhone
               </span>
-            </Link>
+            </Nav.Link>
             <Nav.Link className="mt-2">
               <span
                 onClick={() => {
@@ -148,8 +144,8 @@ const UserHeader = () => {
 
               <NavDropdown.Divider />
 
-              <NavDropdown.Item as={Link} to={'/cart'}>
-                <span className="text-black hover ">Cart</span>
+              <NavDropdown.Item as={Link} to={"/cart"}>
+                <span className="text-black hover">Cart</span>
               </NavDropdown.Item>
 
               <NavDropdown.Divider />

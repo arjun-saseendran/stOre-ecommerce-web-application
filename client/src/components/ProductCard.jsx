@@ -34,7 +34,7 @@ function ProductCard({ product }) {
           to={`/product/${product._id}`}
         >
           <Card.Title className="crd-title title-hover">
-           {product.title}
+            {product.title}
           </Card.Title>
         </Link>
         <Card.Text className="crd-description">{product.description}</Card.Text>

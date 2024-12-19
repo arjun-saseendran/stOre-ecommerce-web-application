@@ -1,4 +1,3 @@
-
 body {
   margin: 0;
   padding: 0;
@@ -16,11 +15,13 @@ body {
 }
 
 .crd-title {
-  min-height: 70px;
+  max-height: 50px;
+  overflow: hidden;
 }
 
 .crd-description {
-  min-height: 125px;
+  max-height: 78px;
+  overflow: hidden;
 }
 
 .crd-btn {
@@ -66,6 +67,6 @@ input[type="file"] {
   border-radius: 5px;
 }
 
-.title-hover:hover{
-  color: rgb(66, 74, 82)
+.title-hover:hover {
+  color: rgb(66, 74, 82);
 }

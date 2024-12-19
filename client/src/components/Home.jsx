@@ -4,16 +4,22 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import { apiHandler } from "../utils/apiHandler";
 import ProductCard from "./ProductCard";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { setSearchValue } from "../features/searchSlice";
+import { addProducts } from "../features/productSlice";
+import { setHome } from "../features/homeSlice";
 
-function ProductList() {
+function Home() {
+  // config dispatch
+  const dispatch = useDispatch();
+
+  // Set home
+  useEffect(() => {
+    dispatch(setHome(true));
+  }, []);
+
   // Get category state
   const selectedCategory = useSelector((state) => state.category);
-
-  // Config
-  const dispatch = useDispatch;
 
   // Check user
   const { role } = useSelector((state) => state.role);
@@ -38,6 +44,8 @@ function ProductList() {
   // Create products state for api products
   const [products, setProducts] = useState([]);
 
+  const renderProducts = useSelector((state) => state.products);
+
   // Api call using useEffect hook
   useEffect(() => {
     (async () => {
@@ -46,12 +54,20 @@ function ProductList() {
         "GET"
       );
       if (response) {
+        // Set products to local state
         setProducts(response);
       } else {
         console.log(error);
       }
     })();
   }, [apiUrl]);
+
+  // Set products to global state
+  useEffect(() => {
+    {
+      dispatch(addProducts(products));
+    }
+  }, [products]);
 
   // Filter products based on selected category
   let filterProducts = selectedCategory.category
@@ -87,4 +103,4 @@ function ProductList() {
   );
 }
 
-export default ProductList;
+export default Home;

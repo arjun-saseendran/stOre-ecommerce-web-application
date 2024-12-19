@@ -4,9 +4,18 @@ import Row from "react-bootstrap/esm/Row";
 import Col from "react-bootstrap/esm/Col";
 import Button from "react-bootstrap/esm/Button";
 import { apiHandler } from "../../utils/apiHandler";
-
+import { useDispatch } from "react-redux";
+import { setHome } from "../../features/homeSlice";
 
 function Cart() {
+  // Config dispatch
+  const dispatch = useDispatch();
+
+  // Set home false
+  useEffect(() => {
+    dispatch(setHome(false));
+  }, [dispatch]);
+
   // Get api url
   const apiUrl = import.meta.env.VITE_API_URL;
 
@@ -64,12 +73,12 @@ function Cart() {
 
   return (
     <Container>
-      <div className="h-100">
+      <div className="h-100 vh-100">
         <h1 className="text-white text-center mt-3">Cart</h1>
         <Row className="mt-3 p-4 rounded-3 d-flex justify-content-center align-items-center">
           {CartProducts.map((product) => (
             <Row
-              key={product.productId_id}
+              key={product.productId._id}
               className="crd-box mt-2 rounded-3 p-2 d-flex justify-content-around align-items-center gap-2"
             >
               <Col style={{ minHeight: "220px" }} xm={12} sm={2}>
