@@ -79,7 +79,8 @@ const UserHeader = () => {
             </Link>
             <Link className="mt-2 nav-link">
               <span
-                onClick={() => {dispatch(setCategory("mobile"));
+                onClick={() => {
+                  dispatch(setCategory("mobile"));
                   dispatch(setSearchValue(""));
                 }}
                 className="text-white h5 hover"
@@ -90,7 +91,8 @@ const UserHeader = () => {
             </Link>
             <Nav.Link className="mt-2">
               <span
-                onClick={() => {dispatch(setCategory("laptop"));
+                onClick={() => {
+                  dispatch(setCategory("laptop"));
                   dispatch(setSearchValue(""));
                 }}
                 className="text-white h5 hover"
@@ -100,7 +102,8 @@ const UserHeader = () => {
             </Nav.Link>
             <Nav.Link className="mt-2">
               <span
-                onClick={() => {dispatch(setCategory("ipad"));
+                onClick={() => {
+                  dispatch(setCategory("ipad"));
                   dispatch(setSearchValue(""));
                 }}
                 className="text-white h5 hover"
@@ -110,7 +113,8 @@ const UserHeader = () => {
             </Nav.Link>
             <Nav.Link className="mt-2">
               <span
-                onClick={() => {dispatch(setCategory("airpods"));
+                onClick={() => {
+                  dispatch(setCategory("airpods"));
                   dispatch(setSearchValue(""));
                 }}
                 className="text-white h5 hover"
@@ -120,7 +124,8 @@ const UserHeader = () => {
             </Nav.Link>
             <Nav.Link className="mt-2">
               <span
-                onClick={() => {dispatch(setCategory("watch"));
+                onClick={() => {
+                  dispatch(setCategory("watch"));
                   dispatch(setSearchValue(""));
                 }}
                 className="text-white h5 hover"
@@ -130,22 +135,24 @@ const UserHeader = () => {
             </Nav.Link>
             <NavDropdown
               className="mt-2"
-              title={<span className="text-white h5 hover ">Profile ↓</span>}
+              title={<span className="text-white h5 hover ">Account ↓</span>}
               id="navbarScrollingDropdown"
             >
               <NavDropdown.Item>
-                <span className="text-black hover">Orders</span>
+                <span className="text-black hover">Profile</span>
               </NavDropdown.Item>
               <NavDropdown.Divider />
               <NavDropdown.Item>
-                <span className="text-black hover">Wishlist</span>
+                <span className="text-black hover">Orders</span>
               </NavDropdown.Item>
 
               <NavDropdown.Divider />
 
-              <NavDropdown.Item onClick={cartPage}>
+              <NavDropdown.Item as={Link} to={'/cart'}>
                 <span className="text-black hover ">Cart</span>
               </NavDropdown.Item>
+
+              <NavDropdown.Divider />
 
               <NavDropdown.Item onClick={() => dispatch(setRole(""))}>
                 <span
