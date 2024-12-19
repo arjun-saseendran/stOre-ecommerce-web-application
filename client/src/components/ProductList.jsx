@@ -4,15 +4,22 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import { apiHandler } from "../utils/apiHandler";
 import ProductCard from "./ProductCard";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { setSearchValue } from "../features/searchSlice";
 
 function ProductList() {
   // Get category state
   const selectedCategory = useSelector((state) => state.category);
 
+  // Config
+  const dispatch = useDispatch;
+
   // Check user
   const { role } = useSelector((state) => state.role);
+
+  // Get search value
+  const { search } = useSelector((state) => state.search);
 
   // Get apiUrl
   const apiUrl = import.meta.env.VITE_API_URL;
@@ -47,11 +54,18 @@ function ProductList() {
   }, [apiUrl]);
 
   // Filter products based on selected category
-  const filterProducts = selectedCategory.category
+  let filterProducts = selectedCategory.category
     ? products.filter(
         (product) => product.category === selectedCategory.category
       )
     : products;
+
+  // Search filter
+  if (search) {
+    filterProducts = filterProducts.filter((value) =>
+      value.title.toLowerCase().includes(search.toLowerCase())
+    );
+  }
 
   return (
     <Container>

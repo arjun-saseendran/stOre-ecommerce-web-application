@@ -10,19 +10,19 @@ import { useDispatch, useSelector } from "react-redux";
 import { setCategory } from "../../features/categorySlice";
 import { apiHandler } from "../../utils/apiHandler";
 import { setRole } from "../../features/roleSlice";
+import { setSearchValue } from "../../features/searchSlice";
 
 const UserHeader = () => {
   // Config dispatch function
   const dispatch = useDispatch();
 
   // Config ref
-  const inputValue = useRef()
+  const inputValue = useRef();
 
   // Search value
   const searchResult = () => {
-   console.log(inputValue.current.value);
-    
-  }
+    dispatch(setSearchValue(inputValue.current.value));
+  };
 
   // Config navigate
   const navigate = useNavigate();
@@ -52,8 +52,8 @@ const UserHeader = () => {
   }, [role]);
 
   const cartPage = () => {
-    navigate('/cart')
-  }
+    navigate("/cart");
+  };
 
   return (
     <Navbar expand="lg" className="bg-black py-4">
@@ -68,7 +68,10 @@ const UserHeader = () => {
           <Nav className="me-auto my-2 my-lg-0" navbarScroll>
             <Link to={"/"} className="mt-2 nav-link ">
               <span
-                onClick={() => dispatch(setCategory(""))}
+                onClick={() => {
+                  dispatch(setCategory(""));
+                  dispatch(setSearchValue(""));
+                }}
                 className="text-white h5 hover"
               >
                 Home
@@ -76,7 +79,9 @@ const UserHeader = () => {
             </Link>
             <Link className="mt-2 nav-link">
               <span
-                onClick={() => dispatch(setCategory("mobile"))}
+                onClick={() => {dispatch(setCategory("mobile"));
+                  dispatch(setSearchValue(""));
+                }}
                 className="text-white h5 hover"
                 role="button"
               >
@@ -85,7 +90,9 @@ const UserHeader = () => {
             </Link>
             <Nav.Link className="mt-2">
               <span
-                onClick={() => dispatch(setCategory("laptop"))}
+                onClick={() => {dispatch(setCategory("laptop"));
+                  dispatch(setSearchValue(""));
+                }}
                 className="text-white h5 hover"
               >
                 Mackbook
@@ -93,7 +100,9 @@ const UserHeader = () => {
             </Nav.Link>
             <Nav.Link className="mt-2">
               <span
-                onClick={() => dispatch(setCategory("ipad"))}
+                onClick={() => {dispatch(setCategory("ipad"));
+                  dispatch(setSearchValue(""));
+                }}
                 className="text-white h5 hover"
               >
                 iPad
@@ -101,7 +110,9 @@ const UserHeader = () => {
             </Nav.Link>
             <Nav.Link className="mt-2">
               <span
-                onClick={() => dispatch(setCategory("airpods"))}
+                onClick={() => {dispatch(setCategory("airpods"));
+                  dispatch(setSearchValue(""));
+                }}
                 className="text-white h5 hover"
               >
                 Airpods
@@ -109,7 +120,9 @@ const UserHeader = () => {
             </Nav.Link>
             <Nav.Link className="mt-2">
               <span
-                onClick={() => dispatch(setCategory("watch"))}
+                onClick={() => {dispatch(setCategory("watch"));
+                  dispatch(setSearchValue(""));
+                }}
                 className="text-white h5 hover"
               >
                 Watch
@@ -129,11 +142,11 @@ const UserHeader = () => {
               </NavDropdown.Item>
 
               <NavDropdown.Divider />
-              
-                <NavDropdown.Item onClick={cartPage}>
-                  <span className="text-black hover ">Cart</span>
-                </NavDropdown.Item>
-              
+
+              <NavDropdown.Item onClick={cartPage}>
+                <span className="text-black hover ">Cart</span>
+              </NavDropdown.Item>
+
               <NavDropdown.Item onClick={() => dispatch(setRole(""))}>
                 <span
                   role="button"
@@ -154,7 +167,9 @@ const UserHeader = () => {
               ref={inputValue}
               style={{ background: "#D9D9D9" }}
             />
-            <Button variant="outline-light" onClick={searchResult}>Search</Button>
+            <Button variant="outline-light" onClick={searchResult}>
+              Search
+            </Button>
           </Form>
 
           <svg
