@@ -70,3 +70,10 @@ input[type="file"] {
 .title-hover:hover {
   color: rgb(66, 74, 82);
 }
+
+.pr-card{
+  max-width: 500px;
+}
+.pr-card-img{
+  max-width: 300px;
+}
