@@ -45,7 +45,7 @@ function Cart() {
       console.log(error);
     }
   };
-  
+
   // Remove quantity
   const removeQuantity = async (productId) => {
     const [response, error] = await apiHandler(
@@ -69,7 +69,7 @@ function Cart() {
           {CartProducts.map((product) => (
             <Row
               key={product.productId_id}
-              className="crd-box mt-2 rounded-3 p-2 d-flex justify-content-between align-items-center gap-2"
+              className="crd-box mt-2 rounded-3 p-2 d-flex justify-content-around align-items-center gap-2"
             >
               <Col style={{ minHeight: "220px" }} xm={12} sm={2}>
                 <img className="img-fluid" src={product.productId.image} />
@@ -83,14 +83,14 @@ function Cart() {
               <Col xm={12} sm={2}>
                 <Button
                   onClick={() => removeQuantity(product.productId._id)}
-                  className="btn btn-sm btn-dark me-2"
+                  className="btn btn-sm btn-dark fw-bold"
                 >
                   -
                 </Button>
-                {product.quantity}
+                <span className="mx-1">{product.quantity}</span>
                 <Button
                   onClick={() => addQuantity(product.productId._id)}
-                  className="btn btn-sm btn-dark ms-2"
+                  className="btn btn-sm btn-dark fw-bold"
                 >
                   +
                 </Button>
@@ -106,7 +106,7 @@ function Cart() {
             <div className=" mt-2 rounded-3 p-2 fw-bold h5">₹{totalPrice}</div>
 
             <div className="me-2">
-              <Button className="btn-dark" style={{ minWidth: "95px" }}>
+              <Button className="btn-dark">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
