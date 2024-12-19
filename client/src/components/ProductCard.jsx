@@ -1,27 +1,23 @@
 import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
-import { Link } from "react-router-dom";
 import { apiHandler } from "../utils/apiHandler";
+import { Link } from "react-router-dom";
 
 function ProductCard({ product }) {
   // Get api url
   const apiUrl = import.meta.env.VITE_API_URL;
 
   const addToCart = async (productId) => {
-    console.log(productId);
-    
     // Api call
     const [response, error] = await apiHandler(
       `${apiUrl}/api/v1/cart/add-product`,
       "POST",
-      {productId}
+      { productId }
     );
-    if(response){
+    if (response) {
       console.log(response);
-      
-    }else{
+    } else {
       console.log(error);
-      
     }
   };
 
@@ -33,7 +29,14 @@ function ProductCard({ product }) {
         src={product.image}
       />
       <Card.Body>
-        <Card.Title className="crd-title">{product.title}</Card.Title>
+        <Link
+          className="text-decoration-none text-black"
+          to={`/product/${product._id}`}
+        >
+          <Card.Title className="crd-title title-hover">
+           {product.title}
+          </Card.Title>
+        </Link>
         <Card.Text className="crd-description">{product.description}</Card.Text>
         <Card.Text className=" crd-price fw-bold text-center fw-bolder h5">
           ₹{product.price}
@@ -132,8 +135,6 @@ function ProductCard({ product }) {
           </svg>
           Add to Cart
         </Button>
-
-        
       </Card.Body>
     </Card>
   );

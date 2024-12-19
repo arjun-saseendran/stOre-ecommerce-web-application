@@ -5,6 +5,7 @@ import Col from "react-bootstrap/esm/Col";
 import Button from "react-bootstrap/esm/Button";
 import { apiHandler } from "../../utils/apiHandler";
 
+
 function Cart() {
   // Get api url
   const apiUrl = import.meta.env.VITE_API_URL;

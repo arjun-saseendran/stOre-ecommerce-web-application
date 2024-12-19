@@ -65,3 +65,7 @@ input[type="file"] {
   text-align: center;
   border-radius: 5px;
 }
+
+.title-hover:hover{
+  color: rgb(66, 74, 82)
+}
