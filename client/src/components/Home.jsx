@@ -18,6 +18,8 @@ function Home() {
     dispatch(setHome(true));
   }, []);
 
+  
+  
   // Get category state
   const selectedCategory = useSelector((state) => state.category);
 
@@ -43,8 +45,6 @@ function Home() {
 
   // Create products state for api products
   const [products, setProducts] = useState([]);
-
-  const renderProducts = useSelector((state) => state.products);
 
   // Api call using useEffect hook
   useEffect(() => {

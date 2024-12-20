@@ -5,6 +5,7 @@ import searchReducer from '../features/searchSlice'
 import cartReducer from '../features/cartSlice'
 import productReducer from '../features/productSlice'
 import homeReducer from '../features/homeSlice'
+import themeReducer from '../features/themeSlice'
 
 // Config store
 export const store = configureStore({
@@ -14,6 +15,7 @@ export const store = configureStore({
     search: searchReducer,
     cart: cartReducer,
     products: productReducer,
-    home: homeReducer
+    home: homeReducer,
+    theme: themeReducer
   },
 });

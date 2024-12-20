@@ -2,10 +2,13 @@ import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
 import { apiHandler } from "../utils/apiHandler";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 function ProductCard({ product }) {
   // Get api url
   const apiUrl = import.meta.env.VITE_API_URL;
+
+  const {dark} = useSelector((state)=> state.dark)
 
   const addToCart = async (productId) => {
     // Api call
@@ -115,7 +118,7 @@ function ProductCard({ product }) {
 
         <Button
           className="w-100"
-          variant="dark"
+          variant= {dark? 'dark' : 'primary'}
           onClick={() => addToCart(product._id)}
         >
           <svg
