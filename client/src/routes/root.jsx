@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import UserHeader from "../pages/user/UserHeader";
 import { Outlet } from "react-router-dom";
 import UserFooter from "../pages/user/UserFooter";
@@ -9,6 +9,10 @@ import Header from "../components/Header";
 function Root() {
   const { role } = useSelector((state) => state.role);
   const { home } = useSelector((state) => state.home);
+  const { theme } = useSelector((state) => state.theme);
+  useEffect(() => {
+    document.body.style.backgroundColor = theme ? "#FFF7D1" : "#31363f";
+  }, [theme]);
   return (
     <>
       <header>{role === "user" && home ? <UserHeader /> : <Header />}</header>

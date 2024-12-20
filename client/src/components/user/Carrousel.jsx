@@ -1,6 +1,6 @@
 import Carousel from "react-bootstrap/Carousel";
 
-function Banner() {
+export const Carrousel = () => {
   return (
     <Carousel data-bs-theme="dark">
       <Carousel.Item>
@@ -29,4 +29,4 @@ function Banner() {
   );
 }
 
-export default Banner;
+

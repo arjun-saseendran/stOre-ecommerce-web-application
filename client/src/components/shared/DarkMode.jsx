@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { setTheme } from "../../features/themeSlice";
 
-function DarkMode() {
+export const DarkMode = () => {
   
     // Config dispatch
   const dispatch = useDispatch();
@@ -13,6 +13,8 @@ function DarkMode() {
   return (
     <>
       <span
+        as="button"
+        className="cursor-pointer"
         onClick={() => {
           setDark(!dark);
           dispatch(setTheme(dark));
@@ -33,7 +35,7 @@ function DarkMode() {
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 24 24"
             fill="currentColor"
-            className="size-6 text-black "
+            className="size-6 text-black  "
             height="30px"
           >
             <path
@@ -48,4 +50,4 @@ function DarkMode() {
   );
 }
 
-export default DarkMode;
+

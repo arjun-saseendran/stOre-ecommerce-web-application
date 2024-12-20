@@ -9,7 +9,7 @@ import { setCategory } from "../features/categorySlice";
 import { apiHandler } from "../utils/apiHandler";
 import DarkMode from "./shared/DarkMode";
 
-const UserHeader = () => {
+export const Header = () => {
   // Config dispatch function
   const dispatch = useDispatch();
 
@@ -86,4 +86,4 @@ const UserHeader = () => {
   );
 };
 
-export default UserHeader;
+

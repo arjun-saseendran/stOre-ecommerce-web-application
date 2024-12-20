@@ -3,13 +3,13 @@ import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import { apiHandler } from "../utils/apiHandler";
-import ProductCard from "./ProductCard";
+import ProductCard from "./user/Cards";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { addProducts } from "../features/productSlice";
 import { setHome } from "../features/homeSlice";
 
-function Home() {
+export const Home = () => {
   // config dispatch
   const dispatch = useDispatch();
 
@@ -103,4 +103,3 @@ function Home() {
   );
 }
 
-export default Home;

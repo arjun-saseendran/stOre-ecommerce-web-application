@@ -13,7 +13,7 @@ import { setRole } from "../../features/roleSlice";
 import { setSearchValue } from "../../features/searchSlice";
 import DarkMode from '../../components/shared/DarkMode'
 
-const UserHeader = () => {
+export const UserHeader = () => {
   // Config dispatch function
   const dispatch = useDispatch();
 
@@ -185,4 +185,4 @@ const UserHeader = () => {
   );
 };
 
-export default UserHeader;
+

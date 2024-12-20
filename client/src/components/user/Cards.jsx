@@ -1,31 +1,31 @@
+import { useEffect } from "react";
 import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
-import { apiHandler } from "../utils/apiHandler";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
+import { axiosInstance } from "../../config/axiosInstance";
 
-function ProductCard({ product }) {
-  // Get api url
-  const apiUrl = import.meta.env.VITE_API_URL;
+export const ProductCard = ({ product }) => {
+  // Get theme
+  const { theme } = useSelector((state) => state.theme);
 
-  const {dark} = useSelector((state)=> state.dark)
-
+  // Add to cart
   const addToCart = async (productId) => {
-    // Api call
-    const [response, error] = await apiHandler(
-      `${apiUrl}/api/v1/cart/add-product`,
-      "POST",
-      { productId }
-    );
-    if (response) {
+    try {
+      // Api call
+      const response = await axiosInstance({
+        method: "POST",
+        url: "/cart/add-product",
+        data: { productId },
+      });
+
       console.log(response);
-    } else {
+    } catch (error) {
       console.log(error);
     }
   };
-
   return (
-    <Card className="crd-box">
+    <Card style={{ backgroundColor: theme ? "#FFF6E3" : "#d9d9d9" }}>
       <Card.Img
         className="crd-image object-fit-contain"
         variant="top"
@@ -49,7 +49,9 @@ function ProductCard({ product }) {
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 24 24"
             fill="currentColor"
-            className="size-6 text-black mb-3"
+            className={
+              theme ? "size-6 text-warning mb-3" : "size-6 text-black mb-3"
+            }
             height="40px"
           >
             <path
@@ -62,7 +64,9 @@ function ProductCard({ product }) {
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 24 24"
             fill="currentColor"
-            className="size-6 text-black mb-3"
+            className={
+              theme ? "size-6 text-warning mb-3" : "size-6 text-black mb-3"
+            }
             height="40px"
           >
             <path
@@ -75,7 +79,9 @@ function ProductCard({ product }) {
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 24 24"
             fill="currentColor"
-            className="size-6 text-black mb-3"
+            className={
+              theme ? "size-6 text-warning mb-3" : "size-6 text-black mb-3"
+            }
             height="40px"
           >
             <path
@@ -118,7 +124,7 @@ function ProductCard({ product }) {
 
         <Button
           className="w-100"
-          variant= {dark? 'dark' : 'primary'}
+          variant={theme ? "warning" : "dark"}
           onClick={() => addToCart(product._id)}
         >
           <svg
@@ -143,4 +149,4 @@ function ProductCard({ product }) {
   );
 }
 
-export default ProductCard;
+
