@@ -28,9 +28,9 @@ export const UserLayout = () => {
     document.body.style.background = theme ? "#F2E5BF" : "#31363f";
   }, [theme]);
 
-  useEffect(()=>{
-    checkUser()
-  },[location.pathname])
+  useEffect(() => {
+    checkUser();
+  }, [location.pathname]);
 
   // Check user
   const checkUser = async () => {
@@ -51,12 +51,15 @@ export const UserLayout = () => {
 
   return (
     <>
-      {isUserAuth ? <UserHeader /> : <Header />}
+      <header>{isUserAuth ? <UserHeader /> : <Header />}</header>
 
-      <div>
+      <main>
         <Outlet />
-      </div>
-      <Footer />
+      </main>
+
+      <footer>
+        <Footer />
+      </footer>
     </>
   );
 };

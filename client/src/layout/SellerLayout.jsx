@@ -6,6 +6,7 @@ import { useEffect } from "react";
 import SellerHeader from "../pages/seller/SellerHeader";
 import { Footer } from "../components/user/Footer";
 
+
 export const SellerLayout = () => {
   // Get current user status
   const { isSellerAuth } = useSelector((state) => state.seller);
@@ -40,13 +41,12 @@ export const SellerLayout = () => {
 
   return (
     <>
-      {isSellerAuth ? <SellerHeader /> : <Headers />}
-      <div>
-        <Outlet />
-      </div>
-      <div>
+      <header>{isSellerAuth ? <SellerHeader /> : <Headers />}</header>
+
+      <main><Outlet/></main>
+      <footer>
         <Footer />
-      </div>
+      </footer>
     </>
   );
 };
