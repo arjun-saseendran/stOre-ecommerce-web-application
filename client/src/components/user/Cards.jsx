@@ -117,13 +117,19 @@ export const ProductCard = ({ product }) => {
             />
           </svg>
 
-          <span className="review-bar bg-black text-white fw-bold mt-2 ms-2">
+          <span
+            className={
+              theme
+                ? "review-bar text-white fw-bold mt-2 ms-2 bg-warning"
+                : "bg-dark review-bar text-white fw-bold mt-2 ms-2"
+            }
+          >
             5
           </span>
         </div>
 
         <Button
-          className="w-100"
+          className="w-100 text-white"
           variant={theme ? "warning" : "dark"}
           onClick={() => addToCart(product._id)}
         >
@@ -147,6 +153,4 @@ export const ProductCard = ({ product }) => {
       </Card.Body>
     </Card>
   );
-}
-
-
+};

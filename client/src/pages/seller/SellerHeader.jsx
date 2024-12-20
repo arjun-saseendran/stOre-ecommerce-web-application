@@ -3,10 +3,8 @@ import Container from "react-bootstrap/Container";
 import Form from "react-bootstrap/Form";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
-
 import { Link } from "react-router-dom";
 
-import { setCategory } from "../../features/categorySlice";
 
 function SellerHeader() {
   return (
@@ -22,7 +20,7 @@ function SellerHeader() {
           <Nav className="me-auto my-2 my-lg-0" navbarScroll>
             <Link to={"/"} className="mt-2 nav-link ">
               <span
-                onClick={() => dispatch(setCategory(""))}
+                
                 className="text-white h5 hover"
               >
                 Home
@@ -30,7 +28,7 @@ function SellerHeader() {
             </Link>
             <Link className="mt-2 nav-link">
               <span
-                onClick={() => dispatch(setCategory("mobile"))}
+                
                 className="text-white h5 hover"
                 role="button"
               >
@@ -39,7 +37,7 @@ function SellerHeader() {
             </Link>
             <Nav.Link className="mt-2">
               <span
-                onClick={() => dispatch(setCategory("laptop"))}
+               
                 className="text-white h5 hover"
               >
                 Mackbook
@@ -47,7 +45,7 @@ function SellerHeader() {
             </Nav.Link>
             <Nav.Link className="mt-2">
               <span
-                onClick={() => dispatch(setCategory("ipad"))}
+               
                 className="text-white h5 hover"
               >
                 iPad
@@ -55,7 +53,7 @@ function SellerHeader() {
             </Nav.Link>
             <Nav.Link className="mt-2">
               <span
-                onClick={() => dispatch(setCategory("airpods"))}
+                
                 className="text-white h5 hover"
               >
                 Airpods
@@ -63,7 +61,7 @@ function SellerHeader() {
             </Nav.Link>
             <Nav.Link className="mt-2">
               <span
-                onClick={() => dispatch(setCategory("watch"))}
+               
                 className="text-white h5 hover"
               >
                 Watch

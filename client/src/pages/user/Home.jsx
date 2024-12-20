@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { ProductList } from './ProductList'
 
 export const Home = () => {
 
@@ -8,6 +9,8 @@ export const Home = () => {
     // Set user authatication
     const [isUserAuth, setUserAuth] = useState(false)
   return (
-    <div>Home</div>
+    <div>
+      <ProductList/>
+    </div>
   )
 }

@@ -4,7 +4,7 @@ import { Outlet, useNavigate } from "react-router-dom"
 export const ProtectedRouteSeller = () => {
   
     // Get seller authetication status
-    const {isSellerAuth} = useSelector((state) => state.mentor)
+    const {isSellerAuth} = useSelector((state) => state.seller)
 
     // Config navigate
     const navigate = useNavigate()

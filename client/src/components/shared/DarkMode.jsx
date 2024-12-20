@@ -3,8 +3,7 @@ import { useDispatch } from "react-redux";
 import { setTheme } from "../../redux/features/themeSlice";
 
 export const DarkMode = () => {
-  
-    // Config dispatch
+  // Config dispatch
   const dispatch = useDispatch();
 
   // Set theme
@@ -14,7 +13,8 @@ export const DarkMode = () => {
     <>
       <span
         as="button"
-        className="cursor-pointer"
+        className="hover"
+        style={{ cursor: "pointer" }}
         onClick={() => {
           setDark(!dark);
           dispatch(setTheme(dark));
@@ -48,6 +48,4 @@ export const DarkMode = () => {
       </span>
     </>
   );
-}
-
-
+};

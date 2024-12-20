@@ -1,75 +1,77 @@
-import { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
-import { apiHandler } from "../../utils/apiHandler";
-import { useDispatch } from "react-redux";
-import { setRole } from "../../redux/features/roleSlice";
+import toast from "react-hot-toast";
+import { axiosInstance } from "../../config/axiosInstance";
+import Button from "react-bootstrap/esm/Button";
+import { useSelector } from "react-redux";
 
-export const Login = () => {
-  // Config dipatch function
-  const dispatch = useDispatch();
-  // Get api base url
-  const apiUrl = import.meta.env.VITE_API_URL;
+export const Login = ({ role = "user" }) => {
+  // Get theme
+  const { theme } = useSelector((state) => state.theme);
 
-  // Set user data
-  const [user, setUser] = useState({});
+  //config register
+  const { register, handleSubmit } = useForm();
 
-  // Set login
-  const [login, setLogin] = useState(false);
-
-  // Config navigate
+  // config navigate
   const navigate = useNavigate();
 
-  // Handle submit
-  const HandleSubmit = async (e) => {
-    // Block refresh page
-    e.preventDefault();
-
-    // Api call
-    const [response, error] = await apiHandler(
-      `${apiUrl}/api/v1/user/login`,
-      "POST",
-      user
-    );
-
-    if (response) {
-      // Set login
-      setLogin(true);
-
-      // Set role
-      dispatch(setRole(response.role));
-    } else {
-      alert("Something went wrong! Try again!");
-      console.log(error);
-    }
+  // Set user
+  const user = {
+    role: "user",
+    login_api: "/user/login",
+    profile_route: "/user/profile",
+    signup_route: "/signup",
   };
 
-  // Get input
-  const handleInput = (e, field) => {
-    setUser({ ...user, [field]: e.target.value });
-  };
+  // Handle seller role
+   if (role === "mentor") {
+     user.role = "mentor";
+     user.login_api = "/mentor/log-in";
+     user.profile_route = "/mentor/profile";
+     user.signup_route = "/mentor/signup";
+   }   
 
-  // Check login
-  useEffect(() => {
-    if (login) {
+
+  // Check role
+  if (role === "seller") {
+    (user.role = "seller"((user.login_api = "/seller/login"))),
+      (user.profile_route = "/user/profile"),
+      (user.signup_route = "/user/signup");
+  }
+
+  const onSubmit = async (data) => {
+    try {
+      // Api call
+      const response = await axiosInstance({
+        method: "POST",
+        url: user.login_api,
+        data,
+      });
+      toast.success("Login success");
+
+      // Navigate
       navigate("/");
+    } catch (error) {
+      toast.error("Login failed");
     }
-  }, [login]);
+  };
 
   return (
     <div className="vh-100">
       <form
-        onSubmit={HandleSubmit}
+        onSubmit={handleSubmit(onSubmit)}
         className=" login-box mx-auto mt-5 d-flex flex-column gap-2 align-items-center justify-content-center rounded-3"
+        style={{ backgroundColor: theme ? "#FFF6E3" : "#d9d9d9" }}
       >
-        <h3 className="mt-2 fw-bold">Login</h3>
+        <h3 className="mt-2 fw-bold text-black">Login {role}</h3>
 
         <div>
           <input
             className="rounded-2 border-0 px-4 py-2 text-center"
             type="text"
+            {...register("email")}
             placeholder="Email"
             required
-            onChange={(e) => handleInput(e, "email")}
           />
         </div>
 
@@ -77,28 +79,31 @@ export const Login = () => {
           <input
             className="rounded-2 border-0 px-4 py-2 text-center"
             type="password"
+            {...register("password")}
             placeholder="Password"
             required
-            onChange={(e) => handleInput(e, "password")}
           />
         </div>
 
         <div>
-          <input
-            className="rounded-2 border-0 px-4 py-2 hover text-center bg-black text-white mt-1"
+          <Button
+            className="rounded-2 border-0 px-4 py-2 hover text-black text-center text-white mt-1"
             type="submit"
-            value="Login"
-          />
+            variant={theme ? "warning" : "dark"}
+          >
+            Login
+          </Button>
         </div>
         <div>
           <span className="text-secondary">Don't have an account?</span>{" "}
-          <Link className="text-decoration-none text-black" to={"/signup"}>
+          <Link
+            className="text-decoration-none text-black"
+            to={user.signup_route}
+          >
             Signup
           </Link>
         </div>
       </form>
     </div>
   );
-}
-
-
+};

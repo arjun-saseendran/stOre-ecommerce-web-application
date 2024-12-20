@@ -1,24 +1,17 @@
-import Container from 'react-bootstrap/Container'
+import Container from "react-bootstrap/Container";
 import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
 import { apiHandler } from "../../utils/apiHandler";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import {useDispatch, useSelector} from 'react-redux'
-import {setHome} from '../../redux/features/homeSlice'
+import { useDispatch, useSelector } from "react-redux";
 
 export const ProductDetails = () => {
-
   // Config dispatch
-  const dispatch = useDispatch()
-
-  const {dark} = useSelector((state)=> state.dark)
+  const dispatch = useDispatch();
 
   // Set product
   const [product, setProduct] = useState({});
-
-  // Set home
-  useEffect(()=>{dispatch(setHome(false))},[])
 
   // Get api url
   const apiUrl = import.meta.env.VITE_API_URL;
@@ -61,7 +54,7 @@ export const ProductDetails = () => {
           <Card.Text className=" crd-price fw-bold text-center fw-bolder h5">
             ₹{product.price}
           </Card.Text>
-          <Button className="w-100 mt-1" style={{background: 'yellow'}}>
+          <Button className="w-100 mt-1" style={{ background: "yellow" }}>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -69,7 +62,7 @@ export const ProductDetails = () => {
               strokeWidth={1.5}
               stroke="currentColor"
               className="size-6 me-1"
-              height='25px'
+              height="25px"
             >
               <path
                 strokeLinecap="round"
@@ -83,5 +76,4 @@ export const ProductDetails = () => {
       </Card>
     </Container>
   );
-}
-
+};

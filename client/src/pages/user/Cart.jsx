@@ -4,18 +4,8 @@ import Row from "react-bootstrap/esm/Row";
 import Col from "react-bootstrap/esm/Col";
 import Button from "react-bootstrap/esm/Button";
 import { apiHandler } from "../../utils/apiHandler";
-import { useDispatch } from "react-redux";
-import { setHome } from "../../redux/features/homeSlice";
 
 export const Cart = () => {
-  // Config dispatch
-  const dispatch = useDispatch();
-
-  // Set home false
-  useEffect(() => {
-    dispatch(setHome(false));
-  }, [dispatch]);
-
   // Get api url
   const apiUrl = import.meta.env.VITE_API_URL;
 
@@ -140,6 +130,4 @@ export const Cart = () => {
       </div>
     </Container>
   );
-}
-
-
+};

@@ -9,9 +9,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { setCategory } from "../../redux/features/categorySlice";
 import { apiHandler } from "../../utils/apiHandler";
-import { setRole } from "../../redux/features/roleSlice";
 import { setSearchValue } from "../../redux/features/searchSlice";
-import DarkMode from '../../components/shared/DarkMode'
+import { DarkMode } from "../../components/shared/DarkMode";
 
 export const UserHeader = () => {
   // Config dispatch function
@@ -30,9 +29,6 @@ export const UserHeader = () => {
   // Config navigate
   const navigate = useNavigate();
 
-  // Check user
-  const { role } = useSelector((state) => state.role);
-
   // Get api base url
   const apiUrl = import.meta.env.VITE_API_URL;
 
@@ -48,12 +44,7 @@ export const UserHeader = () => {
       console.error(error);
     }
   };
-  useEffect(() => {
-    if (!role) {
-      navigate("/login");
-    }
-  }, [role]);
-
+  
   return (
     <Navbar expand="lg" className={theme ? "bg-warning py-4" : "bg-black py-4"}>
       <Container fluid>
@@ -184,5 +175,3 @@ export const UserHeader = () => {
     </Navbar>
   );
 };
-
-
