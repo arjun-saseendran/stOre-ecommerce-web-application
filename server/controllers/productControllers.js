@@ -123,7 +123,7 @@ export const deleteProduct = async (req, res) => {
 
 // Category search
 
-export const category = async (req, res) => {
+export const productCategory = async (req, res) => {
   try {
     // Get data from body
     const { category } = req.body;
