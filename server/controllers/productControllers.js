@@ -121,6 +121,25 @@ export const deleteProduct = async (req, res) => {
   }
 };
 
+// Category search
 
+export const category = async (req, res) => {
+  try {
+    // Get data from body
+    const { category } = req.body;
 
+    // Find category
+    const selectedCategory = await Product.find({ category });
 
+    // Handle response
+    if (!response) {
+      res.status(404).json({ message: "Category not found" });
+    }
+
+    // Send response to frontend
+    res.status(200).json({message:'Product category fetched', data: selectedCategory})
+  } catch (error) {
+    // Handel error
+    catchErrorHandler(res, error);
+  }
+};
