@@ -4,7 +4,7 @@ import { apiHandler } from "../../utils/apiHandler";
 import { useDispatch } from "react-redux";
 import { setRole } from "../../features/roleSlice";
 
-function Login() {
+export const Login = () => {
   // Config dipatch function
   const dispatch = useDispatch();
   // Get api base url
@@ -101,4 +101,4 @@ function Login() {
   );
 }
 
-export default Login;
+

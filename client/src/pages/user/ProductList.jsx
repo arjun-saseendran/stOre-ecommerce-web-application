@@ -9,7 +9,7 @@ import { useNavigate } from "react-router-dom";
 import { addProducts } from "../features/productSlice";
 import { setHome } from "../features/homeSlice";
 
-export const Home = () => {
+export const ProductList = () => {
   // config dispatch
   const dispatch = useDispatch();
 

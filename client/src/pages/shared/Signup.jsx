@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { apiHandler } from "../../utils/apiHandler";
 
-function Signup() {
+export const Signup = () => {
   // Get api base url
   const apiUrl = import.meta.env.VITE_API_URL;
 
@@ -156,4 +156,4 @@ function Signup() {
   );
 }
 
-export default Signup;
+

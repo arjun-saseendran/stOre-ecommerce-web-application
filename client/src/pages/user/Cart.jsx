@@ -7,7 +7,7 @@ import { apiHandler } from "../../utils/apiHandler";
 import { useDispatch } from "react-redux";
 import { setHome } from "../../features/homeSlice";
 
-function Cart() {
+export const Cart = () => {
   // Config dispatch
   const dispatch = useDispatch();
 
@@ -142,4 +142,4 @@ function Cart() {
   );
 }
 
-export default Cart;
+

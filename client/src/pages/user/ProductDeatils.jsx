@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 import {useDispatch, useSelector} from 'react-redux'
 import {setHome} from '../../features/homeSlice'
 
-function ProductDetails() {
+export const ProductDetails = () => {
 
   // Config dispatch
   const dispatch = useDispatch()
@@ -85,4 +85,3 @@ function ProductDetails() {
   );
 }
 
-export default ProductDetails;

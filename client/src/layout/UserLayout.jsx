@@ -6,7 +6,7 @@ import { UserHeader } from "../components/user/UserHeader";
 
 // Set user layout
 export const UserLayout = () => {
-  // Store user authetication
+  // Set user authetication
   const [isUserAuth, setUserAuth] = useState(true);
 
   return (
