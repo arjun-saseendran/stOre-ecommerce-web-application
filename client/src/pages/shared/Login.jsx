@@ -24,19 +24,11 @@ export const Login = ({ role = "user" }) => {
   };
 
   // Handle seller role
-   if (role === "mentor") {
-     user.role = "mentor";
-     user.login_api = "/mentor/log-in";
-     user.profile_route = "/mentor/profile";
-     user.signup_route = "/mentor/signup";
-   }   
-
-
-  // Check role
   if (role === "seller") {
-    (user.role = "seller"((user.login_api = "/seller/login"))),
-      (user.profile_route = "/user/profile"),
-      (user.signup_route = "/user/signup");
+    user.role = "seller";
+    user.login_api = "/seller/login";
+    user.profile_route = "/seller/profile";
+    user.signup_route = "/seller/signup";
   }
 
   const onSubmit = async (data) => {

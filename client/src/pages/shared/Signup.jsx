@@ -1,10 +1,15 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { apiHandler } from "../../utils/apiHandler";
+import { useSelector } from "react-redux";
+import Button from "react-bootstrap/esm/Button";
 
 export const Signup = () => {
   // Get api base url
   const apiUrl = import.meta.env.VITE_API_URL;
+
+  // Get current theme
+  const {theme} = useSelector((state)=> state.theme)
 
   // Set user
   const [user, setUser] = useState({});
@@ -63,6 +68,7 @@ export const Signup = () => {
         onSubmit={handleSubmit}
         encType="multipart/form-data"
         className=" signup-box mt-5 mx-auto d-flex flex-column gap-2 align-items-center justify-content-center rounded-3"
+        style={{ backgroundColor: theme ? "#FFF6E3" : "#d9d9d9" }}
       >
         <h3 className="mt-2 fw-bold">Signup</h3>
         <div>
@@ -139,11 +145,10 @@ export const Signup = () => {
           </label>
         </div>
         <div>
-          <input
-            className="rounded-2 border-0 px-4 hover py-2 text-center bg-black text-white mt-1"
-            type="submit"
-            value="Signup"
-          />
+          <Button
+            className="rounded-2 border-0 px-4 hover py-2 text-center 
+            text-white mt-1" type="submit" variant={theme ? "warning" : "dark"}> Signup
+          </Button>
         </div>
         <div>
           <span className="text-secondary">Already have an account?</span>{" "}

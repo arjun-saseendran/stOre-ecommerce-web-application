@@ -56,20 +56,18 @@ export const router = createBrowserRouter([
             path: "cart",
             element: <Cart />,
           },
+        ],
+      },
+      {
+        path: "seller",
+        errorElement: <ErrorPage role="seller" />,
+        children: [
+          { path: "login", element: <Login role="seller" /> },
 
+          { path: "signup", element: <Signup role="seller" /> },
           {
-            path: "seller",
             element: <ProtectedRouteSeller />,
-            errorElement: <ErrorPage role="seller" />,
-            children: [
-              { path: "login", element: <Login role="seller" /> },
-              
-              { path: "signup", element: <Signup role="seller" /> },
-              {
-                element: <ProtectedRouteSeller />,
-                children: [{ path: "add-product", element: <AddNewProduct /> }],
-              },
-            ],
+            children: [{ path: "add-product", element: <AddNewProduct /> }],
           },
         ],
       },

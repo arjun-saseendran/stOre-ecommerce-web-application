@@ -14,7 +14,7 @@ const userSchema = new Schema(
       unique: true,
       lowercase: true,
     },
-    
+
     mobile: {
       type: String,
       unique: true,
@@ -25,14 +25,10 @@ const userSchema = new Schema(
       required: true,
       miniLength: 4,
     },
-    role:{
-      type: String,
-      default: 'user'
 
-    },
     isActive: {
       type: Boolean,
-      default: true
+      default: true,
     },
     profilePicture: {
       type: String,
