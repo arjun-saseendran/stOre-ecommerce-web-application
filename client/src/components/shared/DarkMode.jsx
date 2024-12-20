@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { setTheme } from "../../features/themeSlice";
+import { setTheme } from "../../redux/features/themeSlice";
 
 export const DarkMode = () => {
   

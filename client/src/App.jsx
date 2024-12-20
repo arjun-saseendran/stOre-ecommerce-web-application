@@ -1,12 +1,11 @@
-import Home from "../src/components/Home";
-import Banner from "./components/Banner";
-import Cart from "./pages/user/Cart";
+import {RouterProvider} from 'react-router-dom'
+import {router} from './router/router'
 
-function App() {
+
+export const  App = () => {
   return (
     <>
-    <Banner/>
-      <Home/>
+    <RouterProvider router={router}/>
     </>
   );
 }

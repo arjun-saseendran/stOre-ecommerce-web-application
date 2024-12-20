@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { apiHandler } from "../../utils/apiHandler";
 import { useDispatch } from "react-redux";
-import { setRole } from "../../features/roleSlice";
+import { setRole } from "../../redux/features/roleSlice";
 
 export const Login = () => {
   // Config dipatch function

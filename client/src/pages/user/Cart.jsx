@@ -5,7 +5,7 @@ import Col from "react-bootstrap/esm/Col";
 import Button from "react-bootstrap/esm/Button";
 import { apiHandler } from "../../utils/apiHandler";
 import { useDispatch } from "react-redux";
-import { setHome } from "../../features/homeSlice";
+import { setHome } from "../../redux/features/homeSlice";
 
 export const Cart = () => {
   // Config dispatch

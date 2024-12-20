@@ -7,10 +7,10 @@ import Navbar from "react-bootstrap/Navbar";
 import NavDropdown from "react-bootstrap/NavDropdown";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { setCategory } from "../../features/categorySlice";
+import { setCategory } from "../../redux/features/categorySlice";
 import { apiHandler } from "../../utils/apiHandler";
-import { setRole } from "../../features/roleSlice";
-import { setSearchValue } from "../../features/searchSlice";
+import { setRole } from "../../redux/features/roleSlice";
+import { setSearchValue } from "../../redux/features/searchSlice";
 import DarkMode from '../../components/shared/DarkMode'
 
 export const UserHeader = () => {

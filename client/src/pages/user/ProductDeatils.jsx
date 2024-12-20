@@ -5,7 +5,7 @@ import { apiHandler } from "../../utils/apiHandler";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import {useDispatch, useSelector} from 'react-redux'
-import {setHome} from '../../features/homeSlice'
+import {setHome} from '../../redux/features/homeSlice'
 
 export const ProductDetails = () => {
 
