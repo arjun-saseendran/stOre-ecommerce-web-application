@@ -1,14 +1,16 @@
 import toast from "react-hot-toast";
 import Button from "react-bootstrap/esm/Button";
 import { useFetch } from "../../hooks/useFetch";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { axiosInstance } from "../../config/axiosInstance";
 import { CartCard } from "../../components/user/CartCard";
-import { useEffect, useState } from "react";
 
 export const Cart = () => {
   // Get current theme
   const { theme } = useSelector((state) => state.theme);
+
+  // Config dispatch
+  const dispatch = useDispatch();
 
   // Api call
   const [cart, loading, error] = useFetch("/cart/cart");
@@ -25,7 +27,6 @@ export const Cart = () => {
         url: "/cart/add-product",
         data: { productId },
       });
-      console.log(response);
 
       toast.success("Product added to cart");
     } catch (error) {
@@ -45,7 +46,9 @@ export const Cart = () => {
         url: "/cart/remove-product",
         data: { productId },
       });
-
+      if (response) {
+        setTotalPrice(response.data.data.totalPrice);
+      }
       toast.success("Product removed from cart");
     } catch (error) {
       console.log(error);

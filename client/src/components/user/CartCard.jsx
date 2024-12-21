@@ -1,4 +1,3 @@
-import React from "react";
 import Row from "react-bootstrap/esm/Row";
 import Col from "react-bootstrap/esm/Col";
 import Button from "react-bootstrap/esm/Button";
@@ -25,7 +24,9 @@ export const CartCard = ({ product, addQuantity, removeQuantity }) => {
         </Col>
         <Col xs={12} sm={2}>
           <Button
-            onClick={() => removeQuantity(product?.productId._id)}
+            onClick={() => {
+              removeQuantity(product?.productId._id);
+            }}
             className={
               theme ? "btn btn-sm btn-warning fw-bold text-white" : "btn-dark"
             }
@@ -34,7 +35,9 @@ export const CartCard = ({ product, addQuantity, removeQuantity }) => {
           </Button>
           <span className="mx-1">{product.quantity}</span>
           <Button
-            onClick={() => addQuantity(product?.productId?._id)}
+            onClick={() => {
+              addQuantity(product?.productId?._id);
+            }}
             className={
               theme ? "btn btn-sm btn-warning fw-bold text-white" : "btn-dark"
             }
