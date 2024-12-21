@@ -34,7 +34,7 @@ export const ProductCard = ({ product }) => {
       <Card.Body>
         <Link
           className="text-decoration-none text-black"
-          to={`/product/${product._id}`}
+          to={`/product-details/${product._id}`}
         >
           <Card.Title className="crd-title title-hover">
             {product.title}

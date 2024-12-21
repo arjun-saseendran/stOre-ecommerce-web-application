@@ -1,133 +1,99 @@
-import { useEffect, useState } from "react";
-import Container from "react-bootstrap/esm/Container";
-import Row from "react-bootstrap/esm/Row";
-import Col from "react-bootstrap/esm/Col";
+import toast from "react-hot-toast";
 import Button from "react-bootstrap/esm/Button";
-import { apiHandler } from "../../utils/apiHandler";
+import { useFetch } from "../../hooks/useFetch";
+import { useSelector } from "react-redux";
+import { axiosInstance } from "../../config/axiosInstance";
+import { CartCard } from "../../components/user/CartCard";
+import { useEffect, useState } from "react";
 
 export const Cart = () => {
-  // Get api url
-  const apiUrl = import.meta.env.VITE_API_URL;
-
-  const [CartProducts, setCartProducts] = useState([]);
-  const [totalPrice, setTotalPrice] = useState(0);
+  // Get current theme
+  const { theme } = useSelector((state) => state.theme);
 
   // Api call
-  useEffect(() => {
-    (async () => {
-      const [response, error] = await apiHandler(
-        `${apiUrl}/api/v1/cart/cart`,
-        "GET"
-      );
-      if (response) {
-        // Set cart products
-        setCartProducts(response.products);
+  const [cart, loading, error] = useFetch("/cart/cart");
 
-        // Set product total
-        setTotalPrice(response.totalPrice);
-      } else {
-        console.log(error);
-      }
-    })();
-  }, [totalPrice]);
+  // Set total price
+  const totalPrice = cart?.totalPrice;
 
   // Add quantity
   const addQuantity = async (productId) => {
-    const [response, error] = await apiHandler(
-      `${apiUrl}/api/v1/cart/add-product`,
-      "POST",
-      { productId }
-    );
-    if (response) {
-      // Set product total
-      setTotalPrice(response.totalPrice);
-    } else {
+    try {
+      // Api call
+      const response = await axiosInstance({
+        method: "POST",
+        url: "/cart/add-product",
+        data: { productId },
+      });
+      console.log(response);
+
+      toast.success("Product added to cart");
+    } catch (error) {
       console.log(error);
+
+      toast.error(
+        error?.response?.data?.message || "Error while adding the product"
+      );
     }
   };
 
   // Remove quantity
   const removeQuantity = async (productId) => {
-    const [response, error] = await apiHandler(
-      `${apiUrl}/api/v1/cart/remove-product`,
-      "DELETE",
-      { productId }
-    );
-    if (response) {
-      // Set product total
-      setTotalPrice(response.totalPrice);
-    } else {
+    try {
+      const response = await axiosInstance({
+        method: "DELETE",
+        url: "/cart/remove-product",
+        data: { productId },
+      });
+
+      toast.success("Product removed from cart");
+    } catch (error) {
       console.log(error);
+      toast.error(
+        error?.response?.data?.message || "Error while removing the product"
+      );
     }
   };
 
   return (
-    <Container>
-      <div className="h-100 vh-100">
-        <h1 className="text-white text-center mt-3">Cart</h1>
-        <Row className="mt-3 p-4 rounded-3 d-flex justify-content-center align-items-center">
-          {CartProducts.map((product) => (
-            <Row
-              key={product.productId._id}
-              className="crd-box mt-2 rounded-3 p-2 d-flex justify-content-around align-items-center gap-2"
+    <div className="h-100">
+      <h1 className="text-white text-center mt-3">Cart</h1>
+      {cart?.products?.map((product) => (
+        <CartCard
+          product={product}
+          key={product._id}
+          removeQuantity={removeQuantity}
+          addQuantity={addQuantity}
+        />
+      ))}
+      <div
+        className="d-flex justify-content-between align-items-center p-2 mx-4 mt-2 rounded-3"
+        style={{ backgroundColor: theme ? "#FFF6E3" : "#d9d9d9" }}
+      >
+        <div className=" mt-2 rounded-3 p-2 fw-bold h5">Total</div>
+        <div className=" mt-2 rounded-3 p-2 fw-bold h5">₹{totalPrice}</div>
+
+        <div className="me-2">
+          <Button className={theme ? "btn-warning text-white" : "btn-dark"}>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={1.5}
+              stroke="currentColor"
+              className="size-6 mb-1 me-1"
+              height="20px"
             >
-              <Col style={{ minHeight: "220px" }} xm={12} sm={2}>
-                <img className="img-fluid" src={product.productId.image} />
-              </Col>
-              <Col xm={12} sm={2}>
-                {product.productId.title}
-              </Col>
-              <Col xm={12} sm={2}>
-                ₹{product.productId.price}
-              </Col>
-              <Col xm={12} sm={2}>
-                <Button
-                  onClick={() => removeQuantity(product.productId._id)}
-                  className="btn btn-sm btn-dark fw-bold"
-                >
-                  -
-                </Button>
-                <span className="mx-1">{product.quantity}</span>
-                <Button
-                  onClick={() => addQuantity(product.productId._id)}
-                  className="btn btn-sm btn-dark fw-bold"
-                >
-                  +
-                </Button>
-              </Col>
-              <Col xm={12} sm={2}>
-                ₹{product.productId.price * product.quantity}
-              </Col>
-            </Row>
-          ))}
-
-          <div className="d-flex justify-content-between align-items-center p-2 crd-box rounded-3 mt-2">
-            <div className=" mt-2 rounded-3 p-2 fw-bold h5">Total</div>
-            <div className=" mt-2 rounded-3 p-2 fw-bold h5">₹{totalPrice}</div>
-
-            <div className="me-2">
-              <Button className="btn-dark">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth={1.5}
-                  stroke="currentColor"
-                  className="size-6 mb-1 me-1"
-                  height="20px"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M15.75 10.5V6a3.75 3.75 0 1 0-7.5 0v4.5m11.356-1.993 1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 0 1-1.12-1.243l1.264-12A1.125 1.125 0 0 1 5.513 7.5h12.974c.576 0 1.059.435 1.119 1.007ZM8.625 10.5a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm7.5 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z"
-                  />
-                </svg>
-                Order
-              </Button>
-            </div>
-          </div>
-        </Row>
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M15.75 10.5V6a3.75 3.75 0 1 0-7.5 0v4.5m11.356-1.993 1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 0 1-1.12-1.243l1.264-12A1.125 1.125 0 0 1 5.513 7.5h12.974c.576 0 1.059.435 1.119 1.007ZM8.625 10.5a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm7.5 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z"
+              />
+            </svg>
+            Order
+          </Button>
+        </div>
       </div>
-    </Container>
+    </div>
   );
 };

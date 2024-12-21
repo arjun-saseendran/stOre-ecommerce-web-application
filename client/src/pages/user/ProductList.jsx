@@ -1,23 +1,18 @@
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import { ProductCard } from "../../components/user/Cards";
+import { ProductCard } from "../../components/user/ProductCard";
 import { useFetch } from "../../hooks/useFetch";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { axiosInstance } from "../../config/axiosInstance";
 
-
 export const ProductList = () => {
-
   // Get category global state
   const { category } = useSelector((state) => state.category);
-  
+
   // Get searchValue global state
   const { searchResult } = useSelector((state) => state.search);
-
-  
-  
 
   // Render product
   const [renderProducts, setRenderProducts] = useState([]);
@@ -43,9 +38,9 @@ export const ProductList = () => {
     };
     // Filter products
     if (category) {
-      fetchCategory()
-    }else{
-      setRenderProducts(products)
+      fetchCategory();
+    } else {
+      setRenderProducts(products);
     }
   }, [category, products]);
 
@@ -68,13 +63,10 @@ export const ProductList = () => {
     // Filter products
     if (searchResult) {
       handleSearch();
-    } else if(!category && products) {
-      setRenderProducts(searchResult);
+    } else if (!category && products) {
+      setRenderProducts(products);
     }
   }, [searchResult, products]);
-
-  console.log(renderProducts);
-  
 
   return (
     <Container>

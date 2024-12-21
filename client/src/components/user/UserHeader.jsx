@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useRef } from "react";
 import Button from "react-bootstrap/Button";
 import Container from "react-bootstrap/Container";
 import Form from "react-bootstrap/Form";
@@ -8,7 +8,7 @@ import NavDropdown from "react-bootstrap/NavDropdown";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { setCategory } from "../../redux/features/categorySlice";
-import { apiHandler } from "../../utils/apiHandler";
+import { axiosInstance } from "../../config/axiosInstance";
 import { setSearchValue } from "../../redux/features/searchSlice";
 import { DarkMode } from "../../components/shared/DarkMode";
 
@@ -24,27 +24,28 @@ export const UserHeader = () => {
     dispatch(setSearchValue(inputValue.current.value));
   };
 
+  // Get current theme
   const { theme } = useSelector((state) => state.theme);
 
   // Config navigate
   const navigate = useNavigate();
 
-  // Get api base url
-  const apiUrl = import.meta.env.VITE_API_URL;
-
   // Handle logout
   const handleLogout = async () => {
-    const [response, error] = await apiHandler(
-      `${apiUrl}/api/v1/user/logout`,
-      "POST"
-    );
-    if (response) {
-      console.log(response);
-    } else {
-      console.error(error);
+    try {
+      const response = await axiosInstance({
+        method: "POST",
+        url: "/user/logout",
+      });
+
+      if (response) {
+        navigate("/login");
+      }
+    } catch (error) {
+      console.log(error);
     }
   };
-  
+
   return (
     <Navbar expand="lg" className={theme ? "bg-warning py-4" : "bg-black py-4"}>
       <Container fluid>
@@ -137,7 +138,7 @@ export const UserHeader = () => {
 
               <NavDropdown.Divider />
 
-              <NavDropdown.Item as={Link} to={"/cart"}>
+              <NavDropdown.Item as={Link} to={"user/cart"}>
                 <span className="text-black hover">Cart</span>
               </NavDropdown.Item>
 

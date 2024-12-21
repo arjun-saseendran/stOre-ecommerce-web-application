@@ -1,12 +1,11 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { apiHandler } from "../../utils/apiHandler";
 import { useSelector } from "react-redux";
 import Button from "react-bootstrap/esm/Button";
+import { axiosInstance } from "../../config/axiosInstance";
 
 export const Signup = () => {
-  // Get api base url
-  const apiUrl = import.meta.env.VITE_API_URL;
+  
 
   // Get current theme
   const {theme} = useSelector((state)=> state.theme)
@@ -35,8 +34,8 @@ export const Signup = () => {
     newUser.append("mobile", user.mobile);
 
     // Api call
-    const [response, error] = await apiHandler(
-      `${apiUrl}/api/v1/user/signup`,
+    const [response, error] = await axiosInstance(
+      `/user/signup`,
       "POST",
       user,
       { ...headers }

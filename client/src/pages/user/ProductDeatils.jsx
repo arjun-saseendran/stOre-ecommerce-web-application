@@ -1,60 +1,69 @@
 import Container from "react-bootstrap/Container";
 import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
-import { apiHandler } from "../../utils/apiHandler";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useFetch } from "../../hooks/useFetch";
 
 export const ProductDetails = () => {
+  // Get current theme
+  const { theme } = useSelector((state) => state.theme);
+
   // Config dispatch
   const dispatch = useDispatch();
 
   // Set product
   const [product, setProduct] = useState({});
 
-  // Get api url
-  const apiUrl = import.meta.env.VITE_API_URL;
-
   // Config params
   const { id } = useParams();
 
+  // Api call
+  const [productData, loading, error] = useFetch(
+    `/product/product-details/${id}`
+  );
+
   useEffect(() => {
-    (async () => {
-      // Api call
-      const [response, error] = await apiHandler(
-        `${apiUrl}/api/v1/product/product-details/${id}`,
-        "GET"
-      );
-      if (response) {
-        setProduct(response);
-      } else {
-        console.log(error);
-      }
-    })();
-  }, []);
+    if (productData) {
+      // Set product details
+      setProduct(productData);
+    }
+  }, [productData]);
 
   return (
-    <Container className="vh-100">
-      <h1 className="h1 text-center fw-bold text-white mt-5">
+    <Container className="h-100">
+      <h1
+        className={
+          theme
+            ? "h1 text-center fw-bold text-black mt-5"
+            : "h1 text-center fw-bold text-white mt-5"
+        }
+      >
         Product Details
       </h1>
-      <Card className="crd-box d-flex justify-content-center align-items-center mt-5 mx-auto pr-card">
+      <Card
+        className="crd-box d-flex justify-content-center align-items-center mt-5 mx-auto pr-card"
+        style={{ backgroundColor: theme ? "#FFF6E3" : "#d9d9d9" }}
+      >
         <Card.Img
           className="object-fit-contain pr-card-img p-2"
           variant="top"
           src={product.image}
         />
         <Card.Body>
-          <Card.Title className="crd-title">{product.title}</Card.Title>
+          <Card.Title>{product.title}</Card.Title>
 
-          <Card.Text className="crd-description">
-            {product.description}
-          </Card.Text>
+          <Card.Text>{product.description}</Card.Text>
           <Card.Text className=" crd-price fw-bold text-center fw-bolder h5">
             ₹{product.price}
           </Card.Text>
-          <Button className="w-100 mt-1" style={{ background: "yellow" }}>
+          <Button
+            className={
+              theme ? "w-100 mt-1 text-white" : "w-100 mt-1 text-white"
+            }
+            variant={theme ? "warning" : "dark"}
+          >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"

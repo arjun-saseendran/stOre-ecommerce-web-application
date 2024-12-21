@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { apiHandler } from "../../utils/apiHandler";
+import { axiosInstance } from '../../config/axiosInstance'
 
 export const AddNewProduct = () => {
   // Get api base url
@@ -30,8 +30,8 @@ export const AddNewProduct = () => {
     newProduct.append("category", product.category);
 
     // Api call
-    const [response, error] = await apiHandler(
-      `${apiUrl}/api/v1/product/add-product`,
+    const [response, error] = await axiosInstance(
+      `/product/add-product`,
       "POST",
       product,
       headers
