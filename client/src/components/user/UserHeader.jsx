@@ -20,7 +20,7 @@ export const UserHeader = () => {
   const inputValue = useRef();
 
   // Search value
-  const searchResult = () => {
+  const handleSearch = () => {
     dispatch(setSearchValue(inputValue.current.value));
   };
 
@@ -143,7 +143,7 @@ export const UserHeader = () => {
 
               <NavDropdown.Divider />
 
-              <NavDropdown.Item onClick={() => dispatch(setRole(""))}>
+              <NavDropdown.Item>
                 <span
                   role="button"
                   className="text-black hover"
@@ -163,7 +163,7 @@ export const UserHeader = () => {
               ref={inputValue}
               style={{ background: theme ? "#F5F0CD" : "#D9D9D9" }}
             />
-            <Button variant="outline-light" onClick={searchResult}>
+            <Button variant="outline-light" onClick={handleSearch}>
               Search
             </Button>
             <span className="mx-2 mt-1">

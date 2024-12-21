@@ -122,22 +122,61 @@ export const deleteProduct = async (req, res) => {
 };
 
 // Category search
-
 export const productCategory = async (req, res) => {
   try {
     // Get data from body
     const { category } = req.body;
 
+    // Validate input
+    if (!category || category.trim() === "") {
+      return res.status(400).json({ message: "Category is required" });
+    }
+
     // Find category
     const selectedCategory = await Product.find({ category });
 
     // Handle response
-    if (!response) {
-      res.status(404).json({ message: "Category not found" });
+    if (!selectedCategory) {
+      return res.status(404).json({ message: "Category not found" });
     }
 
     // Send response to frontend
-    res.status(200).json({message:'Product category fetched', data: selectedCategory})
+    res
+      .status(200)
+      .json({ message: "Product category fetched", data: selectedCategory });
+  } catch (error) {
+    // Handel error
+    catchErrorHandler(res, error);
+  }
+};
+
+// Search product
+export const searchProduct = async (req, res) => {
+  try {
+    // Get data from body
+    const { searchResult } = req.body;
+
+    // Validate input
+    if (!searchResult || searchResult.trim() === "") {
+      return res.status(400).json({ message: "Search query is required" });
+    }
+
+    // Find product
+    const searchResults = await Product.find({
+      $or: [
+        { name: { $regex: searchResult, $options: "i" } },
+        { description: { $regex: searchResult, $options: "i" } },
+        { category: { $regex: searchResult, $options: "i" } },
+      ],
+    });
+
+    // Handle response
+    if (!searchResults) {
+      return res.status(404).json({ message: "Product not found" });
+    }
+
+    // Send response to frontend
+    res.status(200).json({ message: "Products fetched", data: searchResults });
   } catch (error) {
     // Handel error
     catchErrorHandler(res, error);

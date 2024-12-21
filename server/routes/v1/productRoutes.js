@@ -6,6 +6,7 @@ import {
   deleteProduct,
   renderProducts,
   productCategory,
+  searchProduct,
 } from "../../controllers/productControllers.js";
 import { upload } from "../../middlewares/multer.js";
 import { sellerAuth } from "../../middlewares/sellerAuth.js";
@@ -25,7 +26,10 @@ productRouter.post(
 productRouter.get("/products", renderProducts);
 
 // Display products by category
-productRouter.get("/category", productCategory);
+productRouter.post("/category", productCategory);
+
+// Display products by search
+productRouter.post("/search", searchProduct);
 
 // Dispaly product details
 productRouter.get("/product-details/:id", productDetails);

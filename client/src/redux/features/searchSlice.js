@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 // Set initial value
 const initialState = {
-  search: "",
+  searchResult: "",
 };
 
 // Create search slice
@@ -14,7 +14,7 @@ const searchSlice = createSlice({
   reducers: {
     setSearchValue: (state, action) => {
       // Add serach value
-      state.search = action.payload;
+      state.searchResult = action.payload;
     },
   },
 });
