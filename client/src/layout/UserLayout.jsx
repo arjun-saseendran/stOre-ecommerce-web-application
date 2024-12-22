@@ -7,6 +7,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { axiosInstance } from "../config/axiosInstance";
 import { clearUserData, saveUserData } from "../redux/features/userSlice";
 
+
 // Set user layout
 export const UserLayout = () => {
   // Config navigate
@@ -54,6 +55,7 @@ export const UserLayout = () => {
       <header>{isUserAuth ? <UserHeader /> : <Header />}</header>
 
       <main>
+       
         <Outlet />
       </main>
 

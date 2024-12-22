@@ -2,7 +2,8 @@ body {
   margin: 0;
   padding: 0;
   background: #31363f;
-  height: 100vh;
+  padding-top: 91px;
+  padding-bottom: 120px;
 }
 
 .crd-image {

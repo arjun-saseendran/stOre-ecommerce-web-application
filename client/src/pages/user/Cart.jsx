@@ -4,16 +4,46 @@ import { useFetch } from "../../hooks/useFetch";
 import { useSelector, useDispatch } from "react-redux";
 import { axiosInstance } from "../../config/axiosInstance";
 import { CartCard } from "../../components/user/CartCard";
+import { useEffect } from "react";
+import { setCart } from "../../redux/features/cartSlice";
 
 export const Cart = () => {
+  // Api call
+  const [cart, loading, error] = useFetch("/cart/cart");
+
+  // Rerender when update the page
+  useEffect(() => {
+    if (!loading && !error) {
+      console.log(cart);
+    }
+  }, [cart, loading, error]);
+
+  // Config dispatch
+  // const dispatch = useDispatch();
+
   // Get current theme
   const { theme } = useSelector((state) => state.theme);
 
-  // Config dispatch
-  const dispatch = useDispatch();
+  // Get redux cart data
+  // const { cartData } = useSelector((state) => state.cart);
 
-  // Api call
-  const [cart, loading, error] = useFetch("/cart/cart");
+  // // Api call
+  // useEffect(() => {
+  //   const fetchCart = async () => {
+  //     try {
+  //       const response = await axiosInstance({
+  //         method: "GET",
+  //         url: "/cart/cart",
+  //       });
+
+  //       dispatch(setCart(response.data.data));
+  //     } catch (error) {
+  //       console.log(error);
+
+  //     }
+  //   };
+  //   fetchCart()
+  // }, [dispatch]);
 
   // Set total price
   const totalPrice = cart?.totalPrice;
@@ -27,6 +57,9 @@ export const Cart = () => {
         url: "/cart/add-product",
         data: { productId },
       });
+      // if(response){
+      //   dispatch(setCart(response.data.data))
+      // }
 
       toast.success("Product added to cart");
     } catch (error) {
@@ -46,9 +79,9 @@ export const Cart = () => {
         url: "/cart/remove-product",
         data: { productId },
       });
-      if (response) {
-        setTotalPrice(response.data.data.totalPrice);
-      }
+      // if (response) {
+      //   dispatch(setCart(response.data.data));
+      // }
       toast.success("Product removed from cart");
     } catch (error) {
       console.log(error);
