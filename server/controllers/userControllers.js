@@ -91,7 +91,7 @@ export const userLogin = async (req, res) => {
     }
 
     // Generating token
-    const token = generateToken(user, user.role, res);
+    const token = generateToken(user, "user", res);
 
     // Set token to cookie
     res.cookie("token", token);
@@ -141,7 +141,7 @@ export const userLogout = async (req, res) => {
 // Update user profile details
 export const updateUserProfile = async (req, res) => {
   console.log(req.body);
-  
+
   try {
     // Destructure request body
     const { name, email, mobile } = req.body;
@@ -157,23 +157,25 @@ export const updateUserProfile = async (req, res) => {
 
     // Handle upload image
     let profilePictureUrl = null;
-    
+
     if (req.file) {
       const uploadResult = await cloudinaryInstance.uploader.upload(
         req.file.path
       );
-      profilePictureUrl = uploadResult.url; 
+      profilePictureUrl = uploadResult.url;
     }
 
-    
-
     // Update user data
-    const updatedUserData = await User.findByIdAndUpdate(userId, {
-      name,
-      email,
-      mobile,
-      profilePicture: profilePictureUrl || undefined
-    }, {new: true})
+    const updatedUserData = await User.findByIdAndUpdate(
+      userId,
+      {
+        name,
+        email,
+        mobile,
+        profilePicture: profilePictureUrl || undefined,
+      },
+      { new: true }
+    );
 
     res
       .status(200)

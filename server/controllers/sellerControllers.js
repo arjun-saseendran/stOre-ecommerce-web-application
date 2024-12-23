@@ -91,7 +91,7 @@ export const sellerLogin = async (req, res) => {
     }
 
     // Generating token and set role
-    const token = generateToken(seller, seller.role, res);
+    const token = generateToken(seller, 'seller', res);
 
     // Set token to cookie
     res.cookie("token", token);
