@@ -40,14 +40,10 @@ export const Login = ({ role = "user" }) => {
         data,
       });
       toast.success("Login success");
-      
-      // Navigate to home page
-      if (role === 'user') {
-        // Navigate
-        navigate('/');
-      }else if(role === 'seller'){
-        navigate('/seller')
-      }
+
+      // Navigate to profile page
+
+      navigate(user.profile_route);
     } catch (error) {
       toast.error("Login failed");
     }
