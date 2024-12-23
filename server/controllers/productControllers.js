@@ -182,3 +182,27 @@ export const searchProduct = async (req, res) => {
     catchErrorHandler(res, error);
   }
 };
+
+// Display products by seller
+export const getSellerProducts = async (req, res) => {
+  try {
+      // Get user id
+      const userId = req.user.id;
+  
+      // Get cart
+      const products = await Seller.findOne({ userId }).populate("products.productId");
+  
+      // Check products exists
+      if (!products) {
+        return res.status(404).json({ message: "Products not found" });
+      }
+  
+      // Display cart
+      res.status(200).json({ message: "Products fetched successfully", data: products });
+    } catch (error) {
+      // Handle catch error
+      catchErrorHandler(res, error);
+    }
+};
+
+

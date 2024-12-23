@@ -1,35 +1,73 @@
-import Table from "react-bootstrap/Table";
+import { useEffect, useState } from "react";
+import { Table, Container, Button, Row } from "react-bootstrap";
+import { axiosInstance } from "../../config/axiosInstance";
+import { useSelector } from "react-redux";
 
 export const Products = () => {
+  // Get theme
+  const { theme } = useSelector((state) => state.theme);
+
+  // Store products
+  const [products, setProducts] = useState([]);
+
+  // Api call
+  useEffect(() => {
+    (async () => {
+      const response = await axiosInstance({
+        method: "GET",
+        url: "product/products",
+      });
+      // Set products to state
+      setProducts(response.data.data);
+    })();
+  }, []);
+
   return (
-    <Table>
-      <thead>
-        <tr>
-          <th>#</th>
-          <th>First Name</th>
-          <th>Last Name</th>
-          <th>Username</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>1</td>
-          <td>Mark</td>
-          <td>Otto</td>
-          <td>@mdo</td>
-        </tr>
-        <tr>
-          <td>2</td>
-          <td>Jacob</td>
-          <td>Thornton</td>
-          <td>@fat</td>
-        </tr>
-        <tr>
-          <td>3</td>
-          <td colSpan={2}>Larry the Bird</td>
-          <td>@twitter</td>
-        </tr>
-      </tbody>
-    </Table>
+    <Container>
+      <h1 className="text-center text-white mt-5">Product List</h1>
+      <Row
+        className="mt-5 p-3 rounded-3"
+        style={{ backgroundColor: theme ? "#FFF6E3" : "#d9d9d9" }}
+      >
+        <Table className="rounded-3">
+          <thead className="rounded-3">
+            <tr>
+              <th style={{ backgroundColor: theme ? "#FFF6E3" : "#d9d9d9" }}>
+                Title
+              </th>
+
+              <th style={{ backgroundColor: theme ? "#FFF6E3" : "#d9d9d9" }}>
+                Stock
+              </th>
+              <th style={{ backgroundColor: theme ? "#FFF6E3" : "#d9d9d9" }}>
+                Actions
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {products.map((product) => (
+              <tr key={product._id}>
+                <td style={{ backgroundColor: theme ? "#FFF6E3" : "#d9d9d9" }}>
+                  {product.title}
+                </td>
+
+                <td style={{ backgroundColor: theme ? "#FFF6E3" : "#d9d9d9" }}>
+                  {product?.stock}
+                </td>
+                <td style={{ backgroundColor: theme ? "#FFF6E3" : "#d9d9d9" }}>
+                  <Button
+                    variant={theme ? "warning" : "dark"}
+                    className=" text-white btn-sm"
+                  >
+                    {" "}
+                    View
+                  </Button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </Table>
+      </Row>
+    </Container>
   );
 };

@@ -7,9 +7,11 @@ import {
   renderProducts,
   productCategory,
   searchProduct,
+  getSellerProducts,
 } from "../../controllers/productControllers.js";
 import { upload } from "../../middlewares/multer.js";
 import { sellerAuth } from "../../middlewares/sellerAuth.js";
+import { userAuth } from "../../middlewares/userAuth.js";
 
 // Configure router
 export const productRouter = Router();
@@ -24,6 +26,9 @@ productRouter.post(
 
 // Display products
 productRouter.get("/products", renderProducts);
+
+// Display products based seller
+productRouter.get("/seller-products", userAuth, getSellerProducts);
 
 // Display products by category
 productRouter.post("/category", productCategory);

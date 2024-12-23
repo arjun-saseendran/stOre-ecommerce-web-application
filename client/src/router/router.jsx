@@ -83,7 +83,7 @@ export const router = createBrowserRouter([
       {
         element: <ProtectedRouteSeller />,
         children: [
-          { path: "seller", element: <Products /> },
+          { path: "", element: <Products /> },
           { path: "add-product", element: <AddNewProduct /> },
           { path: "profile", element: <Profile role="seller" /> },
           // { path: "settings", element: <Settings role="seller" /> },
