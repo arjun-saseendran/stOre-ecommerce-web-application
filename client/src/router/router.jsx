@@ -1,5 +1,5 @@
 import { createBrowserRouter } from "react-router-dom";
-import { ProtectedRoute } from "./ProtectedRoute";
+import { ProtectedRouteUser } from "./ProtectedRouteUser";
 import { UserLayout } from "../layout/UserLayout";
 import { Home } from "../pages/user/Home";
 import { About } from "../pages/user/About";
@@ -12,6 +12,10 @@ import { Cart } from "../pages/user/Cart";
 import { ErrorPage } from "../pages/shared/ErrorPage";
 import { ProtectedRouteSeller } from "./ProtectedRouteSeller";
 import { AddNewProduct } from "../pages/seller/AddNewProduct";
+import { Profile } from "../pages/shared/Profile";
+import { SellerLayout } from "../layout/SellerLayout";
+import { Products } from "../pages/seller/Products";
+import { Settings } from "../components/user/Settings";
 
 export const router = createBrowserRouter([
   {
@@ -49,26 +53,40 @@ export const router = createBrowserRouter([
       },
       {
         path: "user",
-        element: <ProtectedRoute />,
+        element: <ProtectedRouteUser />,
 
         children: [
           {
             path: "cart",
             element: <Cart />,
           },
+          {
+            path: "profile",
+            element: <Profile role="user" />,
+          },
+          {
+            path: "settings",
+            element: <Settings role="user" />,
+          },
         ],
       },
-      {
-        path: "seller",
-        errorElement: <ErrorPage role="seller" />,
-        children: [
-          { path: "login", element: <Login role="seller" /> },
+    ],
+  },
+  {
+    path: "seller",
+    element: <SellerLayout />,
+    errorElement: <ErrorPage role="seller" />,
+    children: [
+      { path: "login", element: <Login role="seller" /> },
 
-          { path: "signup", element: <Signup role="seller" /> },
-          {
-            element: <ProtectedRouteSeller />,
-            children: [{ path: "add-product", element: <AddNewProduct /> }],
-          },
+      { path: "signup", element: <Signup role="seller" /> },
+      {
+        element: <ProtectedRouteSeller />,
+        children: [
+          { path: "seller", element: <Products /> },
+          { path: "add-product", element: <AddNewProduct /> },
+          { path: "profile", element: <Profile role="seller" /> },
+          // { path: "settings", element: <Settings role="seller" /> },
         ],
       },
     ],

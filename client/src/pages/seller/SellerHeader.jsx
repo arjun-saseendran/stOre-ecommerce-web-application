@@ -3,12 +3,21 @@ import Container from "react-bootstrap/Container";
 import Form from "react-bootstrap/Form";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
+import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import { DarkMode } from "../../components/shared/DarkMode";
 
-
-function SellerHeader() {
+export const SellerHeader = () => {
+  
+  // Get current theme
+const {theme} = useSelector((state)=> state.theme)
   return (
-    <Navbar expand="lg" className="bg-black py-4">
+    <Navbar
+      expand="lg"
+      className={
+        theme ? "bg-warning py-4 fixed-top" : "bg-black py-4 fixed-top"
+      }
+    >
       <Container fluid>
         <Navbar.Brand href="#">
           <span className="text-white h1 fw-bold">st</span>
@@ -18,55 +27,20 @@ function SellerHeader() {
         <Navbar.Toggle className="bg-white" aria-controls="navbarScroll" />
         <Navbar.Collapse id="navbarScroll">
           <Nav className="me-auto my-2 my-lg-0" navbarScroll>
-            <Link to={"/"} className="mt-2 nav-link ">
-              <span
-                
-                className="text-white h5 hover"
-              >
-                Home
+            <Link to={"/seller"} className="mt-2 nav-link ">
+              <span className="text-white h5 hover">Home</span>
+            </Link>
+            <Link to={"/seller/profile"} className="mt-2 nav-link">
+              <span className="text-white h5 hover" role="button">
+                Profile
               </span>
+            </Link>
+            <Link to={"/seller/add-product"} className="mt-2 nav-link">
+              <span className="text-white h5 hover">Add Product</span>
             </Link>
             <Link className="mt-2 nav-link">
-              <span
-                
-                className="text-white h5 hover"
-                role="button"
-              >
-                iPhone
-              </span>
+              <span className="text-white h5 hover">All Orders</span>
             </Link>
-            <Nav.Link className="mt-2">
-              <span
-               
-                className="text-white h5 hover"
-              >
-                Mackbook
-              </span>
-            </Nav.Link>
-            <Nav.Link className="mt-2">
-              <span
-               
-                className="text-white h5 hover"
-              >
-                iPad
-              </span>
-            </Nav.Link>
-            <Nav.Link className="mt-2">
-              <span
-                
-                className="text-white h5 hover"
-              >
-                Airpods
-              </span>
-            </Nav.Link>
-            <Nav.Link className="mt-2">
-              <span
-               
-                className="text-white h5 hover"
-              >
-                Watch
-              </span>
-            </Nav.Link>
           </Nav>
           <Form className="d-flex">
             <Form.Control
@@ -74,30 +48,16 @@ function SellerHeader() {
               placeholder="Search"
               className="me-2"
               aria-label="Search"
-              style={{ background: "#D9D9D9" }}
+              style={{ background: theme ? "#F5F0CD" : "#D9D9D9" }}
             />
             <Button variant="outline-light">Search</Button>
           </Form>
 
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth="1.5"
-            stroke="currentColor"
-            className="size-2 text-white m-2"
-            height="30px"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M21.752 15.002A9.72 9.72 0 0 1 18 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 0 0 3 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 0 0 9.002-5.998Z"
-            />
-          </svg>
+          <span className="mx-2 mt-1">
+            <DarkMode />
+          </span>
         </Navbar.Collapse>
       </Container>
     </Navbar>
   );
-}
-
-export default SellerHeader;
+};

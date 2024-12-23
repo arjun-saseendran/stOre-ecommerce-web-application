@@ -40,16 +40,21 @@ export const Login = ({ role = "user" }) => {
         data,
       });
       toast.success("Login success");
-
-      // Navigate
-      navigate("/");
+      
+      // Navigate to home page
+      if (role === 'user') {
+        // Navigate
+        navigate('/');
+      }else if(role === 'seller'){
+        navigate('/seller')
+      }
     } catch (error) {
       toast.error("Login failed");
     }
   };
 
   return (
-    <div className="vh-100">
+    <div>
       <form
         onSubmit={handleSubmit(onSubmit)}
         className=" login-box mx-auto mt-5 d-flex flex-column gap-2 align-items-center justify-content-center rounded-3"

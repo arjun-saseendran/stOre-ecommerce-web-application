@@ -7,7 +7,6 @@ import { useSelector, useDispatch } from "react-redux";
 import { axiosInstance } from "../config/axiosInstance";
 import { clearUserData, saveUserData } from "../redux/features/userSlice";
 
-
 // Set user layout
 export const UserLayout = () => {
   // Config navigate
@@ -24,14 +23,11 @@ export const UserLayout = () => {
 
   // Get theme
   const { theme } = useSelector((state) => state.theme);
-
+  
+  // Change body theme
   useEffect(() => {
     document.body.style.background = theme ? "#F2E5BF" : "#31363f";
   }, [theme]);
-
-  useEffect(() => {
-    checkUser();
-  }, [location.pathname]);
 
   // Check user
   const checkUser = async () => {
@@ -49,13 +45,15 @@ export const UserLayout = () => {
       dispatch(clearUserData());
     }
   };
+  useEffect(() => {
+    checkUser();
+  }, [location.pathname]);
 
   return (
     <>
       <header>{isUserAuth ? <UserHeader /> : <Header />}</header>
 
       <main>
-       
         <Outlet />
       </main>
 

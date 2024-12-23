@@ -1,11 +1,13 @@
 import { useForm } from "react-hook-form";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import Button from "react-bootstrap/esm/Button";
 import { axiosInstance } from "../../config/axiosInstance";
+import { useFetch } from "../../hooks/useFetch";
 import toast from "react-hot-toast";
+import { useEffect } from "react";
 
-export const Signup = ({ role = "user" }) => {
+export const Settings = ({ role = "user" }) => {
   // Get current theme
   const { theme } = useSelector((state) => state.theme);
 
@@ -13,21 +15,45 @@ export const Signup = ({ role = "user" }) => {
   const navigate = useNavigate();
 
   // Config useForm
-  const { register, handleSubmit } = useForm();
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    formState: { errors },
+  } = useForm({
+    defaultValues: {
+      profilePicture: "",
+      name: "",
+      email: "",
+      mobile: "",
+    },
+  });
 
   // Set user role
   const user = {
     role: "user",
-    signup_api: "/user/signup",
-    login_route: "/login",
+    update_api: "/user/update-profile",
+    profile_api: "/user/profile",
   };
 
   // Handle seller role
   if (role === "seller") {
     (user.role = "seller"),
-      (user.signup_api = "/seller/signup"),
-      (user.login_route = "/seller/login");
+      (user.update_api = "/seller/update-profile"),
+      (user.profile_api = "/seller/profile");
   }
+
+  // Api call
+  const [profile, loading, error] = useFetch(user.profile_api);
+
+  useEffect(() => {
+    if (profile) {
+      setValue("name", profile.name || "");
+      setValue("email", profile.email || "");
+      setValue("mobile", profile.mobile || "");
+      // Do the same for the profilePicture field if needed
+    }
+  }, [profile, setValue]);
 
   // Handle on submit
   const onSubmit = async (data) => {
@@ -48,17 +74,16 @@ export const Signup = ({ role = "user" }) => {
 
       // Api call
       const response = await axiosInstance({
-        method: "POST",
-        url: user.signup_api,
+        method: "PUT",
+        url: user.update_api,
         data: formData,
         headers: { "Content-Type": "multipart/form-data" },
       });
+      console.log(response);
 
-      toast.success("Signup successfull");
-
-      navigate(user.login_route);
+      toast.success("Profile updated!");
     } catch (error) {
-      toast.error("Signup failed. Please try again!");
+      toast.error("Update failed. Please try again!");
     }
   };
 
@@ -70,7 +95,37 @@ export const Signup = ({ role = "user" }) => {
         className=" signup-box mt-5 mx-auto d-flex flex-column gap-2 align-items-center justify-content-center rounded-3"
         style={{ backgroundColor: theme ? "#FFF6E3" : "#d9d9d9" }}
       >
-        <h3 className="mt-2 fw-bold">Signup {role}</h3>
+        <h3 className="mt-2 fw-bold">Profile</h3>
+
+        <div>
+          {profile?.profilePicture && (
+            <div>
+              <img
+                src={profile.profilePicture}
+                alt="Profile"
+                style={{
+                  width: "100px",
+                  height: "100px",
+                  objectFit: "cover",
+                }}
+              />
+            </div>
+          )}
+        </div>
+        <div>
+          <label
+            className=" bg-white text-black file-labal rounded-2 p-1 hover"
+            style={{ cursor: "pointer" }}
+          >
+            Update photo
+            <input
+              type="file"
+              {...register("profilePicture")}
+              accept="image/*"
+            />
+          </label>
+        </div>
+
         <div>
           <input
             className="rounded-2 border-0 px-4 py-2 text-center"
@@ -100,65 +155,14 @@ export const Signup = ({ role = "user" }) => {
           />
         </div>
         <div>
-          <input
-            className="rounded-2 border-0 px-4 py-2 text-center"
-            type="password"
-            placeholder="Password"
-            {...register("password", { required: true, minLength: 4 })}
-          />
-        </div>
-        <div>
-          <input
-            className="rounded-2 border-0 px-4 py-2 text-center"
-            type="password"
-            placeholder="Confirm Password"
-            {...register("confirmPassword", { required: true })}
-          />
-        </div>
-        <div>
-          <label className=" bg-white file-labal rounded-2 py-2 px-5">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth="1.5"
-              stroke="currentColor"
-              className="size-6 me-1 mb-1"
-              height="20px"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z"
-              />
-            </svg>
-            Profile photo
-            <input
-              type="file"
-              {...register("profilePicture")}
-              accept="image/*"
-            />
-          </label>
-        </div>
-        <div>
           <Button
             className="rounded-2 border-0 px-4 hover py-2 text-center 
             text-white mt-1"
             type="submit"
             variant={theme ? "warning" : "dark"}
           >
-            {" "}
-            Signup
+            Save
           </Button>
-        </div>
-        <div>
-          <span className="text-secondary">Already have an account?</span>{" "}
-          <Link
-            className="text-decoration-none text-black"
-            to={user.login_route}
-          >
-            Login
-          </Link>
         </div>
       </form>
     </div>

@@ -6,7 +6,6 @@ import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { setCategory } from "../../redux/features/categorySlice";
 import { axiosInstance } from "../../config/axiosInstance";
 import { setSearchValue } from "../../redux/features/searchSlice";
 import { DarkMode } from "../../components/shared/DarkMode";
@@ -61,74 +60,12 @@ export const Header = () => {
         <Navbar.Toggle className="bg-white" aria-controls="navbarScroll" />
         <Navbar.Collapse id="navbarScroll">
           <Nav className="me-auto my-2 my-lg-0" navbarScroll>
-            <Link to={"/"} className="mt-2 nav-link ">
-              <span
-                onClick={() => {
-                  dispatch(setCategory(""));
-                  dispatch(setSearchValue(""));
-                }}
-                className="text-white h5 hover"
-              >
-                Home
-              </span>
-            </Link>
-            <Link to={'/'} className="mt-2 nav-link">
-              <span
-                onClick={() => {
-                  dispatch(setCategory("mobile"));
-                  dispatch(setSearchValue(""));
-                }}
-                className="text-white h5 hover"
-              >
-                iPhone
-              </span>
-            </Link>
-            <Link to={'/'} className="mt-2 nav-link">
-              <span
-                onClick={() => {
-                  dispatch(setCategory("laptop"));
-                  dispatch(setSearchValue(""));
-                }}
-                className="text-white h5 hover"
-              >
-                Mackbook
-              </span>
-            </Link>
-            <Link to={'/'} className="mt-2 nav-link">
-              <span
-                onClick={() => {
-                  dispatch(setCategory("ipad"));
-                  dispatch(setSearchValue(""));
-                }}
-                className="text-white h5 hover"
-              >
-                iPad
-              </span>
-            </Link>
-            <Link to={'/'} className="mt-2 nav-link">
-              <span
-                onClick={() => {
-                  dispatch(setCategory("airpods"));
-                  dispatch(setSearchValue(""));
-                }}
-                className="text-white h5 hover"
-              >
-                Airpods
-              </span>
-            </Link>
-            <Link to={'/'} className="mt-2 nav-link">
-              <span
-                onClick={() => {
-                  dispatch(setCategory("watch"));
-                  dispatch(setSearchValue(""));
-                }}
-                className="text-white h5 hover"
-              >
-                Watch
-              </span>
-            </Link>
-            <Nav.Link as={Link} to={"/login"} className="mt-2">
+            <Link to={"/seller/login"} className="mt-2 nav-link ">
               <span className="text-white h5 hover">Login</span>
+            </Link>
+
+            <Nav.Link as={Link} to={"/seller/add-product"} className="mt-2">
+              <span className="text-white h5 hover"></span>
             </Nav.Link>
           </Nav>
           <Form className="d-flex">

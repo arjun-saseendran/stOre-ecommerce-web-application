@@ -114,11 +114,11 @@ export const userProfile = async (req, res) => {
     // Get user id
     const { id } = req.user;
 
-    const userProfileData = await User.findById(id).select("-password");
+    const profile = await User.findById(id).select("-password");
 
     res
       .status(200)
-      .json({ message: "user profile details fetched", data: userProfileData });
+      .json({ message: "user profile details fetched", data: profile });
   } catch (error) {
     // Handle catch error
     catchErrorHandler(res, error);
@@ -140,14 +140,40 @@ export const userLogout = async (req, res) => {
 
 // Update user profile details
 export const updateUserProfile = async (req, res) => {
+  console.log(req.body);
+  
   try {
+    // Destructure request body
+    const { name, email, mobile } = req.body;
+
+    // Check if name, email, or mobile are missing
+    if (!name || !email || !mobile) {
+      return res
+        .status(400)
+        .json({ message: "Name, email, and mobile are required" });
+    }
     // Get user id
     const userId = req.user.id;
 
+    // Handle upload image
+    let profilePictureUrl = null;
+    
+    if (req.file) {
+      const uploadResult = await cloudinaryInstance.uploader.upload(
+        req.file.path
+      );
+      profilePictureUrl = uploadResult.url; 
+    }
+
+    
+
     // Update user data
-    const updatedUserData = await User.findByIdAndUpdate(userId, req.body).select(
-      "-password"
-    );
+    const updatedUserData = await User.findByIdAndUpdate(userId, {
+      name,
+      email,
+      mobile,
+      profilePicture: profilePictureUrl || undefined
+    }, {new: true})
 
     res
       .status(200)

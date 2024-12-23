@@ -93,7 +93,7 @@ export const Cart = () => {
 
   return (
     <div className="h-100">
-      <h1 className="text-white text-center mt-3">Cart</h1>
+      <h1 className="text-white text-center mt-5">Cart</h1>
       {cart?.products?.map((product) => (
         <CartCard
           product={product}

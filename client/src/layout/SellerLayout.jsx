@@ -3,11 +3,19 @@ import { Outlet, useLocation } from "react-router-dom";
 import { axiosInstance } from "../config/axiosInstance";
 import { clearSellerData, saveSellerData } from "../redux/features/sellerSlice";
 import { useEffect } from "react";
-import SellerHeader from "../pages/seller/SellerHeader";
+import { SellerHeader } from "../pages/seller/SellerHeader";
 import { Footer } from "../components/user/Footer";
-
+import { Header } from "../components/seller/Header";
 
 export const SellerLayout = () => {
+  // Get current theme
+  const { theme } = useSelector((state) => state.theme);
+
+  // Change body theme
+  useEffect(() => {
+    document.body.style.background = theme ? "#F2E5BF" : "#31363f";
+  }, [theme]);
+
   // Get current user status
   const { isSellerAuth } = useSelector((state) => state.seller);
 
@@ -41,9 +49,11 @@ export const SellerLayout = () => {
 
   return (
     <>
-      <header>{isSellerAuth ? <SellerHeader /> : <Headers />}</header>
+      {isSellerAuth ? <SellerHeader /> : <Header />}
 
-      <main><Outlet/></main>
+      <main>
+        <Outlet />
+      </main>
       <footer>
         <Footer />
       </footer>

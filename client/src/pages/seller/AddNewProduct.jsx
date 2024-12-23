@@ -1,68 +1,58 @@
-import { useState } from "react";
+import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { axiosInstance } from '../../config/axiosInstance'
+import { axiosInstance } from "../../config/axiosInstance";
+import { useForm } from "react-hook-form";
+import Button from "react-bootstrap/esm/Button";
+import toast from "react-hot-toast";
 
 export const AddNewProduct = () => {
-  // Get api base url
-  const apiUrl = import.meta.env.VITE_API_URL;
+  // Get current theme
+  const { theme } = useSelector((state) => state.theme);
 
-  // Set product
-  const [product, setProduct] = useState({});
+  // Config navigate
   const navigate = useNavigate();
 
-  // Handle submit
-  const handleSubmit = async (e) => {
-    // Block refresh
-    e.preventDefault();
+  // Config useForm
+  const { register, handleSubmit } = useForm();
 
-    // Handle file
-    const headers = {
-      "Content-Type": "multipart/form-data",
-    };
+  // Handle on submit
+  const onSubmit = async (data) => {
+    try {
+      // Create form data
+      const formData = new FormData();
+      for (const key in data) {
+        if (key === "image") {
+          // Check if a file is selected
+          if (data.image && data.image[0]) {
+            formData.append("image", data.image[0]);
+          }
+        } else {
+          // Noraml field
+          formData.append(key, data[key]);
+        }
+      }
 
-    // Set form data
-    const newProduct = new FormData();
-    newProduct.append("title", product.title);
-    newProduct.append("description", product.description);
-    newProduct.append("price", product.price);
-    newProduct.append("stock", product.stock);
-    newProduct.append("image", product.image);
-    newProduct.append("category", product.category);
+      // Api call
+      const response = await axiosInstance({
+        method: "POST",
+        url: "/product/add-product",
+        data: formData,
+        headers: { "Content-Type": "multipart/form-data" },
+      });
 
-    // Api call
-    const [response, error] = await axiosInstance(
-      `/product/add-product`,
-      "POST",
-      product,
-      headers
-    );
-
-    // Check response
-    if (response) {
-      alert("Product added successfully");
-      navigate("/");
-    } else {
-      alert("Something went wrong! Try again!");
-      console.log(error);
+      toast.success("Product added successfull");
+    } catch (error) {
+      toast.error("Product added  failed. Please try again!");
     }
   };
 
-  // Get input
-  const handleInput = (e, field) => {
-    setProduct({ ...product, [field]: e.target.value });
-  };
-
-  // Handle file
-  const handleImage = (e) => {
-    setProduct({ ...product, image: e.target.files[0] });
-  };
-
   return (
-    <div className="vh-100">
+    <div>
       <form
-        onSubmit={handleSubmit}
+        onSubmit={handleSubmit(onSubmit)}
         encType="multipart/form-data"
         className=" signup-box mt-5 mx-auto d-flex flex-column gap-2 align-items-center justify-content-center rounded-3"
+        style={{ backgroundColor: theme ? "#FFF6E3" : "#d9d9d9" }}
       >
         <h3 className="mt-2 fw-bold">Add New Product</h3>
         <div>
@@ -71,9 +61,10 @@ export const AddNewProduct = () => {
             type="text"
             placeholder="Title"
             name="title"
-            required
-            maxLength="100"
-            onChange={(e) => handleInput(e, "title")}
+            {...register("title", {
+              required: true,
+              maxLength: 100,
+            })}
           />
         </div>
         <div>
@@ -81,11 +72,11 @@ export const AddNewProduct = () => {
             className="rounded-2 border-0 px-4 py-2 text-center"
             type="text"
             placeholder="Description"
-            name="description"
-            required
-            minLength="20"
-            maxLength="300"
-            onChange={(e) => handleInput(e, "description")}
+            {...register("description", {
+              required: true,
+              minLength: 20,
+              maxLength: 300,
+            })}
           />
         </div>
         <div>
@@ -93,9 +84,7 @@ export const AddNewProduct = () => {
             className="rounded-2 border-0 px-4 py-2 text-center"
             type="number"
             placeholder="Price"
-            name="price"
-            required
-            onChange={(e) => handleInput(e, "price")}
+            {...register("price", { required: true })}
           />
         </div>
         <div>
@@ -103,8 +92,7 @@ export const AddNewProduct = () => {
             className="rounded-2 border-0 px-4 py-2 text-center"
             type="number"
             placeholder="Stock"
-            name="stock"
-            onChange={(e) => handleInput(e, "stock")}
+            {...register("stock")}
           />
         </div>
         <div>
@@ -112,8 +100,7 @@ export const AddNewProduct = () => {
             className="rounded-2 border-0 px-4 py-2 text-center"
             type="text"
             placeholder="Category"
-            name="category"
-            onChange={(e) => handleInput(e, "category")}
+            {...register("category", { required: true })}
           />
         </div>
 
@@ -135,19 +122,20 @@ export const AddNewProduct = () => {
               />
             </svg>
             Product image
-            <input type="file" name="file" onChange={handleImage} />
+            <input type="file" {...register("image")} accept="image/*" />
           </label>
         </div>
         <div>
-          <input
-            className="rounded-2 border-0 px-4 hover py-2 text-center bg-black text-white mt-1"
+          <Button
+            variant={theme ? "warning" : "dark"}
+            className="rounded-2 border-0 px-4 hover py-2 text-center  text-white mt-1"
             type="submit"
-            value="Add"
-          />
+          >
+            {" "}
+            Submit
+          </Button>
         </div>
       </form>
     </div>
   );
-}
-
-
+};

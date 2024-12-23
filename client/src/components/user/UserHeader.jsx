@@ -34,7 +34,7 @@ export const UserHeader = () => {
   const handleLogout = async () => {
     try {
       const response = await axiosInstance({
-        method: "POST",
+        method: "PUT",
         url: "/user/logout",
       });
 
@@ -47,8 +47,13 @@ export const UserHeader = () => {
   };
 
   return (
-    <Navbar expand="lg" className={theme ? "bg-warning py-4 fixed-top" : "bg-black py-4 fixed-top"}>
-      <Container fluid >
+    <Navbar
+      expand="lg"
+      className={
+        theme ? "bg-warning py-4 fixed-top" : "bg-black py-4 fixed-top"
+      }
+    >
+      <Container fluid>
         <Navbar.Brand href="#">
           <span className="text-white h1 fw-bold">st</span>
           <span className="text-secondary h1 fw-bolder">O</span>
@@ -68,7 +73,7 @@ export const UserHeader = () => {
                 Home
               </span>
             </Link>
-            <Nav.Link className="mt-2">
+            <Link to={"/"} className="mt-2 nav-link">
               <span
                 onClick={() => {
                   dispatch(setCategory("mobile"));
@@ -78,8 +83,8 @@ export const UserHeader = () => {
               >
                 iPhone
               </span>
-            </Nav.Link>
-            <Nav.Link className="mt-2">
+            </Link>
+            <Link to={"/"} className="mt-2 nav-link">
               <span
                 onClick={() => {
                   dispatch(setCategory("laptop"));
@@ -89,8 +94,8 @@ export const UserHeader = () => {
               >
                 Mackbook
               </span>
-            </Nav.Link>
-            <Nav.Link className="mt-2">
+            </Link>
+            <Link to={"/"} className="mt-2 nav-link">
               <span
                 onClick={() => {
                   dispatch(setCategory("ipad"));
@@ -100,8 +105,8 @@ export const UserHeader = () => {
               >
                 iPad
               </span>
-            </Nav.Link>
-            <Nav.Link className="mt-2">
+            </Link>
+            <Link to={"/"} className="mt-2 nav-link">
               <span
                 onClick={() => {
                   dispatch(setCategory("airpods"));
@@ -111,8 +116,8 @@ export const UserHeader = () => {
               >
                 Airpods
               </span>
-            </Nav.Link>
-            <Nav.Link className="mt-2">
+            </Link>
+            <Link to={"/"} className="mt-2 nav-link">
               <span
                 onClick={() => {
                   dispatch(setCategory("watch"));
@@ -122,14 +127,16 @@ export const UserHeader = () => {
               >
                 Watch
               </span>
-            </Nav.Link>
+            </Link>
             <NavDropdown
               className="mt-2"
               title={<span className="text-white h5 hover ">Account ↓</span>}
               id="navbarScrollingDropdown"
             >
               <NavDropdown.Item>
-                <span className="text-black hover">Profile</span>
+                <Link to={"/user/profile"} className="text-decoration-none">
+                  <span className="text-black hover">Profile</span>
+                </Link>
               </NavDropdown.Item>
               <NavDropdown.Divider />
               <NavDropdown.Item>
@@ -141,7 +148,10 @@ export const UserHeader = () => {
               <NavDropdown.Item as={Link} to={"user/cart"}>
                 <span className="text-black hover">Cart</span>
               </NavDropdown.Item>
-
+              <NavDropdown.Divider />
+              <NavDropdown.Item as={Link} to={"user/settings"}>
+                <span className="text-black hover">Settings</span>
+              </NavDropdown.Item>
               <NavDropdown.Divider />
 
               <NavDropdown.Item>

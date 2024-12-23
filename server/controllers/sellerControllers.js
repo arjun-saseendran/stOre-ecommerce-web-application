@@ -113,11 +113,11 @@ export const sellerProfile = async (req, res) => {
   try {
     // Get seller id
     const  userId  = req.user.id;
-    const sellerProfileData = await Seller.findById(userId).select("-password");
+    const profile = await Seller.findById(userId).select("-password");
 
     res.status(200).json({
-      message: "seller profile details fetched",
-      data: sellerProfileData,
+      message: "Seller profile details fetched",
+      data: profile,
     });
   } catch (error) {
     res;

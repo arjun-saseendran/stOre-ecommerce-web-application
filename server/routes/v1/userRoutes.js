@@ -21,7 +21,7 @@ userRouter.post("/signup", upload.single("profilePicture"), userSignup);
 userRouter.post("/login", userLogin);
 
 // Logout user
-userRouter.post("/logout", userAuth, userLogout);
+userRouter.put("/logout", userAuth, userLogout);
 
 // Display user profile
 userRouter.get("/profile", userAuth, userProfile);

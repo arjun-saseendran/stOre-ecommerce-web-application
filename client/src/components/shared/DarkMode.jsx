@@ -7,7 +7,7 @@ export const DarkMode = () => {
   const dispatch = useDispatch();
 
   // Set theme
-  const [dark, setDark] = useState(true);
+  const [changeTheme, setChangeTheme] = useState(true);
 
   return (
     <>
@@ -16,11 +16,11 @@ export const DarkMode = () => {
         className="hover"
         style={{ cursor: "pointer" }}
         onClick={() => {
-          setDark(!dark);
-          dispatch(setTheme(dark));
+          setChangeTheme(!changeTheme);
+          dispatch(setTheme(changeTheme));
         }}
       >
-        {dark ? (
+        {changeTheme ? (
           <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 24 24"
