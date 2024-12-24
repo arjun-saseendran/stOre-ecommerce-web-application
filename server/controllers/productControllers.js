@@ -48,7 +48,7 @@ export const addProduct = async (req, res) => {
   }
 };
 
-export const renderProducts = async (req, res) => {
+export const getProducts = async (req, res) => {
   try {
     const products = await Product.find();
 
@@ -105,7 +105,7 @@ export const updateProductData = async (req, res) => {
 export const deleteProduct = async (req, res) => {
   try {
     // Get product id
-    const productId = req.params.id;
+    const {productId} = req.body;
     const product = await Product.findByIdAndDelete(productId);
 
     // Handle product not found
@@ -114,7 +114,7 @@ export const deleteProduct = async (req, res) => {
     }
 
     // Send response to frontend
-    res.status(200).json({ message: "Product deleted", data: product });
+    res.status(200).json({ message: "Product deleted"});
   } catch (error) {
     // Handle catch error
     catchErrorHandler(res, error);

@@ -108,6 +108,21 @@ export const userLogin = async (req, res) => {
   }
 };
 
+// Display all users
+export const getUsers = async (req, res) => {
+  try {
+    // Get all users
+    const users = await User.find();
+
+    res
+      .status(200)
+      .json({ message: "All users fetched successfully", data: users });
+  } catch (error) {
+    // Handle catch error
+    catchErrorHandler(res, error);
+  }
+};
+
 // User profile details
 export const userProfile = async (req, res) => {
   try {
@@ -196,6 +211,26 @@ export const checkUser = async (req, res) => {
   }
 };
 
+// Get inactive users
+export const getInactiveUsers = async (req, res) => {
+  try {
+    // Get inactvie users
+    const inactiveUsers = await User.find({ isActive: false });
+
+    // Handle not found
+    if (!inactiveUsers) {
+      return res.status(404).json({ message: "No inactive user found" });
+    }
+
+    res
+      .status(200)
+      .json({ message: "Inactive users fetched", data: inactiveUsers });
+  } catch (error) {
+    // Handle catch error
+    catchErrorHandler(res, error);
+  }
+};
+
 export const deactivateUser = async (req, res) => {
   try {
     // Get user id
@@ -207,3 +242,47 @@ export const deactivateUser = async (req, res) => {
     catchErrorHandler(res, error);
   }
 };
+
+// Acitvate user
+export const activateUser = async (req, res) => {
+  try {
+    // Get user id
+    const { userId } = req.body;
+
+    // Get user
+    const inactiveUser = await User.findById(userId);
+
+    // Handle not found
+    if (!inactiveUser) {
+      return res.status(404).json({ message: "No inactive user found" });
+    }
+
+    // Acivate user
+    inactiveUser.isActive = true;
+
+    // Save data
+    await inactiveUser.save();
+
+    res.status(202).json({ message: "User activated" });
+  } catch (error) {
+    // Handle catch error
+    catchErrorHandler(res, error);
+  }
+};
+
+// Delete user
+export const deleteUser = async (req, res) => {
+  try {
+    // Get user id
+    const userId = req.params.id;
+
+    // Get user
+    const destroyedUser = await User.findByIdAndDelete(userId);
+
+    res.status(200).json({ message: "User deleted", data: destroyedUser });
+  } catch (error) {
+    // Handle catch error
+    catchErrorHandler(res, error);
+  }
+};
+

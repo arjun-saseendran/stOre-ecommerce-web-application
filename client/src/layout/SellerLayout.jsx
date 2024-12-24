@@ -3,7 +3,7 @@ import { Outlet, useLocation } from "react-router-dom";
 import { axiosInstance } from "../config/axiosInstance";
 import { clearSellerData, saveSellerData } from "../redux/features/sellerSlice";
 import { useEffect } from "react";
-import { SellerHeader } from "../pages/seller/SellerHeader";
+import { SellerHeader } from "../components/seller/SellerHeader";
 import { Footer } from "../components/user/Footer";
 import { Header } from "../components/seller/Header";
 

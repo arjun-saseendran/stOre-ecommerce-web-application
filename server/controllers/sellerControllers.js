@@ -130,6 +130,22 @@ export const sellerProfile = async (req, res) => {
   }
 };
 
+// Display all sellers
+export const getSellers = async (req, res) => {
+  try {
+    // Get all sellers
+    const seller = await Seller.find({role: 'seller'});
+
+    res
+      .status(200)
+      .json({ message: "All sellers fetched successfully", data: seller });
+  } catch (error) {
+    // Handle catch error
+    catchErrorHandler(res, error);
+  }
+};
+
+
 // Seller logout
 export const sellerLogout = async (req, res) => {
   // Clearing token from cookies
@@ -181,6 +197,79 @@ export const deactivateSeller = async (req, res) => {
     const userId = req.user.id;
     await Seller.findByIdAndUpdate(userId, { isActive: false });
     res.status(202).json({ message: "seller deactivated" });
+  } catch (error) {
+    // Handle catch error
+    catchErrorHandler(res, error);
+  }
+};
+
+// Get inactive sellers
+export const getInactiveSellers = async (req, res) => {
+  try {
+    // Get inactvie sellers
+    const inactiveSellers = await Seller.find({ isActive: false });
+
+    // Handle not found
+    if (!inactiveSellers) {
+      return res.status(404).json({ message: "No inactive seller found" });
+    }
+
+    res
+      .status(200)
+      .json({ message: "Inactive sellers fetched", data: inactiveSellers });
+  } catch (error) {
+    // Handle catch error
+    catchErrorHandler(res, error);
+  }
+};
+
+// Acitvate seller
+export const activateSeller = async (req, res) => {
+  try {
+    // Get user id
+    const { userId } = req.body;
+
+    // Get seller
+    const inactiveSeller = await Seller.findById(userId);
+
+    // Handle not found
+    if (!inactiveSeller) {
+      return res.status(404).json({ message: "No inactive seller found" });
+    }
+
+    // Acivate seller
+    inactiveSeller.isActive = true;
+
+    // Save data
+    await inactiveSeller.save();
+
+    res.status(202).json({ message: "Seller activated" });
+  } catch (error) {
+    // Handle catch error
+    catchErrorHandler(res, error);
+  }
+};
+
+// Delete seller
+export const deleteSeller = async (req, res) => {
+  try {
+    // Get seller id
+    const sellerId = req.params.id;
+
+    // Get seller
+    const destroyedSeller = await Seller.findByIdAndDelete(sellerId);
+
+    res.status(202).json({ message: "Seller deleted", data: destroyedSeller });
+  } catch (error) {
+    // Handle catch error
+    catchErrorHandler(res, error);
+  }
+};
+
+// Check admin
+export const checkAdmin = async (req, res) => {
+  try {
+    res.status(200).json({ message: "Autherized admin" });
   } catch (error) {
     // Handle catch error
     catchErrorHandler(res, error);

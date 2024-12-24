@@ -4,7 +4,7 @@ import {
   productDetails,
   updateProductData,
   deleteProduct,
-  renderProducts,
+  getProducts,
   productCategory,
   searchProduct,
   getSellerProducts,
@@ -24,7 +24,7 @@ productRouter.post(
 );
 
 // Display products
-productRouter.get("/products", renderProducts);
+productRouter.get("/products", getProducts);
 
 // Display products based seller
 productRouter.get("/seller-products", sellerAuth, getSellerProducts);

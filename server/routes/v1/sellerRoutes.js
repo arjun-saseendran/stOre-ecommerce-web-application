@@ -7,8 +7,13 @@ import {
   updatesellerProfile,
   checkSeller,
   deactivateSeller,
+  getSellers,
+  activateSeller,
+  checkAdmin,
+  deleteSeller
 } from "../../controllers/sellerControllers.js";
 import { sellerAuth } from "../../middlewares/sellerAuth.js";
+import { adminAuth } from "../../middlewares/adminAuth.js";
 import {upload} from '../../middlewares/multer.js'
 
 // Configure router
@@ -19,6 +24,9 @@ sellerRouter.post("/signup", upload.single('profilePicture'), sellerSignup);
 
 // Login seller
 sellerRouter.post("/login", sellerLogin);
+
+// Display all sellers
+sellerRouter.get('/sellers', adminAuth, getSellers)
 
 // Logout seller
 sellerRouter.put("/logout", sellerAuth, sellerLogout);
@@ -35,7 +43,18 @@ sellerRouter.put("/update-profile", sellerAuth, updatesellerProfile);
 // Deacivate seller profile
 sellerRouter.put("/deactivate-profile", sellerAuth, deactivateSeller);
 
+// Activate seller
+sellerRouter.post('/activate-seller', adminAuth, activateSeller)
+
 // Check seller when routing
 sellerRouter.get("/check-seller", sellerAuth, checkSeller);
+
+// Check admin when routing
+sellerRouter.get("/check-admin", adminAuth, checkAdmin);
+
+// Delete seller
+sellerRouter.delete('/delete-seller/:id', adminAuth, deleteSeller)
+
+
 
 

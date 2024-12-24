@@ -3,12 +3,28 @@ import { Table, Container, Button, Row } from "react-bootstrap";
 import { axiosInstance } from "../../config/axiosInstance";
 import { useSelector } from "react-redux";
 
-export const AllUsers = () => {
+export const InactiveUsers = ({ role = "user" }) => {
   // Get theme
   const { theme } = useSelector((state) => state.theme);
 
+  // Set user role
+  const user = {
+    role: "user",
+    inactive_users_api: "/admin/users-inactive",
+    activate_user_api: "/admin/activate-user",
+  };
+
+  // Handle seller role
+  if (role === "seller") {
+    (user.inactive_users_api = "/admin/sellers-inactive"),
+      (user.activate_user_api = "/admin/activate-seller");
+  }
+
   // Store users
   const [users, setUsers] = useState([]);
+
+  // Store status
+  const [userActive, setUserActvie] = useState(false);
 
   // Api call
   useEffect(() => {
@@ -16,7 +32,7 @@ export const AllUsers = () => {
       try {
         const response = await axiosInstance({
           method: "GET",
-          url: "admin/users",
+          url: user.inactive_users_api
         });
         // Set users to state
         setUsers(response.data.data);
@@ -24,12 +40,26 @@ export const AllUsers = () => {
         console.log(error);
       }
     })();
-  }, []);
-  console.log(users);
+  }, [userActive]);
+
+  // Handle Activate
+
+  const activeUser = async (userId) => {
+    try {
+      const response = await axiosInstance({
+        method: "PUT",
+        url: user.activate_user_api,
+        data: { userId },
+      });
+      setUserActvie(true);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <Container>
-      <h1 className="text-center text-white mt-5">User List</h1>
+      <h1 className="text-center text-white mt-5">Inactive {role} List</h1>
       <Row
         className="mt-5 p-3 rounded-3"
         style={{ backgroundColor: theme ? "#FFF6E3" : "#d9d9d9" }}
@@ -38,7 +68,7 @@ export const AllUsers = () => {
           <thead className="rounded-3">
             <tr>
               <th style={{ backgroundColor: theme ? "#FFF6E3" : "#d9d9d9" }}>
-               Name
+                Name
               </th>
 
               <th style={{ backgroundColor: theme ? "#FFF6E3" : "#d9d9d9" }}>
@@ -47,7 +77,6 @@ export const AllUsers = () => {
               <th style={{ backgroundColor: theme ? "#FFF6E3" : "#d9d9d9" }}>
                 Actions
               </th>
-              
             </tr>
           </thead>
           <tbody>
@@ -64,9 +93,9 @@ export const AllUsers = () => {
                   <Button
                     variant={theme ? "warning" : "dark"}
                     className=" text-white btn-sm"
+                    onClick={() => activeUser(user._id)}
                   >
-                    {" "}
-                    View
+                    Activate
                   </Button>
                 </td>
               </tr>

@@ -16,10 +16,11 @@ import { Profile } from "../pages/shared/Profile";
 import { SellerLayout } from "../layout/SellerLayout";
 import { Settings } from "../components/user/Settings";
 import { SellerProducts } from "../pages/seller/SellerProducts";
-import { AllProducts } from "../pages/admin/AllProducts";
+import { Products } from "../pages/admin/Products";
 import { AdminLayout } from "../layout/AdminLayout";
 import { ProtectedRouteAdmin } from "./ProtectedRouteAdmin";
-import { AllUsers } from "../pages/admin/AllUsers";
+import { Users } from "../pages/shared/Users";
+import { InactiveUsers } from "../pages/shared/InactiveUsers";
 
 export const router = createBrowserRouter([
   {
@@ -106,8 +107,12 @@ export const router = createBrowserRouter([
       {
         element: <ProtectedRouteAdmin />,
         children: [
-          { path: "", element: <AllProducts /> },
-          { path: "all-users", element: <AllUsers /> },
+          { path: "products", element: <Products action="View" /> },
+          { path: "delete-product", element: <Products action="Delete" /> },
+          { path: "users", element: <Users role="user" /> },
+          { path: "inactive-users", element: <InactiveUsers role='user' /> },
+          { path: "sellers", element: <Users role="seller" /> },
+          { path: "inactive-sellers", element: <InactiveUsers role='seller' /> },
         ],
       },
     ],

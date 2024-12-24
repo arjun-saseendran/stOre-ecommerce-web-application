@@ -48,7 +48,7 @@ export const Login = ({ role = "user" }) => {
 
       // Handle admin login
       if (isAdminAuth) {
-        return navigate("/admin");
+        return navigate("/admin/products");
       }
 
       // Navigate to profile page

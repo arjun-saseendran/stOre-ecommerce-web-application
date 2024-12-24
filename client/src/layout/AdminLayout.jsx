@@ -3,7 +3,7 @@ import { Outlet, useLocation } from "react-router-dom";
 import { axiosInstance } from "../config/axiosInstance";
 import { clearAdminData, saveAdminData } from "../redux/features/adminSlice";
 import { useEffect } from "react";
-import { AdminHeader } from "../pages/admin/AdminHeader";
+import { AdminHeader } from "../components/admin/AdminHeader";
 import { Footer } from "../components/user/Footer";
 import { Header } from "../components/seller/Header";
 
