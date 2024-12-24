@@ -274,12 +274,12 @@ export const activateUser = async (req, res) => {
 export const deleteUser = async (req, res) => {
   try {
     // Get user id
-    const userId = req.params.id;
+    const {userId} = req.body
 
     // Get user
-    const destroyedUser = await User.findByIdAndDelete(userId);
+    const user = await User.findByIdAndDelete(userId);
 
-    res.status(200).json({ message: "User deleted", data: destroyedUser });
+    res.status(200).json({ message: "User deleted", data: user});
   } catch (error) {
     // Handle catch error
     catchErrorHandler(res, error);

@@ -20,7 +20,6 @@ import { Products } from "../pages/admin/Products";
 import { AdminLayout } from "../layout/AdminLayout";
 import { ProtectedRouteAdmin } from "./ProtectedRouteAdmin";
 import { Users } from "../pages/shared/Users";
-import { InactiveUsers } from "../pages/shared/InactiveUsers";
 
 export const router = createBrowserRouter([
   {
@@ -102,20 +101,30 @@ export const router = createBrowserRouter([
     element: <AdminLayout />,
     errorElement: <ErrorPage role="admin" />,
     children: [
-      { path: "login", element: <Login role="seller" /> },
+      { path: "login", element: <Login role="admin" /> },
 
       {
         element: <ProtectedRouteAdmin />,
         children: [
-          { path: "products", element: <Products action="View" /> },
+          { path: "", element: <Products action="View" /> },
           { path: "delete-product", element: <Products action="Delete" /> },
           { path: "users", element: <Users role="user" /> },
-          { path: "inactive-users", element: <InactiveUsers role="user" /> },
-          { path: "sellers", element: <Users role="seller" /> },
+          { path: "view-user", element: <Users role="user" action="View" /> },
           {
-            path: "inactive-sellers",
-            element: <InactiveUsers role="seller" />,
+            path: "delete-user",
+            element: <Users role="user" action="Delete" />,
           },
+          { path: "inactive-users", element: <Users role="user" action="Activate" /> },
+          {
+            path: "view-seller",
+            element: <Users role="seller" action="View" />,
+          },
+          {
+            path: "delete-seller",
+            element: <Users role="seller" action="Delete" />,
+          },
+          { path: "sellers", element: <Users role="seller" /> },
+          { path: "inactive-sellers", element: <Users role="seller" /> },
         ],
       },
     ],

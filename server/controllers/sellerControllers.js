@@ -134,7 +134,7 @@ export const sellerProfile = async (req, res) => {
 export const getSellers = async (req, res) => {
   try {
     // Get all sellers
-    const seller = await Seller.find({role: 'seller'});
+    const seller = await Seller.find({ role: "seller" });
 
     res
       .status(200)
@@ -144,7 +144,6 @@ export const getSellers = async (req, res) => {
     catchErrorHandler(res, error);
   }
 };
-
 
 // Seller logout
 export const sellerLogout = async (req, res) => {
@@ -206,7 +205,7 @@ export const deactivateSeller = async (req, res) => {
 // Get inactive sellers
 export const getInactiveSellers = async (req, res) => {
   try {
-    // Get inactvie sellers
+    // Get inactive sellers
     const inactiveSellers = await Seller.find({ isActive: false });
 
     // Handle not found
@@ -254,12 +253,12 @@ export const activateSeller = async (req, res) => {
 export const deleteSeller = async (req, res) => {
   try {
     // Get seller id
-    const sellerId = req.params.id;
+    const { userId } = req.body;
 
     // Get seller
-    const destroyedSeller = await Seller.findByIdAndDelete(sellerId);
+    const seller = await Seller.findByIdAndDelete(userId);
 
-    res.status(202).json({ message: "Seller deleted", data: destroyedSeller });
+    res.status(202).json({ message: "Seller deleted successfully", data: seller });
   } catch (error) {
     // Handle catch error
     catchErrorHandler(res, error);
@@ -269,7 +268,7 @@ export const deleteSeller = async (req, res) => {
 // Check admin
 export const checkAdmin = async (req, res) => {
   try {
-    res.status(200).json({ message: "Autherized admin" });
+    res.status(200).json({ message: "Authorized admin" });
   } catch (error) {
     // Handle catch error
     catchErrorHandler(res, error);

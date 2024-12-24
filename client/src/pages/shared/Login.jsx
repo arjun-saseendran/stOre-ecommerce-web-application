@@ -36,6 +36,15 @@ export const Login = ({ role = "user" }) => {
     user.home_route = "/seller";
   }
 
+  // Handle admin role
+  if (role === "admin") {
+    user.role = "seller";
+    user.login_api = "/seller/login";
+    user.profile_route = "/seller/profile";
+    user.signup_route = "/seller/signup";
+    user.home_route = "/admin";
+  }
+
   const onSubmit = async (data) => {
     try {
       // Api call
@@ -45,11 +54,6 @@ export const Login = ({ role = "user" }) => {
         data,
       });
       toast.success("Login success");
-
-      // Handle admin login
-      if (isAdminAuth) {
-        return navigate("/admin/products");
-      }
 
       // Navigate to profile page
       navigate(user.home_route);

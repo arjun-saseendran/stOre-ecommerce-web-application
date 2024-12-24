@@ -105,7 +105,7 @@ export const updateProductData = async (req, res) => {
 export const deleteProduct = async (req, res) => {
   try {
     // Get product id
-    const {productId} = req.body;
+    const { productId } = req.body;
     const product = await Product.findByIdAndDelete(productId);
 
     // Handle product not found
@@ -114,7 +114,7 @@ export const deleteProduct = async (req, res) => {
     }
 
     // Send response to frontend
-    res.status(200).json({ message: "Product deleted"});
+    res.status(200).json({ message: "Product deleted" });
   } catch (error) {
     // Handle catch error
     catchErrorHandler(res, error);

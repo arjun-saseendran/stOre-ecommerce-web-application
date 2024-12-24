@@ -34,14 +34,11 @@ export const AdminLayout = () => {
         url: "/seller/check-admin",
       });
 
-      console.log(response);
-      
-
       // set admin data
       dispatch(saveAdminData());
     } catch (error) {
       console.log(error);
-      
+
       // If error clear admin data
       dispatch(clearAdminData());
     }
@@ -51,8 +48,6 @@ export const AdminLayout = () => {
   useEffect(() => {
     checkAdmin();
   }, [location.pathname]);
-
-  console.log(isAdminAuth);
 
   return (
     <>
