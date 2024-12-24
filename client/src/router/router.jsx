@@ -19,6 +19,7 @@ import { SellerProducts } from "../pages/seller/SellerProducts";
 import { AllProducts } from "../pages/admin/AllProducts";
 import { AdminLayout } from "../layout/AdminLayout";
 import { ProtectedRouteAdmin } from "./ProtectedRouteAdmin";
+import { AllUsers } from "../pages/admin/AllUsers";
 
 export const router = createBrowserRouter([
   {
@@ -104,7 +105,10 @@ export const router = createBrowserRouter([
 
       {
         element: <ProtectedRouteAdmin />,
-        children: [{ path: "", element: <AllProducts /> }],
+        children: [
+          { path: "", element: <AllProducts /> },
+          { path: "all-users", element: <AllUsers /> },
+        ],
       },
     ],
   },

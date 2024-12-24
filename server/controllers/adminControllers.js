@@ -17,11 +17,31 @@ export const renderAllUsers = async (req, res) => {
   }
 };
 
+// Get inactive users
+export const getInactiveUsers = async (req, res) => {
+  try {
+    // Get inactvie users
+    const inactiveUsers = await User.find({ isActive: false });
+
+    // Handle not found
+    if (!inactiveUsers) {
+      return res.status(404).json({ message: "No inactive user found" });
+    }
+
+    res
+      .status(200)
+      .json({ message: "Inactive users fetched", data: inactiveUsers });
+  } catch (error) {
+    // Handle catch error
+    catchErrorHandler(res, error);
+  }
+};
+
 // Acitvate user
 export const activateUser = async (req, res) => {
   try {
     // Get user id
-    const  userId  = req.params.id;
+    const userId = req.params.id;
 
     // Get user
     const inactiveUser = await User.findById(userId);
@@ -40,7 +60,7 @@ export const activateUser = async (req, res) => {
 export const deleteUser = async (req, res) => {
   try {
     // Get user id
-    const  userId  = req.params.id;
+    const userId = req.params.id;
 
     // Get user
     const destroyedUser = await User.findByIdAndDelete(userId);
@@ -70,7 +90,7 @@ export const renderAllSellers = async (req, res) => {
 export const activateSeller = async (req, res) => {
   try {
     // Get seller id
-    const  sellerId  = req.params.id;
+    const sellerId = req.params.id;
 
     // Get seller
     const inactiveSeller = await Seller.findById(sellerId);
@@ -89,7 +109,7 @@ export const activateSeller = async (req, res) => {
 export const deleteSeller = async (req, res) => {
   try {
     // Get seller id
-    const  sellerId  = req.params.id;
+    const sellerId = req.params.id;
 
     // Get seller
     const destroyedSeller = await Seller.findByIdAndDelete(sellerId);

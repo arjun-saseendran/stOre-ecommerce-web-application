@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { activateUser, deleteUser, renderAllUsers, renderAllSellers, activateSeller, deleteSeller, checkAdmin} from "../../controllers/adminControllers.js";
+import { activateUser, deleteUser, renderAllUsers, renderAllSellers, activateSeller, deleteSeller, checkAdmin, getInactiveUsers} from "../../controllers/adminControllers.js";
 import {adminAuth} from '../../middlewares/adminAuth.js'
 
 // Configure router
@@ -10,6 +10,9 @@ adminRouter.get("/check-admin", adminAuth, checkAdmin);
 
 // Display all users
 adminRouter.get('/users', adminAuth, renderAllUsers)
+
+// Display all inactive users
+adminRouter.get('/users-inactive', adminAuth, getInactiveUsers)
 
 // Activate user
 adminRouter.post('/activate-user/:id', adminAuth, activateUser)

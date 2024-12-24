@@ -9,6 +9,9 @@ export const Login = ({ role = "user" }) => {
   // Get theme
   const { theme } = useSelector((state) => state.theme);
 
+  // Get user status
+  const { isAdminAuth } = useSelector((state) => state.admin);
+
   //config register
   const { register, handleSubmit } = useForm();
 
@@ -21,7 +24,7 @@ export const Login = ({ role = "user" }) => {
     login_api: "/user/login",
     profile_route: "/user/profile",
     signup_route: "/signup",
-    home_route: "/"
+    home_route: "/",
   };
 
   // Handle seller role
@@ -30,7 +33,7 @@ export const Login = ({ role = "user" }) => {
     user.login_api = "/seller/login";
     user.profile_route = "/seller/profile";
     user.signup_route = "/seller/signup";
-    user.home_route = '/seller'
+    user.home_route = "/seller";
   }
 
   const onSubmit = async (data) => {
@@ -43,8 +46,12 @@ export const Login = ({ role = "user" }) => {
       });
       toast.success("Login success");
 
-      // Navigate to profile page
+      // Handle admin login
+      if (isAdminAuth) {
+        return navigate("/admin");
+      }
 
+      // Navigate to profile page
       navigate(user.home_route);
     } catch (error) {
       toast.error("Login failed");

@@ -3,7 +3,7 @@ import { Outlet, useLocation } from "react-router-dom";
 import { axiosInstance } from "../config/axiosInstance";
 import { clearAdminData, saveAdminData } from "../redux/features/adminSlice";
 import { useEffect } from "react";
-import { SellerHeader } from "../pages/seller/SellerHeader";
+import { AdminHeader } from "../pages/admin/AdminHeader";
 import { Footer } from "../components/user/Footer";
 import { Header } from "../components/seller/Header";
 
@@ -51,7 +51,7 @@ export const AdminLayout = () => {
 
   return (
     <>
-      {isAdminAuth ? <SellerHeader /> : <Header />}
+      {isAdminAuth ? <AdminHeader /> : <Header />}
 
       <main>
         <Outlet />

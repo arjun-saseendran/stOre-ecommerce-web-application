@@ -7,7 +7,7 @@ import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { DarkMode } from "../../components/shared/DarkMode";
 
-export const SellerHeader = () => {
+export const AdminHeader = () => {
   
   // Get current theme
 const {theme} = useSelector((state)=> state.theme)
@@ -27,19 +27,27 @@ const {theme} = useSelector((state)=> state.theme)
         <Navbar.Toggle className="bg-white" aria-controls="navbarScroll" />
         <Navbar.Collapse id="navbarScroll">
           <Nav className="me-auto my-2 my-lg-0" navbarScroll>
-            <Link to={"/seller"} className="mt-2 nav-link ">
-              <span className="text-white h5 hover">SellerZone</span>
+            <Link to={"/admin"} className="mt-2 nav-link ">
+              <span className="text-white h5 hover">AdminZone</span>
             </Link>
-            <Link to={"/seller/profile"} className="mt-2 nav-link">
+            <Link to={"/admin/all-users"} className="mt-2 nav-link">
               <span className="text-white h5 hover" role="button">
-                Profile
+               All Users
               </span>
             </Link>
-            <Link to={"/seller/add-product"} className="mt-2 nav-link">
-              <span className="text-white h5 hover">Add Product</span>
+            <Link to={"/admin/user-inactive"} className="mt-2 nav-link">
+              <span className="text-white h5 hover" role="button">
+               Inactive Users
+              </span>
+            </Link>
+            <Link to={"/admin/all-seller"} className="mt-2 nav-link">
+              <span className="text-white h5 hover">Seller Panel</span>
             </Link>
             <Link className="mt-2 nav-link">
               <span className="text-white h5 hover">All Orders</span>
+            </Link>
+            <Link className="mt-2 nav-link">
+              <span className="text-white h5 hover">Pending Orders</span>
             </Link>
           </Nav>
           <Form className="d-flex">

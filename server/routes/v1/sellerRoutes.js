@@ -21,7 +21,7 @@ sellerRouter.post("/signup", upload.single('profilePicture'), sellerSignup);
 sellerRouter.post("/login", sellerLogin);
 
 // Logout seller
-sellerRouter.post("/logout", sellerAuth, sellerLogout);
+sellerRouter.put("/logout", sellerAuth, sellerLogout);
 
 // Display seller profile
 sellerRouter.get("/profile", sellerAuth, sellerProfile);
