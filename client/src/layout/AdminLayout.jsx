@@ -31,12 +31,17 @@ export const AdminLayout = () => {
       // Api call
       const response = await axiosInstance({
         method: "GET",
-        url: "/admin/check-admin",
+        url: "/seller/check-admin",
       });
+
+      console.log(response);
+      
 
       // set admin data
       dispatch(saveAdminData());
     } catch (error) {
+      console.log(error);
+      
       // If error clear admin data
       dispatch(clearAdminData());
     }

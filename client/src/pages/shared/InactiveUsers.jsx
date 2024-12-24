@@ -10,21 +10,21 @@ export const InactiveUsers = ({ role = "user" }) => {
   // Set user role
   const user = {
     role: "user",
-    inactive_users_api: "/admin/users-inactive",
-    activate_user_api: "/admin/activate-user",
+    inactive_users_api: "/user/users-inactive",
+    activate_user_api: "/user/activate-user",
   };
 
   // Handle seller role
   if (role === "seller") {
-    (user.inactive_users_api = "/admin/sellers-inactive"),
-      (user.activate_user_api = "/admin/activate-seller");
+    (user.inactive_users_api = "/seller/sellers-inactive"),
+      (user.activate_user_api = "/seller/activate-seller");
   }
 
   // Store users
   const [users, setUsers] = useState([]);
 
   // Store status
-  const [userActive, setUserActvie] = useState(false);
+  const [userActive, setUserActive] = useState(false);
 
   // Api call
   useEffect(() => {
@@ -51,7 +51,9 @@ export const InactiveUsers = ({ role = "user" }) => {
         url: user.activate_user_api,
         data: { userId },
       });
-      setUserActvie(true);
+      console.log(response);
+      
+      setUserActive(true);
     } catch (error) {
       console.log(error);
     }

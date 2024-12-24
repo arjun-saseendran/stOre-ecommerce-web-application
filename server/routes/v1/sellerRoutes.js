@@ -4,7 +4,7 @@ import {
   sellerLogin,
   sellerLogout,
   sellerProfile,
-  updatesellerProfile,
+  updateSellerProfile,
   checkSeller,
   deactivateSeller,
   getSellers,
@@ -35,12 +35,12 @@ sellerRouter.put("/logout", sellerAuth, sellerLogout);
 sellerRouter.get("/profile", sellerAuth, sellerProfile);
 
 // Update seller profile details
-sellerRouter.put("/update-profile", sellerAuth, updatesellerProfile);
+sellerRouter.put("/update-profile", sellerAuth, updateSellerProfile);
 
 // Reset seller profile password
 // sellerRouter.put('/forgot-password', sellerForgotPassword)
 
-// Deacivate seller profile
+// Deactivate seller profile
 sellerRouter.put("/deactivate-profile", sellerAuth, deactivateSeller);
 
 // Activate seller
@@ -53,7 +53,7 @@ sellerRouter.get("/check-seller", sellerAuth, checkSeller);
 sellerRouter.get("/check-admin", adminAuth, checkAdmin);
 
 // Delete seller
-sellerRouter.delete('/delete-seller/:id', adminAuth, deleteSeller)
+sellerRouter.delete('/delete-seller', adminAuth, deleteSeller)
 
 
 

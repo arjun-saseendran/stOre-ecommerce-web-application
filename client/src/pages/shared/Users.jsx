@@ -10,15 +10,15 @@ export const Users = ({ role = "user" }) => {
   // Set user role
   const user = {
     role: "user",
-    users_api: "/admin/users",
-    users_details: "/admin/user-details",
+    users_api: "/user/users",
+    users_details: "/user/user-details",
   };
 
   // Handle seller role
   if (role === "seller") {
     (user.role = "seller"),
-      (user.users_api = "/admin/sellers"),
-      (user.users_details = "/admin/mentor-details");
+      (user.users_api = "/seller/sellers"),
+      (user.users_details = "/seller/seller-details");
   }
 
   // Store users

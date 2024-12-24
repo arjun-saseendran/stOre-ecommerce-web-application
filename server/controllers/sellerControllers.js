@@ -160,7 +160,7 @@ export const sellerLogout = async (req, res) => {
 };
 
 // Update seller profile details
-export const updatesellerProfile = async (req, res) => {
+export const updateSellerProfile = async (req, res) => {
   try {
     // Get seller id
     const userId = req.user.id;
@@ -223,7 +223,7 @@ export const getInactiveSellers = async (req, res) => {
   }
 };
 
-// Acitvate seller
+// Activate seller
 export const activateSeller = async (req, res) => {
   try {
     // Get user id
@@ -237,7 +237,7 @@ export const activateSeller = async (req, res) => {
       return res.status(404).json({ message: "No inactive seller found" });
     }
 
-    // Acivate seller
+    // Activate seller
     inactiveSeller.isActive = true;
 
     // Save data

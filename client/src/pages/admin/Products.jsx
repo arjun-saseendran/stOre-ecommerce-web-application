@@ -8,15 +8,15 @@ export const Products = ({ action = "View" }) => {
   const { theme } = useSelector((state) => state.theme);
 
   // Set action view
-  const product = {
+  const actions = {
     action: "View",
     product_api: "product/products",
-    action_api: "admin/product-details",
+    action_api: "product/product-details",
   };
 
   // Set action delete
   if (action === "Delete") {
-    (product.action = "Delete")((product.action_api = "/admin/delete-product"));
+    (actions.action = "Delete")((product.action_api = "/product/delete-product"));
   }
 
   // Store products
@@ -28,7 +28,7 @@ export const Products = ({ action = "View" }) => {
       try {
         const response = await axiosInstance({
           method: "GET",
-          url: product.product_api
+          url: actions.product_api
         });
         // Set products to state
         setProducts(response.data.data);
@@ -37,11 +37,11 @@ export const Products = ({ action = "View" }) => {
       }
     })();
   }, []);
-  console.log(products);
+ 
 
   return (
     <Container>
-      <h1 className="text-center text-white mt-5">Product {product.action} List</h1>
+      <h1 className="text-center text-white mt-5">Product {actions.action} List</h1>
       <Row
         className="mt-5 p-3 rounded-3"
         style={{ backgroundColor: theme ? "#FFF6E3" : "#d9d9d9" }}
@@ -76,7 +76,7 @@ export const Products = ({ action = "View" }) => {
                     variant={theme ? "warning" : "dark"}
                     className=" text-white btn-sm"
                   >
-                    {product.action}
+                    {actions.action}
                   </Button>
                 </td>
               </tr>

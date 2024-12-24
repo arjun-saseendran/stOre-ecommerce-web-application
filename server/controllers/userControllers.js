@@ -214,7 +214,7 @@ export const checkUser = async (req, res) => {
 // Get inactive users
 export const getInactiveUsers = async (req, res) => {
   try {
-    // Get inactvie users
+    // Get inactive users
     const inactiveUsers = await User.find({ isActive: false });
 
     // Handle not found
@@ -243,7 +243,7 @@ export const deactivateUser = async (req, res) => {
   }
 };
 
-// Acitvate user
+// Activate user
 export const activateUser = async (req, res) => {
   try {
     // Get user id
@@ -257,7 +257,7 @@ export const activateUser = async (req, res) => {
       return res.status(404).json({ message: "No inactive user found" });
     }
 
-    // Acivate user
+    // Activate user
     inactiveUser.isActive = true;
 
     // Save data
