@@ -14,8 +14,8 @@ import { ProtectedRouteSeller } from "./ProtectedRouteSeller";
 import { AddNewProduct } from "../pages/seller/AddNewProduct";
 import { Profile } from "../pages/shared/Profile";
 import { SellerLayout } from "../layout/SellerLayout";
-import { Products } from "../pages/seller/Products";
 import { Settings } from "../components/user/Settings";
+import { SellerProducts } from "../pages/seller/SellerProducts";
 
 export const router = createBrowserRouter([
   {
@@ -83,7 +83,7 @@ export const router = createBrowserRouter([
       {
         element: <ProtectedRouteSeller />,
         children: [
-          { path: "", element: <Products /> },
+          { path: "", element: <SellerProducts /> },
           { path: "add-product", element: <AddNewProduct /> },
           { path: "profile", element: <Profile role="seller" /> },
           // { path: "settings", element: <Settings role="seller" /> },

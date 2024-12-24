@@ -2,7 +2,7 @@ import { Seller } from "../models/sellerModel.js";
 import { passwordHandler } from "../utils/passowordHandler.js";
 import { generateToken } from "../utils/tokenHandler.js";
 import { catchErrorHandler } from "../utils/catchErrorHandler.js";
-import {cloudinaryInstance} from '../config/cloudinary.js'
+import { cloudinaryInstance } from "../config/cloudinary.js";
 
 // Seller signup
 export const sellerSignup = async (req, res) => {
@@ -79,7 +79,11 @@ export const sellerLogin = async (req, res) => {
     }
 
     // Checking password
-    const matchedPassword = await passwordHandler(password, seller.password,res);
+    const matchedPassword = await passwordHandler(
+      password,
+      seller.password,
+      res
+    );
 
     if (!matchedPassword) {
       return res.status(400).json({ message: "Incorrect password" });
@@ -91,7 +95,7 @@ export const sellerLogin = async (req, res) => {
     }
 
     // Generating token and set role
-    const token = generateToken(seller, 'seller', res);
+    const token = generateToken(seller, "seller", res);
 
     // Set token to cookie
     res.cookie("token", token);
@@ -112,7 +116,7 @@ export const sellerLogin = async (req, res) => {
 export const sellerProfile = async (req, res) => {
   try {
     // Get seller id
-    const  userId  = req.user.id;
+    const userId = req.user.id;
     const profile = await Seller.findById(userId).select("-password");
 
     res.status(200).json({

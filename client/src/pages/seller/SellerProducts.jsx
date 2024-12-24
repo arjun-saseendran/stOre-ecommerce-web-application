@@ -3,7 +3,7 @@ import { Table, Container, Button, Row } from "react-bootstrap";
 import { axiosInstance } from "../../config/axiosInstance";
 import { useSelector } from "react-redux";
 
-export const Products = () => {
+export const SellerProducts = () => {
   // Get theme
   const { theme } = useSelector((state) => state.theme);
 
@@ -13,14 +13,21 @@ export const Products = () => {
   // Api call
   useEffect(() => {
     (async () => {
-      const response = await axiosInstance({
-        method: "GET",
-        url: "product/products",
-      });
-      // Set products to state
-      setProducts(response.data.data);
+      try {
+        const response = await axiosInstance({
+          method: "GET",
+          url: "product/seller-products",
+        });
+        // Set products to state
+        setProducts(response.data.data.products);
+      } catch (error) {
+        console.log(error);
+        
+        
+      }
     })();
   }, []);
+console.log(products);
 
   return (
     <Container>

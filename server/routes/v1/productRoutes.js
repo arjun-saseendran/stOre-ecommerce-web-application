@@ -11,7 +11,6 @@ import {
 } from "../../controllers/productControllers.js";
 import { upload } from "../../middlewares/multer.js";
 import { sellerAuth } from "../../middlewares/sellerAuth.js";
-import { userAuth } from "../../middlewares/userAuth.js";
 
 // Configure router
 export const productRouter = Router();
@@ -28,7 +27,7 @@ productRouter.post(
 productRouter.get("/products", renderProducts);
 
 // Display products based seller
-productRouter.get("/seller-products", userAuth, getSellerProducts);
+productRouter.get("/seller-products", sellerAuth, getSellerProducts);
 
 // Display products by category
 productRouter.post("/category", productCategory);
