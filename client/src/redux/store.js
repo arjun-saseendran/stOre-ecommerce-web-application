@@ -5,6 +5,7 @@ import themeReducer from "./features/themeSlice";
 import userReducer from "./features/userSlice";
 import sellerReducer from "./features/sellerSlice";
 import cartReducer from "./features/cartSlice";
+import adminReducer from "./features/adminSlice";
 
 // Config store
 export const store = configureStore({
@@ -14,6 +15,7 @@ export const store = configureStore({
     theme: themeReducer,
     user: userReducer,
     seller: sellerReducer,
+    admin: adminReducer,
     cart: cartReducer,
   },
 });

@@ -14,5 +14,5 @@ export const ProtectedRouteUser = () => {
     return;
   }
 
-  return isUserAuth ? <Outlet /> : null;
+  return isUserAuth && <Outlet />
 };

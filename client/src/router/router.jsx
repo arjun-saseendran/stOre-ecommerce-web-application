@@ -91,4 +91,17 @@ export const router = createBrowserRouter([
       },
     ],
   },
+  {
+    path: "admin",
+    element: <AdminLayout />,
+    errorElement: <ErrorPage role="admin" />,
+    children: [
+      { path: "login", element: <Login role="admin" /> },
+
+      {
+        element: <ProtectedRouteAdmin />,
+        children: [{ path: "", element: <AllProducts /> }],
+      },
+    ],
+  },
 ]);

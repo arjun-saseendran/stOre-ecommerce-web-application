@@ -14,5 +14,5 @@ export const ProtectedRouteSeller = () => {
     return;
   }
 
-  return isSellerAuth ? <Outlet /> : null;
+  return isSellerAuth && <Outlet /> 
 };
