@@ -3,7 +3,7 @@ import { Outlet, useNavigate } from "react-router-dom";
 
 export const ProtectedRouteAdmin = () => {
   // Get seller authetication status
-  const { isAdminAuth } = useSelector((state) => state.seller);
+  const { isAdminAuth } = useSelector((state) => state.admin);
 
   // Config navigate
   const navigate = useNavigate();
