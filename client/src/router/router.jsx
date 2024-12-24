@@ -16,6 +16,9 @@ import { Profile } from "../pages/shared/Profile";
 import { SellerLayout } from "../layout/SellerLayout";
 import { Settings } from "../components/user/Settings";
 import { SellerProducts } from "../pages/seller/SellerProducts";
+import { AllProducts } from "../pages/admin/AllProducts";
+import { AdminLayout } from "../layout/AdminLayout";
+import { ProtectedRouteAdmin } from "./ProtectedRouteAdmin";
 
 export const router = createBrowserRouter([
   {
@@ -91,12 +94,13 @@ export const router = createBrowserRouter([
       },
     ],
   },
+
   {
     path: "admin",
     element: <AdminLayout />,
     errorElement: <ErrorPage role="admin" />,
     children: [
-      { path: "login", element: <Login role="admin" /> },
+      { path: "login", element: <Login role="seller" /> },
 
       {
         element: <ProtectedRouteAdmin />,

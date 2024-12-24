@@ -7,7 +7,7 @@ import { SellerHeader } from "../pages/seller/SellerHeader";
 import { Footer } from "../components/user/Footer";
 import { Header } from "../components/seller/Header";
 
-export const SellerLayout = () => {
+export const AdminLayout = () => {
   // Get current theme
   const { theme } = useSelector((state) => state.theme);
 
@@ -46,6 +46,8 @@ export const SellerLayout = () => {
   useEffect(() => {
     checkAdmin();
   }, [location.pathname]);
+
+  console.log(isAdminAuth);
 
   return (
     <>

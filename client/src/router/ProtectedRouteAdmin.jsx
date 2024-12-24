@@ -9,9 +9,9 @@ export const ProtectedRouteAdmin = () => {
   const navigate = useNavigate();
 
   if (!isAdminAuth) {
-    navigate("/admin/login");
+    navigate("/seller/login");
     return;
   }
 
-  return isAdminAuth && <Outlet />
+  return isAdminAuth && <Outlet />;
 };
