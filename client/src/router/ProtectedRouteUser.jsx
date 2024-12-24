@@ -9,12 +9,10 @@ export const ProtectedRouteUser = () => {
   // Config navigate
   const navigate = useNavigate();
 
-  useEffect(() => {
-    if (!isUserAuth) {
-      navigate("/login");
-      return;
-    }
-  }, [isUserAuth, navigate]);
+  if (!isUserAuth) {
+    navigate("/login");
+    return;
+  }
 
   return isUserAuth ? <Outlet /> : null;
 };

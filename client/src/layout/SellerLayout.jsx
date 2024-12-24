@@ -35,7 +35,7 @@ export const SellerLayout = () => {
       });
 
       // set seller data
-      dispatch(saveSellerData(response?.data?.data));
+      dispatch(saveSellerData());
     } catch (error) {
       // If error clear seller data
       dispatch(clearSellerData());

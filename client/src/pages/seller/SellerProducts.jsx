@@ -22,12 +22,10 @@ export const SellerProducts = () => {
         setProducts(response.data.data.products);
       } catch (error) {
         console.log(error);
-        
-        
       }
     })();
   }, []);
-console.log(products);
+  console.log(products);
 
   return (
     <Container>

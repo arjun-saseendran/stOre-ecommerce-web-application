@@ -9,6 +9,9 @@ import { clearUserData, saveUserData } from "../redux/features/userSlice";
 
 // Set user layout
 export const UserLayout = () => {
+  // Get global user set state
+  const { isUserAuth } = useSelector((state) => state.user);
+  
   // Config navigate
   const navigate = useNavigate();
 
@@ -18,12 +21,9 @@ export const UserLayout = () => {
   // Config dispatch
   const dispatch = useDispatch();
 
-  // Get global user set state
-  const { isUserAuth } = useSelector((state) => state.user);
-
   // Get theme
   const { theme } = useSelector((state) => state.theme);
-  
+
   // Change body theme
   useEffect(() => {
     document.body.style.background = theme ? "#F2E5BF" : "#31363f";
@@ -38,8 +38,10 @@ export const UserLayout = () => {
         url: "/user/check-user",
       });
 
+      
+      
       // set user
-      dispatch(saveUserData(response?.data?.data));
+      dispatch(saveUserData());
     } catch (error) {
       // clear user data when error
       dispatch(clearUserData());
@@ -48,6 +50,8 @@ export const UserLayout = () => {
   useEffect(() => {
     checkUser();
   }, [location.pathname]);
+
+  
 
   return (
     <>

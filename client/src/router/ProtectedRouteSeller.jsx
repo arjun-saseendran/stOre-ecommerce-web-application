@@ -9,12 +9,10 @@ export const ProtectedRouteSeller = () => {
   // Config navigate
   const navigate = useNavigate();
 
-  useEffect(() => {
-    if (!isSellerAuth) {
-      navigate("/seller/login");
-      return;
-    }
-  }, [isSellerAuth, navigate]);
+  if (!isSellerAuth) {
+    navigate("/seller/login");
+    return;
+  }
 
   return isSellerAuth ? <Outlet /> : null;
 };
