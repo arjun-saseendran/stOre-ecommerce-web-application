@@ -5,7 +5,7 @@ import {
   sellerLogout,
   sellerProfile,
   updatesellerProfile,
-  checkseller,
+  checkSeller,
   deactivateSeller,
 } from "../../controllers/sellerControllers.js";
 import { sellerAuth } from "../../middlewares/sellerAuth.js";
@@ -36,6 +36,6 @@ sellerRouter.put("/update-profile", sellerAuth, updatesellerProfile);
 sellerRouter.put("/deactivate-profile", sellerAuth, deactivateSeller);
 
 // Check seller when routing
-sellerRouter.get("/check-seller", sellerAuth, checkseller);
+sellerRouter.get("/check-seller", sellerAuth, checkSeller);
 
 

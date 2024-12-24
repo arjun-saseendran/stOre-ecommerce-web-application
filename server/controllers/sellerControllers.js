@@ -165,8 +165,8 @@ export const updatesellerProfile = async (req, res) => {
   }
 };
 
-// Checking seller
-export const checkseller = async (req, res) => {
+// Check seller
+export const checkSeller = async (req, res) => {
   try {
     res.status(200).json({ message: "Autherized seller" });
   } catch (error) {

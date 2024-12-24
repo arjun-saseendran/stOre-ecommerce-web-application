@@ -1,9 +1,12 @@
 import { Router } from "express";
-import { activateUser, deleteUser, renderAllUsers, renderAllSellers, activateSeller, deleteSeller} from "../../controllers/adminControllers.js";
+import { activateUser, deleteUser, renderAllUsers, renderAllSellers, activateSeller, deleteSeller, checkAdmin} from "../../controllers/adminControllers.js";
 import {adminAuth} from '../../middlewares/adminAuth.js'
 
 // Configure router
 export const adminRouter = Router()
+
+// Check admin when routing
+adminRouter.get("/check-admin", adminAuth, checkAdmin);
 
 // Display all users
 adminRouter.get('/users', adminAuth, renderAllUsers)

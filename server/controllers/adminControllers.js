@@ -100,3 +100,13 @@ export const deleteSeller = async (req, res) => {
     catchErrorHandler(res, error);
   }
 };
+
+// Check admin
+export const checkAdmin = async (req, res) => {
+  try {
+    res.status(200).json({ message: "Autherized admin" });
+  } catch (error) {
+    // Handle catch error
+    catchErrorHandler(res, error);
+  }
+};
