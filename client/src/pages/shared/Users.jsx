@@ -32,23 +32,24 @@ export const Users = ({ role = "user", action = "View" }) => {
   
 
   // Handle action
-  if (action === "View" && role === "user") {
+  if (action === "View" && role === "user"){
       user.user_view = "/user/user-details";
-  }else if(action === "Delete" && role === "user"){
-     user.user_delete = "user/delete-user",
+  }
+  else if(action === "Delete" && role === "user"){
+     user.user_delete = "user/delete-user"
   }else if(action === "Activate" && role === "user"){
-    user.activate_user = "/user/activate-user",
+    user.activate_user = "/user/activate-user"
   }else if(action === "Deactivate" && role === "user"){
-    user.deactivate_user = "/user/deactivate-user",
+    user.deactivate_user = "/user/deactivate-user"
   }else if(action === "View" && role === "seller"){
     user.user_view = "/seller/seller-details";
   }else if(action === "Delete" && role === "seller"){
-     user.user_delete = "seller/delete-seller",
+     user.user_delete = "seller/delete-seller"
   }else if(action === "Activate" && role === "seller"){
-    user.activate_user = "/seller/activate-seller",
+    user.activate_user = "/seller/activate-seller"
   }else if(action === "Deactivate" && role === "seller"){
-    user.deactivate_user = "/seller/deactivate-seller"
-  }else{
+    user.deactivate_user = "/seller/deactivate-seller"}
+    else{
     console.log('Something went wrong!');
     
   }

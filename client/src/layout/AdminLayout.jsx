@@ -29,7 +29,7 @@ export const AdminLayout = () => {
   const checkAdmin = async () => {
     try {
       // Api call
-      const response = await axiosInstance({
+      await axiosInstance({
         method: "GET",
         url: "/seller/check-admin",
       });

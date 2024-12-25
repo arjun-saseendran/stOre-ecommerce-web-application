@@ -29,7 +29,7 @@ export const SellerLayout = () => {
   const checkSeller = async () => {
     try {
       // Api call
-      const response = await axiosInstance({
+      await axiosInstance({
         method: "GET",
         url: "/seller/check-seller",
       });
@@ -37,6 +37,8 @@ export const SellerLayout = () => {
       // set seller data
       dispatch(saveSellerData());
     } catch (error) {
+      console.log(error);
+
       // If error clear seller data
       dispatch(clearSellerData());
     }

@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { Header } from "../components/user/Header";
 import { Footer } from "../components/user/Footer";
-import { Outlet, useLocation, useNavigate } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
 import { UserHeader } from "../components/user/UserHeader";
 import { useSelector, useDispatch } from "react-redux";
 import { axiosInstance } from "../config/axiosInstance";
@@ -11,9 +11,6 @@ import { clearUserData, saveUserData } from "../redux/features/userSlice";
 export const UserLayout = () => {
   // Get global user set state
   const { isUserAuth } = useSelector((state) => state.user);
-  
-  // Config navigate
-  const navigate = useNavigate();
 
   // Config location path
   const location = useLocation();
@@ -33,16 +30,16 @@ export const UserLayout = () => {
   const checkUser = async () => {
     try {
       // Api call
-      const response = await axiosInstance({
+      await axiosInstance({
         method: "GET",
         url: "/user/check-user",
       });
 
-      
-      
       // set user
       dispatch(saveUserData());
     } catch (error) {
+      console.log(error);
+
       // clear user data when error
       dispatch(clearUserData());
     }
@@ -50,8 +47,6 @@ export const UserLayout = () => {
   useEffect(() => {
     checkUser();
   }, [location.pathname]);
-
-  
 
   return (
     <>
