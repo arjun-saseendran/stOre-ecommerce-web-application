@@ -10,7 +10,11 @@ import {
   getSellers,
   activateSeller,
   checkAdmin,
-  deleteSeller
+  deleteSeller,
+  sellerDetails,
+  getInactiveSellers,
+  adminProfile,
+  getActiveSellers
 } from "../../controllers/sellerControllers.js";
 import { sellerAuth } from "../../middlewares/sellerAuth.js";
 import { adminAuth } from "../../middlewares/adminAuth.js";
@@ -37,14 +41,11 @@ sellerRouter.get("/profile", sellerAuth, sellerProfile);
 // Update seller profile details
 sellerRouter.put("/update-profile", sellerAuth, updateSellerProfile);
 
-// Reset seller profile password
-// sellerRouter.put('/forgot-password', sellerForgotPassword)
-
 // Deactivate seller profile
 sellerRouter.put("/deactivate-profile", sellerAuth, deactivateSeller);
 
 // Activate seller
-sellerRouter.post('/activate-seller', adminAuth, activateSeller)
+sellerRouter.put('/activate-seller', adminAuth, activateSeller)
 
 // Check seller when routing
 sellerRouter.get("/check-seller", sellerAuth, checkSeller);
@@ -54,6 +55,18 @@ sellerRouter.get("/check-admin", adminAuth, checkAdmin);
 
 // Delete seller
 sellerRouter.delete('/delete-seller', adminAuth, deleteSeller)
+
+// Seller details
+sellerRouter.get('/seller-details/:userId', adminAuth, sellerDetails)
+
+// Inactive sellers
+sellerRouter.get("/active-sellers", adminAuth, getActiveSellers)
+
+// Inactive sellers
+sellerRouter.get("/inactive-sellers", adminAuth, getInactiveSellers)
+
+// Admin profile details
+sellerRouter.get("/admin-profile", adminAuth, adminProfile)
 
 
 

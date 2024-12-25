@@ -1,5 +1,5 @@
 import { User } from "../models/userModel.js";
-import { passwordHandler } from "../utils/passowordHandler.js";
+import { passwordHandler } from "../utils/passwordHandler.js";
 import { generateToken } from "../utils/tokenHandler.js";
 import { catchErrorHandler } from "../utils/catchErrorHandler.js";
 import { cloudinaryInstance } from "../config/cloudinary.js";
@@ -17,7 +17,7 @@ export const userSignup = async (req, res) => {
     if (password !== confirmPassword) {
       return res
         .status(400)
-        .json({ message: "Password and Confirm passwrod not match" });
+        .json({ message: "Password and Confirm password not match" });
     }
 
     // Checking user exists or not
@@ -101,7 +101,7 @@ export const userLogin = async (req, res) => {
 
     res
       .status(200)
-      .json({ message: "Login successfull", data: userWithoutPassword });
+      .json({ message: "Login successful", data: userWithoutPassword });
   } catch (error) {
     // Handle catch error
     catchErrorHandler(res, error);
@@ -274,15 +274,14 @@ export const activateUser = async (req, res) => {
 export const deleteUser = async (req, res) => {
   try {
     // Get user id
-    const {userId} = req.body
+    const { userId } = req.body;
 
     // Get user
     const user = await User.findByIdAndDelete(userId);
 
-    res.status(200).json({ message: "User deleted", data: user});
+    res.status(200).json({ message: "User deleted", data: user });
   } catch (error) {
     // Handle catch error
     catchErrorHandler(res, error);
   }
 };
-

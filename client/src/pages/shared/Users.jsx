@@ -2,65 +2,60 @@ import { useEffect, useState } from "react";
 import { Table, Container, Button, Row } from "react-bootstrap";
 import { axiosInstance } from "../../config/axiosInstance";
 import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
-export const Users = ({ role = "user", action = "View" }) => {
+export const Users = ({
+  role = "user",
+  action = "Activate",
+  status = "activate",
+}) => {
   // Get theme
   const { theme } = useSelector((state) => state.theme);
+
+  // Config navigate
+  const navigate = useNavigate();
 
   // Set user role
   const user = {
     role: "user",
-    users_api: "/user/users",
-    user_view: "/user/user-details",
-    user_delete: "user/delete-user",
-    inactive_users_api: "/user/users-inactive",
-    activate_user: "/user/activate-user",
-    deactivate_user: "/user/deactivate-user",
+    users: "/user/users",
+    userDelete: "user/delete-user",
+    activateUser: "/user/activate-user",
+    deactivateUser: "/user/deactivate-profile",
+    userDetails: "/user/user-details",
   };
 
-  // Handle seller role
-  if (role === "seller") {
-    (user.role = "seller"),
-      (user.users_api = "/seller/sellers"),
-      (user.user_view = "/seller/seller-details"),
-      (user.user_delete = "seller/delete-seller");
-      (user.inactive_users_api = "/seller/sellers-inactive"),
-      (user.activate_user = "/seller/activate-seller");
-      (user.deactivate_user = "/seller/deactivate-seller");
+  // Handle status
+  if (role === "user" && status === "active") {
+    user.users = "/user/active-users";
+  } else if (role === "user" && status === "inactive") {
+    user.users = "/user/inactive-users";
+  } else if (role === "seller" && status === "active") {
+    user.users = "/seller/active-sellers";
+  } else if (role === "seller" && status === "inactive") {
+    user.users = "/seller/inactive-sellers";
   }
-
-  
 
   // Handle action
-  if (action === "View" && role === "user"){
-      user.user_view = "/user/user-details";
+  if (action === "Delete" && role === "user") {
+    user.userDelete = "/user/delete-user";
+  } else if (action === "Activate" && role === "user") {
+    user.activateUser = "/user/activate-user";
+  } else if (action === "Deactivate" && role === "user") {
+    user.deactivateUser = "/user/deactivate-profile";
+  } else if (action === "Delete" && role === "seller") {
+    user.userDelete = "/seller/delete-seller";
+  } else if (action === "Activate" && role === "seller") {
+    user.activateUser = "/seller/activate-seller";
+  } else if (action === "Deactivate" && role === "seller") {
+    user.deactivateUser = "/seller/deactivate-profile";
   }
-  else if(action === "Delete" && role === "user"){
-     user.user_delete = "user/delete-user"
-  }else if(action === "Activate" && role === "user"){
-    user.activate_user = "/user/activate-user"
-  }else if(action === "Deactivate" && role === "user"){
-    user.deactivate_user = "/user/deactivate-user"
-  }else if(action === "View" && role === "seller"){
-    user.user_view = "/seller/seller-details";
-  }else if(action === "Delete" && role === "seller"){
-     user.user_delete = "seller/delete-seller"
-  }else if(action === "Activate" && role === "seller"){
-    user.activate_user = "/seller/activate-seller"
-  }else if(action === "Deactivate" && role === "seller"){
-    user.deactivate_user = "/seller/deactivate-seller"}
-    else{
-    console.log('Something went wrong!');
-    
-  }
-  
-  
 
-  // Store users
+  // Store users data
   const [users, setUsers] = useState([]);
-
-  // Store status
-  const [deleteUser, setDeleteUser] = useState({});
+  const [userDelete, setUserDelete] = useState({});
+  const [activeUser, setActiveUser] = useState({});
+  const [inactiveUser, setInactiveUser] = useState({});
 
   // Api call
   useEffect(() => {
@@ -68,7 +63,7 @@ export const Users = ({ role = "user", action = "View" }) => {
       try {
         const response = await axiosInstance({
           method: "GET",
-          url: user.users_api,
+          url: user.users,
         });
         // Set users to state
         setUsers(response.data.data);
@@ -76,44 +71,61 @@ export const Users = ({ role = "user", action = "View" }) => {
         console.log(error);
       }
     })();
-  }, [deleteUser]);
+  }, [userDelete, inactiveUser, activeUser, user.users]);
+
+  console.log(users);
 
   const actionHandler = async (userId, action) => {
     try {
-      if(action === 'Delete'){
+      if (action === "Delete") {
         const response = await axiosInstance({
-        method: "DELETE",
-        url: user.user_delete,
-        data: { userId }});
-       }else if(action === 'View'){
-      const response = await axiosInstance({
-        method: "GET",
-        url: user.user_view,
-        data: { userId }});
-       }else if(action === 'Deactivate'){
-      const response = await axiosInstance({
-        method: "PUT",
-        url: user.deactivate_user,
-        data: { userId }});
-       }else if(action === 'Activate'){
-      const response = await axiosInstance({
-        method: "PUT",
-        url: user.activate_user,
-        data: { userId }});
-       }else{
-        console.log('Something went wrong!');
-        
-       }
-      
-        setDeleteUser(response.data.data);
-} catch (error) {
+          method: "DELETE",
+          url: user.userDelete,
+          data: { userId },
+        });
+        setUserDelete(response.data.data);
+      } else if (action === "View" && role === "user") {
+        navigate(`/admin/user-details/${userId}`);
+        return;
+      } else if (action === "Deactivate") {
+        const response = await axiosInstance({
+          method: "PUT",
+          url: user.deactivateUser,
+          data: { userId },
+        });
+
+        setInactiveUser(response.data.data);
+      } else if (action === "Activate") {
+        const response = await axiosInstance({
+          method: "PUT",
+          url: user.activateUser,
+          data: { userId },
+        });
+
+        setActiveUser(response.data.data);
+      } else {
+        console.log("Something went wrong!");
+      }
+    } catch (error) {
       console.log(error);
     }
   };
 
+  const viewProfile = (userId) => {
+    if (role === "seller") {
+        navigate(`/admin/seller-details/${userId}`);
+        return;
+      }else if(role === 'user'){
+        navigate(`/admin/user-details/${userId}`);
+        return;
+      }
+  }
+
   return (
     <Container>
-      <h1 className="text-center text-white mt-5">List {role}</h1>
+      <h1 className="text-center text-white mt-5">
+        List {status} {role}
+      </h1>
       <Row
         className="mt-5 p-3 rounded-3"
         style={{ backgroundColor: theme ? "#FFF6E3" : "#d9d9d9" }}
@@ -136,11 +148,23 @@ export const Users = ({ role = "user", action = "View" }) => {
           <tbody>
             {users.map((user) => (
               <tr key={user._id}>
-                <td style={{ backgroundColor: theme ? "#FFF6E3" : "#d9d9d9" }}>
+                <td
+                  style={{
+                    backgroundColor: theme ? "#FFF6E3" : "#d9d9d9",
+                    cursor: "pointer",
+                  }}
+                  onClick={() => viewProfile(user._id)}
+                >
                   {user.name}
                 </td>
 
-                <td style={{ backgroundColor: theme ? "#FFF6E3" : "#d9d9d9" }}>
+                <td
+                  style={{
+                    backgroundColor: theme ? "#FFF6E3" : "#d9d9d9",
+                    cursor: "pointer",
+                  }}
+                  onClick={() => viewProfile(user._id)}
+                >
                   {user?.email}
                 </td>
                 <td style={{ backgroundColor: theme ? "#FFF6E3" : "#d9d9d9" }}>
@@ -160,3 +184,5 @@ export const Users = ({ role = "user", action = "View" }) => {
     </Container>
   );
 };
+
+

@@ -90,7 +90,6 @@ export const router = createBrowserRouter([
           { path: "", element: <SellerProducts /> },
           { path: "add-product", element: <AddNewProduct /> },
           { path: "profile", element: <Profile role="seller" /> },
-          // { path: "settings", element: <Settings role="seller" /> },
         ],
       },
     ],
@@ -108,23 +107,42 @@ export const router = createBrowserRouter([
         children: [
           { path: "", element: <Products action="View" /> },
           { path: "delete-product", element: <Products action="Delete" /> },
-          { path: "users", element: <Users role="user" /> },
-          { path: "view-user", element: <Users role="user" action="View" /> },
+          { path: "users", element: <Users role="user" status="active" /> },
+          { path: "profile", element: <Profile role="admin" /> },
+
           {
             path: "delete-user",
             element: <Users role="user" action="Delete" />,
           },
-          { path: "inactive-users", element: <Users role="user" action="Activate" /> },
           {
-            path: "view-seller",
-            element: <Users role="seller" action="View" />,
+            path: "inactive-users",
+            element: <Users role="user" action="Activate" status="inactive" />,
           },
+          {
+            path: "deactivate-seller",
+            element: (
+              <Users role="seller" action="Deactivate" status="active" />
+            ),
+          },
+
           {
             path: "delete-seller",
-            element: <Users role="seller" action="Delete" />,
+            element: <Users role="seller" action="Delete" status="active" />,
           },
-          { path: "sellers", element: <Users role="seller" /> },
-          { path: "inactive-sellers", element: <Users role="seller" /> },
+          {
+            path: "sellers",
+            element: <Users role="seller" status="active" action="Deactivate" />,
+          },
+          {
+            path: "seller-details/:userId",
+            element: <Profile role="seller" action="Details" />,
+          },
+          {
+            path: "inactive-sellers",
+            element: (
+              <Users role="seller" action="Activate" status="inactive" />
+            ),
+          },
         ],
       },
     ],

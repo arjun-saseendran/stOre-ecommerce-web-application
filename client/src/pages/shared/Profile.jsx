@@ -1,42 +1,59 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import Button from "react-bootstrap/esm/Button";
 import { axiosInstance } from "../../config/axiosInstance";
 import { useFetch } from "../../hooks/useFetch";
 
-export const Profile = ({ role = "user" }) => {
+
+export const Profile = ({ role = "user", action }) => {
+  // Config navigate
+  const navigate = useNavigate();
+
+  // Config params
+  const {userId} = useParams()
+
   // Get current theme
   const { theme } = useSelector((state) => state.theme);
-
-  // Confit navigate
-  const naviagate = useNavigate();
 
   // Handle user
   const user = {
     role: "user",
-    profile_api: "/user/profile",
-    logout_api: "/user/logout",
+    profile: "/user/profile",
+    logout: "/user/logout",
   };
 
   // Handle seller role
   if (role === "seller") {
     (user.role = "seller"),
-      (user.profile_api = "/seller/profile"),
-      (user.logout_api = "/seller/logout");
+      (user.profile = "/seller/profile"),
+      (user.logout = "/seller/logout");
+  }
+
+  if (role === "user" && action === "Details") {
+    user.profile = `/user/user-details/${userId}`;
+  } else if (role === "seller" && action === "Details") {
+    user.profile = `seller/seller-details/${userId}`;
+  }else if(role === 'user' && action !== 'Details'){
+    user.profile = '/user/profile'
+  }else if(role === 'seller' && action !== 'Details'){
+    user.profile = '/seller/profile'
+  }else if(role === 'admin' && action !== 'Details'){
+    user.profile = "/seller/admin-profile";
   }
 
   // Api call
-  const [profile, loading, error] = useFetch(user.profile_api);
+  const [profile, loading, error] = useFetch(user.profile)
 
+  
   // Logout user
   const userLogout = async () => {
     try {
       const response = await axiosInstance({
         method: "PUT",
-        url: user.logout_api,
+        url: user.logout,
       });
       if (response) {
-        naviagate("/");
+        navigate("/");
       }
     } catch (error) {
       console.log(error);
@@ -50,7 +67,7 @@ export const Profile = ({ role = "user" }) => {
         className=" signup-box mt-5 mx-auto d-flex flex-column gap-2 align-items-center justify-content-center rounded-3"
         style={{ backgroundColor: theme ? "#FFF6E3" : "#d9d9d9" }}
       >
-        <h3 className="mt-2 fw-bold">Profile</h3>
+        <h3 className="mt-2 fw-bold">Profile {action}</h3>
 
         <div>
           <div>

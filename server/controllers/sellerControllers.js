@@ -1,5 +1,5 @@
 import { Seller } from "../models/sellerModel.js";
-import { passwordHandler } from "../utils/passowordHandler.js";
+import { passwordHandler } from "../utils/passwordHandler.js";
 import { generateToken } from "../utils/tokenHandler.js";
 import { catchErrorHandler } from "../utils/catchErrorHandler.js";
 import { cloudinaryInstance } from "../config/cloudinary.js";
@@ -17,7 +17,7 @@ export const sellerSignup = async (req, res) => {
     if (password !== confirmPassword) {
       return res
         .status(400)
-        .json({ message: "Password and Confirm passwrod not match" });
+        .json({ message: "Password and Confirm password not match" });
     }
 
     // Checking seller exists or not
@@ -130,6 +130,38 @@ export const sellerProfile = async (req, res) => {
   }
 };
 
+// Admin profile details
+export const adminProfile = async (req, res) => {
+  try {
+    // Get seller id
+    const userId = req.user.id;
+    const profile = await Seller.findById(userId).select("-password");
+
+    res.status(200).json({
+      message: "Admin profile details fetched",
+      data: profile,
+    });
+  } catch (error) {
+    res;
+    // Handle catch error
+    catchErrorHandler(res, error);
+  }
+};
+
+// Seller details
+export const sellerDetails = async (req, res) => {
+  try {
+    // Get seller id
+    const { userId } = req.params;
+    const seller = await Seller.findById(userId);
+
+    res.status(200).json({ message: "Seller details fetched", data: seller });
+  } catch (error) {
+    // Handle catch error
+    catchErrorHandler(res, error);
+  }
+};
+
 // Display all sellers
 export const getSellers = async (req, res) => {
   try {
@@ -183,7 +215,7 @@ export const updateSellerProfile = async (req, res) => {
 // Check seller
 export const checkSeller = async (req, res) => {
   try {
-    res.status(200).json({ message: "Autherized seller" });
+    res.status(200).json({ message: "Authorized seller" });
   } catch (error) {
     // Handle catch error
     catchErrorHandler(res, error);
@@ -192,10 +224,24 @@ export const checkSeller = async (req, res) => {
 
 export const deactivateSeller = async (req, res) => {
   try {
-    // ger seller id
-    const userId = req.user.id;
-    await Seller.findByIdAndUpdate(userId, { isActive: false });
-    res.status(202).json({ message: "seller deactivated" });
+    // Get user id
+    const { userId } = req.body;
+
+    // Get seller
+    const seller = await Seller.findById(userId);
+
+    // Handle not found
+    if (!seller) {
+      return res.status(404).json({ message: "No such seller found" });
+    }
+
+    // Activate seller
+    seller.isActive = false;
+
+    // Save data
+    await seller.save();
+
+    res.status(202).json({ message: "Seller deactivated", data: seller });
   } catch (error) {
     // Handle catch error
     catchErrorHandler(res, error);
@@ -221,6 +267,25 @@ export const getInactiveSellers = async (req, res) => {
     catchErrorHandler(res, error);
   }
 };
+// Get active sellers
+export const getActiveSellers = async (req, res) => {
+  try {
+    // Get active sellers
+    const activeSellers = await Seller.find({ isActive: true });
+
+    // Handle not found
+    if (!activeSellers) {
+      return res.status(404).json({ message: "No active sellers found" });
+    }
+
+    res
+      .status(200)
+      .json({ message: "Active sellers fetched", data: activeSellers });
+  } catch (error) {
+    // Handle catch error
+    catchErrorHandler(res, error);
+  }
+};
 
 // Activate seller
 export const activateSeller = async (req, res) => {
@@ -229,20 +294,20 @@ export const activateSeller = async (req, res) => {
     const { userId } = req.body;
 
     // Get seller
-    const inactiveSeller = await Seller.findById(userId);
+    const seller = await Seller.findById(userId);
 
     // Handle not found
-    if (!inactiveSeller) {
+    if (!seller) {
       return res.status(404).json({ message: "No inactive seller found" });
     }
 
     // Activate seller
-    inactiveSeller.isActive = true;
+    seller.isActive = true;
 
     // Save data
-    await inactiveSeller.save();
+    await seller.save();
 
-    res.status(202).json({ message: "Seller activated" });
+    res.status(202).json({ message: "Seller activated", data: seller });
   } catch (error) {
     // Handle catch error
     catchErrorHandler(res, error);
@@ -258,7 +323,9 @@ export const deleteSeller = async (req, res) => {
     // Get seller
     const seller = await Seller.findByIdAndDelete(userId);
 
-    res.status(202).json({ message: "Seller deleted successfully", data: seller });
+    res
+      .status(202)
+      .json({ message: "Seller deleted successfully", data: seller });
   } catch (error) {
     // Handle catch error
     catchErrorHandler(res, error);

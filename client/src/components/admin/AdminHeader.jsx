@@ -22,12 +22,12 @@ export const AdminHeader = () => {
         <Navbar.Toggle className="bg-white" aria-controls="navbarScroll" />
         <Navbar.Collapse id="navbarScroll">
           <NavDropdown
-            className="mt-2  my-2 my-lg-0 me-4"
-            title={<span className="text-white h5 hover">Admin ↓</span>}
+            className="mt-2  my-2 my-lg-0 me-4 text-white"
+            title={<span className="text-white h5 hover">Admin </span>}
             id="navbarScrollingDropdown"
           >
             <NavDropdown.Item>
-              <Link to={"/user/profile"} className="text-decoration-none">
+              <Link to={"/admin/profile"} className="text-decoration-none">
                 <span className="text-black hover">Profile</span>
               </Link>
             </NavDropdown.Item>
@@ -54,8 +54,8 @@ export const AdminHeader = () => {
             </NavDropdown.Item>
           </NavDropdown>
           <NavDropdown
-            className="mt-2  my-2 my-lg-0 me-3"
-            title={<span className="text-white h5 hover">Seller ↓</span>}
+            className="mt-2  my-2 my-lg-0 me-3 text-white"
+            title={<span className="text-white h5 hover">Seller</span>}
             id="navbarScrollingDropdown"
           >
             <NavDropdown.Item as={Link} to={"/admin/sellers"}>
@@ -65,7 +65,6 @@ export const AdminHeader = () => {
             <NavDropdown.Item as={Link} to={"/admin/inactive-sellers"}>
               <span className="text-black hover">Inactive</span>
             </NavDropdown.Item>
-
             <NavDropdown.Divider />
 
             <NavDropdown.Item as={Link} to={"/admin/delete-seller"}>
@@ -73,8 +72,8 @@ export const AdminHeader = () => {
             </NavDropdown.Item>
           </NavDropdown>
           <NavDropdown
-            className="mt-2  my-2 my-lg-0 me-3"
-            title={<span className="text-white h5 hover">User ↓</span>}
+            className="mt-2  my-2 my-lg-0 me-3 text-white"
+            title={<span className="text-white h5 hover">User</span>}
             id="navbarScrollingDropdown"
           >
             <NavDropdown.Item as={Link} to={"/admin/users"}>
@@ -92,8 +91,8 @@ export const AdminHeader = () => {
             </NavDropdown.Item>
           </NavDropdown>
           <NavDropdown
-            className="mt-2  my-2 my-lg-0 me-3"
-            title={<span className="text-white h5 hover">Product ↓</span>}
+            className="mt-2  my-2 my-lg-0 me-3 text-white"
+            title={<span className="text-white h5 hover">Product</span>}
             id="navbarScrollingDropdown"
           >
             <NavDropdown.Item as={Link} to={"/admin/products"}>
@@ -115,8 +114,8 @@ export const AdminHeader = () => {
             </NavDropdown.Item>
           </NavDropdown>
           <NavDropdown
-            className="mt-2  my-2 my-lg-0 me-auto"
-            title={<span className="text-white h5 hover">Order ↓</span>}
+            className="mt-2  my-2 my-lg-0 text-white me-5"
+            title={<span className="text-white h5 hover">Order</span>}
             id="navbarScrollingDropdown"
           >
             <NavDropdown.Item as={Link} to={"/admin/sellers"}>
@@ -124,7 +123,7 @@ export const AdminHeader = () => {
             </NavDropdown.Item>
             <NavDropdown.Divider />
             <NavDropdown.Item as={Link} to={"/admin/inactive-sellers"}>
-              <span className="text-black hover">Aprove</span>
+              <span className="text-black hover">Approve</span>
             </NavDropdown.Item>
 
             <NavDropdown.Divider />
@@ -134,7 +133,7 @@ export const AdminHeader = () => {
             </NavDropdown.Item>
           </NavDropdown>
 
-          <Form className="d-flex">
+          <Form className="d-flex me-auto">
             <Form.Control
               type="search"
               placeholder="Search"

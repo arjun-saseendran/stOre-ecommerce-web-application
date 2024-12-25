@@ -37,7 +37,7 @@ userRouter.get("/profile", userAuth, userProfile);
 // Update user profile details
 userRouter.put("/update-profile", userAuth, updateUserProfile);
 
-// Decactivate user profile
+// Deactivate user profile
 userRouter.put("/deactivate-profile", userAuth, deactivateUser);
 
 // Display all inactive users
@@ -51,3 +51,6 @@ userRouter.get("/check-user", userAuth, checkUser);
 
 // Delete user
 userRouter.delete('/delete-user', adminAuth, deleteUser)
+
+// Display inactive users
+userRouter.get('/inactive-users', adminAuth, getInactiveUsers)
