@@ -11,6 +11,7 @@ import { setCategory } from "../../redux/features/categorySlice";
 import { axiosInstance } from "../../config/axiosInstance";
 import { setSearchValue } from "../../redux/features/searchSlice";
 import { DarkMode } from "../../components/shared/DarkMode";
+import { CartIcon } from "../shared/CartIcon";
 
 export const UserHeader = () => {
   // Config dispatch function
@@ -54,25 +55,21 @@ export const UserHeader = () => {
       }
     >
       <Container fluid>
-        <Navbar.Brand href="#">
-          <span className="text-white h1 fw-bold">st</span>
-          <span className="text-secondary h1 fw-bolder">O</span>
-          <span className="text-white h1 fw-bold">re</span>
+        <Navbar.Brand
+          onClick={() => {
+            dispatch(setCategory(""));
+            dispatch(setSearchValue(""));
+          }}
+        >
+          <Link to={"/"} className="nav-link hover">
+            <span className="text-white h1 fw-bold">st</span>
+            <span className="text-secondary h1 fw-bolder">O</span>
+            <span className="text-white h1 fw-bold">re</span>
+          </Link>
         </Navbar.Brand>
         <Navbar.Toggle className="bg-white" aria-controls="navbarScroll" />
         <Navbar.Collapse id="navbarScroll">
           <Nav className="me-auto my-2 my-lg-0" navbarScroll>
-            <Link to={"/"} className="mt-2 nav-link ">
-              <span
-                onClick={() => {
-                  dispatch(setCategory(""));
-                  dispatch(setSearchValue(""));
-                }}
-                className="text-white h5 hover"
-              >
-                Home
-              </span>
-            </Link>
             <Link to={"/"} className="mt-2 nav-link">
               <span
                 onClick={() => {
@@ -164,8 +161,13 @@ export const UserHeader = () => {
                 </span>
               </NavDropdown.Item>
             </NavDropdown>
+            <Link className="mx-2 mt-2">
+              <span>
+                <DarkMode />
+              </span>
+            </Link>
           </Nav>
-          <Form className="d-flex">
+          <Form className="d-flex me-auto w-100">
             <Form.Control
               type="search"
               placeholder="Search"
@@ -177,10 +179,12 @@ export const UserHeader = () => {
             <Button variant="outline-light" onClick={handleSearch}>
               Search
             </Button>
-            <span className="mx-2 mt-1">
-              <DarkMode />
-            </span>
           </Form>
+          <Link to={"/user/cart"}>
+            <span className="mx-2 mt-1">
+              <CartIcon />
+            </span>
+          </Link>
         </Navbar.Collapse>
       </Container>
     </Navbar>

@@ -127,7 +127,7 @@ export const Users = ({
         List {status} {role}
       </h1>
       <Row
-        className="mt-5 p-3 rounded-3"
+        className="mt-5 p-2 rounded-3"
         style={{ backgroundColor: theme ? "#FFF6E3" : "#d9d9d9" }}
       >
         <Table className="rounded-3">

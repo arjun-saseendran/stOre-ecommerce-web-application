@@ -2,6 +2,7 @@ import { Button, Container, Form, NavDropdown, Navbar } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { DarkMode } from "../shared/DarkMode";
+import { OrderIcon } from "../shared/OrderIcon";
 
 export const AdminHeader = () => {
   // Get current theme
@@ -114,7 +115,7 @@ export const AdminHeader = () => {
             </NavDropdown.Item>
           </NavDropdown>
           <NavDropdown
-            className="mt-2  my-2 my-lg-0 text-white me-5"
+            className="mt-2  my-2 my-lg-0 text-white me-auto"
             title={<span className="text-white h5 hover">Order</span>}
             id="navbarScrollingDropdown"
           >
@@ -133,19 +134,9 @@ export const AdminHeader = () => {
             </NavDropdown.Item>
           </NavDropdown>
 
-          <Form className="d-flex me-auto">
-            <Form.Control
-              type="search"
-              placeholder="Search"
-              className="me-2"
-              aria-label="Search"
-              style={{ background: theme ? "#F5F0CD" : "#D9D9D9" }}
-            />
-            <Button variant="outline-light">Search</Button>
-          </Form>
-
           <span className="mx-2 mt-1">
             <DarkMode />
+            <OrderIcon />
           </span>
         </Navbar.Collapse>
       </Container>
