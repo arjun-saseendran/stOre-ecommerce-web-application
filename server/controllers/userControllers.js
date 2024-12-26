@@ -285,3 +285,23 @@ export const deleteUser = async (req, res) => {
     catchErrorHandler(res, error);
   }
 };
+
+// Get active users
+export const getActiveUsers = async (req, res) => {
+  try {
+    // Get active users
+    const activeUsers = await User.find({ isActive: true });
+
+    // Handle not found
+    if (!activeUsers) {
+      return res.status(404).json({ message: "No active users found" });
+    }
+
+    res
+      .status(200)
+      .json({ message: "Active Users fetched", data: activeUsers });
+  } catch (error) {
+    // Handle catch error
+    catchErrorHandler(res, error);
+  }
+};
