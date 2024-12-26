@@ -15,7 +15,7 @@ import { axiosInstance } from "../../config/axiosInstance";
 import { setSearchValue } from "../../redux/features/searchSlice";
 import { DarkMode } from "../../components/shared/DarkMode";
 import { CartIcon } from "../shared/CartIcon";
-import {HideBanner} from '../shared/HideBanner'
+import { HideBanner } from "../shared/HideBanner";
 
 export const UserHeader = () => {
   // Config dispatch function
@@ -165,15 +165,11 @@ export const UserHeader = () => {
                 </span>
               </NavDropdown.Item>
             </NavDropdown>
-            <NavItem className="mx-2 mt-2">
-              <span>
-                <DarkMode />
-              </span>
+            <NavItem className="mt-2 me-3">
+              <DarkMode />
             </NavItem>
-            <NavItem className="mx-2 mt-2">
-              <span>
-                <HideBanner />
-              </span>
+            <NavItem className="mt-2 me-3">
+              <HideBanner />
             </NavItem>
           </Nav>
           <Form className="d-flex me-auto w-100">
@@ -185,12 +181,12 @@ export const UserHeader = () => {
               ref={inputValue}
               style={{ background: theme ? "#F5F0CD" : "#D9D9D9" }}
             />
-            <Button variant="outline-light" onClick={handleSearch}>
+            <Button variant="outline-light" onClick={handleSearch} className="me-2">
               Search
             </Button>
           </Form>
           <Link to={"/user/cart"}>
-            <span className="mx-2 mt-1">
+            <span className="mt-1 me-2">
               <CartIcon />
             </span>
           </Link>
