@@ -3,14 +3,14 @@ import { useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { DarkMode } from "../shared/DarkMode";
 import { OrderIcon } from "../shared/OrderIcon";
-import {axiosInstance} from '../../config/axiosInstance'
+import { axiosInstance } from "../../config/axiosInstance";
 
 export const SellerHeader = () => {
   // Get current theme
   const { theme } = useSelector((state) => state.theme);
 
   // Config navigate
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   // Handle logout
   const handleLogout = async () => {
@@ -69,7 +69,11 @@ export const SellerHeader = () => {
             <NavDropdown.Divider />
 
             <NavDropdown.Item>
-              <span role="button" className="text-black hover" onClick={handleLogout}>
+              <span
+                role="button"
+                className="text-black hover"
+                onClick={handleLogout}
+              >
                 Logout
               </span>
             </NavDropdown.Item>
@@ -103,22 +107,12 @@ export const SellerHeader = () => {
             title={<span className="text-white h5 hover">Banner</span>}
             id="navbarScrollingDropdown"
           >
-            <NavDropdown.Item as={Link} to={"/admin/products"}>
-              <span className="text-black hover">Products</span>
+            <NavDropdown.Item as={Link} to={"/seller/banners"}>
+              <span className="text-black hover">Banners</span>
             </NavDropdown.Item>
             <NavDropdown.Divider />
-            <NavDropdown.Item as={Link}>
+            <NavDropdown.Item as={Link} to={"/seller/add-banner"}>
               <span className="text-black hover">Add</span>
-            </NavDropdown.Item>
-
-            <NavDropdown.Divider />
-
-            <NavDropdown.Item as={Link}>
-              <span className="text-black hover">Update</span>
-            </NavDropdown.Item>
-            <NavDropdown.Divider />
-            <NavDropdown.Item as={Link}>
-              <span className="text-black hover">Delete</span>
             </NavDropdown.Item>
           </NavDropdown>
 

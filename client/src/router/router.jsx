@@ -19,6 +19,8 @@ import { Products } from "../pages/shared/Products";
 import { AdminLayout } from "../layout/AdminLayout";
 import { ProtectedRouteAdmin } from "./ProtectedRouteAdmin";
 import { Users } from "../pages/shared/Users";
+import { AddBanner } from "../components/shared/AddBanner";
+import { Banners } from "../pages/shared/Banners";
 
 export const router = createBrowserRouter([
   {
@@ -92,11 +94,16 @@ export const router = createBrowserRouter([
             element: <Products role="seller" action="Delete" />,
           },
           { path: "add-product", element: <AddNewProduct role="seller" /> },
+          { path: "add-banner", element: <AddBanner role='seller' /> },
           {
             path: "product-details/:productId",
             element: <ProductDetails role="seller" action="View" />,
           },
           { path: "profile", element: <Profile role="seller" /> },
+          {
+            path: "banners",
+            element: <Banners />,
+          },
         ],
       },
     ],
@@ -163,6 +170,15 @@ export const router = createBrowserRouter([
             path: "product-details/:productId",
             element: <ProductDetails role="admin" action="View" />,
           },
+          {
+            path: "banners",
+            element: <Banners />,
+          },
+          {
+            path: "delete/banner",
+            element: <Banners />,
+          },
+          { path: "add-banner", element: <AddBanner role='admin' /> },
         ],
       },
     ],

@@ -70,7 +70,11 @@ export const AdminHeader = () => {
             <NavDropdown.Divider />
 
             <NavDropdown.Item>
-              <span role="button" className="text-black hover" onClick={handleLogout}>
+              <span
+                role="button"
+                className="text-black hover"
+                onClick={handleLogout}
+              >
                 Logout
               </span>
             </NavDropdown.Item>
@@ -133,6 +137,19 @@ export const AdminHeader = () => {
             <NavDropdown.Divider />
             <NavDropdown.Item as={Link} to={"/admin/delete-product"}>
               <span className="text-black hover">Delete</span>
+            </NavDropdown.Item>
+          </NavDropdown>
+          <NavDropdown
+            className="mt-2  my-2 my-lg-0 me-3 text-white"
+            title={<span className="text-white h5 hover">Banner</span>}
+            id="navbarScrollingDropdown"
+          >
+            <NavDropdown.Item as={Link} to={"/admin/banners"}>
+              <span className="text-black hover">Banners</span>
+            </NavDropdown.Item>
+            <NavDropdown.Divider />
+            <NavDropdown.Item as={Link} to={"/admin/add-banner"}>
+              <span className="text-black hover">Add</span>
             </NavDropdown.Item>
           </NavDropdown>
           <NavDropdown
