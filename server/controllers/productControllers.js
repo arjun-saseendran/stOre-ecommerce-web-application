@@ -69,7 +69,7 @@ export const getProducts = async (req, res) => {
 export const productDetails = async (req, res) => {
   try {
     // Get product id
-    const productId = req.params.id;
+    const { productId } = req.params;
     const productData = await Product.findById(productId);
 
     res
@@ -114,7 +114,7 @@ export const deleteProduct = async (req, res) => {
     }
 
     // Send response to frontend
-    res.status(200).json({ message: "Product deleted" });
+    res.status(200).json({ message: "Product deleted", data: product });
   } catch (error) {
     // Handle catch error
     catchErrorHandler(res, error);

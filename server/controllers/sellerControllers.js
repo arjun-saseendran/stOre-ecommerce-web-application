@@ -235,7 +235,7 @@ export const deactivateSeller = async (req, res) => {
       return res.status(404).json({ message: "No such seller found" });
     }
 
-    // Activate seller
+    // Deactivate seller
     seller.isActive = false;
 
     // Save data

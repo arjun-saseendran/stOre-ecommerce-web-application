@@ -5,18 +5,17 @@ import { Home } from "../pages/user/Home";
 import { About } from "../pages/user/About";
 import { Contact } from "../pages/user/Contact";
 import { ProductList } from "../pages/user/ProductList";
-import { ProductDetails } from "../pages/user/ProductDeatils";
+import { ProductDetails } from "../pages/shared/ProductDetails";
 import { Signup } from "../pages/shared/Signup";
 import { Login } from "../pages/shared/Login";
 import { Cart } from "../pages/user/Cart";
 import { ErrorPage } from "../pages/shared/ErrorPage";
 import { ProtectedRouteSeller } from "./ProtectedRouteSeller";
-import { AddNewProduct } from "../pages/seller/AddNewProduct";
+import { AddNewProduct } from "../pages/shared/AddNewProduct";
 import { Profile } from "../pages/shared/Profile";
 import { SellerLayout } from "../layout/SellerLayout";
 import { Settings } from "../components/user/Settings";
-import { SellerProducts } from "../pages/seller/SellerProducts";
-import { Products } from "../pages/admin/Products";
+import { Products } from "../pages/shared/Products";
 import { AdminLayout } from "../layout/AdminLayout";
 import { ProtectedRouteAdmin } from "./ProtectedRouteAdmin";
 import { Users } from "../pages/shared/Users";
@@ -52,7 +51,7 @@ export const router = createBrowserRouter([
         element: <ProductList />,
       },
       {
-        path: "product-details/:id",
+        path: "product-details/:productId",
         element: <ProductDetails />,
       },
       {
@@ -87,8 +86,16 @@ export const router = createBrowserRouter([
       {
         element: <ProtectedRouteSeller />,
         children: [
-          { path: "", element: <SellerProducts /> },
-          { path: "add-product", element: <AddNewProduct /> },
+          { path: "", element: <Products role="seller" action="View" /> },
+          {
+            path: "delete-product",
+            element: <Products role="seller" action="Delete" />,
+          },
+          { path: "add-product", element: <AddNewProduct role="seller" /> },
+          {
+            path: "product-details/:productId",
+            element: <ProductDetails role="seller" action="View" />,
+          },
           { path: "profile", element: <Profile role="seller" /> },
         ],
       },
@@ -105,9 +112,15 @@ export const router = createBrowserRouter([
       {
         element: <ProtectedRouteAdmin />,
         children: [
-          { path: "", element: <Products action="View" /> },
-          { path: "delete-product", element: <Products action="Delete" /> },
-          { path: "users", element: <Users role="user" status="active" /> },
+          { path: "", element: <Products action="View" role="admin" /> },
+          {
+            path: "delete-product",
+            element: <Products role="admin" action="Delete" />,
+          },
+          {
+            path: "users",
+            element: <Users role="user" status="active" action="Deactivate" />,
+          },
           { path: "profile", element: <Profile role="admin" /> },
 
           {
@@ -131,7 +144,9 @@ export const router = createBrowserRouter([
           },
           {
             path: "sellers",
-            element: <Users role="seller" status="active" action="Deactivate" />,
+            element: (
+              <Users role="seller" status="active" action="Deactivate" />
+            ),
           },
           {
             path: "seller-details/:userId",
@@ -142,6 +157,11 @@ export const router = createBrowserRouter([
             element: (
               <Users role="seller" action="Activate" status="inactive" />
             ),
+          },
+          { path: "add-product", element: <AddNewProduct role="admin" /> },
+          {
+            path: "product-details/:productId",
+            element: <ProductDetails role="admin" action="View" />,
           },
         ],
       },

@@ -35,11 +35,11 @@ productRouter.post("/category", productCategory);
 // Display products by search
 productRouter.post("/search", searchProduct);
 
-// Dispaly product details
-productRouter.get("/product-details/:id", productDetails);
+// Display product details
+productRouter.get("/product-details/:productId", productDetails);
 
 // Update product details
-productRouter.put("/update-product/:id", updateProductData);
+productRouter.put("/update-product/:productId", updateProductData);
 
 // Delete product
-productRouter.delete("/delete-product/:id", deleteProduct);
+productRouter.delete("/delete-product", deleteProduct);

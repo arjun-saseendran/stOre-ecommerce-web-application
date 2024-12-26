@@ -233,14 +233,28 @@ export const getInactiveUsers = async (req, res) => {
 
 export const deactivateUser = async (req, res) => {
   try {
-    // Get user id
-    const userId = req.user.id;
-    await User.findByIdAndUpdate(userId, { isActive: false }, { new: true });
-    res.status(202).json({ message: "User deactivated" });
-  } catch (error) {
-    // Handle catch error
-    catchErrorHandler(res, error);
-  }
+      // Get user id
+      const { userId } = req.body;
+  
+      // Get user
+      const user = await User.findById(userId);
+  
+      // Handle not found
+      if (!user) {
+        return res.status(404).json({ message: "No such seller found" });
+      }
+  
+      // Deactivate user
+      user.isActive = false;
+  
+      // Save data
+      await user.save();
+  
+      res.status(202).json({ message: "User deactivated", data: user });
+    } catch (error) {
+      // Handle catch error
+      catchErrorHandler(res, error);
+    }
 };
 
 // Activate user
@@ -305,3 +319,5 @@ export const getActiveUsers = async (req, res) => {
     catchErrorHandler(res, error);
   }
 };
+
+

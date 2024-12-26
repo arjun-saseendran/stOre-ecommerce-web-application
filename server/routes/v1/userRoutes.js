@@ -10,7 +10,8 @@ import {
   getUsers,
   getInactiveUsers,
   activateUser,
-  deleteUser
+  deleteUser,
+  getActiveUsers
 } from "../../controllers/userControllers.js";
 import { userAuth } from "../../middlewares/userAuth.js";
 import { adminAuth } from "../../middlewares/adminAuth.js";
@@ -54,3 +55,6 @@ userRouter.delete('/delete-user', adminAuth, deleteUser)
 
 // Display inactive users
 userRouter.get('/inactive-users', adminAuth, getInactiveUsers)
+
+// Display active users
+userRouter.get('/active-users', adminAuth, getActiveUsers)

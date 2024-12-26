@@ -1,12 +1,32 @@
 import { Container, Navbar, NavDropdown } from "react-bootstrap";
 import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { DarkMode } from "../shared/DarkMode";
 import { OrderIcon } from "../shared/OrderIcon";
+import {axiosInstance} from '../../config/axiosInstance'
 
 export const SellerHeader = () => {
   // Get current theme
   const { theme } = useSelector((state) => state.theme);
+
+  // Config navigate
+  const navigate = useNavigate()
+
+  // Handle logout
+  const handleLogout = async () => {
+    try {
+      const response = await axiosInstance({
+        method: "PUT",
+        url: "/seller/logout",
+      });
+
+      if (response) {
+        navigate("/seller/login");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <Navbar
       expand="lg"
@@ -28,7 +48,7 @@ export const SellerHeader = () => {
             id="navbarScrollingDropdown"
           >
             <NavDropdown.Item>
-              <Link to={"/admin/profile"} className="text-decoration-none">
+              <Link to={"/seller/profile"} className="text-decoration-none">
                 <span className="text-black hover">Profile</span>
               </Link>
             </NavDropdown.Item>
@@ -49,7 +69,7 @@ export const SellerHeader = () => {
             <NavDropdown.Divider />
 
             <NavDropdown.Item>
-              <span role="button" className="text-black hover">
+              <span role="button" className="text-black hover" onClick={handleLogout}>
                 Logout
               </span>
             </NavDropdown.Item>
@@ -64,7 +84,7 @@ export const SellerHeader = () => {
               <span className="text-black hover">Products</span>
             </NavDropdown.Item>
             <NavDropdown.Divider />
-            <NavDropdown.Item as={Link} to={'/seller/add-product'}>
+            <NavDropdown.Item as={Link} to={"/seller/add-product"}>
               <span className="text-black hover">Add</span>
             </NavDropdown.Item>
 
@@ -74,7 +94,7 @@ export const SellerHeader = () => {
               <span className="text-black hover">Update</span>
             </NavDropdown.Item>
             <NavDropdown.Divider />
-            <NavDropdown.Item as={Link}>
+            <NavDropdown.Item as={Link} to={"/seller/delete-product"}>
               <span className="text-black hover">Delete</span>
             </NavDropdown.Item>
           </NavDropdown>
@@ -101,7 +121,7 @@ export const SellerHeader = () => {
               <span className="text-black hover">Delete</span>
             </NavDropdown.Item>
           </NavDropdown>
-          
+
           <NavDropdown
             className="mt-2 text-white me-auto"
             title={<span className="text-white h5 hover">Order</span>}

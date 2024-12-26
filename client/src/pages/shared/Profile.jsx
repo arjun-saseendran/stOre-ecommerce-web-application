@@ -45,15 +45,19 @@ export const Profile = ({ role = "user", action }) => {
   const [profile, loading, error] = useFetch(user.profile)
 
   
-  // Logout user
-  const userLogout = async () => {
+  // Logout handler
+  const handleLogout = async () => {
     try {
       const response = await axiosInstance({
         method: "PUT",
         url: user.logout,
       });
-      if (response) {
-        navigate("/");
+      if (role === 'user') {
+        navigate("/login");
+      }else if(role === 'admin'){
+        navigate('/admin/login')
+      }else if(role === 'seller'){
+        navigate('/seller/login')
       }
     } catch (error) {
       console.log(error);
@@ -105,7 +109,7 @@ export const Profile = ({ role = "user", action }) => {
 
         <div>
           <Button
-            onClick={userLogout}
+            onClick={handleLogout}
             className="rounded-2 border-0 px-4 hover py-2 text-center 
             text-white mt-1"
             type="submit"

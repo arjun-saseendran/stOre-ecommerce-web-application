@@ -13,15 +13,15 @@ export const ProductDetails = () => {
   // Config dispatch
   const dispatch = useDispatch();
 
+  // Config params
+  const { productId } = useParams();
+
   // Set product
   const [product, setProduct] = useState({});
 
-  // Config params
-  const { id } = useParams();
-
   // Api call
   const [productData, loading, error] = useFetch(
-    `/product/product-details/${id}`
+    `/product/product-details/${productId}`
   );
 
   useEffect(() => {
@@ -30,6 +30,9 @@ export const ProductDetails = () => {
       setProduct(productData);
     }
   }, [productData]);
+
+  console.log(productData);
+  
 
   return (
     <Container className="h-100">

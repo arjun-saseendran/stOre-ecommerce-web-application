@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import Button from "react-bootstrap/esm/Button";
 import toast from "react-hot-toast";
 
-export const AddNewProduct = () => {
+export const AddNewProduct = ({ role = "seller" }) => {
   // Get current theme
   const { theme } = useSelector((state) => state.theme);
 
@@ -27,7 +27,7 @@ export const AddNewProduct = () => {
             formData.append("image", data.image[0]);
           }
         } else {
-          // Noraml field
+          // Normal field
           formData.append(key, data[key]);
         }
       }
@@ -40,9 +40,17 @@ export const AddNewProduct = () => {
         headers: { "Content-Type": "multipart/form-data" },
       });
 
-      toast.success("Product added successfull");
+      if (response && role === "seller") {
+        navigate("/seller");
+      } else if (response && role === "admin") {
+        navigate("/admin");
+      }
+
+      toast.success("Product added successful");
     } catch (error) {
       toast.error("Product added  failed. Please try again!");
+      console.log(error);
+      
     }
   };
 
