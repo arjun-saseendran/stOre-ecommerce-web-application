@@ -1,6 +1,5 @@
 import { useSelector } from "react-redux"
 import { useEffect } from "react";
-import { Header } from "../../components/user/Header";
 
 export const ErrorPage = () => {
   const {theme} = useSelector((state)=> state.theme)

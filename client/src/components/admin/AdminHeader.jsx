@@ -1,4 +1,4 @@
-import { Button, Container, Form, NavDropdown, Navbar } from "react-bootstrap";
+import { Container, NavDropdown, Navbar } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { DarkMode } from "../shared/DarkMode";
@@ -136,6 +136,8 @@ export const AdminHeader = () => {
 
           <span className="mx-2 mt-1">
             <DarkMode />
+          </span>
+          <span className="mx-2 mt-1">
             <OrderIcon />
           </span>
         </Navbar.Collapse>

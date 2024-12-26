@@ -4,8 +4,8 @@ import { axiosInstance } from "../config/axiosInstance";
 import { clearAdminData, saveAdminData } from "../redux/features/adminSlice";
 import { useEffect } from "react";
 import { AdminHeader } from "../components/admin/AdminHeader";
-import { Footer } from "../components/user/Footer";
-import { Header } from "../components/seller/Header";
+import { Footer } from "../components/shared/Footer";
+import { Header } from "../components/shared/Header";
 
 export const AdminLayout = () => {
   // Get current theme

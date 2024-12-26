@@ -4,8 +4,8 @@ import { axiosInstance } from "../config/axiosInstance";
 import { clearSellerData, saveSellerData } from "../redux/features/sellerSlice";
 import { useEffect } from "react";
 import { SellerHeader } from "../components/seller/SellerHeader";
-import { Footer } from "../components/user/Footer";
-import { Header } from "../components/seller/Header";
+import { Footer } from "../components/shared/Footer";
+import { Header } from "../components/shared/Header";
 
 export const SellerLayout = () => {
   // Get current theme

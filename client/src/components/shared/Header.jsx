@@ -1,15 +1,12 @@
 import { useRef } from "react";
-import Button from "react-bootstrap/Button";
-import Container from "react-bootstrap/Container";
-import Form from "react-bootstrap/Form";
-import Nav from "react-bootstrap/Nav";
-import Navbar from "react-bootstrap/Navbar";
+import { Button, Container, Form, Nav, Navbar, NavItem } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { setCategory } from "../../redux/features/categorySlice";
 import { axiosInstance } from "../../config/axiosInstance";
 import { setSearchValue } from "../../redux/features/searchSlice";
 import { DarkMode } from "../../components/shared/DarkMode";
+import { CartIcon } from "../shared/CartIcon";
 
 export const Header = () => {
   // Config dispatch function
@@ -33,7 +30,7 @@ export const Header = () => {
   const handleLogout = async () => {
     try {
       const response = await axiosInstance({
-        method: "POST",
+        method: "PUT",
         url: "/user/logout",
       });
 
@@ -53,26 +50,22 @@ export const Header = () => {
       }
     >
       <Container fluid>
-        <Navbar.Brand href="#">
-          <span className="text-white h1 fw-bold">st</span>
-          <span className="text-secondary h1 fw-bolder">O</span>
-          <span className="text-white h1 fw-bold">re</span>
+        <Navbar.Brand
+          onClick={() => {
+            dispatch(setCategory(""));
+            dispatch(setSearchValue(""));
+          }}
+        >
+          <Link to={"/"} className="nav-link hover">
+            <span className="text-white h1 fw-bold">st</span>
+            <span className="text-secondary h1 fw-bolder">O</span>
+            <span className="text-white h1 fw-bold">re</span>
+          </Link>
         </Navbar.Brand>
         <Navbar.Toggle className="bg-white" aria-controls="navbarScroll" />
         <Navbar.Collapse id="navbarScroll">
           <Nav className="me-auto my-2 my-lg-0" navbarScroll>
-            <Link to={"/"} className="mt-2 nav-link ">
-              <span
-                onClick={() => {
-                  dispatch(setCategory(""));
-                  dispatch(setSearchValue(""));
-                }}
-                className="text-white h5 hover"
-              >
-                Home
-              </span>
-            </Link>
-            <Link to={'/'} className="mt-2 nav-link">
+            <Link to={"/"} className="mt-2 nav-link">
               <span
                 onClick={() => {
                   dispatch(setCategory("mobile"));
@@ -83,7 +76,7 @@ export const Header = () => {
                 iPhone
               </span>
             </Link>
-            <Link to={'/'} className="mt-2 nav-link">
+            <Link to={"/"} className="mt-2 nav-link">
               <span
                 onClick={() => {
                   dispatch(setCategory("laptop"));
@@ -91,10 +84,10 @@ export const Header = () => {
                 }}
                 className="text-white h5 hover"
               >
-                Mackbook
+                Macbook
               </span>
             </Link>
-            <Link to={'/'} className="mt-2 nav-link">
+            <Link to={"/"} className="mt-2 nav-link">
               <span
                 onClick={() => {
                   dispatch(setCategory("ipad"));
@@ -105,7 +98,7 @@ export const Header = () => {
                 iPad
               </span>
             </Link>
-            <Link to={'/'} className="mt-2 nav-link">
+            <Link to={"/"} className="mt-2 nav-link">
               <span
                 onClick={() => {
                   dispatch(setCategory("airpods"));
@@ -116,7 +109,7 @@ export const Header = () => {
                 Airpods
               </span>
             </Link>
-            <Link to={'/'} className="mt-2 nav-link">
+            <Link to={"/"} className="mt-2 nav-link">
               <span
                 onClick={() => {
                   dispatch(setCategory("watch"));
@@ -127,11 +120,19 @@ export const Header = () => {
                 Watch
               </span>
             </Link>
-            <Nav.Link as={Link} to={"/login"} className="mt-2">
-              <span className="text-white h5 hover">Login</span>
-            </Nav.Link>
+            <Link to={'/login'} className="nav-link mt-2">
+              <span className="text-white h5 hover">
+                Login
+              </span>
+            </Link>
+
+            <NavItem className="mx-2 mt-2">
+              <span>
+                <DarkMode />
+              </span>
+            </NavItem>
           </Nav>
-          <Form className="d-flex">
+          <Form className="d-flex me-auto w-100">
             <Form.Control
               type="search"
               placeholder="Search"
@@ -143,10 +144,12 @@ export const Header = () => {
             <Button variant="outline-light" onClick={handleSearch}>
               Search
             </Button>
-            <span className="mx-2 mt-1">
-              <DarkMode />
-            </span>
           </Form>
+          <Link to={"/user/cart"}>
+            <span className="mx-2 mt-1">
+              <CartIcon />
+            </span>
+          </Link>
         </Navbar.Collapse>
       </Container>
     </Navbar>

@@ -1,5 +1,13 @@
 import { useRef } from "react";
-import {Button, Container, Form, Nav,NavDropdown, Navbar, NavItem} from "react-bootstrap";
+import {
+  Button,
+  Container,
+  Form,
+  Nav,
+  NavDropdown,
+  Navbar,
+  NavItem,
+} from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { setCategory } from "../../redux/features/categorySlice";
@@ -84,7 +92,7 @@ export const UserHeader = () => {
                 }}
                 className="text-white h5 hover"
               >
-                Mackbook
+                Macbook
               </span>
             </Link>
             <Link to={"/"} className="mt-2 nav-link">
