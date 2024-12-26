@@ -1,10 +1,5 @@
 import { useRef } from "react";
-import Button from "react-bootstrap/Button";
-import Container from "react-bootstrap/Container";
-import Form from "react-bootstrap/Form";
-import Nav from "react-bootstrap/Nav";
-import Navbar from "react-bootstrap/Navbar";
-import NavDropdown from "react-bootstrap/NavDropdown";
+import {Button, Container, Form, Nav,NavDropdown, Navbar, NavItem} from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { setCategory } from "../../redux/features/categorySlice";
@@ -161,11 +156,11 @@ export const UserHeader = () => {
                 </span>
               </NavDropdown.Item>
             </NavDropdown>
-            <Link className="mx-2 mt-2">
+            <NavItem className="mx-2 mt-2">
               <span>
                 <DarkMode />
               </span>
-            </Link>
+            </NavItem>
           </Nav>
           <Form className="d-flex me-auto w-100">
             <Form.Control
