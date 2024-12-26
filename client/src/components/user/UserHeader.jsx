@@ -15,6 +15,7 @@ import { axiosInstance } from "../../config/axiosInstance";
 import { setSearchValue } from "../../redux/features/searchSlice";
 import { DarkMode } from "../../components/shared/DarkMode";
 import { CartIcon } from "../shared/CartIcon";
+import {HideBanner} from '../shared/HideBanner'
 
 export const UserHeader = () => {
   // Config dispatch function
@@ -167,6 +168,11 @@ export const UserHeader = () => {
             <NavItem className="mx-2 mt-2">
               <span>
                 <DarkMode />
+              </span>
+            </NavItem>
+            <NavItem className="mx-2 mt-2">
+              <span>
+                <HideBanner />
               </span>
             </NavItem>
           </Nav>

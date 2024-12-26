@@ -4,6 +4,9 @@ import { axiosInstance } from "../../config/axiosInstance";
 import { useEffect, useState } from "react";
 
 export const Carrousel = () => {
+  // Get current banner status
+  const { banner } = useSelector((state) => state.banner);
+
   // Store banner theme
   const [bannerTheme, setBannerTheme] = useState([]);
 
@@ -33,7 +36,7 @@ export const Carrousel = () => {
     themeHandler();
   }, [theme, themes.themeUrl]);
 
-  console.log(bannerTheme.image);
+  if (!banner) return;
 
   return (
     <Carousel data-bs-theme="dark">

@@ -6,6 +6,7 @@ import userReducer from "./features/userSlice";
 import sellerReducer from "./features/sellerSlice";
 import cartReducer from "./features/cartSlice";
 import adminReducer from "./features/adminSlice";
+import bannerReducer from "./features/bannerSlice";
 
 // Config store
 export const store = configureStore({
@@ -17,5 +18,6 @@ export const store = configureStore({
     seller: sellerReducer,
     admin: adminReducer,
     cart: cartReducer,
+    banner: bannerReducer,
   },
 });
