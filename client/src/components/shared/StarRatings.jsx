@@ -1,9 +1,30 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+import { axiosInstance } from "../../config/axiosInstance";
 
-export const StarRatings = ({ rating = 3.7 }) => {
+export const StarRatings = ({ productId, getAverageRating }) => {
   // Get current theme
   const { theme } = useSelector((state) => state.theme);
+
+  // Store average rating
+  const [rating, setRating] = useState(0);
+
+  // Api call
+  useEffect(() => {
+    (async () => {
+      try {
+        const response = await axiosInstance({
+          method: "POST",
+          url: "/review/get-avg-rating",
+          data: { productId },
+        });
+        setRating(response.data.data);
+        getAverageRating(response.data.data);
+      } catch (error) {
+        console.log(error);
+      }
+    })();
+  });
 
   const totalStars = 5;
   const stars = [];
@@ -18,10 +39,8 @@ export const StarRatings = ({ rating = 3.7 }) => {
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 24 24"
           fill="currentColor"
-          className={
-            theme ? "size-6 text-warning mb-3" : "size-6 text-black mb-3"
-          }
-          height="40px"
+          className={theme ? "text-warning mb-3" : "text-black mb-3"}
+          height="30px"
         >
           <path
             fillRule="evenodd"
@@ -37,10 +56,8 @@ export const StarRatings = ({ rating = 3.7 }) => {
           key={i}
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 24 24"
-          className={
-            theme ? "size-6 text-warning mb-3" : "size-6 text-black mb-3"
-          }
-          height="40px"
+          className={theme ? "text-warning mb-3" : "text-black mb-3"}
+          height="30px"
         >
           <defs>
             <clipPath id={`clip-${i}`}>
@@ -82,10 +99,8 @@ export const StarRatings = ({ rating = 3.7 }) => {
           viewBox="0 0 24 24"
           strokeWidth="1.5"
           stroke="currentColor"
-          className={
-            theme ? "size-6 text-warning mb-3" : "size-6 text-black mb-3"
-          }
-          height="40px"
+          className={theme ? "text-warning mb-3" : "text-black mb-3"}
+          height="30px"
         >
           <path
             strokeLinecap="round"

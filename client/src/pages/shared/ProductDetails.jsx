@@ -1,10 +1,9 @@
-import Container from "react-bootstrap/Container";
-import Card from "react-bootstrap/Card";
-import Button from "react-bootstrap/Button";
+import {Container, Card, Button, Row, Col} from "react-bootstrap";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useFetch } from "../../hooks/useFetch";
+import BuyNow from "./BuyNow";
 
 export const ProductDetails = () => {
   // Get current theme
@@ -20,8 +19,13 @@ export const ProductDetails = () => {
   const [product, setProduct] = useState({});
 
   // Api call
-  const [productData, loading, error] = useFetch(
+  const [productData] = useFetch(
     `/product/product-details/${productId}`
+  );
+  
+  // Api call
+  const [reviews] = useFetch(
+    `/review/get-review/${productId}`
   );
 
   useEffect(() => {
@@ -31,7 +35,7 @@ export const ProductDetails = () => {
     }
   }, [productData]);
 
-  console.log(productData);
+  console.log(reviews);
   
 
   return (
@@ -45,47 +49,59 @@ export const ProductDetails = () => {
       >
         Product Details
       </h1>
-      <Card
-        className="crd-box d-flex justify-content-center align-items-center mt-5 mx-auto pr-card"
-        style={{ backgroundColor: theme ? "#FFF6E3" : "#d9d9d9" }}
-      >
-        <Card.Img
-          className="object-fit-contain pr-card-img p-2"
-          variant="top"
-          src={product.image}
-        />
-        <Card.Body>
-          <Card.Title>{product.title}</Card.Title>
-
-          <Card.Text>{product.description}</Card.Text>
-          <Card.Text className=" crd-price fw-bold text-center fw-bolder h5">
-            ₹{product.price}
-          </Card.Text>
-          <Button
-            className={
-              theme ? "w-100 mt-1 text-white" : "w-100 mt-1 text-white"
-            }
-            variant={theme ? "warning" : "dark"}
+      <Row>
+        <Col xs={12} md={6}>
+          <Card
+            className="crd-box d-flex justify-content-center align-items-center mt-5 mx-auto pr-card"
+            style={{ backgroundColor: theme ? "#FFF6E3" : "#d9d9d9" }}
           >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth={1.5}
-              stroke="currentColor"
-              className="size-6 me-1"
-              height="25px"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M8.25 18.75a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 0 1-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m3 0h1.125c.621 0 1.129-.504 1.09-1.124a17.902 17.902 0 0 0-3.213-9.193 2.056 2.056 0 0 0-1.58-.86H14.25M16.5 18.75h-2.25m0-11.177v-.958c0-.568-.422-1.048-.987-1.106a48.554 48.554 0 0 0-10.026 0 1.106 1.106 0 0 0-.987 1.106v7.635m12-6.677v6.677m0 4.5v-4.5m0 0h-12"
-              />
-            </svg>
-            Buy Now
-          </Button>
-        </Card.Body>
-      </Card>
+            <Card.Img
+              className="object-fit-contain pr-card-img p-2"
+              variant="top"
+              src={product.image}
+            />
+            <Card.Body>
+              <Card.Title>{product.title}</Card.Title>
+
+              <Card.Text>{product.description}</Card.Text>
+              <Card.Text className=" crd-price fw-bold text-center fw-bolder h5">
+                ₹{product.price}
+              </Card.Text>
+              <Button
+                className={
+                  theme ? "w-100 mt-1 text-white" : "w-100 mt-1 text-white"
+                }
+                variant={theme ? "warning" : "dark"}
+              >
+                <BuyNow />
+                Buy Now
+              </Button>
+            </Card.Body>
+          </Card>
+        </Col>
+        <Col>
+          <Card
+            className="mt-5"
+            style={{ backgroundColor: theme ? "#FFF6E3" : "#d9d9d9" }}
+          >
+            <Card.Body>
+              <Card.Title className="text-center fw-bold p-2">
+                Reviews
+              </Card.Title>
+              <ul className="border p-2">
+                {reviews?.map((review) => (
+                  <li className="list-unstyled">
+                    <h6 className="fw-bold">{review?.userId?.name}</h6>
+                    <p>
+                      {review?.comment}
+                    </p>
+                  </li>
+                ))}
+              </ul>
+            </Card.Body>
+          </Card>
+        </Col>
+      </Row>
     </Container>
   );
 };

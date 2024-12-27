@@ -21,6 +21,7 @@ import { ProtectedRouteAdmin } from "./ProtectedRouteAdmin";
 import { Users } from "../pages/shared/Users";
 import { AddBanner } from "../components/shared/AddBanner";
 import { Banners } from "../pages/shared/Banners";
+import { AddReview } from "../pages/user/AddReview";
 
 export const router = createBrowserRouter([
   {
@@ -72,6 +73,10 @@ export const router = createBrowserRouter([
           {
             path: "settings",
             element: <Settings role="user" />,
+          },
+          {
+            path: "add-review/:productId",
+            element: <AddReview/>,
           },
         ],
       },

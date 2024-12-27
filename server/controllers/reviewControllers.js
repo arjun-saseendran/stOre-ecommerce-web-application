@@ -16,11 +16,11 @@ export const addReview = async (req, res) => {
 
     // Handle product not found
     if (!product) {
-      return res.status(404).json({ messag: "Prouduct not found" });
+      return res.status(404).json({ message: "Product not found" });
     }
 
     // Check rating
-    if (rating > 5 && rating < 1) {
+    if (rating < 1  || rating > 5 ) {
       return res.status(400).json({ message: "Provide a valid proper rating" });
     }
 
@@ -97,7 +97,7 @@ export const deleteReview = async (req, res) => {
 export const getAverageRating = async (req, res) => {
   try {
     // Get product id
-    const  productId  = req.params.id;
+    const  {productId}  = req.body;
 
     // Find reviews
     const reviews = await Review.find({ productId });

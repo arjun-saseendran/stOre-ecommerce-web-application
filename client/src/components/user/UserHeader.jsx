@@ -21,6 +21,11 @@ export const UserHeader = () => {
   // Config dispatch function
   const dispatch = useDispatch();
 
+  // Config cart quantity
+  const quantity = <text x="12" y="12" textAnchor="middle" fontSize="6" fill="black">
+    12
+  </text>
+
   // Config ref
   const inputValue = useRef();
 
@@ -187,7 +192,7 @@ export const UserHeader = () => {
           </Form>
           <Link to={"/user/cart"}>
             <span className="mt-1 me-2">
-              <CartIcon />
+              <CartIcon quantity={quantity} />
             </span>
           </Link>
         </Navbar.Collapse>
