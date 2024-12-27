@@ -4,6 +4,7 @@ import Button from "react-bootstrap/esm/Button";
 import { useSelector } from "react-redux";
 
 export const CartCard = ({ product, addQuantity, removeQuantity }) => {
+  
   // Get current theme
   const { theme } = useSelector((state) => state.theme);
 

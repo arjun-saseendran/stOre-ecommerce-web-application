@@ -1,4 +1,17 @@
+import { useDispatch } from "react-redux";
+import { useFetch } from "../../hooks/useFetch";
+import { setCart } from "../../redux/features/cartSlice";
+
 export const CartIcon = () => {
+  // Config dispatch
+  const dispatch = useDispatch();
+
+  // Api call
+  const [cart, loading, error] = useFetch("/cart/cart");
+
+  useFetch(() => {
+    dispatch(setCart(cart));
+  }, []);
   return (
     <>
       <svg

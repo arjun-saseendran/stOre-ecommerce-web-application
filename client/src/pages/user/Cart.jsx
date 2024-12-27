@@ -4,49 +4,23 @@ import { useFetch } from "../../hooks/useFetch";
 import { useSelector, useDispatch } from "react-redux";
 import { axiosInstance } from "../../config/axiosInstance";
 import { CartCard } from "../../components/user/CartCard";
-import { useEffect } from "react";
-import { setCart } from "../../redux/features/cartSlice";
+import { useEffect, useState } from "react";
+import { setCart, addQuantity, removeQuantity } from "../../redux/features/cartSlice";
 
 export const Cart = () => {
-  // Api call
-  const [cart, loading, error] = useFetch("/cart/cart");
-
-  // Rerender when update the page
-  useEffect(() => {
-    if (!loading && !error) {
-      console.log(cart);
-    }
-  }, [cart, loading, error]);
+  
 
   // Config dispatch
-  // const dispatch = useDispatch();
+  const dispatch = useDispatch();
+
+  // Get cart data
+  const { cartData } = useSelector((state) => state.cart);
 
   // Get current theme
   const { theme } = useSelector((state) => state.theme);
 
-  // Get redux cart data
-  // const { cartData } = useSelector((state) => state.cart);
-
-  // // Api call
-  // useEffect(() => {
-  //   const fetchCart = async () => {
-  //     try {
-  //       const response = await axiosInstance({
-  //         method: "GET",
-  //         url: "/cart/cart",
-  //       });
-
-  //       dispatch(setCart(response.data.data));
-  //     } catch (error) {
-  //       console.log(error);
-
-  //     }
-  //   };
-  //   fetchCart()
-  // }, [dispatch]);
-
   // Set total price
-  const totalPrice = cart?.totalPrice;
+  const totalPrice = cartData?.totalPrice;
 
   // Add quantity
   const addQuantity = async (productId) => {
@@ -57,9 +31,8 @@ export const Cart = () => {
         url: "/cart/add-product",
         data: { productId },
       });
-      // if(response){
-      //   dispatch(setCart(response.data.data))
-      // }
+      dispatch(addQuantity(response.data.data));
+      console.log(response.data.data);
 
       toast.success("Product added to cart");
     } catch (error) {
@@ -79,9 +52,9 @@ export const Cart = () => {
         url: "/cart/remove-product",
         data: { productId },
       });
-      // if (response) {
-      //   dispatch(setCart(response.data.data));
-      // }
+      dispatch(removeQuantity(response.data.data));
+      console.log(response.data.data);
+
       toast.success("Product removed from cart");
     } catch (error) {
       console.log(error);
@@ -94,13 +67,8 @@ export const Cart = () => {
   return (
     <div className="h-100">
       <h1 className="text-white text-center mt-5">Cart</h1>
-      {cart?.products?.map((product) => (
-        <CartCard
-          product={product}
-          key={product._id}
-          removeQuantity={removeQuantity}
-          addQuantity={addQuantity}
-        />
+      {cartData?.products?.map((product) => (
+        <CartCard product={product} key={product._id} addQuantity={addQuantity} removeQuantity={removeQuantity} />
       ))}
       <div
         className="d-flex justify-content-between align-items-center p-2 mx-4 mt-2 rounded-3"
