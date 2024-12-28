@@ -105,7 +105,7 @@ export const removeProductFromWishlist = async (req, res) => {
 
     // Remove product
     wishlist.products = wishlist.products.filter(
-      (product) => product._id !== productId
+      (product) => !product.productId.equals(productId)
     );
 
     // Save the wishlist

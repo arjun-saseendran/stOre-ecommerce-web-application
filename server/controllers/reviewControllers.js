@@ -102,12 +102,12 @@ export const getAverageRating = async (req, res) => {
     // Find reviews
     const reviews = await Review.find({ productId });
 
-    // Handle reviews not found
+    // // Handle reviews not found
     if (!reviews.length) {
       // Send response to frontend
       return res
-        .status(404)
-        .json({ message: "No reviews found for this product" });
+        .status(200)
+        .json({ message: "No reviews found for this product", data: 0 });
     }
 
     // Calculate average rating

@@ -2,9 +2,8 @@ import { useSelector } from "react-redux";
 
 
 export const AverageRatings = ({ average }) => {
-
   // Get current theme
-  const {theme} = useSelector((state)=> state.theme)
+  const { theme } = useSelector((state) => state.theme);
 
   return (
     <div>

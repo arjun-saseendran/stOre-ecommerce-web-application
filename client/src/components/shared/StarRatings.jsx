@@ -11,20 +11,23 @@ export const StarRatings = ({ productId, getAverageRating }) => {
 
   // Api call
   useEffect(() => {
-    (async () => {
+    const fetchRating = async () => {
       try {
         const response = await axiosInstance({
           method: "POST",
           url: "/review/get-avg-rating",
           data: { productId },
         });
-        setRating(response.data.data);
-        getAverageRating(response.data.data);
+
+        setRating(response?.data?.data);
+        getAverageRating(response?.data?.data);
       } catch (error) {
         console.log(error);
       }
-    })();
-  });
+    };
+
+    fetchRating();
+  }, [productId]);
 
   const totalStars = 5;
   const stars = [];

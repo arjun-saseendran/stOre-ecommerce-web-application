@@ -50,7 +50,9 @@ export const UserLayout = () => {
 
   return (
     <>
-      <header>{isUserAuth ? <UserHeader /> : <Header />}</header>
+      <header>
+        {isUserAuth ? <UserHeader/> : <Header />}
+      </header>
 
       <main>
         <Outlet />

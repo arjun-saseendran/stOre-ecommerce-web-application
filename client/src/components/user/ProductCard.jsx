@@ -1,4 +1,4 @@
-import { Badge, Card, Button } from "react-bootstrap";
+import { Card, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { axiosInstance } from "../../config/axiosInstance";
@@ -14,6 +14,9 @@ export const ProductCard = ({ product }) => {
 
   // Store average rating
   const [average, setAverage] = useState(0);
+
+  // Get current wishlist data
+  const { wishlistData } = useSelector((state) => state.wishlist);
 
   // Add to cart
   const addToCart = async (productId) => {
@@ -31,19 +34,36 @@ export const ProductCard = ({ product }) => {
     }
   };
 
-  // Add to wishlist
-  const addToWishlist = async (productId) => {
+  // Handle wishlist
+  const wishlistHandler = async (productId) => {
     // Api call
-    try {
-      const response = await axiosInstance({
-        method: "POST",
-        url: "/wishlist/add-product",
-        data: { productId },
-      });
+
+    const found = wishlistData.products.find(
+      (product) => product.productId._id === productId
+    );
+
+    if (found) {
+      try {
+        productId = found.productId._id;
+
+        const response = await axiosInstance({
+          method: "DELETE",
+          url: "/wishlist/remove-product",
+          data: { productId },
+        });
+      } catch (error) {
+        console.log(error);
+      }
 
       console.log(response);
-    } catch (error) {
-      console.log(error);
+    } else {
+      try {
+        const response = await axiosInstance({
+          method: "POST",
+          url: "/wishlist/add-product",
+          data: { productId },
+        });
+      } catch (error) {}
     }
   };
 
@@ -55,39 +75,41 @@ export const ProductCard = ({ product }) => {
     <Card style={{ backgroundColor: theme ? "#FFF6E3" : "#d9d9d9" }}>
       <span
         as="button"
-        className="m-2"
-        onClick={() => addToWishlist(product._id)}
+        className="m-2 hover"
+        onClick={() => {
+          wishlistHandler(product?._id);
+        }}
+        style={{ cursor: "pointer" }}
       >
-        <WishlistIcon
-          average={average}
-          productId={product._id}
-          getAverageRating={getAverageRating}
-        />
+        <WishlistIcon productId={product?._id} />
       </span>
+
       <Card.Img
         className="crd-image object-fit-contain"
         variant="top"
-        src={product.image}
+        src={product?.image}
       />
 
       <Card.Body>
         <Link
           className="text-decoration-none text-black"
-          to={`/product-details/${product._id}`}
+          to={`/product-details/${product?._id}`}
         >
           <Card.Title className="crd-title title-hover">
             {product.title}
           </Card.Title>
         </Link>
-        <Card.Text className="crd-description">{product.description}</Card.Text>
+        <Card.Text className="crd-description">
+          {product?.description}
+        </Card.Text>
         <Card.Text className=" crd-price fw-bold text-center fw-bolder h5">
-          ₹{product.price}
+          ₹{product?.price}
         </Card.Text>
 
         <div className="d-flex justify-content-center">
-          <Link to={`/user/add-review/${product._id}`}>
+          <Link to={`/user/add-review/${product?._id}`}>
             <StarRatings
-              productId={product._id}
+              productId={product?._id}
               getAverageRating={getAverageRating}
             />
           </Link>
@@ -97,7 +119,7 @@ export const ProductCard = ({ product }) => {
         <Button
           className="w-100 text-white"
           variant={theme ? "warning" : "dark"}
-          onClick={() => addToCart(product._id)}
+          onClick={() => addToCart(product?._id)}
         >
           <span className="mx-1">
             <Link>

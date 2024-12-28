@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useRef, useEffect, useState } from "react";
 import {
   Button,
   Container,
@@ -26,42 +26,11 @@ export const UserHeader = () => {
   // Store wishlist data
   const [wishlist, setWishlist] = useState([]);
 
-  // Config dispatch function
-  const dispatch = useDispatch();
-
-  // Api call
-  useEffect(() => {
-    (async () => {
-      try {
-        const response = await axiosInstance({
-          method: "GET",
-          url: "/cart/cart",
-        });
-
-        setCart(response?.data?.data);
-      } catch (error) {
-        console.log(error);
-      }
-    })();
-  }, [cart]);
-
-  // Api call
-  useEffect(() => {
-    (async () => {
-      try {
-        const response = await axiosInstance({
-          method: "GET",
-          url: "/wishlist/wishlist",
-        });
-        setWishlist(response.data.data);
-      } catch (error) {
-        console.log(error);
-      }
-    })();
-  }, []);
-
   // Config ref
   const inputValue = useRef();
+
+  // Config dispatch
+  const dispatch = useDispatch();
 
   // Search value
   const handleSearch = () => {
@@ -73,6 +42,21 @@ export const UserHeader = () => {
 
   // Config navigate
   const navigate = useNavigate();
+
+  // Api call
+  useEffect(() => {
+    (async () => {
+      try {
+        const response = await axiosInstance({
+          method: "GET",
+          url: "/cart/cart",
+        });
+        setCart(response?.data?.data);
+      } catch (error) {
+        console.log(error);
+      }
+    })();
+  }, [cart]);
 
   // Handle logout
   const handleLogout = async () => {
@@ -90,7 +74,35 @@ export const UserHeader = () => {
     }
   };
 
-  // Store data to global variable
+  // Api call for wishlist
+  useEffect(() => {
+    (async () => {
+      try {
+        const response = await axiosInstance({
+          method: "GET",
+          url: "/wishlist/wishlist",
+        });
+        setWishlist(response.data.data);
+      } catch (error) {
+        console.log(error);
+      }
+    })();
+  }, [wishlist]);
+
+  // Remove product
+  const removeProduct = async (productId) => {
+    try {
+      const response = await axiosInstance({
+        method: "DELETE",
+        url: "/wishlist/remove-product",
+        data: { productId },
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  //   // Store cart data to global variable
   useEffect(() => {
     dispatch(setCartData(cart));
     dispatch(setWishlistData(wishlist));
@@ -179,10 +191,8 @@ export const UserHeader = () => {
               title={<span className="text-white h5 hover ">Account ↓</span>}
               id="navbarScrollingDropdown"
             >
-              <NavDropdown.Item>
-                <Link to={"/user/profile"} className="text-decoration-none">
-                  <span className="text-black hover">Profile</span>
-                </Link>
+              <NavDropdown.Item as={Link} to={"/user/profile"}>
+                <span className="text-black hover">Profile</span>
               </NavDropdown.Item>
               <NavDropdown.Divider />
               <NavDropdown.Item>
@@ -195,7 +205,7 @@ export const UserHeader = () => {
                 <span className="text-black hover">Cart</span>
               </NavDropdown.Item>
               <NavDropdown.Divider />
-              <NavDropdown.Item as={Link} to={"/wishlist"}>
+              <NavDropdown.Item as={Link} to={"/user/wishlist"}>
                 <span className="text-black hover">Wishlist</span>
               </NavDropdown.Item>
               <NavDropdown.Divider />
@@ -236,7 +246,7 @@ export const UserHeader = () => {
           </Form>
           <Link to={"/user/cart"}>
             <span className="mt-1 me-2">
-              <CartIcon component={"User Header"} />
+              <CartIcon component={"header"} />
             </span>
           </Link>
         </Navbar.Collapse>

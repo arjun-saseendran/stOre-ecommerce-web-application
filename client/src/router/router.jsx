@@ -60,10 +60,6 @@ export const router = createBrowserRouter([
       },
 
       {
-        path: "wishlist",
-        element: <Wishlist />,
-      },
-      {
         path: "user",
         element: <ProtectedRouteUser />,
 
@@ -84,6 +80,10 @@ export const router = createBrowserRouter([
           {
             path: "add-review/:productId",
             element: <AddReview />,
+          },
+          {
+            path: "wishlist",
+            element: <Wishlist />,
           },
         ],
       },

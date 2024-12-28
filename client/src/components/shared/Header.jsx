@@ -1,6 +1,6 @@
 import { useRef } from "react";
 import { Button, Container, Form, Nav, Navbar, NavItem } from "react-bootstrap";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { setCategory } from "../../redux/features/categorySlice";
 import { axiosInstance } from "../../config/axiosInstance";
@@ -22,25 +22,6 @@ export const Header = () => {
 
   // Get current theme
   const { theme } = useSelector((state) => state.theme);
-
-  // Config navigate
-  const navigate = useNavigate();
-
-  // Handle logout
-  const handleLogout = async () => {
-    try {
-      const response = await axiosInstance({
-        method: "PUT",
-        url: "/user/logout",
-      });
-
-      if (response) {
-        navigate("/login");
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
 
   return (
     <Navbar
@@ -130,8 +111,8 @@ export const Header = () => {
               </span>
             </NavItem>
             <NavItem className="mt-2 me-3">
-                          <HideBanner />
-                      </NavItem>
+              <HideBanner />
+            </NavItem>
           </Nav>
           <Form className="d-flex me-auto w-100">
             <Form.Control

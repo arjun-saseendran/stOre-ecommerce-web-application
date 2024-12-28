@@ -1,9 +1,7 @@
 import { useSelector } from "react-redux";
 
 export const CartIcon = ({ height, component }) => {
-
-  // Get cart quantity
-  const {cartData} = useSelector((state)=>state.cart)
+  const { cartData } = useSelector((state) => state.cart);
 
   return (
     <>
@@ -13,7 +11,7 @@ export const CartIcon = ({ height, component }) => {
         viewBox="0 0 24 24"
         strokeWidth={1.5}
         stroke="currentColor"
-        className="size-6 text-white"
+        className="size-6 text-white fw-lighter"
         height={height || "40px"}
       >
         <path
@@ -23,7 +21,7 @@ export const CartIcon = ({ height, component }) => {
         />
 
         <text x="12" y="12" textAnchor="middle" fontSize="6" fill="black">
-        {component === 'User Header' ? cartData?.products?.length : ""}
+          {component === "header" ? cartData?.products?.length : null}
         </text>
       </svg>
     </>
