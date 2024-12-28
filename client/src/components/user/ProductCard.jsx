@@ -6,6 +6,7 @@ import { StarRatings } from "../shared/StarRatings";
 import { CartIcon } from "../shared/CartIcon";
 import { useState } from "react";
 import { AverageRatings } from "../shared/AverageRatings";
+import { WishlistIcon } from "../shared/WishlistIcon";
 
 export const ProductCard = ({ product }) => {
   // Get theme
@@ -36,11 +37,19 @@ export const ProductCard = ({ product }) => {
   };
   return (
     <Card style={{ backgroundColor: theme ? "#FFF6E3" : "#d9d9d9" }}>
+      <span className="m-2">
+        <WishlistIcon
+          average={average}
+          productId={product._id}
+          getAverageRating={getAverageRating}
+        />
+      </span>
       <Card.Img
         className="crd-image object-fit-contain"
         variant="top"
         src={product.image}
       />
+
       <Card.Body>
         <Link
           className="text-decoration-none text-black"
@@ -54,6 +63,7 @@ export const ProductCard = ({ product }) => {
         <Card.Text className=" crd-price fw-bold text-center fw-bolder h5">
           ₹{product.price}
         </Card.Text>
+
         <div className="d-flex justify-content-center">
           <Link to={`/user/add-review/${product._id}`}>
             <StarRatings
@@ -61,7 +71,7 @@ export const ProductCard = ({ product }) => {
               getAverageRating={getAverageRating}
             />
           </Link>
-          <AverageRatings average={average}/>
+          <AverageRatings average={average} />
         </div>
 
         <Button
@@ -71,7 +81,7 @@ export const ProductCard = ({ product }) => {
         >
           <span className="mx-1">
             <Link>
-              <CartIcon height={25} components={'Product Card'} />
+              <CartIcon height={25} components={"Product Card"} />
             </Link>
           </span>
           Add to Cart

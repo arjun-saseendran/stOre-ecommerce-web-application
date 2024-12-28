@@ -19,10 +19,9 @@ import { HideBanner } from "../shared/HideBanner";
 import { setCartData } from "../../redux/features/cartSlice";
 
 export const UserHeader = () => {
-
   // Store cart data
-  const [cart, setCart] = useState([])
-  
+  const [cart, setCart] = useState([]);
+
   // Config dispatch function
   const dispatch = useDispatch();
 
@@ -34,7 +33,6 @@ export const UserHeader = () => {
           method: "GET",
           url: "/cart/cart",
         });
-        console.log(response);
 
         setCart(response?.data?.data);
       } catch (error) {
@@ -42,8 +40,6 @@ export const UserHeader = () => {
       }
     })();
   }, [cart]);
-
-
 
   // Config ref
   const inputValue = useRef();
@@ -76,9 +72,9 @@ export const UserHeader = () => {
   };
 
   // Store data to global variable
-  useEffect(()=>{
-dispatch(setCartData(cart))
-  },[cart])
+  useEffect(() => {
+    dispatch(setCartData(cart));
+  }, [cart]);
 
   return (
     <Navbar
@@ -179,8 +175,8 @@ dispatch(setCartData(cart))
                 <span className="text-black hover">Cart</span>
               </NavDropdown.Item>
               <NavDropdown.Divider />
-              <NavDropdown.Item as={Link} to={"user/settings"}>
-                <span className="text-black hover">Settings</span>
+              <NavDropdown.Item as={Link} to={"/wishlist"}>
+                <span className="text-black hover">Wishlist</span>
               </NavDropdown.Item>
               <NavDropdown.Divider />
 
@@ -220,7 +216,7 @@ dispatch(setCartData(cart))
           </Form>
           <Link to={"/user/cart"}>
             <span className="mt-1 me-2">
-              <CartIcon component={'User Header'} />
+              <CartIcon component={"User Header"} />
             </span>
           </Link>
         </Navbar.Collapse>

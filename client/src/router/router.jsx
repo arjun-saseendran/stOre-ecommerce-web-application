@@ -22,6 +22,7 @@ import { Users } from "../pages/shared/Users";
 import { AddBanner } from "../components/shared/AddBanner";
 import { Banners } from "../pages/shared/Banners";
 import { AddReview } from "../pages/user/AddReview";
+import { Wishlist } from "../pages/user/Wishlist";
 
 export const router = createBrowserRouter([
   {
@@ -57,6 +58,11 @@ export const router = createBrowserRouter([
         path: "product-details/:productId",
         element: <ProductDetails />,
       },
+
+      {
+        path: "wishlist",
+        element: <Wishlist />,
+      },
       {
         path: "user",
         element: <ProtectedRouteUser />,
@@ -66,6 +72,7 @@ export const router = createBrowserRouter([
             path: "cart",
             element: <Cart />,
           },
+
           {
             path: "profile",
             element: <Profile role="user" />,
@@ -76,7 +83,7 @@ export const router = createBrowserRouter([
           },
           {
             path: "add-review/:productId",
-            element: <AddReview/>,
+            element: <AddReview />,
           },
         ],
       },
@@ -99,7 +106,7 @@ export const router = createBrowserRouter([
             element: <Products role="seller" action="Delete" />,
           },
           { path: "add-product", element: <AddNewProduct role="seller" /> },
-          { path: "add-banner", element: <AddBanner role='seller' /> },
+          { path: "add-banner", element: <AddBanner role="seller" /> },
           {
             path: "product-details/:productId",
             element: <ProductDetails role="seller" action="View" />,
@@ -183,7 +190,7 @@ export const router = createBrowserRouter([
             path: "delete/banner",
             element: <Banners />,
           },
-          { path: "add-banner", element: <AddBanner role='admin' /> },
+          { path: "add-banner", element: <AddBanner role="admin" /> },
         ],
       },
     ],

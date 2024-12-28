@@ -6,7 +6,7 @@ import { setCategory } from "../../redux/features/categorySlice";
 import { axiosInstance } from "../../config/axiosInstance";
 import { setSearchValue } from "../../redux/features/searchSlice";
 import { DarkMode } from "../../components/shared/DarkMode";
-import { CartIcon } from "../shared/CartIcon";
+import { HideBanner } from "./HideBanner";
 
 export const Header = () => {
   // Config dispatch function
@@ -120,10 +120,8 @@ export const Header = () => {
                 Watch
               </span>
             </Link>
-            <Link to={'/login'} className="nav-link mt-2">
-              <span className="text-white h5 hover">
-                Login
-              </span>
+            <Link to={"/login"} className="nav-link mt-2">
+              <span className="text-white h5 hover">Login</span>
             </Link>
 
             <NavItem className="mx-2 mt-2">
@@ -131,6 +129,9 @@ export const Header = () => {
                 <DarkMode />
               </span>
             </NavItem>
+            <NavItem className="mt-2 me-3">
+                          <HideBanner />
+                      </NavItem>
           </Nav>
           <Form className="d-flex me-auto w-100">
             <Form.Control
@@ -145,11 +146,6 @@ export const Header = () => {
               Search
             </Button>
           </Form>
-          <Link to={"/user/cart"}>
-            <span className="mx-2 mt-1">
-              <CartIcon />
-            </span>
-          </Link>
         </Navbar.Collapse>
       </Container>
     </Navbar>
