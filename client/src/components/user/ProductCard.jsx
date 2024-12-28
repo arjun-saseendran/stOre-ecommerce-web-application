@@ -71,7 +71,7 @@ export const ProductCard = ({ product }) => {
         >
           <span className="mx-1">
             <Link>
-              <CartIcon height={25} />
+              <CartIcon height={25} components={'Product Card'} />
             </Link>
           </span>
           Add to Cart

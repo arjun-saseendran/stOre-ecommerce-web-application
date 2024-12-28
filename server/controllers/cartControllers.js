@@ -64,7 +64,7 @@ export const addToCart = async (req, res) => {
 };
 
 // Render cart products
-export const renderCart = async (req, res) => {
+export const getCart = async (req, res) => {
   try {
     // Get user id
     const userId = req.user.id;

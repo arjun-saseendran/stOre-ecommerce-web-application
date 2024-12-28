@@ -1,42 +1,53 @@
-import {Container, Card, Button, Row, Col} from "react-bootstrap";
+import { Container, Card, Button, Row, Col } from "react-bootstrap";
 import { useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { useFetch } from "../../hooks/useFetch";
 import BuyNow from "./BuyNow";
+import { axiosInstance } from "../../config/axiosInstance";
+import { useEffect, useState } from "react";
 
 export const ProductDetails = () => {
   // Get current theme
   const { theme } = useSelector((state) => state.theme);
 
-  // Config dispatch
-  const dispatch = useDispatch();
-
   // Config params
   const { productId } = useParams();
 
-  // Set product
-  const [product, setProduct] = useState({});
+  // Store data
+  const [reviewData, setReviewData] = useState([]);
+  const [deleteReview, setDeleteReview] = useState(false);
 
   // Api call
-  const [productData] = useFetch(
-    `/product/product-details/${productId}`
-  );
-  
-  // Api call
-  const [reviews] = useFetch(
-    `/review/get-review/${productId}`
-  );
-
   useEffect(() => {
-    if (productData) {
-      // Set product details
-      setProduct(productData);
-    }
-  }, [productData]);
+    (async () => {
+      try {
+        const response = await axiosInstance({
+          method: "GET",
+          url: `/review/get-review/${productId}`,
+        });
+        setReviewData(response.data.data);
+      } catch (error) {
+        console.log(error);
+      }
+    })();
+  }, [deleteReview]);
 
-  console.log(reviews);
-  
+  // Api call
+  const [productData] = useFetch(`/product/product-details/${productId}`);
+
+  // Delete review
+  const handleDelete = async (reviewId) => {
+    try {
+      const response = await axiosInstance({
+        method: "DELETE",
+        url: "/review/delete-review",
+        data: { reviewId },
+      });
+      setDeleteReview(!deleteReview);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <Container className="h-100">
@@ -58,14 +69,14 @@ export const ProductDetails = () => {
             <Card.Img
               className="object-fit-contain pr-card-img p-2"
               variant="top"
-              src={product.image}
+              src={productData?.image}
             />
             <Card.Body>
-              <Card.Title>{product.title}</Card.Title>
+              <Card.Title>{productData?.title}</Card.Title>
 
-              <Card.Text>{product.description}</Card.Text>
+              <Card.Text>{productData?.description}</Card.Text>
               <Card.Text className=" crd-price fw-bold text-center fw-bolder h5">
-                ₹{product.price}
+                ₹{productData?.price}
               </Card.Text>
               <Button
                 className={
@@ -88,13 +99,21 @@ export const ProductDetails = () => {
               <Card.Title className="text-center fw-bold p-2">
                 Reviews
               </Card.Title>
-              <ul className="border p-2">
-                {reviews?.map((review) => (
-                  <li className="list-unstyled">
+              <ul className=" p-2">
+                {reviewData?.map((review) => (
+                  <li
+                    className="list-unstyled d-flex justify-content-between border mb-2 p-2 gap-4"
+                    key={review._id}
+                  >
                     <h6 className="fw-bold">{review?.userId?.name}</h6>
-                    <p>
-                      {review?.comment}
-                    </p>
+                    <p>{review?.comment}</p>
+                    <Button
+                      onClick={() => handleDelete(review._id)}
+                      className="btn-sm"
+                      variant={theme ? "warning" : "dark"}
+                    >
+                      Delete
+                    </Button>
                   </li>
                 ))}
               </ul>

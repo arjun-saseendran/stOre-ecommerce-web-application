@@ -1,26 +1,26 @@
 import toast from "react-hot-toast";
-import Button from "react-bootstrap/esm/Button";
-import { useFetch } from "../../hooks/useFetch";
+import { Button, Card, Row, Col, Container } from "react-bootstrap";
 import { useSelector, useDispatch } from "react-redux";
 import { axiosInstance } from "../../config/axiosInstance";
-import { CartCard } from "../../components/user/CartCard";
 import { useEffect, useState } from "react";
-import { setCart, addQuantity, removeQuantity } from "../../redux/features/cartSlice";
+import { OrderIcon } from "../../components/shared/OrderIcon";
 
 export const Cart = () => {
-  
-
   // Config dispatch
   const dispatch = useDispatch();
 
   // Get cart data
   const { cartData } = useSelector((state) => state.cart);
 
+  // Store data
+  const [cart, setCart] = useState([]);
+  
+
+  // Update data
+  const [updateCart, setUpdateCart] = useState(false);
+
   // Get current theme
   const { theme } = useSelector((state) => state.theme);
-
-  // Set total price
-  const totalPrice = cartData?.totalPrice;
 
   // Add quantity
   const addQuantity = async (productId) => {
@@ -31,8 +31,7 @@ export const Cart = () => {
         url: "/cart/add-product",
         data: { productId },
       });
-      dispatch(addQuantity(response.data.data));
-      console.log(response.data.data);
+      setUpdateCart(!updateCart);
 
       toast.success("Product added to cart");
     } catch (error) {
@@ -52,9 +51,7 @@ export const Cart = () => {
         url: "/cart/remove-product",
         data: { productId },
       });
-      dispatch(removeQuantity(response.data.data));
-      console.log(response.data.data);
-
+      setUpdateCart(!updateCart);
       toast.success("Product removed from cart");
     } catch (error) {
       console.log(error);
@@ -64,40 +61,79 @@ export const Cart = () => {
     }
   };
 
-  return (
-    <div className="h-100">
-      <h1 className="text-white text-center mt-5">Cart</h1>
-      {cartData?.products?.map((product) => (
-        <CartCard product={product} key={product._id} addQuantity={addQuantity} removeQuantity={removeQuantity} />
-      ))}
-      <div
-        className="d-flex justify-content-between align-items-center p-2 mx-4 mt-2 rounded-3"
-        style={{ backgroundColor: theme ? "#FFF6E3" : "#d9d9d9" }}
-      >
-        <div className=" mt-2 rounded-3 p-2 fw-bold h5">Total</div>
-        <div className=" mt-2 rounded-3 p-2 fw-bold h5">₹{totalPrice}</div>
+  useEffect(() => {
+    setCart(cartData);
+  }, [removeQuantity, addQuantity, cartData]);
 
-        <div className="me-2">
-          <Button className={theme ? "btn-warning text-white" : "btn-dark"}>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth={1.5}
-              stroke="currentColor"
-              className="size-6 mb-1 me-1"
-              height="20px"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M15.75 10.5V6a3.75 3.75 0 1 0-7.5 0v4.5m11.356-1.993 1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 0 1-1.12-1.243l1.264-12A1.125 1.125 0 0 1 5.513 7.5h12.974c.576 0 1.059.435 1.119 1.007ZM8.625 10.5a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm7.5 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z"
-              />
-            </svg>
-            Order
+  return (
+    <Container>
+      <h1 className="text-white h1 text-center fw-bold my-5">Cart</h1>
+
+      {cart?.products?.map((product) => (
+        <Row
+          className="d-flex justify-content-between align-items-center gap-3 my-2 p-3 rounded-3 mx-1"
+          key={product.productId._id}
+          style={{ backgroundColor: theme ? "#FFF6E3" : "#d9d9d9" }}
+        >
+          <Col xs={12} md={2}>
+            <Card.Img
+              className="img-fluid object-fit-contain rounded-3"
+              src={product.productId.image}
+              style={{ minHeight: "210px" }}
+            />
+          </Col>
+          <Col xs={12} md={3}>
+            <Card.Title className="fw-normal">
+              {product.productId.title}
+            </Card.Title>
+          </Col>
+          <Col xs={12} md={2}>
+            <Card.Text className="fw-normal">
+              <Button
+                onClick={() => removeQuantity(product.productId._id)}
+                className="btn-sm rounded-5 me-1 text-white fw-bolder"
+                variant={theme ? "warning" : "dark"}
+              >
+                -
+              </Button>
+
+              {product.quantity}
+
+              <Button
+                className="btn-sm rounded-5 fw-bolder ms-1 text-white"
+                variant={theme ? "warning" : "dark"}
+                onClick={() => addQuantity(product.productId._id)}
+              >
+                +
+              </Button>
+            </Card.Text>
+          </Col>
+          <Col xs={12} md={2}>
+            <Card.Text className="fw-normal">
+              ₹{product.price * product.quantity}
+            </Card.Text>
+          </Col>
+        </Row>
+      ))}
+
+      <Row
+        style={{ backgroundColor: theme ? "#FFF6E3" : "#d9d9d9" }}
+        className="d-flex justify-content-between align-items-center p-5 rounded-3 mx-1 mt-2 gap-3"
+      >
+        <Col className="fw-normal">Total</Col>
+        <Col className="fw-normal">₹{cart.totalPrice || 0}</Col>
+        <Col>
+          <Button
+            className="w-100 text-white "
+            variant={theme ? "warning" : "dark"}
+          >
+            <span className="me-1">
+              <OrderIcon height={"25px"} />
+            </span>
+            Place order
           </Button>
-        </div>
-      </div>
-    </div>
+        </Col>
+      </Row>
+    </Container>
   );
 };

@@ -20,4 +20,4 @@ reviewRouter.get("/get-review/:id", userAuth, getProductReview);
 reviewRouter.post("/get-avg-rating", userAuth, getAverageRating);
 
 // Delete review
-reviewRouter.delete("/delete-review/:id", userAuth, deleteReview);
+reviewRouter.delete("/delete-review", userAuth, deleteReview);

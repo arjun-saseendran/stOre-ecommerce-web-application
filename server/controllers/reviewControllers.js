@@ -9,7 +9,7 @@ export const addReview = async (req, res) => {
     const { productId, rating, comment } = req.body;
 
     // Get user id
-    const userId = req.user.id
+    const userId = req.user.id;
 
     // Check product exists
     const product = await Product.findById(productId);
@@ -20,7 +20,7 @@ export const addReview = async (req, res) => {
     }
 
     // Check rating
-    if (rating < 1  || rating > 5 ) {
+    if (rating < 1 || rating > 5) {
       return res.status(400).json({ message: "Provide a valid proper rating" });
     }
 
@@ -43,7 +43,7 @@ export const addReview = async (req, res) => {
 export const getProductReview = async (req, res) => {
   try {
     // Get product id
-    const  productId  = req.params.id;
+    const productId = req.params.id;
 
     // Find reviews
     const reviews = await Review.find({ productId })
@@ -71,10 +71,10 @@ export const getProductReview = async (req, res) => {
 export const deleteReview = async (req, res) => {
   try {
     // Get review id
-    const  reviewId  = req.params.id;
+    const { reviewId } = req.body;
 
     // Get user id
-    const  userId  = req.user.id;
+    const userId = req.user.id;
 
     // Find and delete review
     const review = await Review.findOneAndDelete({ _id: reviewId, userId });
@@ -97,7 +97,7 @@ export const deleteReview = async (req, res) => {
 export const getAverageRating = async (req, res) => {
   try {
     // Get product id
-    const  {productId}  = req.body;
+    const { productId } = req.body;
 
     // Find reviews
     const reviews = await Review.find({ productId });

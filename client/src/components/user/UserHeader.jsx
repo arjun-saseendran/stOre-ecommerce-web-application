@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   Button,
   Container,
@@ -16,15 +16,34 @@ import { setSearchValue } from "../../redux/features/searchSlice";
 import { DarkMode } from "../../components/shared/DarkMode";
 import { CartIcon } from "../shared/CartIcon";
 import { HideBanner } from "../shared/HideBanner";
+import { setCartData } from "../../redux/features/cartSlice";
 
 export const UserHeader = () => {
+
+  // Store cart data
+  const [cart, setCart] = useState([])
+  
   // Config dispatch function
   const dispatch = useDispatch();
 
-  // Config cart quantity
-  const quantity = <text x="12" y="12" textAnchor="middle" fontSize="6" fill="black">
-    12
-  </text>
+  // Api call
+  useEffect(() => {
+    (async () => {
+      try {
+        const response = await axiosInstance({
+          method: "GET",
+          url: "/cart/cart",
+        });
+        console.log(response);
+
+        setCart(response?.data?.data);
+      } catch (error) {
+        console.log(error);
+      }
+    })();
+  }, [cart]);
+
+
 
   // Config ref
   const inputValue = useRef();
@@ -55,6 +74,11 @@ export const UserHeader = () => {
       console.log(error);
     }
   };
+
+  // Store data to global variable
+  useEffect(()=>{
+dispatch(setCartData(cart))
+  },[cart])
 
   return (
     <Navbar
@@ -186,13 +210,17 @@ export const UserHeader = () => {
               ref={inputValue}
               style={{ background: theme ? "#F5F0CD" : "#D9D9D9" }}
             />
-            <Button variant="outline-light" onClick={handleSearch} className="me-2">
+            <Button
+              variant="outline-light"
+              onClick={handleSearch}
+              className="me-2"
+            >
               Search
             </Button>
           </Form>
           <Link to={"/user/cart"}>
             <span className="mt-1 me-2">
-              <CartIcon quantity={quantity} />
+              <CartIcon component={'User Header'} />
             </span>
           </Link>
         </Navbar.Collapse>

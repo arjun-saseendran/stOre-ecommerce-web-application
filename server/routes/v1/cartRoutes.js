@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { addToCart, removeProductFromCart, renderCart, clearCart } from "../../controllers/cartControllers.js";
+import { addToCart, removeProductFromCart, getCart, clearCart } from "../../controllers/cartControllers.js";
 import {userAuth} from '../../middlewares/userAuth.js'
 
 // Configure router
@@ -9,9 +9,9 @@ export const cartRouter = Router();
 cartRouter.post("/add-product", userAuth, addToCart);
 
 // Display cart products
-cartRouter.get('/cart', userAuth, renderCart)
+cartRouter.get('/cart', userAuth, getCart)
 
-// Remove porduct from cart
+// Remove product from cart
 cartRouter.delete("/remove-product", userAuth, removeProductFromCart);
 
 // Clear cart
