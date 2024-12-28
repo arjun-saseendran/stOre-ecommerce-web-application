@@ -1,6 +1,6 @@
 import { Schema, model } from "mongoose";
 
-const cartSchema = new Schema(
+const wishlistSchema = new Schema(
   {
     userId: {
       type: Schema.Types.ObjectId,
@@ -14,31 +14,10 @@ const cartSchema = new Schema(
           ref: "Product",
           required: true,
         },
-        price: {
-          type: Number,
-          required: true,
-        },
-        quantity: {
-          type: Number,
-          default: 0,
-          required: true,
-        },
       },
     ],
-    totalPrice: {
-      type: Number,
-      required: true,
-      default: 0,
-    },
   },
   { timestamps: true }
 );
 
-cartSchema.methods.calculateTotalPrice = function () {
-  this.totalPrice = this.products.reduce(
-    (total, product) => total + product.price * product.quantity,
-    0
-  );
-};
-
-export const Cart = model("Cart", cartSchema);
+export const Wishlist = model("Wishlist", wishlistSchema);
