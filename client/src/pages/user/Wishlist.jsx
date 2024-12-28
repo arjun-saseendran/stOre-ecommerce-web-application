@@ -8,6 +8,9 @@ export const Wishlist = ({average, productId, getAverageRating}) => {
   // Get current theme
   const { theme } = useSelector((state) => state.theme);
 
+  
+
+
   return (
     <Container>
       <h1 className="text-white h1 text-center fw-bold my-5">Wishlist</h1>

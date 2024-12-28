@@ -22,6 +22,9 @@ export const UserHeader = () => {
   // Store cart data
   const [cart, setCart] = useState([]);
 
+  // Store wishlist data
+  const [wishlist, setWishlist] = useState([])
+
   // Config dispatch function
   const dispatch = useDispatch();
 
@@ -40,6 +43,17 @@ export const UserHeader = () => {
       }
     })();
   }, [cart]);
+
+  // Api call
+  useEffect(()=>{
+    (async()=>{
+const response = await axiosInstance({
+  method: 'POST',
+  url: '/wishlist/wishlist'
+})
+    })()
+    setWishlist(response.data.data)
+  },[])
 
   // Config ref
   const inputValue = useRef();

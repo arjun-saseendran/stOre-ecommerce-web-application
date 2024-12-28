@@ -13,7 +13,7 @@ export const ProductCard = ({ product }) => {
   const { theme } = useSelector((state) => state.theme);
 
   // Store average rating
-  const [average, setAverage] = useState(0)
+  const [average, setAverage] = useState(0);
 
   // Add to cart
   const addToCart = async (productId) => {
@@ -31,13 +31,33 @@ export const ProductCard = ({ product }) => {
     }
   };
 
+  // Add to wishlist
+  const addToWishlist = async (productId) => {
+    // Api call
+    try {
+      const response = await axiosInstance({
+        method: "POST",
+        url: "/wishlist/add-product",
+        data: { productId },
+      });
+
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   // Get average rating from child
   const getAverageRating = (rating) => {
-    setAverage(rating)
+    setAverage(rating);
   };
   return (
     <Card style={{ backgroundColor: theme ? "#FFF6E3" : "#d9d9d9" }}>
-      <span className="m-2">
+      <span
+        as="button"
+        className="m-2"
+        onClick={() => addToWishlist(product._id)}
+      >
         <WishlistIcon
           average={average}
           productId={product._id}

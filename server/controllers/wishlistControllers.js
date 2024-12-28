@@ -29,11 +29,11 @@ export const addToWishlist = async (req, res) => {
 
     // Handle wishlist not found
     if (!wishlist) {
-      wishlist = new wishlist({ userId, products: [] });
+      wishlist = new Wishlist({ userId, products: [] });
     }
 
     // Check the product already in the wishlist
-    const productExists = Wishlist.products.find((product) =>
+    const productExists = wishlist.products.find((product) =>
       product.productId.equals(productId)
     );
 
