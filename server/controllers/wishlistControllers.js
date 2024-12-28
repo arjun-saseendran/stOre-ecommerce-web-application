@@ -42,10 +42,10 @@ export const addToWishlist = async (req, res) => {
       return res
         .status(400)
         .json({ message: "Product already exist in the wishlist" });
-    } else {
-      // Add product to wishlist
-      wishlist.products.push({ productId, price: product.price });
     }
+
+    // Add product
+    wishlist.products.push({ productId });
 
     // Save the wishlist
     await wishlist.save();

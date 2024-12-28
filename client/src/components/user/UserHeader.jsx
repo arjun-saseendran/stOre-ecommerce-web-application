@@ -17,13 +17,14 @@ import { DarkMode } from "../../components/shared/DarkMode";
 import { CartIcon } from "../shared/CartIcon";
 import { HideBanner } from "../shared/HideBanner";
 import { setCartData } from "../../redux/features/cartSlice";
+import { setWishlistData } from "../../redux/features/wishlistSlice";
 
 export const UserHeader = () => {
   // Store cart data
   const [cart, setCart] = useState([]);
 
   // Store wishlist data
-  const [wishlist, setWishlist] = useState([])
+  const [wishlist, setWishlist] = useState([]);
 
   // Config dispatch function
   const dispatch = useDispatch();
@@ -45,15 +46,19 @@ export const UserHeader = () => {
   }, [cart]);
 
   // Api call
-  useEffect(()=>{
-    (async()=>{
-const response = await axiosInstance({
-  method: 'POST',
-  url: '/wishlist/wishlist'
-})
-    })()
-    setWishlist(response.data.data)
-  },[])
+  useEffect(() => {
+    (async () => {
+      try {
+        const response = await axiosInstance({
+          method: "GET",
+          url: "/wishlist/wishlist",
+        });
+        setWishlist(response.data.data);
+      } catch (error) {
+        console.log(error);
+      }
+    })();
+  }, []);
 
   // Config ref
   const inputValue = useRef();
@@ -88,7 +93,8 @@ const response = await axiosInstance({
   // Store data to global variable
   useEffect(() => {
     dispatch(setCartData(cart));
-  }, [cart]);
+    dispatch(setWishlistData(wishlist));
+  }, [cart, wishlist]);
 
   return (
     <Navbar
