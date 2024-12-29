@@ -46,7 +46,7 @@ export const router = createBrowserRouter([
       },
       {
         path: "forgot-password",
-        element: <ForgotPassword />,
+        element: <ForgotPassword role="user" />,
       },
       {
         path: "reset-password/:token",
@@ -109,7 +109,7 @@ export const router = createBrowserRouter([
       { path: "signup", element: <Signup role="seller" /> },
       {
         path: "forgot-password",
-        element: <ForgotPassword />,
+        element: <ForgotPassword role="seller" />,
       },
       {
         element: <ProtectedRouteSeller />,
@@ -143,7 +143,7 @@ export const router = createBrowserRouter([
       { path: "login", element: <Login role="admin" /> },
       {
         path: "forgot-password",
-        element: <ForgotPassword />,
+        element: <ForgotPassword role="admin" />,
       },
 
       {

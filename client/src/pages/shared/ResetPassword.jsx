@@ -5,7 +5,7 @@ import { toast } from "react-hot-toast";
 import { axiosInstance } from "../../config/axiosInstance";
 import {Button} from 'react-bootstrap'
 
-export const ResetPassword = () => {
+export const ResetPassword = ({role = 'user'}) => {
   // Get current theme
   const { theme } = useSelector((state) => state.theme);
 
@@ -18,17 +18,37 @@ export const ResetPassword = () => {
   // Get token
   const { token } = useParams();
 
+  // Handle user role
+  const user = {
+    resetPassword: `/user/reset-password/${token}`,
+    login: '/login'
+  }
+
+  // Handle seller role
+  if(role === 'seller'){
+    user.resetPassword = `/seller/reset-password/${token}`,
+    user.login = '/seller/login'
+  }
+
+  // Handle admin role
+  if(role === 'admin'){
+    user.resetPassword = `/seller/admin/reset-password/${token}`,
+    user.login = '/admin/login'
+  }
+
+
+
   const onSubmit = async (data) => {
     try {
       await axiosInstance({
         method: "POST",
-        url: `/user/reset-password/${token}`,
+        url: user.resetPassword,
         data,
       });
 
       toast.success("Password reset successful!");
       // Navigate to login
-      navigate("/login");
+      navigate(user.login);
     } catch (error) {
       toast.error("Failed to reset password");
     }

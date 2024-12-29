@@ -32,6 +32,7 @@ export const Login = ({ role = "user" }) => {
     user.profile_route = "/seller/profile";
     user.signup_route = "/seller/signup";
     user.home_route = "/seller";
+    user.forgotPassword = '/seller/forgot-password'
   }
 
   // Handle admin role
@@ -41,6 +42,8 @@ export const Login = ({ role = "user" }) => {
     user.profile_route = "/seller/profile";
     user.signup_route = "/seller/signup";
     user.home_route = "/admin";
+    user.forgotPassword = '/admin/forgot-password'
+
   }
 
   const onSubmit = async (data) => {
@@ -101,7 +104,7 @@ export const Login = ({ role = "user" }) => {
         <div>
           <Link
             className="text-decoration-none text-black"
-            to={'/forgot-password'}
+            to={`/${user.forgotPassword}`}
           >
             <span>Forgot password?</span>
           </Link>
