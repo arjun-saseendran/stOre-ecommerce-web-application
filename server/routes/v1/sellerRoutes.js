@@ -16,7 +16,9 @@ import {
   adminProfile,
   getActiveSellers,
   sellerForgotPassword,
-  sellerResetPassword
+  sellerResetPassword,
+  adminForgotPassword,
+  adminResetPassword
 } from "../../controllers/sellerControllers.js";
 import { sellerAuth } from "../../middlewares/sellerAuth.js";
 import { adminAuth } from "../../middlewares/adminAuth.js";
@@ -75,6 +77,12 @@ sellerRouter.post("/forgot-password", sellerForgotPassword  );
 
 // Reset password
 sellerRouter.post("/reset-password/:token", sellerResetPassword);
+
+// Forgot password
+sellerRouter.post("/admin/forgot-password", adminForgotPassword  );
+
+// Reset password
+sellerRouter.post("/admin/reset-password/:token", adminResetPassword);
 
 
 
