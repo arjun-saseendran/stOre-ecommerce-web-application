@@ -430,4 +430,44 @@ export const sellerResetPassword = async (req, res) => {
   }
 };
 
+// Forgot password
+export const adminForgotPassword = async (req, res) => {
+  // Get admin email from body
+  const { email } = req.body;
+  try {
+    // Find admin found
+    const admin = await Seller.findOne({ email, role: 'admin' });
+
+    if (!admin) {
+      return res.status(404).json({ message: "Admin not found" });
+    }
+
+    // Create reset token
+    const resetToken = crypto.randomBytes(32).toString("hex");
+
+    // Assign to database variable
+    user.resetToken = resetToken;
+
+    // Set token expires
+    user.resetTokenExpires = Date.now() + 10 * 60 * 1000;
+
+    // Save to database
+    await admin.save();
+
+    // Set rest link
+    const resetLink = `${process.env.CORS}/reset-password/${resetToken}`;
+
+    await transporter.sendMail({
+      from: process.env.EMAIL_USER,
+      to: email,
+      subject: "Password reset request",
+      text: `Click the link to reset your password: ${resetLink}`,
+    });
+
+    res.status(200).json({ message: "Reset email send!" });
+  } catch (error) {
+    catchErrorHandler(res, error);
+  }
+};
+
 
