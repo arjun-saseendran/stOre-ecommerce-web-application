@@ -23,6 +23,8 @@ import { AddBanner } from "../components/shared/AddBanner";
 import { Banners } from "../pages/shared/Banners";
 import { AddReview } from "../pages/user/AddReview";
 import { Wishlist } from "../pages/user/Wishlist";
+import { ForgotPassword } from "../pages/shared/ForgotPassword";
+import { ResetPassword } from "../pages/shared/ResetPassword";
 
 export const router = createBrowserRouter([
   {
@@ -41,6 +43,14 @@ export const router = createBrowserRouter([
       {
         path: "login",
         element: <Login />,
+      },
+      {
+        path: "forgot-password",
+        element: <ForgotPassword/>,
+      },
+      {
+        path: "reset-password/:token",
+        element: <ResetPassword/>,
       },
       {
         path: "about",

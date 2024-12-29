@@ -1,4 +1,5 @@
 import crypto from "crypto";
+import nodemailer from "nodemailer";
 import { User } from "../models/userModel.js";
 import { passwordHandler } from "../utils/passwordHandler.js";
 import { generateToken } from "../utils/tokenHandler.js";
@@ -16,7 +17,6 @@ const transporter = nodemailer.createTransport({
     pass: process.env.EMAIL_PASS,
   },
 });
-
 
 // User signup
 export const userSignup = async (req, res) => {
@@ -226,7 +226,7 @@ export const updateUserProfile = async (req, res) => {
 // Checking user
 export const checkUser = async (req, res) => {
   try {
-    res.status(200).json({ message: "Autherized user" });
+    res.status(200).json({ message: "Authorized user" });
   } catch (error) {
     // Handle catch error
     catchErrorHandler(res, error);
@@ -361,7 +361,7 @@ export const forgotPassword = async (req, res) => {
     user.resetToken = resetToken;
 
     // Set token expires
-    user.resetTokenExpires = Date.now() + 10000;
+    user.resetTokenExpires = Date.now() + 5 * 60 * 1000;
 
     // Save to database
     await user.save();
@@ -385,7 +385,9 @@ export const forgotPassword = async (req, res) => {
 // Reset password
 export const resetPassword = async (req, res) => {
   // Get data from request body
-  const { token, newPassword } = req.body;
+  const { password } = req.body;
+
+  const { token } = req.params;
 
   try {
     // Find the user

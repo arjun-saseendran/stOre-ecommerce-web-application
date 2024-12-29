@@ -54,7 +54,7 @@ export const Signup = ({ role = "user" }) => {
         headers: { "Content-Type": "multipart/form-data" },
       });
 
-      toast.success("Signup successfull");
+      toast.success("Signup successful");
 
       navigate(user.login_route);
     } catch (error) {

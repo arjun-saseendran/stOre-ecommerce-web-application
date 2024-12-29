@@ -1,0 +1,67 @@
+import { useSelector } from "react-redux";
+import { useForm } from "react-hook-form";
+import { useNavigate, useParams } from "react-router-dom";
+import { toast } from "react-hot-toast";
+import { axiosInstance } from "../../config/axiosInstance";
+import {Button} from 'react-bootstrap'
+
+export const ResetPassword = () => {
+  // Get current theme
+  const { theme } = useSelector((state) => state.theme);
+
+  // Config navigate
+  const navigate  = useNavigate()
+
+  // Config form
+  const { register, handleSubmit } = useForm();
+
+  // Get token
+  const { token } = useParams();
+
+  const onSubmit = async (data) => {
+    try {
+      await axiosInstance({
+        method: "POST",
+        url: `/user/reset-password/${token}`,
+        data,
+      });
+
+      toast.success("Password reset successful!");
+      // Navigate to login
+      navigate("/login");
+    } catch (error) {
+      toast.error("Failed to reset password");
+    }
+  };
+  return (
+    <div>
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className="login-box mx-auto mt-5 d-flex flex-column gap-2 align-items-center justify-content-center rounded-3"
+        style={{ backgroundColor: theme ? "#FFF6E3" : "#d9d9d9" }}
+      >
+        <h3 className="mt-2 fw-bold text-black">Reset Password</h3>
+
+        <div>
+          <input
+            className="rounded-2 border-0 px-4 py-2 text-center"
+            type="password"
+            {...register("password")}
+            placeholder="Enter new password"
+            required
+          />
+        </div>
+
+        <div>
+          <Button
+            className="rounded-2 border-0 px-4 py-2 hover text-black text-center text-white mt-1"
+            type="submit"
+            variant={theme ? "warning" : "dark"}
+          >
+            Submit
+          </Button>
+        </div>
+      </form>
+    </div>
+  );
+};

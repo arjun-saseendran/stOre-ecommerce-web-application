@@ -62,7 +62,7 @@ userRouter.get('/inactive-users', adminAuth, getInactiveUsers)
 userRouter.get('/active-users', adminAuth, getActiveUsers)
 
 // Forgot password
-userRouter.post("/forgot-password", userAuth, forgotPassword  );
+userRouter.post("/forgot-password", forgotPassword  );
 
 // Reset password
-userRouter.post("/reset-password", userAuth, resetPassword);
+userRouter.post("/reset-password/:token", resetPassword);

@@ -22,6 +22,7 @@ export const Login = ({ role = "user" }) => {
     profile_route: "/user/profile",
     signup_route: "/signup",
     home_route: "/",
+    forgotPassword: '/user/forgot-password'
   };
 
   // Handle seller role
@@ -96,6 +97,14 @@ export const Login = ({ role = "user" }) => {
           >
             Login
           </Button>
+        </div>
+        <div>
+          <Link
+            className="text-decoration-none text-black"
+            to={'/forgot-password'}
+          >
+            <span>Forgot password?</span>
+          </Link>
         </div>
         <div>
           <span className="text-secondary">Don't have an account?</span>{" "}
