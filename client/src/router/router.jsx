@@ -50,7 +50,7 @@ export const router = createBrowserRouter([
       },
       {
         path: "reset-password/:token",
-        element: <ResetPassword />,
+        element: <ResetPassword role="user" />,
       },
       {
         path: "about",
@@ -112,6 +112,11 @@ export const router = createBrowserRouter([
         element: <ForgotPassword role="seller" />,
       },
       {
+        path: "reset-password/:token",
+        element: <ResetPassword role="seller" />,
+      },
+
+      {
         element: <ProtectedRouteSeller />,
         children: [
           { path: "", element: <Products role="seller" action="View" /> },
@@ -144,6 +149,10 @@ export const router = createBrowserRouter([
       {
         path: "forgot-password",
         element: <ForgotPassword role="admin" />,
+      },
+      {
+        path: "reset-password/:token",
+        element: <ResetPassword role="admin" />,
       },
 
       {
