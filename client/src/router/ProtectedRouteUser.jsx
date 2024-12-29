@@ -10,14 +10,9 @@ export const ProtectedRouteUser = () => {
   const navigate = useNavigate();
 
   // Redirect
-  useEffect(() => {
-    if (!isUserAuth) {
-      navigate("/login");
-    }
-  }, [isUserAuth, navigate]);
-
   if (!isUserAuth) {
-    return null;
+    navigate("/login");
+    return;
   }
 
   return <Outlet />;
