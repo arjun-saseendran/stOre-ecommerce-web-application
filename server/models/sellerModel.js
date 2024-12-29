@@ -31,6 +31,14 @@ const sellerSchema = new Schema(
       type: Boolean,
       default: true,
     },
+    resetToken: {
+      type: String,
+      default: null,
+    },
+    resetTokenExpires: {
+      type: String,
+      default: null,
+    },
     profilePicture: {
       type: String,
       default:
