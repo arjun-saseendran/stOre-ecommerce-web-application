@@ -14,7 +14,9 @@ import {
   sellerDetails,
   getInactiveSellers,
   adminProfile,
-  getActiveSellers
+  getActiveSellers,
+  sellerForgotPassword,
+  sellerResetPassword
 } from "../../controllers/sellerControllers.js";
 import { sellerAuth } from "../../middlewares/sellerAuth.js";
 import { adminAuth } from "../../middlewares/adminAuth.js";
@@ -69,10 +71,10 @@ sellerRouter.get("/inactive-sellers", adminAuth, getInactiveSellers)
 sellerRouter.get("/admin-profile", adminAuth, adminProfile)
 
 // Forgot password
-sellerRouter.post("/forgot-password", forgotPassword  );
+sellerRouter.post("/forgot-password", sellerForgotPassword  );
 
 // Reset password
-sellerRouter.post("/reset-password/:token", resetPassword);
+sellerRouter.post("/reset-password/:token", sellerResetPassword);
 
 
 
