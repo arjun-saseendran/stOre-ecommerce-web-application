@@ -9,9 +9,6 @@ export const Login = ({ role = "user" }) => {
   // Get theme
   const { theme } = useSelector((state) => state.theme);
 
-  // Get user status
-  const { isAdminAuth } = useSelector((state) => state.admin);
-
   //config register
   const { register, handleSubmit } = useForm();
 

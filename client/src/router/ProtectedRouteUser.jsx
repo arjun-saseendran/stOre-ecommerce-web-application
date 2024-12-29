@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate, Outlet } from "react-router-dom";
 
@@ -9,10 +10,15 @@ export const ProtectedRouteUser = () => {
   const navigate = useNavigate();
 
   // Redirect
+  useEffect(() => {
+    if (!isUserAuth) {
+      navigate("/login");
+    }
+  }, [isUserAuth, navigate]);
+
   if (!isUserAuth) {
-    navigate("/login");
-    return;
+    return null;
   }
 
-  return isUserAuth && <Outlet />;
+  return <Outlet />;
 };
