@@ -46,11 +46,11 @@ export const router = createBrowserRouter([
       },
       {
         path: "forgot-password",
-        element: <ForgotPassword/>,
+        element: <ForgotPassword />,
       },
       {
         path: "reset-password/:token",
-        element: <ResetPassword/>,
+        element: <ResetPassword />,
       },
       {
         path: "about",
@@ -108,6 +108,10 @@ export const router = createBrowserRouter([
 
       { path: "signup", element: <Signup role="seller" /> },
       {
+        path: "forgot-password",
+        element: <ForgotPassword />,
+      },
+      {
         element: <ProtectedRouteSeller />,
         children: [
           { path: "", element: <Products role="seller" action="View" /> },
@@ -137,6 +141,10 @@ export const router = createBrowserRouter([
     errorElement: <ErrorPage role="admin" />,
     children: [
       { path: "login", element: <Login role="admin" /> },
+      {
+        path: "forgot-password",
+        element: <ForgotPassword />,
+      },
 
       {
         element: <ProtectedRouteAdmin />,
