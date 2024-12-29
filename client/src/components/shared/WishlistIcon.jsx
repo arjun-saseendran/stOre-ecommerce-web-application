@@ -9,8 +9,8 @@ export const WishlistIcon = ({ productId }) => {
   const { wishlistData } = useSelector((state) => state.wishlist);
 
   // Check product found in wishlist
-  const found = wishlistData.products.find(
-    (product) => product.productId._id === productId
+  const found = wishlistData?.products?.find(
+    (product) => product?.productId?._id === productId
   );
 
   return (

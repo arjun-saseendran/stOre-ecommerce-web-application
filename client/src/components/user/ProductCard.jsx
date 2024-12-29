@@ -38,8 +38,8 @@ export const ProductCard = ({ product }) => {
   const wishlistHandler = async (productId) => {
     // Api call
 
-    const found = wishlistData.products.find(
-      (product) => product.productId._id === productId
+    const found = wishlistData?.products?.find(
+      (product) => product?.productId?._id === productId
     );
 
     if (found) {
