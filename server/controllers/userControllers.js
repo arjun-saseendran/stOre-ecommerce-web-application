@@ -5,7 +5,7 @@ import { catchErrorHandler } from "../utils/catchErrorHandler.js";
 import { cloudinaryInstance } from "../config/cloudinary.js";
 
 // Config node env
-const NODE_ENV = process.env.NODE_ENV
+const NODE_ENV = process.env.NODE_ENV;
 
 // User signup
 export const userSignup = async (req, res) => {
@@ -98,9 +98,9 @@ export const userLogin = async (req, res) => {
 
     // Set token to cookie
     res.cookie("token", token, {
-      sameSite: NODE_ENV === 'production' ? 'None' : 'Lax',
-      secure: NODE_ENV === 'production',
-      httpOnly: NODE_ENV === 'production'
+      sameSite: NODE_ENV === "production" ? "None" : "Lax",
+      secure: NODE_ENV === "production",
+      httpOnly: NODE_ENV === "production",
     });
 
     // Exclude password
@@ -244,28 +244,28 @@ export const getInactiveUsers = async (req, res) => {
 
 export const deactivateUser = async (req, res) => {
   try {
-      // Get user id
-      const { userId } = req.body;
-  
-      // Get user
-      const user = await User.findById(userId);
-  
-      // Handle not found
-      if (!user) {
-        return res.status(404).json({ message: "No such seller found" });
-      }
-  
-      // Deactivate user
-      user.isActive = false;
-  
-      // Save data
-      await user.save();
-  
-      res.status(202).json({ message: "User deactivated", data: user });
-    } catch (error) {
-      // Handle catch error
-      catchErrorHandler(res, error);
+    // Get user id
+    const { userId } = req.body;
+
+    // Get user
+    const user = await User.findById(userId);
+
+    // Handle not found
+    if (!user) {
+      return res.status(404).json({ message: "No such seller found" });
     }
+
+    // Deactivate user
+    user.isActive = false;
+
+    // Save data
+    await user.save();
+
+    res.status(202).json({ message: "User deactivated", data: user });
+  } catch (error) {
+    // Handle catch error
+    catchErrorHandler(res, error);
+  }
 };
 
 // Activate user
@@ -330,5 +330,3 @@ export const getActiveUsers = async (req, res) => {
     catchErrorHandler(res, error);
   }
 };
-
-
