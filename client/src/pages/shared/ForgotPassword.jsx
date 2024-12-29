@@ -9,6 +9,21 @@ export const ForgotPassword = ({ role = "user" }) => {
   // Get theme
   const { theme } = useSelector((state) => state.theme);
 
+  // Handle user role
+  const user = {
+    forgotPassword: '/user/forgot-password',
+}
+
+// Handle Seller role
+if(role === 'seller'){
+  user.forgotPassword = '/seller/forgot-password'
+}
+
+// Handle admin role
+if(role === 'admin'){
+  user.forgotPassword = '/seller/admin/forgot-password'
+}
+
   //config register
   const { register, handleSubmit } = useForm();
 
@@ -20,13 +35,10 @@ export const ForgotPassword = ({ role = "user" }) => {
       // Api call
       const response = await axiosInstance({
         method: "POST",
-        url: "/user/forgot-password",
+        url: user.forgotPassword,
         data
       });
-
-      console.log(response);
-
-      toast.success("Mail sent!");
+          toast.success("Mail sent!");
 
       // Navigate to password reset page
       // navigate('/reset-password')
