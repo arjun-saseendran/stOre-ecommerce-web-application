@@ -68,6 +68,13 @@ sellerRouter.get("/inactive-sellers", adminAuth, getInactiveSellers)
 // Admin profile details
 sellerRouter.get("/admin-profile", adminAuth, adminProfile)
 
+// Forgot password
+sellerRouter.post("/forgot-password", forgotPassword  );
+
+// Reset password
+sellerRouter.post("/reset-password/:token", resetPassword);
+
+
 
 
 

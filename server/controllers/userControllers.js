@@ -343,7 +343,7 @@ export const getActiveUsers = async (req, res) => {
 };
 
 // Forgot password
-export const forgotPassword = async (req, res) => {
+export const userForgotPassword = async (req, res) => {
   // Get user email from body
   const { email } = req.body;
   try {
@@ -361,13 +361,13 @@ export const forgotPassword = async (req, res) => {
     user.resetToken = resetToken;
 
     // Set token expires
-    user.resetTokenExpires = Date.now() + 5 * 60 * 1000;
+    user.resetTokenExpires = Date.now() + 10 * 60 * 1000;
 
     // Save to database
     await user.save();
 
     // Set rest link
-    const resetLink = `${process.env.BASE_URL}/reset-password/${resetToken}`;
+    const resetLink = `${process.env.CORS}/reset-password/${resetToken}`;
 
     await transporter.sendMail({
       from: process.env.EMAIL_USER,
@@ -383,7 +383,7 @@ export const forgotPassword = async (req, res) => {
 };
 
 // Reset password
-export const resetPassword = async (req, res) => {
+export const userResetPassword = async (req, res) => {
   // Get data from request body
   const { password } = req.body;
 

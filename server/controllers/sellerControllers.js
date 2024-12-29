@@ -5,7 +5,7 @@ import { catchErrorHandler } from "../utils/catchErrorHandler.js";
 import { cloudinaryInstance } from "../config/cloudinary.js";
 
 // Config node env
-const NODE_ENV = process.env.NODE_ENV
+const NODE_ENV = process.env.NODE_ENV;
 
 // Seller signup
 export const sellerSignup = async (req, res) => {
@@ -352,3 +352,44 @@ export const checkAdmin = async (req, res) => {
     catchErrorHandler(res, error);
   }
 };
+
+// Forgot password
+export const sellerForgotPassword = async (req, res) => {
+  // Get seller email from body
+  const { email } = req.body;
+  try {
+    // Find seller found
+    const seller = await Seller.findOne({ email });
+
+    if (!seller) {
+      return res.status(404).json({ message: "Seller not found" });
+    }
+
+    // Create reset token
+    const resetToken = crypto.randomBytes(32).toString("hex");
+
+    // Assign to database variable
+    user.resetToken = resetToken;
+
+    // Set token expires
+    user.resetTokenExpires = Date.now() + 10 * 60 * 1000;
+
+    // Save to database
+    await seller.save();
+
+    // Set rest link
+    const resetLink = `${process.env.CORS}/reset-password/${resetToken}`;
+
+    await transporter.sendMail({
+      from: process.env.EMAIL_USER,
+      to: email,
+      subject: "Password reset request",
+      text: `Click the link to reset your password: ${resetLink}`,
+    });
+
+    res.status(200).json({ message: "Reset email send!" });
+  } catch (error) {
+    catchErrorHandler(res, error);
+  }
+};
+
