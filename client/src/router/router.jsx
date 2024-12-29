@@ -25,6 +25,7 @@ import { AddReview } from "../pages/user/AddReview";
 import { Wishlist } from "../pages/user/Wishlist";
 import { ForgotPassword } from "../pages/shared/ForgotPassword";
 import { ResetPassword } from "../pages/shared/ResetPassword";
+import {SentMail} from '../pages/shared/SentMail'
 
 export const router = createBrowserRouter([
   {
@@ -51,6 +52,10 @@ export const router = createBrowserRouter([
       {
         path: "reset-password/:token",
         element: <ResetPassword role="user" />,
+      },
+      {
+        path: "sent-mail",
+        element: <SentMail/>,
       },
       {
         path: "about",

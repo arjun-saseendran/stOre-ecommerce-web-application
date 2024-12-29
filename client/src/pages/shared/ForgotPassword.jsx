@@ -41,7 +41,7 @@ if(role === 'admin'){
           toast.success("Mail sent!");
 
       // Navigate to password reset page
-      // navigate('/reset-password')
+      navigate('/sent-mail')
     } catch (error) {
       toast.error("Something went wrong");
     }
