@@ -1,6 +1,6 @@
 import express from "express";
 import dotenv from "dotenv";
-import cors from 'cors'
+import cors from "cors";
 import cookieParser from "cookie-parser";
 import { connectDB } from "./config/db.js";
 import { apiRouter } from "./routes/index.js";
@@ -14,13 +14,14 @@ const app = express();
 // Config cors
 app.use(
   cors({
-    origin: ["https://store-ecommerce-web-application-client.vercel.app", 
-     "http://localhost:3000"],
+    origin: [
+      "https://store-ecommerce-web-application-client.vercel.app",
+      "http://localhost:5173",
+    ],
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE"],
   })
 );
-
 
 // Configure port
 const PORT = process.env.PORT;
