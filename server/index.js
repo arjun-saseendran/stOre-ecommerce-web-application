@@ -22,7 +22,7 @@ app.use(
 
 
 // Configure port
-const port = process.env.PORT;
+const PORT = process.env.PORT;
 
 // Connect database
 connectDB();
@@ -35,7 +35,7 @@ app.use(cookieParser());
 app.use("/api", apiRouter);
 
 // Configure server
-app.listen(port, (error) => {
+app.listen(PORT, (error) => {
   if (error) {
     console.error(error);
   } else {
