@@ -393,3 +393,41 @@ export const sellerForgotPassword = async (req, res) => {
   }
 };
 
+// Reset password
+export const sellerResetPassword = async (req, res) => {
+  // Get data from request body
+  const { password } = req.body;
+
+  const { token } = req.params;
+
+  try {
+    // Find the seller
+    const seller = await Seller.findOne({
+      resetToken: token,
+      resetTokenExpires: { $gt: Date.now() },
+    });
+
+    // Handle seller not found
+    if (!token) {
+      return res
+        .status(400)
+        .json({ message: "Invalid token or token expired!" });
+    }
+
+    // Hashing password
+    user.password = await passwordHandler(password, undefined, res);
+
+    // Clear tokens
+    user.resetToken = null;
+    user.resetTokenExpires = null;
+
+    // Save seller data
+    await user.save();
+
+    res.status(200).json({ message: "Password reset successful!" });
+  } catch (error) {
+    catchErrorHandler(res, error);
+  }
+};
+
+
