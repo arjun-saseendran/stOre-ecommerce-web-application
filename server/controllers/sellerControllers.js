@@ -470,4 +470,42 @@ export const adminForgotPassword = async (req, res) => {
   }
 };
 
+// Reset password
+export const adminResetPassword = async (req, res) => {
+  // Get data from request body
+  const { password } = req.body;
+
+  const { token } = req.params;
+
+  try {
+    // Find the admin
+    const admin = await Seller.findOne({
+      resetToken: token,
+      role: 'admin',
+      resetTokenExpires: { $gt: Date.now() },
+    });
+
+    // Handle admin not found
+    if (!token) {
+      return res
+        .status(400)
+        .json({ message: "Invalid token or token expired!" });
+    }
+
+    // Hashing password
+    admin.password = await passwordHandler(password, undefined, res);
+
+    // Clear tokens
+    user.resetToken = null;
+    user.resetTokenExpires = null;
+
+    // Save admin data
+    await admin.save();
+
+    res.status(200).json({ message: "Password reset successful!" });
+  } catch (error) {
+    catchErrorHandler(res, error);
+  }
+};
+
 
