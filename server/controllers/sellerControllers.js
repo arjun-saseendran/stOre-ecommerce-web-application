@@ -4,6 +4,9 @@ import { generateToken } from "../utils/tokenHandler.js";
 import { catchErrorHandler } from "../utils/catchErrorHandler.js";
 import { cloudinaryInstance } from "../config/cloudinary.js";
 
+// Config node env
+const NODE_ENV = process.env.NODE_ENV
+
 // Seller signup
 export const sellerSignup = async (req, res) => {
   try {
@@ -98,7 +101,11 @@ export const sellerLogin = async (req, res) => {
     const token = generateToken(seller, seller.role, res);
 
     // Set token to cookie
-    res.cookie("token", token);
+    res.cookie("token", token, {
+      sameSite: NODE_ENV === "production" ? "None" : "Lax",
+      secure: NODE_ENV === "production",
+      httpOnly: NODE_ENV === "production",
+    });
 
     // Exclude password
     const { password: _, ...sellerWithoutPassword } = seller.toObject();
@@ -181,7 +188,11 @@ export const getSellers = async (req, res) => {
 export const sellerLogout = async (req, res) => {
   // Clearing token from cookies
   try {
-    res.clearCookie("token");
+    res.clearCookie("token", {
+      sameSite: NODE_ENV === "production" ? "None" : "Lax",
+      secure: NODE_ENV === "production",
+      httpOnly: NODE_ENV === "production",
+    });
 
     res.status(200).json({ message: "Seller logout success" });
   } catch (error) {
