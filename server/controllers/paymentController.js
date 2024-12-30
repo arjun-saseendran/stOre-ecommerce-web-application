@@ -6,9 +6,6 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
 // Handle checkout
 export const createCheckoutSession = async (req, res, next) => {
-
-  console.log(req.body);
-  
   try {
     const { products } = req.body;
 
@@ -21,8 +18,14 @@ export const createCheckoutSession = async (req, res, next) => {
         },
         unit_amount: Math.round(product?.productId?.price * 100),
       },
-      quantity: quantity,
+      quantity: product?.quantity,
     }));
+
+    // Calculate totalPrice
+    const totalPrice =
+      lineItems.reduce((total, item) => {
+        return total + item.price_data.unit_amount * item.quantity;
+      }, 0) / 100;
 
     // Create a new Stripe checkout session
     const session = await stripe.checkout.sessions.create({
@@ -37,6 +40,11 @@ export const createCheckoutSession = async (req, res, next) => {
     const order = new Order({
       userId: req.user.id,
       sessionId: session.id,
+      products: products.map((product) => ({
+        productId: product.productId._id,
+      })),
+      totalPrice,
+      orderStatus: "processing",
     });
     await order.save();
 
