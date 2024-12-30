@@ -112,7 +112,7 @@ export const sellerLogin = async (req, res) => {
 
     res
       .status(200)
-      .json({ message: "Login successfull", data: sellerWithoutPassword });
+      .json({ message: "Login successful", data: sellerWithoutPassword });
   } catch (error) {
     // Handle catch error
     catchErrorHandler(res, error);
