@@ -6,6 +6,9 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
 // Handle checkout
 export const createCheckoutSession = async (req, res, next) => {
+
+  console.log(req.body);
+  
   try {
     const { products } = req.body;
 
@@ -18,7 +21,7 @@ export const createCheckoutSession = async (req, res, next) => {
         },
         unit_amount: Math.round(product?.productId?.price * 100),
       },
-      quantity: 1,
+      quantity: quantity,
     }));
 
     // Create a new Stripe checkout session
@@ -58,7 +61,7 @@ export const getSessionStatus = async (req, res) => {
     res.json({
       status: session?.status,
       customer_email: session?.customer_details?.email,
-      session_data: session
+      session_data: session,
     });
   } catch (error) {
     catchErrorHandler(res, error);
