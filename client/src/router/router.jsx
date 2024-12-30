@@ -14,7 +14,6 @@ import { ProtectedRouteSeller } from "./ProtectedRouteSeller";
 import { AddNewProduct } from "../pages/shared/AddNewProduct";
 import { Profile } from "../pages/shared/Profile";
 import { SellerLayout } from "../layout/SellerLayout";
-import { Settings } from "../components/user/Settings";
 import { Products } from "../pages/shared/Products";
 import { AdminLayout } from "../layout/AdminLayout";
 import { ProtectedRouteAdmin } from "./ProtectedRouteAdmin";
@@ -26,6 +25,8 @@ import { Wishlist } from "../pages/user/Wishlist";
 import { ForgotPassword } from "../pages/shared/ForgotPassword";
 import { ResetPassword } from "../pages/shared/ResetPassword";
 import {SentMail} from '../pages/shared/SentMail'
+import { PaymentSuccess } from "../pages/user/PaymentSuccess";
+import { PaymentCancel } from "../pages/user/PaymentCancel";
 
 export const router = createBrowserRouter([
   {
@@ -89,8 +90,12 @@ export const router = createBrowserRouter([
             element: <Profile role="user" />,
           },
           {
-            path: "settings",
-            element: <Settings role="user" />,
+            path: "payment-success",
+            element: <PaymentSuccess />,
+          },
+          {
+            path: "payment-cancel",
+            element: <PaymentCancel />,
           },
           {
             path: "add-review/:productId",

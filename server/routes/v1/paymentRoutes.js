@@ -34,8 +34,8 @@ paymentRouter.post(
         payment_method_types: ["card"],
         line_items: lineItems,
         mode: "payment",
-        success_url: `${process.env.CORS}/user/payment/success`,
-        cancel_url: `${process.env.CORS}/user/payment/cancel`,
+        success_url: `${process.env.CORS}/user/payment-success`,
+        cancel_url: `${process.env.CORS}/user/payment-cancel`,
       });
 
       // Save order details to the database
