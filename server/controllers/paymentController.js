@@ -13,10 +13,10 @@ export const createCheckoutSession = async (req, res, next) => {
       price_data: {
         currency: "inr",
         product_data: {
-          name: product.productId.title,
-          images: [product.productId.image],
+          name: product?.productId?.title,
+          images: [product?.productId?.image],
         },
-        unit_amount: Math.round(product.productId.price * 100),
+        unit_amount: Math.round(product?.productId?.price * 100),
       },
       quantity: 1,
     }));
