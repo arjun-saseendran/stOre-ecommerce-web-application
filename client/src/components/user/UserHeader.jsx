@@ -32,11 +32,6 @@ export const UserHeader = () => {
   // Config dispatch
   const dispatch = useDispatch();
 
-  // Search value
-  const handleSearch = () => {
-    dispatch(setSearchValue(inputValue.current.value));
-  };
-
   // Get current theme
   const { theme } = useSelector((state) => state.theme);
 
@@ -100,6 +95,11 @@ export const UserHeader = () => {
     } catch (error) {
       console.log(error);
     }
+  };
+
+  // Search value
+  const handleSearch = () => {
+    dispatch(setSearchValue(inputValue.current.value));
   };
 
   //   // Store cart data to global variable

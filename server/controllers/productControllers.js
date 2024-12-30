@@ -164,7 +164,7 @@ export const searchProduct = async (req, res) => {
     // Find product
     const searchResults = await Product.find({
       $or: [
-        { name: { $regex: searchResult, $options: "i" } },
+        { title: { $regex: searchResult, $options: "i" } },
         { description: { $regex: searchResult, $options: "i" } },
         { category: { $regex: searchResult, $options: "i" } },
       ],
