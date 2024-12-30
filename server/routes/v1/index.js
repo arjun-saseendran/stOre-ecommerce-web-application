@@ -6,6 +6,7 @@ import { cartRouter } from "./cartRoutes.js";
 import { reviewRouter } from "./reviewRoutes.js";
 import { bannerRouter } from "./bannerRoutes.js";
 import { wishlistRouter } from "./wishlistRoutes.js";
+import { paymentRouter } from "./paymentRoutes.js";
 
 // Configure router
 export const v1Router = Router();
@@ -17,3 +18,4 @@ v1Router.use("/cart", cartRouter);
 v1Router.use("/review", reviewRouter);
 v1Router.use("/banner", bannerRouter);
 v1Router.use("/wishlist", wishlistRouter);
+v1Router.use('/payment', paymentRouter)
