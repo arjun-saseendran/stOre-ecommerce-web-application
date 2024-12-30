@@ -1,6 +1,7 @@
 import toast from "react-hot-toast";
+import { loadStripe } from "@stripe/stripe-js";
 import { Button, Card, Row, Col, Container } from "react-bootstrap";
-import { useSelector} from "react-redux";
+import { useSelector } from "react-redux";
 import { axiosInstance } from "../../config/axiosInstance";
 import { OrderIcon } from "../../components/shared/OrderIcon";
 
@@ -46,6 +47,26 @@ export const Cart = () => {
       toast.error(
         error?.response?.data?.message || "Error while removing the product"
       );
+    }
+  };
+
+  // Make payment
+  const makePayment = async () => {
+    try {
+      const stripe = await loadStripe(
+        import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY
+      );
+
+      const session = await axiosInstance({
+        url: "/payment/create-checkout-session",
+        method: "POST",
+        data: { products: cartItems },
+      });
+      const result = stripe.redirectToCheckout({
+        sessionId: session.data.sessionId,
+      });
+    } catch (error) {
+      console.log(error);
     }
   };
 
@@ -108,6 +129,7 @@ export const Cart = () => {
         <Col className="fw-normal">₹{cartData.totalPrice || 0}</Col>
         <Col>
           <Button
+            onClick={makePayment}
             className="w-100 text-white "
             variant={theme ? "warning" : "dark"}
           >
