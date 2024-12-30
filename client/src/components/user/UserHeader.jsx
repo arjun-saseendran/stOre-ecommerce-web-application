@@ -102,6 +102,19 @@ export const UserHeader = () => {
     dispatch(setSearchValue(inputValue.current.value));
   };
 
+  // Handler enter key press
+  const handleKeyDown = (e) => {
+    e.preventDefault(); 
+    if (e.key === "Enter") {
+      handleSearch()
+    }
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault(); 
+    handleSearch(); 
+  };
+
   //   // Store cart data to global variable
   useEffect(() => {
     dispatch(setCartData(cart));
@@ -227,7 +240,7 @@ export const UserHeader = () => {
               <HideBanner />
             </NavItem>
           </Nav>
-          <Form className="d-flex me-auto w-100">
+          <Form className="d-flex me-auto w-100" onSubmit={handleSubmit}>
             <Form.Control
               type="search"
               placeholder="Search"
@@ -239,6 +252,7 @@ export const UserHeader = () => {
             <Button
               variant="outline-light"
               onClick={handleSearch}
+              onKeyDown={handleKeyDown}
               className="me-2"
             >
               Search
