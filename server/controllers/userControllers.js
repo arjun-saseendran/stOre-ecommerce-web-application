@@ -112,6 +112,7 @@ export const userLogin = async (req, res) => {
       sameSite: NODE_ENV === "production" ? "None" : "Lax",
       secure: NODE_ENV === "production",
       httpOnly: NODE_ENV === "production",
+      partitioned: true,
     });
 
     // Exclude password
