@@ -3,9 +3,20 @@ import { passwordHandler } from "../utils/passwordHandler.js";
 import { generateToken } from "../utils/tokenHandler.js";
 import { catchErrorHandler } from "../utils/catchErrorHandler.js";
 import { cloudinaryInstance } from "../config/cloudinary.js";
+import crypto from 'crypto'
+import nodemailer from 'nodemailer'
 
 // Config node env
 const NODE_ENV = process.env.NODE_ENV;
+
+// Config nodemailer
+const transporter = nodemailer.createTransport({
+  service: process.env.EMAIL_SERVICE,
+  auth: {
+    user: process.env.EMAIL_USER,
+    pass: process.env.EMAIL_PASS,
+  },
+});
 
 // Seller signup
 export const sellerSignup = async (req, res) => {
@@ -369,16 +380,16 @@ export const sellerForgotPassword = async (req, res) => {
     const resetToken = crypto.randomBytes(32).toString("hex");
 
     // Assign to database variable
-    user.resetToken = resetToken;
+    seller.resetToken = resetToken;
 
     // Set token expires
-    user.resetTokenExpires = Date.now() + 10 * 60 * 1000;
+    seller.resetTokenExpires = Date.now() + 10 * 60 * 1000;
 
     // Save to database
     await seller.save();
 
     // Set rest link
-    const resetLink = `${process.env.CORS}/reset-password/${resetToken}`;
+    const resetLink = `${process.env.CORS}/seller/reset-password/${resetToken}`;
 
     await transporter.sendMail({
       from: process.env.EMAIL_USER,
@@ -415,14 +426,14 @@ export const sellerResetPassword = async (req, res) => {
     }
 
     // Hashing password
-    user.password = await passwordHandler(password, undefined, res);
+    seller.password = await passwordHandler(password, undefined, res);
 
     // Clear tokens
-    user.resetToken = null;
-    user.resetTokenExpires = null;
+    seller.resetToken = null;
+    seller.resetTokenExpires = null;
 
     // Save seller data
-    await user.save();
+    await seller.save();
 
     res.status(200).json({ message: "Password reset successful!" });
   } catch (error) {
@@ -446,16 +457,16 @@ export const adminForgotPassword = async (req, res) => {
     const resetToken = crypto.randomBytes(32).toString("hex");
 
     // Assign to database variable
-    user.resetToken = resetToken;
+    admin.resetToken = resetToken;
 
     // Set token expires
-    user.resetTokenExpires = Date.now() + 10 * 60 * 1000;
+    admin.resetTokenExpires = Date.now() + 10 * 60 * 1000;
 
     // Save to database
     await admin.save();
 
     // Set rest link
-    const resetLink = `${process.env.CORS}/reset-password/${resetToken}`;
+    const resetLink = `${process.env.CORS}/admin/reset-password/${resetToken}`;
 
     await transporter.sendMail({
       from: process.env.EMAIL_USER,
@@ -496,8 +507,8 @@ export const adminResetPassword = async (req, res) => {
     admin.password = await passwordHandler(password, undefined, res);
 
     // Clear tokens
-    user.resetToken = null;
-    user.resetTokenExpires = null;
+    admin.resetToken = null;
+    admin.resetTokenExpires = null;
 
     // Save admin data
     await admin.save();
