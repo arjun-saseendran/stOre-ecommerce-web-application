@@ -60,7 +60,7 @@ export const Cart = () => {
       const session = await axiosInstance({
         url: "/payment/create-checkout-session",
         method: "POST",
-        data: { products: cartItems },
+        data: { products: cartData },
       });
       const result = stripe.redirectToCheckout({
         sessionId: session.data.sessionId,
