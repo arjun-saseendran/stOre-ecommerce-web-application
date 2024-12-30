@@ -24,6 +24,10 @@ const orderSchema = new Schema(
       type: Number,
       required: true,
     },
+    orderStatus: {
+      type: String,
+      enum: ["processing", "success", "out for delivery", "delivered"],
+    },
   },
   { timestamps: true }
 );

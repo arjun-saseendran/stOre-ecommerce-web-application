@@ -56,9 +56,9 @@ export const getSessionStatus = async (req, res) => {
     const session = await stripe.checkout.sessions.retrieve(sessionId);
 
     res.json({
-      message: "Successully fetched order details",
-      success: true,
-      data: session,
+      status: session?.status,
+      customer_email: session?.customer_details?.email,
+      session_data: session
     });
   } catch (error) {
     catchErrorHandler(res, error);
