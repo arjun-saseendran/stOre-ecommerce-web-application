@@ -1,16 +1,15 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
-import Button from "react-bootstrap/esm/Button";
+import { Button, Container } from "react-bootstrap";
 import { axiosInstance } from "../../config/axiosInstance";
 import { useFetch } from "../../hooks/useFetch";
-
 
 export const Profile = ({ role = "user", action }) => {
   // Config navigate
   const navigate = useNavigate();
 
   // Config params
-  const {userId} = useParams()
+  const { userId } = useParams();
 
   // Get current theme
   const { theme } = useSelector((state) => state.theme);
@@ -33,18 +32,17 @@ export const Profile = ({ role = "user", action }) => {
     user.profile = `/user/user-details/${userId}`;
   } else if (role === "seller" && action === "Details") {
     user.profile = `seller/seller-details/${userId}`;
-  }else if(role === 'user' && action !== 'Details'){
-    user.profile = '/user/profile'
-  }else if(role === 'seller' && action !== 'Details'){
-    user.profile = '/seller/profile'
-  }else if(role === 'admin' && action !== 'Details'){
+  } else if (role === "user" && action !== "Details") {
+    user.profile = "/user/profile";
+  } else if (role === "seller" && action !== "Details") {
+    user.profile = "/seller/profile";
+  } else if (role === "admin" && action !== "Details") {
     user.profile = "/seller/admin-profile";
   }
 
   // Api call
-  const [profile, loading, error] = useFetch(user.profile)
+  const [profile, loading, error] = useFetch(user.profile);
 
-  
   // Logout handler
   const handleLogout = async () => {
     try {
@@ -52,12 +50,12 @@ export const Profile = ({ role = "user", action }) => {
         method: "PUT",
         url: user.logout,
       });
-      if (role === 'user') {
+      if (role === "user") {
         navigate("/login");
-      }else if(role === 'admin'){
-        navigate('/admin/login')
-      }else if(role === 'seller'){
-        navigate('/seller/login')
+      } else if (role === "admin") {
+        navigate("/admin/login");
+      } else if (role === "seller") {
+        navigate("/seller/login");
       }
     } catch (error) {
       console.log(error);
@@ -65,44 +63,35 @@ export const Profile = ({ role = "user", action }) => {
   };
 
   return (
-    <div>
+    <Container>
       <form
         encType="multipart/form-data"
-        className=" signup-box mt-5 mx-auto d-flex flex-column gap-2 align-items-center justify-content-center rounded-3"
+        className="signup-box mt-5 d-flex mx-auto flex-column align-items-center justify-content-center gap-2 rounded-3"
         style={{ backgroundColor: theme ? "#FFF6E3" : "#d9d9d9" }}
       >
         <h3 className="mt-2 fw-bold">Profile {action}</h3>
 
         <div>
-          <div>
+          <div className="mb-1">
             <img
               src={profile?.profilePicture}
               height="125px"
-              className="rounded"
+              className="rounded-circle"
             />
           </div>
         </div>
-        <div>
-          <div
-            className="rounded-2 bg-white border-0 text-center"
-            style={{ padding: "8px 105px 8px 105px" }}
-          >
+        <div className="w-100 px-3">
+          <div className="rounded-2 px-3 py-2 bg-white border-0 text-center">
             {profile?.name}
           </div>
         </div>
-        <div>
-          <div
-            className="rounded-2 border-0 text-center bg-white"
-            style={{ padding: "8px 61px 8px 61px" }}
-          >
+        <div className="w-100 px-3">
+          <div className="rounded-2 px-3 py-2 border-0 text-center bg-white">
             {profile?.email}
           </div>
         </div>
-        <div>
-          <div
-            className="rounded-2 border-0  text-center bg-white"
-            style={{ padding: "8px 60px 8px 60px" }}
-          >
+        <div className="w-100 px-3">
+          <div className="rounded-2 border-0 px-3 py-2  text-center bg-white">
             {profile?.mobile}
           </div>
         </div>
@@ -110,7 +99,7 @@ export const Profile = ({ role = "user", action }) => {
         <div>
           <Button
             onClick={handleLogout}
-            className="rounded-2 border-0 px-4 hover py-2 text-center 
+            className="rounded-2 border-0  hover py-2 text-center 
             text-white mt-1"
             type="submit"
             variant={theme ? "warning" : "dark"}
@@ -119,6 +108,6 @@ export const Profile = ({ role = "user", action }) => {
           </Button>
         </div>
       </form>
-    </div>
+    </Container>
   );
 };
