@@ -64,7 +64,7 @@ export const Login = ({ role = "user" }) => {
   };
 
   return (
-    <div className="vh-100">
+    <div style={{ minHeight: "500px" }}>
       <form
         onSubmit={handleSubmit(onSubmit)}
         className=" login-box mx-auto mt-5 d-flex flex-column gap-2 align-items-center justify-content-center rounded-3"

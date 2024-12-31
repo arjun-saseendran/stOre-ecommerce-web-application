@@ -122,7 +122,7 @@ export const Users = ({
   }
 
   return (
-    <Container>
+    <Container style={{minHeight:'500px'}} >
       <h1 className="text-center text-white mt-5">
         List {status} {role}
       </h1>

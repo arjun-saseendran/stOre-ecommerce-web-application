@@ -1,10 +1,9 @@
 body {
   margin: 0;
   padding: 0;
+  box-sizing: border-box;
   background: #31363f;
   padding-top: 91px;
-
- 
 }
 
 .crd-image {
@@ -28,7 +27,6 @@ body {
 
 .crd-col {
   margin-top: 21px;
- 
 }
 
 .signup-box {
@@ -81,4 +79,3 @@ input[type="file"] {
 .pr-card-img {
   max-width: 300px;
 }
-

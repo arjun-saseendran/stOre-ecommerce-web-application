@@ -1,6 +1,7 @@
 import { Container } from "react-bootstrap";
 import { useSelector } from "react-redux";
 
+
 export const AboutUs = () => {
   // Get current theme
   const { theme } = useSelector((state) => state.theme);
