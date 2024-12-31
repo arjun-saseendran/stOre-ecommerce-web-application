@@ -17,7 +17,7 @@ export const Footer = () => {
       <div className="container">
         <div className="row">
           <div className="col-md-4">
-            <h6 className="text-uppercase font-weight-bold mb-3">Services</h6>
+            <h6 className="text-uppercase font-weight-bold mb-3">BUSINESS</h6>
             <ul className="list-unstyled">
               <li>
                 <Link to={'/seller/signup'} className="text-decoration-none text-white">

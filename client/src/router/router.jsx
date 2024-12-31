@@ -2,7 +2,7 @@ import { createBrowserRouter } from "react-router-dom";
 import { ProtectedRouteUser } from "./ProtectedRouteUser";
 import { UserLayout } from "../layout/UserLayout";
 import { Home } from "../pages/user/Home";
-import { About } from "../pages/user/About";
+import { AboutUs } from "../pages/stOre/AboutUs";
 import { Contact } from "../pages/user/Contact";
 import { ProductList } from "../pages/user/ProductList";
 import { ProductDetails } from "../pages/shared/ProductDetails";
@@ -59,8 +59,8 @@ export const router = createBrowserRouter([
         element: <SentMail/>,
       },
       {
-        path: "about",
-        element: <About />,
+        path: "about-us",
+        element: <AboutUs />,
       },
       {
         path: "contact",
