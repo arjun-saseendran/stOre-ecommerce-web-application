@@ -63,7 +63,7 @@ export const Signup = ({ role = "user" }) => {
   };
 
   return (
-    <div>
+    <div style={{minHeight: '400px'}} className="mx-2">
       <form
         onSubmit={handleSubmit(onSubmit)}
         encType="multipart/form-data"
