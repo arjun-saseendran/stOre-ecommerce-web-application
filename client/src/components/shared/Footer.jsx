@@ -9,7 +9,7 @@ export const Footer = () => {
     <Row
       className={
         theme
-          ? "bg-waring text-white mt-5 p-5"
+          ? "bg-warning text-white mt-5 p-5"
           : "bg-black text-white mt-5 p-5 "
       }
     >
