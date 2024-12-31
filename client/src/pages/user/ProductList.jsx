@@ -70,7 +70,7 @@ export const ProductList = () => {
 
   return (
     <Container>
-      <Row className="mt-4">
+      <Row className="mt-4" style={{minHeight: '500px'}}>
         {renderProducts?.map((product) => (
           <Col
             className="crd-col"
