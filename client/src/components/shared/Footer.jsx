@@ -1,5 +1,6 @@
 import { useSelector } from "react-redux";
-
+import {Link} from 'react-router-dom'
+ 
 export const Footer = () => {
 
   // Get theme
@@ -19,9 +20,9 @@ export const Footer = () => {
             <h6 className="text-uppercase font-weight-bold mb-3">Services</h6>
             <ul className="list-unstyled">
               <li>
-                <a href="#" className="text-decoration-none text-white">
-                  Branding
-                </a>
+                <Link to={'/seller/signup'} className="text-decoration-none text-white">
+                  Sell on stOre
+                </Link>
               </li>
               <li>
                 <a href="#" className="text-decoration-none text-white">

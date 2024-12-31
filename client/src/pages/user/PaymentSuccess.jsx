@@ -1,11 +1,13 @@
 import {Container, Button} from 'react-bootstrap'
 import { useSelector } from 'react-redux';
+import {Link} from 'react-router-dom'
 
 
 export const PaymentSuccess = () => {
 
 // Get current theme
 const {theme} = useSelector((state) => state.theme)
+
 
 
   
@@ -32,7 +34,9 @@ return (
       </div>
       <div>
         <h1 className="text-white text-center mt-5">Payment success!</h1>
-        <Button variant={theme ? 'warning' : 'dark'} className='text-white'>Back to home</Button>
+        <Button variant={theme ? "warning" : "dark"} className="text-white">
+          <Link className='text-decoration-none text-white' to={'/'}>Back to home</Link>
+        </Button>
       </div>
     </div>
   </Container>
