@@ -215,19 +215,89 @@ export const sellerLogout = async (req, res) => {
 // Update seller profile details
 export const updateSellerProfile = async (req, res) => {
   try {
-    // Get seller id
+    // Destructure request body
+    const { name, email, mobile } = req.body;
+
+    // Check if name, email, or mobile are missing
+    if (!name || !email || !mobile) {
+      return res
+        .status(400)
+        .json({ message: "Name, email, and mobile are required" });
+    }
+    // Get user id
     const userId = req.user.id;
 
-    // Update seller data
+    // Handle upload image
+    let profilePictureUrl = null;
+
+    if (req.file) {
+      const uploadResult = await cloudinaryInstance.uploader.upload(
+        req.file.path
+      );
+      profilePictureUrl = uploadResult.url;
+    }
+
+    // Update admin data
     const updatedSellerData = await Seller.findByIdAndUpdate(
       userId,
-      req.body
-    ).select("-password");
+      {
+        name,
+        email,
+        mobile,
+        profilePicture: profilePictureUrl || undefined,
+      },
+      { new: true }
+    );
 
-    res.status(200).json({
-      message: "seller profile details updated",
-      data: updatedSellerData,
-    });
+    res
+      .status(200)
+      .json({ message: "Seller profile details updated", data: updatedSellerData });
+  } catch (error) {
+    // Handle catch error
+    catchErrorHandler(res, error);
+  }
+};
+
+// Update admin profile details
+export const updateAdminProfile = async (req, res) => {
+  try {
+    // Destructure request body
+    const { name, email, mobile } = req.body;
+
+    // Check if name, email, or mobile are missing
+    if (!name || !email || !mobile) {
+      return res
+        .status(400)
+        .json({ message: "Name, email, and mobile are required" });
+    }
+    // Get user id
+    const userId = req.user.id;
+
+    // Handle upload image
+    let profilePictureUrl = null;
+
+    if (req.file) {
+      const uploadResult = await cloudinaryInstance.uploader.upload(
+        req.file.path
+      );
+      profilePictureUrl = uploadResult.url;
+    }
+
+    // Update admin data
+    const updatedAdminData = await Seller.findByIdAndUpdate(
+      userId,
+      {
+        name,
+        email,
+        mobile,
+        profilePicture: profilePictureUrl || undefined,
+      },
+      { new: true }
+    );
+
+    res
+      .status(200)
+      .json({ message: "Admin profile details updated", data: updatedAdminData });
   } catch (error) {
     // Handle catch error
     catchErrorHandler(res, error);

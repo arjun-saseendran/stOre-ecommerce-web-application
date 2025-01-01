@@ -76,7 +76,7 @@ export const AddNewProduct = ({ role = "seller" }) => {
           />
         </div>
         <div>
-          <input
+          <textarea
             className="rounded-2 border-0 px-4 py-2 text-center"
             type="text"
             placeholder="Description"

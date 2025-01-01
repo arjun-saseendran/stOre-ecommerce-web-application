@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { axiosInstance } from "../config/axiosInstance";
 
 export const useFetch = (url) => {
@@ -7,7 +7,7 @@ export const useFetch = (url) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(true);
 
-  const fetchData = async () => {
+  const fetchData = useCallback( async () => {
     try {
         // Get response
       const response = await axiosInstance({
@@ -26,11 +26,12 @@ export const useFetch = (url) => {
         // Set loading
         setLoading(false)
     }
-  };
-// Render when loading page
+  },[url])
+
+  // Render when loading page
   useEffect(()=> {
 fetchData()
-  },[])
+  },[fetchData])
 // send response
-  return [data, loading, error]
+  return [data, loading, error, fetchData]
 };

@@ -178,8 +178,6 @@ export const userLogout = async (req, res) => {
 
 // Update user profile details
 export const updateUserProfile = async (req, res) => {
-  console.log(req.body);
-
   try {
     // Destructure request body
     const { name, email, mobile } = req.body;

@@ -38,7 +38,7 @@ userRouter.put("/logout", userAuth, userLogout);
 userRouter.get("/profile", userAuth, userProfile);
 
 // Update user profile details
-userRouter.put("/update-profile", userAuth, updateUserProfile);
+userRouter.put("/update-profile", upload.single("profilePicture"), userAuth, updateUserProfile);
 
 // Deactivate user profile
 userRouter.put("/deactivate-profile", userAuth, deactivateUser);
