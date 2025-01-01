@@ -32,16 +32,16 @@ export const Profile = ({ role = "user", action }) => {
   if (role === "seller") {
     (user.role = "seller"),
       (user.profile = "/seller/profile"),
-      (user.updateProfile = "/seller/update-profile")(
+      (user.updateProfile = "/seller/update-profile"),
         (user.logout = "/seller/logout")
-      );
+      
   }
 
   // Handle admin role
   if (role === "admin") {
     (user.role = "admin"),
       (user.profile = "/seller/admin/profile"),
-      (user.updateProfile = "/seller/update-profile"),
+      (user.updateProfile = "/seller/admin/update-profile"),
       (user.logout = "/seller/logout");
   }
 
@@ -55,17 +55,6 @@ export const Profile = ({ role = "user", action }) => {
     user.profile = "/seller/profile";
   } else if (role === "admin" && action !== "Details") {
     user.profile = "/seller/admin-profile";
-  }
-  if (role === "user" && action === "Edit") {
-    user.updateProfile = "/user/update-profile";
-  } else if (role === "seller" && action === "Edit") {
-    user.updateProfile = "/seller/update-profile";
-  } else if (role === "user" && action !== "Edit") {
-    user.profile = "/user/profile";
-  } else if (role === "seller" && action !== "Edit") {
-    user.profile = "/seller/profile";
-  } else if (role === "admin" && action !== "Edit") {
-    user.profile = "/seller/update-profile";
   }
 
   // Api call

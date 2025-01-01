@@ -76,7 +76,7 @@ export const Products = ({ action = "View", role = "admin" }) => {
       <h1 className="text-center text-white mt-5">Product {action} List</h1>
       <Row
         className="mt-5 p-3 rounded-3"
-        style={{ backgroundColor: theme ? "#FFF6E3" : "#d9d9d9" }}
+        style={{ backgroundColor: theme ? "#FFF6E3" : "#d9d9d9", minHeight: '400px' }}
       >
         <Table className="rounded-3">
           <thead className="rounded-3">

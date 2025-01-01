@@ -59,7 +59,7 @@ export const AddBanner = ({ role = "seller" }) => {
         onSubmit={handleSubmit(onSubmit)}
         encType="multipart/form-data"
         className="banner-box mt-5 mx-auto d-flex flex-column gap-2 align-items-center justify-content-center rounded-3"
-        style={{ backgroundColor: theme ? "#FFF6E3" : "#d9d9d9" }}
+        style={{ backgroundColor: theme ? "#FFF6E3" : "#d9d9d9", minHeight: '400px' }}
       >
         <h3 className=" fw-bold">Add New Banner</h3>
         <div>
