@@ -33,8 +33,7 @@ export const Profile = ({ role = "user", action }) => {
     (user.role = "seller"),
       (user.profile = "/seller/profile"),
       (user.updateProfile = "/seller/update-profile"),
-        (user.logout = "/seller/logout")
-      
+      (user.logout = "/seller/logout");
   }
 
   // Handle admin role
@@ -60,16 +59,25 @@ export const Profile = ({ role = "user", action }) => {
   // Api call
   const [profile, loading, error, fetchData] = useFetch(user.profile);
 
-  // Handle edit
-  const [edit, setEdit] = useState(false);
-
-  const profilePictureFile = watch("profilePicture");
-
   // Handle profile picture preview
   const [profilePicturePreview, setProfilePicturePreview] = useState("");
 
   // For update page
   const [profileUpdated, setProfileUpdated] = useState(false);
+
+  // Handle edit
+  const [edit, setEdit] = useState(false);
+
+  const profilePictureFile = watch("profilePicture");
+
+  // Update image preview when image file changes
+  useEffect(() => {
+    if (profilePictureFile && profilePictureFile[0]) {
+      const reader = new FileReader();
+      reader.onloadend = () => setProfilePicturePreview(reader.result);
+      reader.readAsDataURL(profilePictureFile[0]);
+    }
+  }, [profilePictureFile]);
 
   // Update the value
   useEffect(() => {
@@ -77,19 +85,13 @@ export const Profile = ({ role = "user", action }) => {
       setValue("name", profile?.name || "");
       setValue("email", profile?.email || "");
       setValue("mobile", profile?.mobile || "");
-      setProfilePicturePreview(profile?.profilePicture || "");
+      if (profile?.profilePicture) {
+      setProfilePicturePreview(profile.profilePicture); 
     }
+  }
   }, [profile, setValue]);
 
-  // Handle profile picture preview
-  useEffect(() => {
-    if (profilePictureFile && profilePictureFile[0]) {
-      const reader = new FileReader();
-      reader.onloadend = () => setProfilePicturePreview(reader.result);
-      reader.readAsDataURL(profilePictureFile[0]);
-    }
-  }, [profilePicturePreview]);
-
+  
   // Handle submit
   const onSubmit = async (data) => {
     try {
@@ -156,41 +158,45 @@ export const Profile = ({ role = "user", action }) => {
 
         <div>
           <div>
-            {edit ? (
-              <div className="mb-2">
-                <label className="bg-white file-labal rounded-2 py-2 px-3">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    strokeWidth="1.5"
-                    stroke="currentColor"
-                    className="size-6 me-1 mb-1"
-                    height="20px"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z"
-                    />
-                  </svg>
-                  Upload New Profile Photo
-                  <input
-                    type="file"
-                    {...register("profilePicture")}
-                    accept="image/*"
-                  />
-                </label>
-              </div>
-            ) : (
-              <div className="mb-1">
+            {profilePicturePreview && (
+              <div className="mt-2 ms-4">
                 <img
                   src={profilePicturePreview}
-                  height="125px"
-                  className="rounded-circle"
+                  alt="Preview"
+                  className="img-fluid ms-3 rounded"
+                  style={{ maxHeight: "150px" }}
                 />
               </div>
             )}
+            <label className="bg-white file-label rounded-2 mt-2 py-2 px-5"
+            style={{cursor: 'pointer'}}>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="currentColor"
+                className="size-6 mb-1 me-1"
+                height='25px'
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M6.827 6.175A2.31 2.31 0 0 1 5.186 7.23c-.38.054-.757.112-1.134.175C2.999 7.58 2.25 8.507 2.25 9.574V18a2.25 2.25 0 0 0 2.25 2.25h15A2.25 2.25 0 0 0 21.75 18V9.574c0-1.067-.75-1.994-1.802-2.169a47.865 47.865 0 0 0-1.134-.175 2.31 2.31 0 0 1-1.64-1.055l-.822-1.316a2.192 2.192 0 0 0-1.736-1.039 48.774 48.774 0 0 0-5.232 0 2.192 2.192 0 0 0-1.736 1.039l-.821 1.316Z"
+                />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M16.5 12.75a4.5 4.5 0 1 1-9 0 4.5 4.5 0 0 1 9 0ZM18.75 10.5h.008v.008h-.008V10.5Z"
+                />
+              </svg>
+              Update image
+              <input
+                type="file"
+                {...register("profilePicture")}
+                accept="image/*"
+              />
+            </label>
           </div>
         </div>
 

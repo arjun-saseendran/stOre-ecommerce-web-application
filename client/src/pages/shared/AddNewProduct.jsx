@@ -1,5 +1,5 @@
 import { useSelector } from "react-redux";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { axiosInstance } from "../../config/axiosInstance";
 import { useForm } from "react-hook-form";
 import Button from "react-bootstrap/esm/Button";
@@ -77,7 +77,7 @@ export const AddNewProduct = ({ role = "seller" }) => {
         </div>
         <div>
           <textarea
-            className="rounded-2 border-0 px-4 py-2 text-center"
+            className="rounded-2 border-0 px-3 py-2 text-center"
             type="text"
             placeholder="Description"
             {...register("description", {

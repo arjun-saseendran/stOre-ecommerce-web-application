@@ -24,9 +24,10 @@ import { AddReview } from "../pages/user/AddReview";
 import { Wishlist } from "../pages/user/Wishlist";
 import { ForgotPassword } from "../pages/shared/ForgotPassword";
 import { ResetPassword } from "../pages/shared/ResetPassword";
-import {SentMail} from '../pages/shared/SentMail'
+import { SentMail } from "../pages/shared/SentMail";
 import { PaymentSuccess } from "../pages/user/PaymentSuccess";
 import { PaymentCancel } from "../pages/user/PaymentCancel";
+import { UpdateProduct } from "../pages/shared/UpdateProduct";
 
 export const router = createBrowserRouter([
   {
@@ -56,7 +57,7 @@ export const router = createBrowserRouter([
       },
       {
         path: "sent-mail",
-        element: <SentMail/>,
+        element: <SentMail />,
       },
       {
         path: "about-us",
@@ -129,7 +130,7 @@ export const router = createBrowserRouter([
       {
         element: <ProtectedRouteSeller />,
         children: [
-          { path: "", element: <Products role="seller" action="View" /> },
+          { path: "", element: <Products role="seller" action="Update" /> },
           {
             path: "delete-product",
             element: <Products role="seller" action="Delete" />,
@@ -138,7 +139,11 @@ export const router = createBrowserRouter([
           { path: "add-banner", element: <AddBanner role="seller" /> },
           {
             path: "product-details/:productId",
-            element: <ProductDetails role="seller" action="View" />,
+            element: <ProductDetails role="seller" />,
+          },
+          {
+            path: "update-product/:productId",
+            element: <UpdateProduct role="seller" />,
           },
           { path: "profile", element: <Profile role="seller" /> },
           {
@@ -168,7 +173,7 @@ export const router = createBrowserRouter([
       {
         element: <ProtectedRouteAdmin />,
         children: [
-          { path: "", element: <Products action="View" role="admin" /> },
+          { path: "", element: <Products action="Update" role="admin" /> },
           {
             path: "delete-product",
             element: <Products role="admin" action="Delete" />,
@@ -216,8 +221,12 @@ export const router = createBrowserRouter([
           },
           { path: "add-product", element: <AddNewProduct role="admin" /> },
           {
+            path: "update-product/:productId",
+            element: <UpdateProduct role="admin" action="Update" />,
+          },
+          {
             path: "product-details/:productId",
-            element: <ProductDetails role="admin" action="View" />,
+            element: <ProductDetails />,
           },
           {
             path: "banners",

@@ -63,10 +63,6 @@ export const SellerHeader = () => {
               <span className="text-black hover">Cart</span>
             </NavDropdown.Item>
             <NavDropdown.Divider />
-            <NavDropdown.Item as={Link} to={"user/settings"}>
-              <span className="text-black hover">Settings</span>
-            </NavDropdown.Item>
-            <NavDropdown.Divider />
 
             <NavDropdown.Item>
               <span
@@ -92,11 +88,6 @@ export const SellerHeader = () => {
               <span className="text-black hover">Add</span>
             </NavDropdown.Item>
 
-            <NavDropdown.Divider />
-
-            <NavDropdown.Item as={Link}>
-              <span className="text-black hover">Update</span>
-            </NavDropdown.Item>
             <NavDropdown.Divider />
             <NavDropdown.Item as={Link} to={"/seller/delete-product"}>
               <span className="text-black hover">Delete</span>

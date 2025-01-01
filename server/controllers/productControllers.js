@@ -85,7 +85,7 @@ export const productDetails = async (req, res) => {
 export const updateProductData = async (req, res) => {
   try {
     // Get product id
-    const productId = req.params.id;
+    const { productId } = req.params;
 
     // Destructing data from request body
     const { title, description, price, stock, category } = req.body;
@@ -93,36 +93,29 @@ export const updateProductData = async (req, res) => {
       return res.status(400).json({ message: "All fields required" });
     }
 
-    // Get seller id
-    const sellerId = req.user.id;
-
     // Handle upload image
     let imageUrl = null;
 
-    if(req.file){
-      const uploadResult = await cloudinaryInstance.uploader.upload(req.file.path);
-      imageUrl = uploadResult.url
+    if (req.file) {
+      const uploadResult = await cloudinaryInstance.uploader.upload(
+        req.file.path
+      );
+      imageUrl = uploadResult.url;
     }
-    
-
-    // Creating new product object
-    const product = new Product({
-      title,
-      description,
-      price,
-      stock,
-      category,
-      image: imageUrl || undefined},
-      { new: true }
-    );
-
-    // Save new product to database
-    await product.save();
+    console.log(req.file);
 
     // Update product data
     const updatedProductData = await Product.findByIdAndUpdate(
       productId,
-      req.body
+      {
+        title,
+        description,
+        price,
+        stock,
+        category,
+        image: imageUrl || undefined,
+      },
+      { new: true }
     );
 
     res

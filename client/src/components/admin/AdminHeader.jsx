@@ -128,10 +128,6 @@ export const AdminHeader = () => {
 
             <NavDropdown.Divider />
 
-            <NavDropdown.Item as={Link}>
-              <span className="text-black hover">Update</span>
-            </NavDropdown.Item>
-            <NavDropdown.Divider />
             <NavDropdown.Item as={Link} to={"/admin/delete-product"}>
               <span className="text-black hover">Delete</span>
             </NavDropdown.Item>

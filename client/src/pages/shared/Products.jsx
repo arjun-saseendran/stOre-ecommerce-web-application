@@ -2,20 +2,18 @@ import { useEffect, useState } from "react";
 import { Table, Container, Button, Row } from "react-bootstrap";
 import { axiosInstance } from "../../config/axiosInstance";
 import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
-export const Products = ({ action = "View", role = "admin" }) => {
+export const Products = ({ action = "Update", role = "admin" }) => {
   // Get theme
   const { theme } = useSelector((state) => state.theme);
 
   // Config navigate
   const navigate = useNavigate();
 
-  
   // Handle routes
   const product = {
     products: "/product/products",
-    productDetails: "/product/product-details/",
     productDelete: "/product/delete-product",
   };
 
@@ -60,12 +58,12 @@ export const Products = ({ action = "View", role = "admin" }) => {
           data: { productId },
         });
         setDeleteProduct(response.data.data);
-      } 
-      
-      if (action === "View" && role === "admin") {
-        navigate(`/admin/product-details/${productId}`);
-      }else if(action === "View" && role === "seller"){
-        navigate(`/seller/product-details/${productId}`);
+      }
+
+      if (action === "Update" && role === "admin") {
+        navigate(`/admin/update-product/${productId}`);
+      } else if (action === "Update" && role === "seller") {
+        navigate(`/seller/update-product/${productId}`);
       }
     } catch (error) {
       console.log(error);
@@ -76,7 +74,10 @@ export const Products = ({ action = "View", role = "admin" }) => {
       <h1 className="text-center text-white mt-5">Product {action} List</h1>
       <Row
         className="mt-5 p-3 rounded-3"
-        style={{ backgroundColor: theme ? "#FFF6E3" : "#d9d9d9", minHeight: '400px' }}
+        style={{
+          backgroundColor: theme ? "#FFF6E3" : "#d9d9d9",
+          minHeight: "400px",
+        }}
       >
         <Table className="rounded-3">
           <thead className="rounded-3">
@@ -97,7 +98,17 @@ export const Products = ({ action = "View", role = "admin" }) => {
             {products?.map((product) => (
               <tr key={product._id}>
                 <td style={{ backgroundColor: theme ? "#FFF6E3" : "#d9d9d9" }}>
-                  {product.title}
+                  <Link
+                    className="text-decoration-none text-black"
+                    to={
+                      role === "admin"
+                        ? `/admin/product-details/${product._id}`
+                        : `/seller/product-details/${product._id}`
+                    }
+                  >
+                    {" "}
+                    {product.title}
+                  </Link>
                 </td>
 
                 <td style={{ backgroundColor: theme ? "#FFF6E3" : "#d9d9d9" }}>
