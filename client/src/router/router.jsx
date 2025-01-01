@@ -28,6 +28,7 @@ import { SentMail } from "../pages/shared/SentMail";
 import { PaymentSuccess } from "../pages/user/PaymentSuccess";
 import { PaymentCancel } from "../pages/user/PaymentCancel";
 import { UpdateProduct } from "../pages/shared/UpdateProduct";
+import {Orders} from '../pages/user/Orders'
 
 export const router = createBrowserRouter([
   {
@@ -89,6 +90,10 @@ export const router = createBrowserRouter([
           {
             path: "profile",
             element: <Profile role="user" />,
+          },
+          {
+            path: "orders",
+            element: <Orders/>,
           },
           {
             path: "payment-success",

@@ -1,10 +1,11 @@
 import { Seller } from "../models/sellerModel.js";
+import { Order } from "../models/orderModel.js";
 import { passwordHandler } from "../utils/passwordHandler.js";
 import { generateToken } from "../utils/tokenHandler.js";
 import { catchErrorHandler } from "../utils/catchErrorHandler.js";
 import { cloudinaryInstance } from "../config/cloudinary.js";
-import crypto from 'crypto'
-import nodemailer from 'nodemailer'
+import crypto from "crypto";
+import nodemailer from "nodemailer";
 
 // Config node env
 const NODE_ENV = process.env.NODE_ENV;
@@ -251,7 +252,10 @@ export const updateSellerProfile = async (req, res) => {
 
     res
       .status(200)
-      .json({ message: "Seller profile details updated", data: updatedSellerData });
+      .json({
+        message: "Seller profile details updated",
+        data: updatedSellerData,
+      });
   } catch (error) {
     // Handle catch error
     catchErrorHandler(res, error);
@@ -297,7 +301,10 @@ export const updateAdminProfile = async (req, res) => {
 
     res
       .status(200)
-      .json({ message: "Admin profile details updated", data: updatedAdminData });
+      .json({
+        message: "Admin profile details updated",
+        data: updatedAdminData,
+      });
   } catch (error) {
     // Handle catch error
     catchErrorHandler(res, error);
@@ -517,7 +524,7 @@ export const adminForgotPassword = async (req, res) => {
   const { email } = req.body;
   try {
     // Find admin found
-    const admin = await Seller.findOne({ email, role: 'admin' });
+    const admin = await Seller.findOne({ email, role: "admin" });
 
     if (!admin) {
       return res.status(404).json({ message: "Admin not found" });
@@ -562,7 +569,7 @@ export const adminResetPassword = async (req, res) => {
     // Find the admin
     const admin = await Seller.findOne({
       resetToken: token,
-      role: 'admin',
+      role: "admin",
       resetTokenExpires: { $gt: Date.now() },
     });
 
@@ -589,4 +596,21 @@ export const adminResetPassword = async (req, res) => {
   }
 };
 
+// Get all orders
+export const getAllOrders = async (req, res) => {
 
+  try {
+    // Find all data
+    const allOrders = await Order.find();
+  
+    if(!allOrders){
+      return res.status(404).json({message: 'No orders found!'})
+    }
+
+    // Send data to frontend
+    res.status(200).json({message: 'Orders fetched successfully!', data: allOrders})
+
+  } catch (error) {
+    catchErrorHandler(res, error)
+  }
+};
