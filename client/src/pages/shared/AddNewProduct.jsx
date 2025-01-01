@@ -1,5 +1,5 @@
 import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { axiosInstance } from "../../config/axiosInstance";
 import { useForm } from "react-hook-form";
 import Button from "react-bootstrap/esm/Button";

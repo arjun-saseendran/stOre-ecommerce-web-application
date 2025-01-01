@@ -39,7 +39,12 @@ productRouter.post("/search", searchProduct);
 productRouter.get("/product-details/:productId", productDetails);
 
 // Update product details
-productRouter.put("/update-product/:productId", sellerAuth, updateProductData);
+productRouter.put(
+  "/update-product/:productId",
+  upload.single("image"),
+  sellerAuth,
+  updateProductData
+);
 
 // Delete product
 productRouter.delete("/delete-product", sellerAuth, deleteProduct);
