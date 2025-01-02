@@ -1,5 +1,4 @@
 import { Seller } from "../models/sellerModel.js";
-import { Order } from "../models/orderModel.js";
 import { passwordHandler } from "../utils/passwordHandler.js";
 import { generateToken } from "../utils/tokenHandler.js";
 import { catchErrorHandler } from "../utils/catchErrorHandler.js";
@@ -596,21 +595,4 @@ export const adminResetPassword = async (req, res) => {
   }
 };
 
-// Get all orders
-export const getAllOrders = async (req, res) => {
 
-  try {
-    // Find all data
-    const allOrders = await Order.find();
-  
-    if(!allOrders){
-      return res.status(404).json({message: 'No orders found!'})
-    }
-
-    // Send data to frontend
-    res.status(200).json({message: 'Orders fetched successfully!', data: allOrders})
-
-  } catch (error) {
-    catchErrorHandler(res, error)
-  }
-};

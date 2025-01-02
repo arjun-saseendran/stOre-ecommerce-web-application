@@ -54,11 +54,6 @@ export const AdminHeader = () => {
               </Link>
             </NavDropdown.Item>
             <NavDropdown.Divider />
-            <NavDropdown.Item>
-              <span className="text-black hover">Orders</span>
-            </NavDropdown.Item>
-
-            <NavDropdown.Divider />
 
             <NavDropdown.Item as={Link} to={"user/cart"}>
               <span className="text-black hover">Cart</span>
@@ -150,8 +145,8 @@ export const AdminHeader = () => {
             title={<span className="text-white h5 hover">Order</span>}
             id="navbarScrollingDropdown"
           >
-            <NavDropdown.Item as={Link} to={"/admin/sellers"}>
-              <span className="text-black hover">Orders</span>
+            <NavDropdown.Item as={Link} to={"/admin/orders"}>
+              <span className="text-black hover">Processing</span>
             </NavDropdown.Item>
             <NavDropdown.Divider />
             <NavDropdown.Item as={Link} to={"/admin/inactive-sellers"}>

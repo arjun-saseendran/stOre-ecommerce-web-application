@@ -29,6 +29,7 @@ import { PaymentSuccess } from "../pages/user/PaymentSuccess";
 import { PaymentCancel } from "../pages/user/PaymentCancel";
 import { UpdateProduct } from "../pages/shared/UpdateProduct";
 import {Orders} from '../pages/user/Orders'
+import { OrderList } from "../pages/admin/OrderList";
 
 export const router = createBrowserRouter([
   {
@@ -212,6 +213,12 @@ export const router = createBrowserRouter([
             path: "sellers",
             element: (
               <Users role="seller" status="active" action="Deactivate" />
+            ),
+          },
+          {
+            path: "orders",
+            element: (
+              <OrderList/>
             ),
           },
           {

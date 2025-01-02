@@ -19,8 +19,8 @@ import {
   sellerResetPassword,
   adminForgotPassword,
   adminResetPassword,
-  updateAdminProfile
-} from "../../controllers/sellerControllers.js";
+  updateAdminProfile,
+ } from "../../controllers/sellerControllers.js";
 import { sellerAuth } from "../../middlewares/sellerAuth.js";
 import { adminAuth } from "../../middlewares/adminAuth.js";
 import {upload} from '../../middlewares/multer.js'
@@ -87,6 +87,8 @@ sellerRouter.post("/admin/reset-password/:token", adminResetPassword);
 
 // Update admin profile details
 sellerRouter.put("/admin/update-profile", upload.single("profilePicture"), adminAuth, updateAdminProfile);
+
+
 
 
 

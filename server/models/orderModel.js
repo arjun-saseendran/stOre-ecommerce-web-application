@@ -26,7 +26,8 @@ const orderSchema = new Schema(
     },
     orderStatus: {
       type: String,
-      enum: ["processing", "success", "out for delivery", "delivered"],
+      enum: ["processing", "success", "shipping", "out for delivery", "delivered"],
+      default: 'processing'
     },
   },
   { timestamps: true }
