@@ -168,7 +168,7 @@ export const getUserOrder = async (req, res) => {
 
     // Handle not user id not found
     if (!userId) {
-      return res.status(400).json({ message: "User ID is required" });
+      return res.status(400).json({ message: "User ID not found" });
     }
 
     // Get user order details

@@ -7,6 +7,7 @@ import {
   getOrders,
   getOrdersByStatus,
   getSellerOrdersByStatus,
+  getUserOrder,
   handleOrderStatus,
 } from "../../controllers/orderControllers.js";
 
@@ -27,3 +28,6 @@ orderRouter.get("/get-order-details/:orderId", sellerAuth, getOrderDetails);
 
 // Change order status
 orderRouter.post("/change-order-status", sellerAuth, handleOrderStatus);
+
+// Get your order
+orderRouter.post("/get-user-orders", userAuth, getUserOrder);
