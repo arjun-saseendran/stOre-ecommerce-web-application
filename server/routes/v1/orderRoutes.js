@@ -7,6 +7,7 @@ import {
   getOrders,
   getOrdersByStatus,
   getSellerOrdersByStatus,
+  handleOrderStatus,
 } from "../../controllers/orderControllers.js";
 
 // Configure router
@@ -23,3 +24,6 @@ orderRouter.post("/get-seller-orders-by-status", sellerAuth, getSellerOrdersBySt
 
 // Get  order details
 orderRouter.get("/get-order-details/:orderId", sellerAuth, getOrderDetails);
+
+// Change order status
+orderRouter.post("/change-order-status", sellerAuth, handleOrderStatus);
