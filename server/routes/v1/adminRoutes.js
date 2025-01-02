@@ -7,13 +7,15 @@ import {
   adminForgotPassword,
   adminResetPassword,
   checkAdmin,
+  adminDetails,
+  adminLogout,
 } from "../../controllers/adminControllers.js";
 
 // Configure router
 export const adminRouter = Router();
 
 // Admin profile details
-adminRouter.get("/admin-profile", adminAuth, adminProfile);
+adminRouter.get("/profile", adminAuth, adminProfile);
 
 // Update admin profile details
 adminRouter.put(
@@ -22,6 +24,12 @@ adminRouter.put(
   adminAuth,
   updateAdminProfile
 );
+
+// Admin details
+adminRouter.get("/details/:userId", adminAuth, adminDetails);
+
+// Logout admin
+adminRouter.put("/logout", adminAuth, adminLogout);
 
 // Forgot password
 adminRouter.post("/admin/forgot-password", adminForgotPassword);

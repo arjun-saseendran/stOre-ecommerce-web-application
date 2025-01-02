@@ -71,7 +71,7 @@ export const Cart = () => {
   };
 
   return (
-    <Container>
+    <Container style={{minHeight: '400px'}}>
       <h1 className="text-white h1 text-center fw-bold my-5">Cart</h1>
 
       {cartData?.products?.map((product) => (

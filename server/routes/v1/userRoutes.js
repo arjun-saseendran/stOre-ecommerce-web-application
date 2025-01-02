@@ -14,6 +14,7 @@ import {
   getActiveUsers,
   userForgotPassword,
   userResetPassword,
+  userDetails,
 } from "../../controllers/userControllers.js";
 import { userAuth } from "../../middlewares/userAuth.js";
 import { adminAuth } from "../../middlewares/adminAuth.js";
@@ -36,6 +37,9 @@ userRouter.put("/logout", userAuth, userLogout);
 
 // Display user profile
 userRouter.get("/profile", userAuth, userProfile);
+
+// User details
+userRouter.get("/details/:userId", userAuth, userDetails);
 
 // Update user profile details
 userRouter.put("/update-profile", upload.single("profilePicture"), userAuth, updateUserProfile);

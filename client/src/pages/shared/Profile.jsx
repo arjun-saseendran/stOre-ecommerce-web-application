@@ -41,19 +41,21 @@ export const Profile = ({ role = "user", action }) => {
     (user.role = "admin"),
       (user.profile = "/admin/profile"),
       (user.updateProfile = "/admin/update-profile"),
-      (user.logout = "/seller/logout");
+      (user.logout = "/admin/logout");
   }
 
   if (role === "user" && action === "Details") {
-    user.profile = `/user/user-details/${userId}`;
+    user.profile = `/user/details/${userId}`;
   } else if (role === "seller" && action === "Details") {
-    user.profile = `seller/seller-details/${userId}`;
+    user.profile = `seller/details/${userId}`;
+  } else if (role === "admin" && action === "Details") {
+    user.profile = `admin/details/${userId}`;
   } else if (role === "user" && action !== "Details") {
     user.profile = "/user/profile";
   } else if (role === "seller" && action !== "Details") {
     user.profile = "/seller/profile";
   } else if (role === "admin" && action !== "Details") {
-    user.profile = "/seller/admin-profile";
+    user.profile = "/admin/profile";
   }
 
   // Api call
@@ -86,12 +88,11 @@ export const Profile = ({ role = "user", action }) => {
       setValue("email", profile?.email || "");
       setValue("mobile", profile?.mobile || "");
       if (profile?.profilePicture) {
-      setProfilePicturePreview(profile.profilePicture); 
+        setProfilePicturePreview(profile.profilePicture);
+      }
     }
-  }
   }, [profile, setValue]);
 
-  
   // Handle submit
   const onSubmit = async (data) => {
     try {
@@ -168,8 +169,10 @@ export const Profile = ({ role = "user", action }) => {
                 />
               </div>
             )}
-            <label className="bg-white file-label rounded-2 mt-2 py-2 px-5"
-            style={{cursor: 'pointer'}}>
+            <label
+              className="bg-white file-label rounded-2 mt-2 py-2 px-5"
+              style={{ cursor: "pointer" }}
+            >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
@@ -177,7 +180,7 @@ export const Profile = ({ role = "user", action }) => {
                 strokeWidth={1.5}
                 stroke="currentColor"
                 className="size-6 mb-1 me-1"
-                height='25px'
+                height="25px"
               >
                 <path
                   strokeLinecap="round"

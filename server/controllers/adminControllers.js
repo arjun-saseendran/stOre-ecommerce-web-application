@@ -1,5 +1,5 @@
-
-
+import { catchErrorHandler } from "../utils/catchErrorHandler.js";
+import { Seller } from "../models/sellerModel.js";
 
 // Admin profile details
 export const adminProfile = async (req, res) => {
@@ -144,7 +144,37 @@ export const adminResetPassword = async (req, res) => {
   }
 };
 
+// Admin details
+export const adminDetails = async (req, res) => {
+  try {
+    // Get admin id
+    const { userId } = req.params;
+    const admin = await Seller.findById(userId);
 
+    res.status(200).json({ message: "Admin details fetched", data: admin });
+  } catch (error) {
+    // Handle catch error
+    catchErrorHandler(res, error);
+  }
+};
+
+
+// Admin logout
+export const adminLogout = async (req, res) => {
+  // Clearing token from cookies
+  try {
+    res.clearCookie("token", {
+      sameSite: NODE_ENV === "production" ? "None" : "Lax",
+      secure: NODE_ENV === "production",
+      httpOnly: NODE_ENV === "production",
+    });
+
+    res.status(200).json({ message: "Admin logout success" });
+  } catch (error) {
+    // Handle catch error
+    catchErrorHandler(res, error);
+  }
+};
 
 // Check admin
 export const checkAdmin = async (req, res) => {

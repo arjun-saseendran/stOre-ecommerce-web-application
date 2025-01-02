@@ -59,7 +59,7 @@ sellerRouter.get("/check-seller", sellerAuth, checkSeller);
 sellerRouter.delete("/delete-seller", adminAuth, deleteSeller);
 
 // Seller details
-sellerRouter.get("/seller-details/:userId", adminAuth, sellerDetails);
+sellerRouter.get("/details/:userId", adminAuth, sellerDetails);
 
 // Inactive sellers
 sellerRouter.get("/active-sellers", adminAuth, getActiveSellers);

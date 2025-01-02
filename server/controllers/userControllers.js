@@ -222,6 +222,21 @@ export const updateUserProfile = async (req, res) => {
   }
 };
 
+
+// User details
+export const userDetails = async (req, res) => {
+  try {
+    // Get user id
+    const { userId } = req.params;
+    const user = await User.findById(userId);
+
+    res.status(200).json({ message: "User details fetched", data: user });
+  } catch (error) {
+    // Handle catch error
+    catchErrorHandler(res, error);
+  }
+};
+
 // Checking user
 export const checkUser = async (req, res) => {
   try {
