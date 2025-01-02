@@ -1,5 +1,5 @@
 import { Order } from "../models/orderModel.js";
-import {Product} from '../models/productModel.js'
+import { Product } from "../models/productModel.js";
 import { catchErrorHandler } from "../utils/catchErrorHandler.js";
 
 // Get all orders
@@ -124,6 +124,39 @@ export const getSellerOrdersByStatus = async (req, res) => {
 };
 
 // Change order status
-export const handleOrderStatus = async(req,res) => {
-  
-}
+export const handleOrderStatus = async (req, res) => {
+  try {
+    // Get order id
+    const { orderId, status } = req.body;
+
+    // Handle status is not found
+    if (!status) {
+      return res.status(400).json({ message: "Provide status" });
+    }
+
+    // Handle order id not found
+    if (!orderId) {
+      return res.status(400).json({ message: "Provide orderId" });
+    }
+
+    // Find order
+    const order = await Order.findByIdAndUpdate(
+      orderId,
+      {
+        orderStatus: status,
+      },
+      { new: true }
+    );
+
+    // Handle order not found case
+    if (!order) {
+      return res.status(404).json({ message: "Order not found" });
+    }
+
+    // Response sent to frontend
+    res.status(200).json({ message: "Order status updated", data: order });
+  } catch (error) {
+    // Handle catch error
+    catchErrorHandler(res, error);
+  }
+};
