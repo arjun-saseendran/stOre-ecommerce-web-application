@@ -39,8 +39,8 @@ export const Profile = ({ role = "user", action }) => {
   // Handle admin role
   if (role === "admin") {
     (user.role = "admin"),
-      (user.profile = "/seller/admin/profile"),
-      (user.updateProfile = "/seller/admin/update-profile"),
+      (user.profile = "/admin/profile"),
+      (user.updateProfile = "/admin/update-profile"),
       (user.logout = "/seller/logout");
   }
 

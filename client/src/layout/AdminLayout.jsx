@@ -31,7 +31,7 @@ export const AdminLayout = () => {
       // Api call
       await axiosInstance({
         method: "GET",
-        url: "/seller/check-admin",
+        url: "/admin/check-admin",
       });
 
       // set admin data

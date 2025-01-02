@@ -9,7 +9,7 @@ export const OrderList = () => {
 
   const [productsData, setProductsData] = useState([])
 
-  const [orders,loading, error] = useFetch('/seller/get-orders')
+  const [orders,loading, error] = useFetch('/order/get-orders')
 
   console.log(orders);
   

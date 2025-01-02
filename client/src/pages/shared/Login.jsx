@@ -39,7 +39,7 @@ export const Login = ({ role = "user" }) => {
   if (role === "admin") {
     user.role = "seller";
     user.login_api = "/seller/login";
-    user.profile_route = "/seller/profile";
+    user.profile_route = "/admin/profile";
     user.signup_route = "/seller/signup";
     user.home_route = "/admin";
     user.forgotPassword = '/admin/forgot-password'

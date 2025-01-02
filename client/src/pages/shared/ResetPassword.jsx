@@ -32,7 +32,7 @@ export const ResetPassword = ({role = 'user'}) => {
 
   // Handle admin role
   if(role === 'admin'){
-    user.resetPassword = `/seller/admin/reset-password/${token}`,
+    user.resetPassword = `/admin/reset-password/${token}`,
     user.login = '/admin/login'
   }
 
