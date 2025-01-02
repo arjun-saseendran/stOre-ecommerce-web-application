@@ -160,3 +160,34 @@ export const handleOrderStatus = async (req, res) => {
     catchErrorHandler(res, error);
   }
 };
+
+// Get user order
+export const getUserOrder = async (req, res) => {
+  try {
+    const { userId } = req.user;
+
+    // Handle not user id not found
+    if (!userId) {
+      return res.status(400).json({ message: "User ID is required" });
+    }
+
+    // Get user order details
+    const userOrder = await Order.findById(userId)
+      .populate("userId", "name email")
+      .populate("products.productId", "name price quantity")
+      .exec();
+
+    // Handle orders not found
+    if (!userOrder) {
+      return res.status(404).json({ message: "No order found" });
+    }
+
+    // Send data to frontend
+    return res
+      .status(200)
+      .json({ message: "User fetched successfully", data: userOrder });
+  } catch (error) {
+    // Handle catch error
+    catchErrorHandler(res, error);
+  }
+};
