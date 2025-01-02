@@ -1,15 +1,19 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { Container, Row, Col, Button, Card } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import { axiosInstance } from "../../config/axiosInstance";
+import toast from "react-hot-toast";
 
-export const OrderDetails = ({role= 'admin', action = ''}) => {
+export const OrderDetails = ({ role = "admin", action = "Success" }) => {
   // Get theme
   const { theme } = useSelector((state) => state.theme);
 
   // Get order id
   const { orderId } = useParams();
+
+  // Config navigate
+  const navigate = useNavigate();
 
   // Store order data
   const [orders, setOrders] = useState([]);
@@ -22,7 +26,7 @@ export const OrderDetails = ({role= 'admin', action = ''}) => {
           method: "GET",
           url: `/order/get-order-details/${orderId}`,
         });
-        console.log(response.data.data);
+        // Set data
         setOrders(response?.data?.data);
       } catch (error) {
         console.log(error);
@@ -31,6 +35,24 @@ export const OrderDetails = ({role= 'admin', action = ''}) => {
 
     fetchOrderDetails();
   }, []);
+
+  // Handle actions
+  const actionHandler = async () => {
+    console.log("hello world");
+
+    try {
+      const response = await axiosInstance({
+        method: "POST",
+        url: "/order/change-order-status",
+        data: { orderId, status: action.toLowerCase() },
+      });
+      toast.success(`Order ${action}`);
+      // Navigate
+      navigate(`/${role}/orders-${action.toLowerCase()}`);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <Container style={{ minHeight: "400px" }}>
@@ -80,13 +102,18 @@ export const OrderDetails = ({role= 'admin', action = ''}) => {
         <Col className="fw-normal">Total</Col>
         <Col className="fw-normal">₹{orders.totalPrice || 0}</Col>
         <Col>
-          <Button
-            className="w-100 text-white "
-            variant={theme ? "warning" : "dark"}
-          >
-            <span className="me-1"></span>
-           {action}
-          </Button>
+          {role !== "admin" && action === "Success" ? (
+            ""
+          ) : (
+            <Button
+              className="w-100 text-white "
+              variant={theme ? "warning" : "dark"}
+              onClick={actionHandler}
+            >
+              <span className="me-1"></span>
+              {action}
+            </Button>
+          )}
         </Col>
       </Row>
     </Container>

@@ -127,7 +127,7 @@ export const SellerHeader = () => {
             </NavDropdown.Item>
 
             <NavDropdown.Divider />
-            <NavDropdown.Item as={Link} to={"/seller/orders-out-for-delivery"}>
+            <NavDropdown.Item as={Link} to={"/seller/orders-delivery"}>
               <span className="text-black hover">Out for delivery</span>
             </NavDropdown.Item>
             <NavDropdown.Divider />

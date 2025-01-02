@@ -28,7 +28,7 @@ import { SentMail } from "../pages/shared/SentMail";
 import { PaymentSuccess } from "../pages/user/PaymentSuccess";
 import { PaymentCancel } from "../pages/user/PaymentCancel";
 import { UpdateProduct } from "../pages/shared/UpdateProduct";
-import {Orders} from '../pages/user/Orders'
+import { Orders } from "../pages/user/Orders";
 import { OrderList } from "../pages/shared/OrderList";
 import { OrderDetails } from "../pages/shared/OrderDetails";
 
@@ -175,17 +175,34 @@ export const router = createBrowserRouter([
             element: <OrderList action="success" role="seller" />,
           },
           {
-            path: "orders-out-for-delivery",
-            element: <OrderList action="delivery" role="seller" />,
+            path: "orders-delivery",
+            element: (
+              <OrderList action="delivery" role="seller" />
+            ),
           },
           {
             path: "orders-delivered",
             element: <OrderList action="delivered" role="seller" />,
           },
-
           {
-            path: "order-details/:orderId",
-            element: <OrderDetails />,
+            path: "order-details-processing/:orderId",
+            element: <OrderDetails action="Success" role="seller" />,
+          },
+          {
+            path: "order-details-success/:orderId",
+            element: <OrderDetails action="Shipping" role="seller" />,
+          },
+          {
+            path: "order-details-shipping/:orderId",
+            element: <OrderDetails action="Delivery" role="seller" />,
+          },
+          {
+            path: "order-details-delivery/:orderId",
+            element: <OrderDetails action="Delivered" role="seller" />,
+          },
+          {
+            path: "order-details-delivered/:orderId",
+            element: <OrderDetails action="Delivered" role="seller" />,
           },
         ],
       },
@@ -260,28 +277,34 @@ export const router = createBrowserRouter([
           },
 
           {
-            path: "orders-out-for-delivery",
-            element: <OrderList action="delivery" role="admin" />,
+            path: "orders-delivery",
+            element: (
+              <OrderList action="delivery" role="admin" />
+            ),
           },
           {
             path: "orders-delivered",
             element: <OrderList action="delivered" />,
           },
           {
+            path: "order-details-processing/:orderId",
+            element: <OrderDetails action="Success" role="admin" />,
+          },
+          {
             path: "order-details-success/:orderId",
-            element: <OrderDetails action="success" role="admin" />,
+            element: <OrderDetails action="Shipping" role="admin" />,
           },
           {
             path: "order-details-shipping/:orderId",
-            element: <OrderDetails action="shipping" role="admin" />,
+            element: <OrderDetails action="Delivery" role="admin" />,
           },
           {
             path: "order-details-delivery/:orderId",
-            element: <OrderDetails action="delivery" role="admin" />,
+            element: <OrderDetails action="Delivered" role="admin" />,
           },
           {
             path: "order-details-delivered/:orderId",
-            element: <OrderDetails action="delivered" role="admin" />,
+            element: <OrderDetails action="Delivered" role="admin" />,
           },
           {
             path: "seller-details/:userId",

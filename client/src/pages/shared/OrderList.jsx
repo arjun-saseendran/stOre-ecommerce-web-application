@@ -84,7 +84,7 @@ export const OrderList = ({ action = "processing", role = "admin" }) => {
                 >
                   <Link
                     className="text-decoration-none text-black"
-                    to={`/${role}/order-details/${order?._id}`}
+                    to={`/${role}/order-details-${action}/${order?._id}`}
                   >
                     {" "}
                     {order?._id}
@@ -94,7 +94,7 @@ export const OrderList = ({ action = "processing", role = "admin" }) => {
                 <td style={{ backgroundColor: theme ? "#FFF6E3" : "#d9d9d9" }}>
                   <Link
                     className="text-decoration-none text-black"
-                    to={`/${role}/order-details/${order?._id}`}
+                    to={`/${role}/order-details-${action}/${order?._id}`}
                   >
                     {new Date(order?.createdAt).toLocaleDateString()}
                   </Link>
@@ -103,7 +103,7 @@ export const OrderList = ({ action = "processing", role = "admin" }) => {
                 <td style={{ backgroundColor: theme ? "#FFF6E3" : "#d9d9d9" }}>
                   <Link
                     className="text-decoration-none text-black"
-                    to={`/${role}/order-details/${order?._id}`}
+                    to={`/${role}/order-details-${action}/${order?._id}`}
                   >
                     {order?.orderStatus}
                   </Link>

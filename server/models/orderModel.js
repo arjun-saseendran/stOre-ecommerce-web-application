@@ -33,7 +33,7 @@ const orderSchema = new Schema(
         "processing",
         "success",
         "shipping",
-        "out for delivery",
+        "delivery",
         "delivered",
       ],
       default: "processing",
