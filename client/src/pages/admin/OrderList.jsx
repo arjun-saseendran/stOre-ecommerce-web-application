@@ -7,22 +7,30 @@ export const OrderList = () => {
   // Get theme
   const { theme } = useSelector((state) => state.theme);
 
-  const [productsData, setProductsData] = useState([])
+  const [orders, setOrders] = useState([])
 
   // Api call 
   useEffect(()=>{
-    const fetchOrders = async(status)=>{
-      const response = await axiosInstance({
-        method: "POST",
-        url: '/order/get-orders-by-status',
-        data: status
-      });
+    const fetchOrders = async()=>{
+      try {
+        const response = await axiosInstance({
+          method: "POST",
+          url: "/order/get-orders-by-status",
+          data: { status: "processing" },
+        });
+        console.log(response.data.data);
+        setOrders(response?.data?.data)
+        
+      } catch (error) {
+        console.log(error);
+        
+      }
     }
 
-
+fetchOrders()
   },[])
 
-  console.log(orders);
+  
   
 
   return (
@@ -39,41 +47,34 @@ export const OrderList = () => {
           <thead className="rounded-3">
             <tr>
               <th style={{ backgroundColor: theme ? "#FFF6E3" : "#d9d9d9" }}>
-                Product
+                Order ID
               </th>
 
               <th style={{ backgroundColor: theme ? "#FFF6E3" : "#d9d9d9" }}>
-                Quantity
+                Status
               </th>
-              
+
               <th style={{ backgroundColor: theme ? "#FFF6E3" : "#d9d9d9" }}>
-                Action
+                Total Price
               </th>
             </tr>
           </thead>
           <tbody>
-            {/* {products?.map((product) => (
-              <tr key={product._id}>
+            {orders?.map((order) => (
+              <tr key={order._id}>
                 <td style={{ backgroundColor: theme ? "#FFF6E3" : "#d9d9d9" }}>
-                  {product.title}
+                  {order?._id}
                 </td>
 
                 <td style={{ backgroundColor: theme ? "#FFF6E3" : "#d9d9d9" }}>
-                  {20}
+                  {order?.orderStatus}
                 </td>
-               
+
                 <td style={{ backgroundColor: theme ? "#FFF6E3" : "#d9d9d9" }}>
-                  <Button
-                    variant={theme ? "warning" : "dark"}
-                    className=" text-white btn-sm"
-                    onClick={() => approveOrder(product._id)}
-                  >
-                    Approve
-                    
-                  </Button>
+                  {order?.totalPrice}
                 </td>
               </tr>
-            ))} */}
+            ))}
           </tbody>
         </Table>
       </Row>

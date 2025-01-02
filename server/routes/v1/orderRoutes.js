@@ -2,7 +2,7 @@ import { Router } from "express";
 import { adminAuth } from "../../middlewares/adminAuth.js";
 import { sellerAuth } from "../../middlewares/sellerAuth.js";
 import { userAuth} from '../../middlewares/userAuth.js'
-import { getOrders, getOrdersByStatus, getProcessingOrders, getSuccessOrders } from "../../controllers/orderControllers.js";
+import { getOrderDetails, getOrders, getOrdersByStatus, getProcessingOrders, getSuccessOrders } from "../../controllers/orderControllers.js";
 
 // Configure router
 export const orderRouter = Router();
@@ -19,3 +19,6 @@ orderRouter.get("/success", sellerAuth, getSuccessOrders);
 
 // Get  orders by status
 orderRouter.post("/get-orders-by-status", sellerAuth, getOrdersByStatus);
+
+// Get  order details
+orderRouter.post("/get-order-details", sellerAuth, getOrderDetails);
