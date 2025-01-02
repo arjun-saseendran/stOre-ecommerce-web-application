@@ -21,4 +21,4 @@ orderRouter.get("/success", sellerAuth, getSuccessOrders);
 orderRouter.post("/get-orders-by-status", sellerAuth, getOrdersByStatus);
 
 // Get  order details
-orderRouter.post("/get-order-details", sellerAuth, getOrderDetails);
+orderRouter.post("/get-order-details/:orderId", sellerAuth, getOrderDetails);

@@ -29,7 +29,7 @@ import { PaymentSuccess } from "../pages/user/PaymentSuccess";
 import { PaymentCancel } from "../pages/user/PaymentCancel";
 import { UpdateProduct } from "../pages/shared/UpdateProduct";
 import {Orders} from '../pages/user/Orders'
-import { OrderList } from "../pages/admin/OrderList";
+import { OrderList } from "../pages/shared/OrderList";
 
 export const router = createBrowserRouter([
   {
@@ -94,7 +94,7 @@ export const router = createBrowserRouter([
           },
           {
             path: "orders",
-            element: <Orders/>,
+            element: <Orders />,
           },
           {
             path: "payment-success",
@@ -216,10 +216,12 @@ export const router = createBrowserRouter([
             ),
           },
           {
-            path: "orders",
-            element: (
-              <OrderList/>
-            ),
+            path: "orders-processing",
+            element: <OrderList />,
+          },
+          {
+            path: "order-details",
+            element: <OrderDetails />,
           },
           {
             path: "seller-details/:userId",
