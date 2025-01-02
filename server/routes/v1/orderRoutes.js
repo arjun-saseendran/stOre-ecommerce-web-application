@@ -4,9 +4,6 @@ import { sellerAuth } from "../../middlewares/sellerAuth";
 import { userAuth} from '../../middlewares/userAuth'
 import { getOrders } from "../../controllers/orderControllers";
 
-
-
-
 // Configure router
 export const orderRouter = Router();
 
