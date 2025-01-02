@@ -1,8 +1,8 @@
 import { Router } from "express";
-import { adminAuth } from "../../middlewares/adminAuth";
-import { sellerAuth } from "../../middlewares/sellerAuth";
-import { userAuth} from '../../middlewares/userAuth'
-import { getOrders } from "../../controllers/orderControllers";
+import { adminAuth } from "../../middlewares/adminAuth.js";
+import { sellerAuth } from "../../middlewares/sellerAuth.js";
+import { userAuth} from '../../middlewares/userAuth.js'
+import { getOrders } from "../../controllers/orderControllers.js";
 
 // Configure router
 export const orderRouter = Router();

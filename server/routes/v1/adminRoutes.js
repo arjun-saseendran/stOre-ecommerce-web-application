@@ -1,12 +1,13 @@
 import { Router } from "express";
-import { adminAuth } from "../../middlewares/adminAuth";
+import { adminAuth } from "../../middlewares/adminAuth.js";
+import {upload} from '../../middlewares/multer.js'
 import {
   adminProfile,
   updateAdminProfile,
   adminForgotPassword,
   adminResetPassword,
   checkAdmin,
-} from "../../controllers/adminControllers";
+} from "../../controllers/adminControllers.js";
 
 // Configure router
 export const adminRouter = Router();
