@@ -30,6 +30,7 @@ import { PaymentCancel } from "../pages/user/PaymentCancel";
 import { UpdateProduct } from "../pages/shared/UpdateProduct";
 import {Orders} from '../pages/user/Orders'
 import { OrderList } from "../pages/shared/OrderList";
+import { OrderDetails } from "../pages/shared/OrderDetails";
 
 export const router = createBrowserRouter([
   {
@@ -156,6 +157,36 @@ export const router = createBrowserRouter([
             path: "banners",
             element: <Banners />,
           },
+
+          {
+            path: "orders-processing",
+            element: <OrderList action="processing" role="seller" />,
+          },
+          {
+            path: "orders-success",
+            element: <OrderList action="success" role="seller" />,
+          },
+          {
+            path: "orders-shipping",
+            element: <OrderList action="shipping" role="seller" />,
+          },
+          {
+            path: "orders-success",
+            element: <OrderList action="success" role="seller" />,
+          },
+          {
+            path: "orders-out-for-delivery",
+            element: <OrderList action="delivery" role="seller" />,
+          },
+          {
+            path: "orders-delivered",
+            element: <OrderList action="delivered" role="seller" />,
+          },
+
+          {
+            path: "order-details/:orderId",
+            element: <OrderDetails />,
+          },
         ],
       },
     ],
@@ -217,11 +248,40 @@ export const router = createBrowserRouter([
           },
           {
             path: "orders-processing",
-            element: <OrderList />,
+            element: <OrderList action="processing" role="admin" />,
           },
           {
-            path: "order-details",
-            element: <OrderDetails />,
+            path: "orders-success",
+            element: <OrderList action="success" role="admin" />,
+          },
+          {
+            path: "orders-shipping",
+            element: <OrderList action="shipping" role="admin" />,
+          },
+
+          {
+            path: "orders-out-for-delivery",
+            element: <OrderList action="delivery" role="admin" />,
+          },
+          {
+            path: "orders-delivered",
+            element: <OrderList action="delivered" />,
+          },
+          {
+            path: "order-details-success/:orderId",
+            element: <OrderDetails action="success" role="admin" />,
+          },
+          {
+            path: "order-details-shipping/:orderId",
+            element: <OrderDetails action="shipping" role="admin" />,
+          },
+          {
+            path: "order-details-delivery/:orderId",
+            element: <OrderDetails action="delivery" role="admin" />,
+          },
+          {
+            path: "order-details-delivered/:orderId",
+            element: <OrderDetails action="delivered" role="admin" />,
           },
           {
             path: "seller-details/:userId",

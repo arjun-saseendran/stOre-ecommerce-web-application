@@ -18,16 +18,25 @@ const orderSchema = new Schema(
           ref: "Product",
           required: true,
         },
+        quantity: {
+          type: Number,
+          required: true,
       },
-    ],
+  }],
     totalPrice: {
       type: Number,
       required: true,
     },
     orderStatus: {
       type: String,
-      enum: ["processing", "success", "shipping", "out for delivery", "delivered"],
-      default: 'processing'
+      enum: [
+        "processing",
+        "success",
+        "shipping",
+        "out for delivery",
+        "delivered",
+      ],
+      default: "processing",
     },
   },
   { timestamps: true }

@@ -112,18 +112,27 @@ export const SellerHeader = () => {
             title={<span className="text-white h5 hover">Order</span>}
             id="navbarScrollingDropdown"
           >
-            <NavDropdown.Item as={Link} to={"/admin/sellers"}>
-              <span className="text-black hover">Orders</span>
+            <NavDropdown.Item as={Link} to={"/seller/orders-processing"}>
+              <span className="text-black hover">Processing</span>
             </NavDropdown.Item>
             <NavDropdown.Divider />
-            <NavDropdown.Item as={Link} to={"/admin/inactive-sellers"}>
-              <span className="text-black hover">Approve</span>
+            <NavDropdown.Item as={Link} to={"/seller/orders-success"}>
+              <span className="text-black hover">Success</span>
             </NavDropdown.Item>
 
             <NavDropdown.Divider />
 
-            <NavDropdown.Item as={Link} to={"/admin/delete-seller"}>
-              <span className="text-black hover">Delete</span>
+            <NavDropdown.Item as={Link} to={"/seller/orders-shipping"}>
+              <span className="text-black hover">Shipping</span>
+            </NavDropdown.Item>
+
+            <NavDropdown.Divider />
+            <NavDropdown.Item as={Link} to={"/seller/orders-out-for-delivery"}>
+              <span className="text-black hover">Out for delivery</span>
+            </NavDropdown.Item>
+            <NavDropdown.Divider />
+            <NavDropdown.Item as={Link} to={"/seller/orders-delivered"}>
+              <span className="text-black hover">Delivered</span>
             </NavDropdown.Item>
           </NavDropdown>
 

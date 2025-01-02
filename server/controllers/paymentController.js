@@ -42,6 +42,7 @@ export const createCheckoutSession = async (req, res, next) => {
       sessionId: session.id,
       products: products.map((product) => ({
         productId: product.productId._id,
+        quantity: product.quantity,
       })),
       totalPrice,
       orderStatus: "processing",

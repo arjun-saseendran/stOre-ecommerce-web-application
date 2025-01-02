@@ -19,7 +19,7 @@ export const sellerAuth = (req, res, next) => {
 
     // Checking role
     if (decoded.role !== "seller" && decoded.role !== "admin") {
-      return res.status(404).json({ message: "User not autherzied" });
+      return res.status(404).json({ message: "User not authorized" });
     }
 
     // Set seller
