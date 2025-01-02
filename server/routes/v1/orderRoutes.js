@@ -30,4 +30,4 @@ orderRouter.get("/get-order-details/:orderId", sellerAuth, getOrderDetails);
 orderRouter.post("/change-order-status", sellerAuth, handleOrderStatus);
 
 // Get your order
-orderRouter.post("/get-user-orders", userAuth, getUserOrder);
+orderRouter.get("/get-user-orders", userAuth, getUserOrder);

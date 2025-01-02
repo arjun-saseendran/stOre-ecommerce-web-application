@@ -28,7 +28,7 @@ import { SentMail } from "../pages/shared/SentMail";
 import { PaymentSuccess } from "../pages/user/PaymentSuccess";
 import { PaymentCancel } from "../pages/user/PaymentCancel";
 import { UpdateProduct } from "../pages/shared/UpdateProduct";
-import { Orders } from "../pages/user/Orders";
+import { UserOrders } from "../pages/user/UserOrders";
 import { OrderList } from "../pages/shared/OrderList";
 import { OrderDetails } from "../pages/shared/OrderDetails";
 
@@ -95,7 +95,7 @@ export const router = createBrowserRouter([
           },
           {
             path: "orders",
-            element: <Orders />,
+            element: <UserOrders />,
           },
           {
             path: "payment-success",

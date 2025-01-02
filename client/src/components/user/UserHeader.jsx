@@ -208,7 +208,7 @@ export const UserHeader = () => {
                 <span className="text-black hover">Profile</span>
               </NavDropdown.Item>
               <NavDropdown.Divider />
-              <NavDropdown.Item>
+              <NavDropdown.Item as={Link} to={'/user/orders'}>
                 <span className="text-black hover">Orders</span>
               </NavDropdown.Item>
 

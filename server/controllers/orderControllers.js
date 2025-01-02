@@ -164,17 +164,17 @@ export const handleOrderStatus = async (req, res) => {
 // Get user order
 export const getUserOrder = async (req, res) => {
   try {
-    const { userId } = req.user;
+    const userId = req.user.id;
 
     // Handle not user id not found
     if (!userId) {
-      return res.status(400).json({ message: "User ID not found" });
+      return res.status(400).json({ message: "User id not found" });
     }
 
     // Get user order details
-    const userOrder = await Order.findById(userId)
-      .populate("userId", "name email")
-      .populate("products.productId", "name price quantity")
+    const userOrder = await Order.find({ userId })
+
+      .populate("products.productId", "title price image quantity")
       .exec();
 
     // Handle orders not found
