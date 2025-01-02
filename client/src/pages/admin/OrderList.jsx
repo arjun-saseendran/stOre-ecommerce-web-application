@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Table, Container, Button, Row } from "react-bootstrap";
 import { useSelector } from "react-redux";
-import { useFetch } from "../../hooks/useFetch";
+import { axiosInstance } from "../../config/axiosInstance";
 
 export const OrderList = () => {
   // Get theme
@@ -9,7 +9,18 @@ export const OrderList = () => {
 
   const [productsData, setProductsData] = useState([])
 
-  const [orders,loading, error] = useFetch('/order/get-orders')
+  // Api call 
+  useEffect(()=>{
+    const fetchOrders = async(status)=>{
+      const response = await axiosInstance({
+        method: "POST",
+        url: '/order/get-orders-by-status',
+        data: status
+      });
+    }
+
+
+  },[])
 
   console.log(orders);
   
