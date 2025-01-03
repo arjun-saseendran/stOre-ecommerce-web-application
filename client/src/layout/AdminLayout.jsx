@@ -2,7 +2,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Outlet, useLocation } from "react-router-dom";
 import { axiosInstance } from "../config/axiosInstance";
 import { clearAdminData, saveAdminData } from "../redux/features/adminSlice";
-import { useEffect, useCallback } from "react";
+import { useEffect } from "react";
 import { AdminHeader } from "../components/admin/AdminHeader";
 import { Footer } from "../components/shared/Footer";
 import { Header } from "../components/shared/Header";
@@ -25,25 +25,26 @@ export const AdminLayout = () => {
   // Config path location
   const location = useLocation();
 
-  // Check admin status
-  const checkAdmin = useCallback(async () => {
+  // Check admin
+  const checkAdmin = async () => {
     try {
-      const response = await axiosInstance({
+      // Api call
+      await axiosInstance({
         method: "GET",
         url: "/admin/check-admin",
       });
-      if (response.status === 200) {
-        dispatch(saveAdminData());
-      }
+
+      // set admin
+      dispatch(saveAdminData());
     } catch (error) {
-      console.error("Admin check failed:", error);
+      console.log(error);
+
+      // clear admin data when error
       dispatch(clearAdminData());
     }
-  }, [dispatch]);
-
-  // Call when rendering
+  };
   useEffect(() => {
-    checkAdmin();
+    checkUser();
   }, [location.pathname]);
 
   return (
