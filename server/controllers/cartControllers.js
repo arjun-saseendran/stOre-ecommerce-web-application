@@ -39,12 +39,24 @@ export const addToCart = async (req, res) => {
 
     // Handle product found in the cart
     if (productExists) {
-      // Increase product quanitity
+      // Handle stock not enough
+      if (productExists.quantity + 1 > product.stock) {
+        return res
+          .status(400)
+          .json({ message: "Cannot add more than available stock" });
+      }
+
+      // Increase product quantity
       productExists.quantity += 1;
 
       // Recalculate total
       cart.calculateTotalPrice();
     } else {
+      // Handle case when stock is zero
+      if (product.stock < 1 ) {
+        return res.status(400).json({ message: "Product is out of stock" });
+      }
+
       // Add product to cart
       cart.products.push({ productId, price: product.price, quantity: 1 });
     }
@@ -55,7 +67,7 @@ export const addToCart = async (req, res) => {
     // Save the cart
     await cart.save();
 
-    // Send response to frotend
+    // Send response to frontend
     res.status(200).json({ message: "Product added to cart", data: cart });
   } catch (error) {
     // Handle catch error

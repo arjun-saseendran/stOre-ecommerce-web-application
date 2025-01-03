@@ -7,6 +7,7 @@ import { CartIcon } from "../shared/CartIcon";
 import { useState } from "react";
 import { AverageRatings } from "../shared/AverageRatings";
 import { WishlistIcon } from "../shared/WishlistIcon";
+import { OutOfStock } from "../shared/OutOfStock";
 
 export const ProductCard = ({ product }) => {
   // Get theme
@@ -83,6 +84,7 @@ export const ProductCard = ({ product }) => {
       >
         <WishlistIcon productId={product?._id} />
       </span>
+      {product.stock === 0 && <span className="ms-2">Out of stock!</span>}
 
       <Card.Img
         className="crd-image object-fit-contain"

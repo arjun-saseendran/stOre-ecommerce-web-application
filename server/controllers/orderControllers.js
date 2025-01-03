@@ -210,14 +210,16 @@ export const updateStock = async (req, res) => {
     }
 
     // Update stock for products in the order
-    for (const item of latestOrder.products) {
-      const product = await Product.findById(item.productId);
-      if (product) {
-        // Decrease product quantity
-        product.stock = Math.max(0, product.stock - item.quantity);
-        await product.save();
-      }
-    }
+    await Promise.all(
+      latestOrder.products.map(async (item) => {
+        const product = await Product.findById(item.productId);
+        if (product) {
+          // Decrease product stock
+          product.stock = Math.max(0, product.stock - item.quantity);
+          await product.save();
+        }
+      })
+    );
 
     return res.status(200).json({ message: "Stock updated successfully" });
   } catch (error) {

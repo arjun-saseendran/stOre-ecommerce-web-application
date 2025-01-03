@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { Container, Button } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import {axiosInstance} from '../../config/axiosInstance'
 
 export const PaymentSuccess = () => {
   // Get current theme
@@ -14,7 +15,7 @@ export const PaymentSuccess = () => {
         // Update stock
         const stockUpdate = await axiosInstance({
           method: "POST",
-          url: "/orders/update-stock",
+          url: "/order/update-stock",
         });
         console.log(stockUpdate);
 

@@ -34,4 +34,4 @@ orderRouter.post("/change-order-status", sellerAuth, handleOrderStatus);
 orderRouter.get("/get-user-orders", userAuth, getUserOrder);
 
 // Update stock
-orderRouter.get("/update-stock", userAuth, updateStock);
+orderRouter.post("/update-stock", userAuth, updateStock);
