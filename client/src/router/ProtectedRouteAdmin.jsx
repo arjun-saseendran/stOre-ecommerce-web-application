@@ -1,5 +1,6 @@
+import { useEffect } from "react";
 import { useSelector } from "react-redux";
-import { Outlet, useNavigate } from "react-router-dom";
+import { Outlet, redirect, useNavigate } from "react-router-dom";
 
 export const ProtectedRouteAdmin = () => {
   // Config navigate
@@ -8,11 +9,17 @@ export const ProtectedRouteAdmin = () => {
   // Get seller authentication status
   const { isAdminAuth } = useSelector((state) => state.admin);
 
-  // Redirect
+  // Handle admin authentication
+  useEffect(() => {
+    if (!isAdminAuth) {
+      navigate("/admin/login");
+    }
+  }, [isAdminAuth, navigate]);
+
+  // Handle redirect
   if (!isAdminAuth) {
-    navigate("/admin/login");
-    return
+    return null;
   }
 
-  return isAdminAuth && <Outlet />;
+  return <Outlet />;
 };
