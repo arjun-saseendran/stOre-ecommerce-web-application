@@ -44,7 +44,7 @@ export const AdminLayout = () => {
   // Call when rendering
   useEffect(() => {
     checkAdmin();
-  }, [checkAdmin, location.pathname]);
+  }, [location.pathname]);
 
   return (
     <>
