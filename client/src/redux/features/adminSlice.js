@@ -12,10 +12,12 @@ export const adminSlice = createSlice({
   initialState,
   reducers: {
     saveAdminData: (state, action) => {
-      (state.isAdminAuth = true), (state.adminData = action.payload);
+      (state.isAdminAuth = true); 
+      (state.adminData = action.payload);
     },
     clearAdminData: (state) => {
-      (state.isAdminAuth = false), (state.adminData = {});
+      (state.isAdminAuth = false);
+      (state.adminData = {});
     },
   },
 });

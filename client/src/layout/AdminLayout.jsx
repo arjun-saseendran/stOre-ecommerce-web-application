@@ -11,6 +11,9 @@ export const AdminLayout = () => {
   // Get current theme
   const { theme } = useSelector((state) => state.theme);
 
+  // Get current user status
+  const { isAdminAuth } = useSelector((state) => state.admin);
+
   // Change body theme
   useEffect(() => {
     document.body.style.background = theme ? "#F2E5BF" : "#31363f";
@@ -44,10 +47,7 @@ export const AdminLayout = () => {
   // Call when rendering
   useEffect(() => {
     checkAdmin();
-  }, [location.pathname]);
-
-  // Get current user status
-  const { isAdminAuth } = useSelector((state) => state.admin);
+  }, [checkAdmin, location.pathname]);
 
   return (
     <>
