@@ -33,7 +33,7 @@ export const PaymentCancel = () => {
   }, []);
 
   return (
-    <Container style={{minHeight: '400px'}}>
+    <Container style={{ minHeight: "400px" }}>
       <div className="d-flex justify-content-center align-items-center mx-auto vh-100">
         <div>
           <svg
@@ -42,8 +42,8 @@ export const PaymentCancel = () => {
             viewBox="0 0 24 24"
             strokeWidth={1.5}
             stroke="currentColor"
-            className="size-6"
-            height={'400px'}
+            className={theme ? "size-6 " : "size-6 text-white"}
+            height={"400px"}
           >
             <path
               strokeLinecap="round"
@@ -53,7 +53,13 @@ export const PaymentCancel = () => {
           </svg>
         </div>
         <div>
-          <h1 className="text-white text-center mt-5">Payment Cancelled!</h1>
+          <h1
+            className={
+              theme ? "text-center mt-5" : "text-white text-center mt-5"
+            }
+          >
+            Payment Cancelled!
+          </h1>
           <Button variant={theme ? "warning" : "dark"} className="text-white">
             <Link className="text-decoration-none text-white" to={"/"}>
               Back to home

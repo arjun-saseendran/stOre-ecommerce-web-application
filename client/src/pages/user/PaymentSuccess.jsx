@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { Container, Button } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import {axiosInstance} from '../../config/axiosInstance'
+import { axiosInstance } from "../../config/axiosInstance";
 
 export const PaymentSuccess = () => {
   // Get current theme
@@ -25,7 +25,6 @@ export const PaymentSuccess = () => {
           url: "/cart/clear-cart",
         });
         console.log(clearCart);
-        
       } catch (error) {
         console.log(error);
       }
@@ -34,7 +33,7 @@ export const PaymentSuccess = () => {
   }, []);
 
   return (
-    <Container style={{minHeight: '400px'}}>
+    <Container style={{ minHeight: "400px" }}>
       <div className="d-flex justify-content-center align-items-center mx-auto vh-100">
         <div>
           <svg
@@ -43,8 +42,8 @@ export const PaymentSuccess = () => {
             viewBox="0 0 24 24"
             strokeWidth={1.5}
             stroke="currentColor"
-            className="size-6"
-            height={'400px'}
+            className={theme ? "size-6 " : "size-6 text-white"}
+            height={"400px"}
           >
             <path
               strokeLinecap="round"
@@ -54,7 +53,13 @@ export const PaymentSuccess = () => {
           </svg>
         </div>
         <div>
-          <h1 className="text-white text-center mt-5">Payment success!</h1>
+          <h1
+            className={
+              theme ? "text-center mt-5" : "text-white text-center mt-5"
+            }
+          >
+            Payment success!
+          </h1>
           <Button variant={theme ? "warning" : "dark"} className="text-white">
             <Link className="text-decoration-none text-white" to={"/"}>
               Back to home
