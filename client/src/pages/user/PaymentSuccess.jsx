@@ -23,6 +23,8 @@ export const PaymentSuccess = () => {
           method: "DELETE",
           url: "/cart/clear-cart",
         });
+        console.log(clearCart);
+        
       } catch (error) {
         console.log(error);
       }
