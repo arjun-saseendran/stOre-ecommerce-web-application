@@ -24,7 +24,7 @@ export const Wishlist = () => {
   };
 
   return (
-    <Container>
+    <Container style={{minHeight: '400px'}}>
       <h1 className="text-white h1 text-center fw-bold my-5">Wishlist</h1>
 
       {wishlistData?.products?.map((product) => (

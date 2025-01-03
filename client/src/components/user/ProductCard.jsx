@@ -7,7 +7,6 @@ import { CartIcon } from "../shared/CartIcon";
 import { useState } from "react";
 import { AverageRatings } from "../shared/AverageRatings";
 import { WishlistIcon } from "../shared/WishlistIcon";
-import { OutOfStock } from "../shared/OutOfStock";
 
 export const ProductCard = ({ product }) => {
   // Get theme
@@ -83,8 +82,8 @@ export const ProductCard = ({ product }) => {
         style={{ cursor: "pointer" }}
       >
         <WishlistIcon productId={product?._id} />
+        {product.stock === 0 && <span className="ms-2">Out of stock!</span>}
       </span>
-      {product.stock === 0 && <span className="ms-2">Out of stock!</span>}
 
       <Card.Img
         className="crd-image object-fit-contain"

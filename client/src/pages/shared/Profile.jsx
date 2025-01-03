@@ -25,23 +25,20 @@ export const Profile = ({ role = "user", action }) => {
     role: "user",
     profile: "/user/profile",
     updateProfile: "/user/update-profile",
-    logout: "/user/logout",
   };
 
   // Handle seller role
   if (role === "seller") {
     (user.role = "seller"),
       (user.profile = "/seller/profile"),
-      (user.updateProfile = "/seller/update-profile"),
-      (user.logout = "/seller/logout");
+      (user.updateProfile = "/seller/update-profile");
   }
 
   // Handle admin role
   if (role === "admin") {
     (user.role = "admin"),
       (user.profile = "/admin/profile"),
-      (user.updateProfile = "/admin/update-profile"),
-      (user.logout = "/admin/logout");
+      (user.updateProfile = "/admin/update-profile");
   }
 
   if (role === "user" && action === "Details") {
@@ -121,25 +118,7 @@ export const Profile = ({ role = "user", action }) => {
     }
   };
 
-  // Logout handler
-  const handleLogout = async () => {
-    try {
-      const response = await axiosInstance({
-        method: "PUT",
-        url: user.logout,
-      });
-      if (role === "user") {
-        navigate("/login");
-      } else if (role === "admin") {
-        navigate("/admin/login");
-      } else if (role === "seller") {
-        navigate("/seller/login");
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
+  // Handle update page
   useEffect(() => {
     if (profileUpdated) {
       setProfileUpdated(false);
@@ -260,25 +239,15 @@ export const Profile = ({ role = "user", action }) => {
             </div>
           </div>
         )}
-
         <div>
           <Button
             onClick={() => (edit ? handleSubmit(onSubmit)() : setEdit(!edit))}
-            className="rounded-2 border-0  hover py-2 text-center 
+            className="rounded-2 border-0  hover py-2 px-5 text-center 
             text-white mt-1 me-1"
             type="button"
             variant={theme ? "warning" : "dark"}
           >
             {edit ? "Save" : "Edit"}
-          </Button>
-          <Button
-            onClick={handleLogout}
-            className="rounded-2 border-0  hover py-2 text-center 
-            text-white mt-1"
-            type="submit"
-            variant={theme ? "warning" : "dark"}
-          >
-            Logout
           </Button>
         </div>
       </form>
