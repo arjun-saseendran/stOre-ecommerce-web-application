@@ -16,9 +16,6 @@ export const AdminLayout = () => {
     document.body.style.background = theme ? "#F2E5BF" : "#31363f";
   }, [theme]);
 
-  // Get current user status
-  const { isAdminAuth } = useSelector((state) => state.admin);
-
   // Config dispatch
   const dispatch = useDispatch();
 
@@ -48,6 +45,9 @@ export const AdminLayout = () => {
   useEffect(() => {
     checkAdmin();
   }, [location.pathname]);
+
+  // Get current user status
+  const { isAdminAuth } = useSelector((state) => state.admin);
 
   return (
     <>

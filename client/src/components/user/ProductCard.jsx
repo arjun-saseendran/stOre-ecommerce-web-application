@@ -7,6 +7,7 @@ import { CartIcon } from "../shared/CartIcon";
 import { useState } from "react";
 import { AverageRatings } from "../shared/AverageRatings";
 import { WishlistIcon } from "../shared/WishlistIcon";
+import toast from 'react-hot-toast'
 
 export const ProductCard = ({ product }) => {
   // Get theme
@@ -27,9 +28,10 @@ export const ProductCard = ({ product }) => {
         url: "/cart/add-product",
         data: { productId },
       });
-
+      toast.success('Product added to cart')
       console.log(response);
     } catch (error) {
+      toast.error('Something went wrong!')
       console.log(error);
     }
   };
@@ -51,6 +53,7 @@ export const ProductCard = ({ product }) => {
           url: "/wishlist/remove-product",
           data: { productId },
         });
+        toast.success('Product removed from wishlist!')
       } catch (error) {
         console.log(error);
       }
@@ -63,7 +66,12 @@ export const ProductCard = ({ product }) => {
           url: "/wishlist/add-product",
           data: { productId },
         });
-      } catch (error) {}
+        toast.success('Product added to wishlist!')
+      } catch (error) {
+        toast('Something went wrong!')
+        console.log(error);
+        
+      }
     }
   };
 

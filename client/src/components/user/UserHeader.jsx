@@ -84,19 +84,6 @@ export const UserHeader = () => {
     })();
   }, [wishlist]);
 
-  // Remove product
-  const removeProduct = async (productId) => {
-    try {
-      const response = await axiosInstance({
-        method: "DELETE",
-        url: "/wishlist/remove-product",
-        data: { productId },
-      });
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
   // Search value
   const handleSearch = () => {
     dispatch(setSearchValue(inputValue.current.value));
@@ -104,15 +91,15 @@ export const UserHeader = () => {
 
   // Handler enter key press
   const handleKeyDown = (e) => {
-    e.preventDefault(); 
+    e.preventDefault();
     if (e.key === "Enter") {
-      handleSearch()
+      handleSearch();
     }
   };
 
   const handleSubmit = (e) => {
-    e.preventDefault(); 
-    handleSearch(); 
+    e.preventDefault();
+    handleSearch();
   };
 
   //   // Store cart data to global variable
@@ -208,7 +195,7 @@ export const UserHeader = () => {
                 <span className="text-black hover">Profile</span>
               </NavDropdown.Item>
               <NavDropdown.Divider />
-              <NavDropdown.Item as={Link} to={'/user/orders'}>
+              <NavDropdown.Item as={Link} to={"/user/orders"}>
                 <span className="text-black hover">Orders</span>
               </NavDropdown.Item>
 
