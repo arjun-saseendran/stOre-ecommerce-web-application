@@ -4,6 +4,7 @@ import { catchErrorHandler } from "../utils/catchErrorHandler.js";
 import { generateToken } from "../utils/tokenHandler.js";
 import { Seller } from "../models/sellerModel.js";
 import { passwordHandler } from "../utils/passwordHandler.js";
+import { cloudinaryInstance } from "../config/cloudinary.js";
 
 // Config node env
 const NODE_ENV = process.env.NODE_ENV;
@@ -16,6 +17,64 @@ const transporter = nodemailer.createTransport({
     pass: process.env.EMAIL_PASS,
   },
 });
+
+// Admin signup
+export const adminSignup = async (req, res) => {
+  try {
+    // Destructing data from request body
+    const { name, email, password, mobile, confirmPassword } = req.body;
+    if (!name || !email || !mobile || !password || !confirmPassword) {
+      return res.status(400).json({ message: "All fields required" });
+    }
+
+    // Check password and confirm password
+    if (password !== confirmPassword) {
+      return res
+        .status(400)
+        .json({ message: "Password and Confirm password not match" });
+    }
+
+    // Checking admin exists or not
+    const adminExist = await Seller.findOne({ email, role: 'admin' });
+    if (adminExist) {
+      return res
+        .status(400)
+        .json({ message: "Admin already exist" })
+        .select("-password");
+    }
+    // Hashing password
+    const hashedPassword = await passwordHandler(password, undefined, res);
+
+    // Handle upload image
+    const uploadResult = await cloudinaryInstance.uploader.upload(
+      req.file.path
+    );
+
+    // Creating new admin object
+    const newAdmin = new Seller({
+      name,
+      email,
+      mobile,
+      role: 'admin',
+      profilePicture: uploadResult.url,
+      password: hashedPassword,
+    });
+
+    // Save new admin to database
+    await newAdmin.save();
+
+    // Exclude password
+    const { password: _, ...adminWithoutPassword } = newAdmin.toObject();
+
+    res.json({
+      message: "Admin created successfully",
+      data: adminWithoutPassword,
+    });
+  } catch (error) {
+    // Handle catch error
+    catchErrorHandler(res, error);
+  }
+};
 
 // admin login
 export const adminLogin = async (req, res) => {

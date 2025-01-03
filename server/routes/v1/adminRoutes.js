@@ -10,10 +10,14 @@ import {
   adminDetails,
   adminLogout,
   adminLogin,
+  adminSignup,
 } from "../../controllers/adminControllers.js";
 
 // Configure router
 export const adminRouter = Router();
+
+// Admin login
+adminRouter.post('/signup', adminSignup)
 
 // Admin login
 adminRouter.post('/login', adminLogin)
