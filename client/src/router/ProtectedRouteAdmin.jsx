@@ -18,7 +18,7 @@ export const ProtectedRouteAdmin = () => {
 
   // Handle redirect
   if (!isAdminAuth) {
-    return null;
+    return <div>Redirecting to admin login...</div>;
   }
 
   return <Outlet />;
