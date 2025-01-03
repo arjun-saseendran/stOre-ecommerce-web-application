@@ -40,7 +40,7 @@ export const Login = ({ role = "user" }) => {
     user.role = "admin";
     user.login_api = "/admin/login";
     user.profile_route = "/admin/profile";
-    user.signup_route = "/seller/signup";
+    user.signup_route = "/admin/signup";
     user.home_route = "/admin";
     user.forgotPassword = '/admin/forgot-password'
 

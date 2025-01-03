@@ -29,6 +29,13 @@ export const Signup = ({ role = "user" }) => {
       (user.login_route = "/seller/login");
   }
 
+  // Handle admin role
+  if(role === 'admin'){
+    user.role = "admin",
+    user.signup_api = 'admin/signup',
+    user.login_route = 'admin/login'
+  }
+
   // Handle on submit
   const onSubmit = async (data) => {
     try {
