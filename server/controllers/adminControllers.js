@@ -1,6 +1,64 @@
 import { catchErrorHandler } from "../utils/catchErrorHandler.js";
 import { Seller } from "../models/sellerModel.js";
 
+// admin login
+export const adminLogin = async (req, res) => {
+  try {
+    const { email, password } = req.body;
+
+    // Checking fields
+    if (!email || !password) {
+      return res.status(400).json({ message: "All fields are required" });
+    }
+
+    // Checking seller
+    let admin = await Seller.findOne({ email });
+
+    // Check role
+    admin = await Seller.findOne({ role: "admin" });
+
+    if (!admin || admin.role !== "admin") {
+      return res.status(400).json({ message: "Admin not exist" });
+    }
+
+    // Checking password
+    const matchedPassword = await passwordHandler(
+      password,
+      admin.password,
+      res
+    );
+
+    if (!matchedPassword) {
+      return res.status(400).json({ message: "Incorrect password" });
+    }
+
+    // Checking admin profile
+    if (!admin.isActive) {
+      return res.status(400).json({ message: "Admin profile deactivated" });
+    }
+
+    // Generating token and set role
+    const token = generateToken(admin, "admin", res);
+
+    // Set token to cookie
+    res.cookie("token", token, {
+      sameSite: NODE_ENV === "production" ? "None" : "Lax",
+      secure: NODE_ENV === "production",
+      httpOnly: NODE_ENV === "production",
+    });
+
+    // Exclude password
+    const { password: _, ...adminWithoutPassword } = admin.toObject();
+
+    res
+      .status(200)
+      .json({ message: "Login successful", data: adminWithoutPassword });
+  } catch (error) {
+    // Handle catch error
+    catchErrorHandler(res, error);
+  }
+};
+
 // Admin profile details
 export const adminProfile = async (req, res) => {
   try {
@@ -157,7 +215,6 @@ export const adminDetails = async (req, res) => {
     catchErrorHandler(res, error);
   }
 };
-
 
 // Admin logout
 export const adminLogout = async (req, res) => {

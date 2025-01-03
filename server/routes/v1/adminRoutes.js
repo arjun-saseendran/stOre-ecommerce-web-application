@@ -9,10 +9,14 @@ import {
   checkAdmin,
   adminDetails,
   adminLogout,
+  adminLogin,
 } from "../../controllers/adminControllers.js";
 
 // Configure router
 export const adminRouter = Router();
+
+// Admin login
+adminRouter.post('/login', adminAuth, adminLogin)
 
 // Admin profile details
 adminRouter.get("/profile", adminAuth, adminProfile);

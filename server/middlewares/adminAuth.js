@@ -15,12 +15,12 @@ export const adminAuth = async (req, res, next) => {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
     if (!decoded) {
-      return res.status(401).json({ message: "Admin not autherzied" });
+      return res.status(401).json({ message: "Admin not authorized" });
     }
 
     // Checking role
     if (decoded.role !== "admin" ) {
-      return res.status(404).json({ message: "User not autherzied" });
+      return res.status(404).json({ message: "User not authorized" });
     }
 
     // Set admin
