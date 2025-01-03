@@ -29,7 +29,7 @@ export const createCheckoutSession = async (req, res, next) => {
 
     // Create a new Stripe checkout session
     const session = await stripe.checkout.sessions.create({
-      payment_method_types: ["card"],
+      payment_method_types: ["card", "upi", "google_pay", "sepa_debit"],
       line_items: lineItems,
       mode: "payment",
       success_url: `${process.env.CORS}/user/payment-success`,
