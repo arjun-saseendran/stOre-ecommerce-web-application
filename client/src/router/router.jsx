@@ -176,9 +176,7 @@ export const router = createBrowserRouter([
           },
           {
             path: "orders-delivery",
-            element: (
-              <OrderList action="delivery" role="seller" />
-            ),
+            element: <OrderList action="delivery" role="seller" />,
           },
           {
             path: "orders-delivered",
@@ -278,9 +276,7 @@ export const router = createBrowserRouter([
 
           {
             path: "orders-delivery",
-            element: (
-              <OrderList action="delivery" role="admin" />
-            ),
+            element: <OrderList action="delivery" role="admin" />,
           },
           {
             path: "orders-delivered",

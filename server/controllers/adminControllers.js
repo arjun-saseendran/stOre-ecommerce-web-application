@@ -1,5 +1,21 @@
+import crypto from "crypto";
+import nodemailer from "nodemailer";
 import { catchErrorHandler } from "../utils/catchErrorHandler.js";
+import { generateToken } from "../utils/tokenHandler.js";
 import { Seller } from "../models/sellerModel.js";
+import { passwordHandler } from "../utils/passwordHandler.js";
+
+// Config node env
+const NODE_ENV = process.env.NODE_ENV;
+
+// Config nodemailer
+const transporter = nodemailer.createTransport({
+  service: process.env.EMAIL_SERVICE,
+  auth: {
+    user: process.env.EMAIL_USER,
+    pass: process.env.EMAIL_PASS,
+  },
+});
 
 // admin login
 export const adminLogin = async (req, res) => {
@@ -12,12 +28,10 @@ export const adminLogin = async (req, res) => {
     }
 
     // Checking seller
-    let admin = await Seller.findOne({ email });
+    let admin = await Seller.findOne({ email, role: "admin" });
 
-    // Check role
-    admin = await Seller.findOne({ role: "admin" });
-
-    if (!admin || admin.role !== "admin") {
+    // Admin not found
+    if (!admin) {
       return res.status(400).json({ message: "Admin not exist" });
     }
 

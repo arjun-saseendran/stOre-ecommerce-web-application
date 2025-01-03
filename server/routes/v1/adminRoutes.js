@@ -16,7 +16,7 @@ import {
 export const adminRouter = Router();
 
 // Admin login
-adminRouter.post('/login', adminAuth, adminLogin)
+adminRouter.post('/login', adminLogin)
 
 // Admin profile details
 adminRouter.get("/profile", adminAuth, adminProfile);
