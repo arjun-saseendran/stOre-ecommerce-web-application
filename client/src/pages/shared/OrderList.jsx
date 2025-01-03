@@ -13,19 +13,18 @@ export const OrderList = ({ action = "processing", role = "admin" }) => {
 
   // Handle role
   const user = {
-    role: 'admin',
-    orders: '/order/get-orders-by-status'
-  }
+    role: "admin",
+    orders: "/order/get-orders-by-status",
+  };
 
-  if(role === 'seller'){
-    user.role = 'seller',
-    user.orders = '/order/get-seller-orders-by-status'
+  if (role === "seller") {
+    (user.role = "seller"),
+      (user.orders = "/order/get-seller-orders-by-status");
   }
 
   // Api call
   useEffect(() => {
     const fetchOrders = async () => {
-
       try {
         const response = await axiosInstance({
           method: "POST",

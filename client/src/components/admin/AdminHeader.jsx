@@ -113,7 +113,7 @@ export const AdminHeader = () => {
             title={<span className="text-white h5 hover">Product</span>}
             id="navbarScrollingDropdown"
           >
-            <NavDropdown.Item as={Link} to={"/admin"}>
+            <NavDropdown.Item as={Link} to={"/admin/products"}>
               <span className="text-black hover">Products</span>
             </NavDropdown.Item>
             <NavDropdown.Divider />

@@ -6,6 +6,7 @@ import {
   getOrderDetails,
   getOrders,
   getOrdersByStatus,
+  getSellerOrders,
   getSellerOrdersByStatus,
   getUserOrder,
   handleOrderStatus,
@@ -17,6 +18,10 @@ export const orderRouter = Router();
 
 // Get all orders
 orderRouter.get("/get-orders", adminAuth, getOrders);
+
+// Get seller all orders
+orderRouter.get("/get-seller-orders", sellerAuth, getSellerOrders);
+
 
 // Get  orders by status
 orderRouter.post("/get-orders-by-status", sellerAuth, getOrdersByStatus);

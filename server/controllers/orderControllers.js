@@ -71,14 +71,11 @@ export const getOrderDetails = async (req, res) => {
   }
 };
 
-// Get orders base seller
-export const getSellerOrdersByStatus = async (req, res) => {
+// Get seller orders
+export const getSellerOrders = async (req, res) => {
   try {
     // Get seller id
     const userId = req.user.id;
-
-    // Get status
-    const { status } = req.body;
 
     // Validate sellerId
     if (!userId) {
@@ -108,14 +105,62 @@ export const getSellerOrdersByStatus = async (req, res) => {
         .json({ message: "No orders found for this seller" });
     }
 
+    res.status(200).json({
+      message: "Orders fetched successfully",
+      data: orders,
+    });
+  } catch (error) {
+    // Handle catch error
+    catchErrorHandler(res, error);
+  }
+};
+// Get orders base seller
+export const getSellerOrdersByStatus = async (req, res) => {
+  try {
+    // Get seller id
+    const userId = req.user.id;
+
+    // Get status
+    const { status } = req.body;
+
+    // Validate sellerId
+    if (!userId) {
+      return res.status(400).json({ error: "Seller not found" });
+    }
+
+    // Find all products associated with the seller
+    const sellerProducts = await Product.find({ seller: userId }).select("_id");
+
+    // Handle no product found
+    if (!sellerProducts.length) {
+      return res
+        .status(404)
+        .json({ message: "No products found for this seller" });
+    }
+
+    const productIds = sellerProducts.map((product) => product._id);
+
+    // Find all orders containing products associated with this seller
+    let ordersByStatus = await Order.find({
+      "products.productId": { $in: productIds },
+    }).populate("products.productId", "title price image");
+
+    if (!ordersByStatus.length) {
+      return res
+        .status(404)
+        .json({ message: "No orders found for this seller" });
+    }
+
     // Filter the orders by status
     if (status) {
-      orders = orders.filter((order) => order.orderStatus === status);
+      ordersByStatus = ordersByStatus.filter(
+        (order) => order.orderStatus === status
+      );
     }
 
     res.status(200).json({
       message: "Orders fetched successfully",
-      data: orders,
+      data: ordersByStatus,
     });
   } catch (error) {
     // Handle catch error

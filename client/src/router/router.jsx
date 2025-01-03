@@ -31,6 +31,7 @@ import { UpdateProduct } from "../pages/shared/UpdateProduct";
 import { UserOrders } from "../pages/user/UserOrders";
 import { OrderList } from "../pages/shared/OrderList";
 import { OrderDetails } from "../pages/shared/OrderDetails";
+import { AdminHome } from "../pages/admin/AdminHome";
 
 export const router = createBrowserRouter([
   {
@@ -44,7 +45,7 @@ export const router = createBrowserRouter([
       },
       {
         path: "signup",
-        element: <Signup/>,
+        element: <Signup />,
       },
       {
         path: "login",
@@ -226,7 +227,8 @@ export const router = createBrowserRouter([
       {
         element: <ProtectedRouteAdmin />,
         children: [
-          { path: "", element: <Products action="Update" role="admin" /> },
+          { path: "", element: <AdminHome /> },
+          { path: "products", element: <Products action="Update" role="admin" /> },
           {
             path: "delete-product",
             element: <Products role="admin" action="Delete" />,
