@@ -37,8 +37,8 @@ export const Login = ({ role = "user" }) => {
 
   // Handle admin role
   if (role === "admin") {
-    user.role = "seller";
-    user.login_api = "/seller/login";
+    user.role = "admin";
+    user.login_api = "/admin/login";
     user.profile_route = "/admin/profile";
     user.signup_route = "/seller/signup";
     user.home_route = "/admin";
