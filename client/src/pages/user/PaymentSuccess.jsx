@@ -8,15 +8,26 @@ export const PaymentSuccess = () => {
   const { theme } = useSelector((state) => state.theme);
 
   useEffect(() => {
-    const clearCart = async () => {
+    // Handle stock and clear cart
+    const updateStockAndClearCart = async () => {
       try {
-        const response = await axiosInstance({
+        // Update stock
+        const stockUpdate = await axiosInstance({
+          method: "POST",
+          url: "/orders/update-stock",
+        });
+        console.log(stockUpdate);
+
+        // Clear cart
+        const clearCart = await axiosInstance({
           method: "DELETE",
           url: "/cart/clear-cart",
         });
-      } catch (error) {}
+      } catch (error) {
+        console.log(error);
+      }
     };
-    clearCart();
+    updateStockAndClearCart();
   }, []);
 
   return (

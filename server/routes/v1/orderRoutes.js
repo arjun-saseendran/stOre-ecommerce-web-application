@@ -9,6 +9,7 @@ import {
   getSellerOrdersByStatus,
   getUserOrder,
   handleOrderStatus,
+  updateStock,
 } from "../../controllers/orderControllers.js";
 
 // Configure router
@@ -31,3 +32,6 @@ orderRouter.post("/change-order-status", sellerAuth, handleOrderStatus);
 
 // Get your order
 orderRouter.get("/get-user-orders", userAuth, getUserOrder);
+
+// Update stock
+orderRouter.get("/update-stock", userAuth, updateStock);

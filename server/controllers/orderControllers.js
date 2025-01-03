@@ -191,3 +191,37 @@ export const getUserOrder = async (req, res) => {
     catchErrorHandler(res, error);
   }
 };
+
+// Handle stock
+export const updateStock = async (req, res) => {
+  try {
+    // Get user
+    const userId = req.user.id;
+
+    // Find latest successful order of the user
+    const latestOrder = await Order.findOne({
+      userId,
+      orderStatus: "processing",
+    }).populate("products.productId");
+
+    // Handle order not found case
+    if (!latestOrder) {
+      return res.status(404).json({ message: "No completed orders found" });
+    }
+
+    // Update stock for products in the order
+    for (const item of latestOrder.products) {
+      const product = await Product.findById(item.productId);
+      if (product) {
+        // Decrease product quantity
+        product.stock = Math.max(0, product.stock - item.quantity);
+        await product.save();
+      }
+    }
+
+    return res.status(200).json({ message: "Stock updated successfully" });
+  } catch (error) {
+    // Handle catch error
+    catchErrorHandler(res, error);
+  }
+};
