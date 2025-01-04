@@ -6,8 +6,6 @@ import { useFetch } from "../../hooks/useFetch";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { axiosInstance } from "../../config/axiosInstance";
-import { Loading } from "../../components/shared/Loading";
-import { Error } from "../../components/shared/Error";
 
 export const ProductList = () => {
   // Get category global state
@@ -22,13 +20,6 @@ export const ProductList = () => {
   // Api call
   const [products, loading, error] = useFetch("/product/products");
 
-  // Handle product rendering
-  if (loading) {
-    return <Loading />;
-  } else if (error) {
-    return <Error />;
-  }
-  
   // Category base search
   useEffect(() => {
     const fetchCategory = async () => {
