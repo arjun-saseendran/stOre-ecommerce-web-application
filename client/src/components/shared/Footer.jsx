@@ -60,9 +60,9 @@ export const Footer = () => {
             </Link>
           </li>
           <li>
-            <a href="#" className="text-decoration-none text-white">
+            <Link to={'/press-kit'} className="text-decoration-none text-white">
               Press kit
-            </a>
+            </Link>
           </li>
         </ul>
       </Col>

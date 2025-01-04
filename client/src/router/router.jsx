@@ -37,6 +37,7 @@ import { TermsAndConditions } from "../pages/stOre/TermsAndConditions";
 import { PrivacyPolicy } from "../pages/stOre/ PrivacyPolicy";
 import { CookiePolicy } from "../pages/stOre/CookiePolicy";
 import { Jobs } from "../pages/stOre/Jobs";
+import { PressKit } from "../pages/stOre/PressKit";
 
 export const router = createBrowserRouter([
   {
@@ -91,6 +92,10 @@ export const router = createBrowserRouter([
       {
         path: "jobs",
         element: <Jobs />,
+      },
+      {
+        path: "press-kit",
+        element: <PressKit />,
       },
 
       {
