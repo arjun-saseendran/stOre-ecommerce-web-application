@@ -1,12 +1,20 @@
-import { Container, Navbar, NavDropdown } from "react-bootstrap";
-import { useSelector } from "react-redux";
+import { Container, Navbar, NavDropdown, Form, Button  } from "react-bootstrap";
+import { useSelector, useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { DarkMode } from "../shared/DarkMode";
 import { axiosInstance } from "../../config/axiosInstance";
+import { useRef } from "react";
+import { setSearchValue } from "../../redux/features/searchSlice";
 
 export const SellerHeader = () => {
   // Get current theme
   const { theme } = useSelector((state) => state.theme);
+
+  // Config dispatch
+  const dispatch = useDispatch()
+
+  // Config ref
+    const inputValue = useRef();
 
   // Config navigate
   const navigate = useNavigate();
@@ -26,6 +34,25 @@ export const SellerHeader = () => {
       console.log(error);
     }
   };
+
+  // Search value
+    const handleSearch = (e) => {
+      e.preventDefault();
+      dispatch(setSearchValue(inputValue.current.value));
+    };
+  
+    // Handler enter key press
+    const handleKeyDown = (e) => {
+      e.preventDefault();
+      if (e.key === "Enter") {
+        handleSearch();
+      }
+    };
+  
+    const handleSubmit = (e) => {
+      e.preventDefault();
+      handleSearch();
+    };
   return (
     <Navbar
       expand="lg"
@@ -82,7 +109,7 @@ export const SellerHeader = () => {
             id="navbarScrollingDropdown"
           >
             <NavDropdown.Item as={Link} to={"/seller/seller-products"}>
-              <span className="text-black hover">Products</span>
+              <span className="text-black hover"  onClick={() => dispatch(setSearchValue(""))}>Products</span>
             </NavDropdown.Item>
             <NavDropdown.Divider />
             <NavDropdown.Item as={Link} to={"/seller/add-product"}>
@@ -91,7 +118,7 @@ export const SellerHeader = () => {
 
             <NavDropdown.Divider />
             <NavDropdown.Item as={Link} to={"/seller/delete-product"}>
-              <span className="text-black hover">Delete</span>
+              <span className="text-black hover"  onClick={() => dispatch(setSearchValue(""))}>Delete</span>
             </NavDropdown.Item>
           </NavDropdown>
           <NavDropdown
@@ -109,7 +136,7 @@ export const SellerHeader = () => {
           </NavDropdown>
 
           <NavDropdown
-            className="mt-2 text-white me-auto"
+            className="mt-2 text-white me-4"
             title={<span className="text-white h5 hover">Order</span>}
             id="navbarScrollingDropdown"
           >
@@ -136,6 +163,24 @@ export const SellerHeader = () => {
               <span className="text-black hover">Delivered</span>
             </NavDropdown.Item>
           </NavDropdown>
+          <Form className="d-flex mt-2 me-auto w-100" onSubmit={handleSubmit}>
+            <Form.Control
+              type="search"
+              placeholder="Search"
+              className="me-2"
+              aria-label="Search"
+              ref={inputValue}
+              style={{ background: theme ? "#F5F0CD" : "#D9D9D9" }}
+            />
+            <Button
+              variant="outline-light"
+              onClick={handleSearch}
+              onKeyDown={handleKeyDown}
+              className="me-2"
+            >
+              Search
+            </Button>
+          </Form>
           <span className="mx-2 mt-1">
             <DarkMode />
           </span>

@@ -11,17 +11,23 @@ export const Products = ({ action = "Update", role = "admin" }) => {
   // Config navigate
   const navigate = useNavigate();
 
+  // Get search value
+  const { searchResult } = useSelector((state) => state.search);
+
   // Handle routes
   const product = {
     products: "/product/products",
     productDelete: "/product/delete-product",
+    searchProducts: "product/search-seller-products",
   };
 
   // Handle role
   if (role === "seller") {
     product.products = "product/seller-products";
+    product.searchProducts = "product/search-seller-products";
   } else if (role === "admin") {
     product.products = "product/products";
+    product.searchProducts = "/product/search";
   }
 
   // Store products
@@ -46,7 +52,7 @@ export const Products = ({ action = "Update", role = "admin" }) => {
         console.log(error);
       }
     })();
-  }, [product.products, deleteProduct]);
+  }, [product.products, searchResult, deleteProduct]);
 
   // Handle actions
   const handleAction = async (productId) => {
@@ -69,14 +75,36 @@ export const Products = ({ action = "Update", role = "admin" }) => {
       console.log(error);
     }
   };
+
+  // Api call
+  useEffect(() => {
+    const fetchSearchData = async () => {
+      try {
+        const response = await axiosInstance({
+          method: "POST",
+          url: product.searchProducts,
+          data: { searchResult },
+        });
+        setProducts(response?.data?.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    if (searchResult) {
+      fetchSearchData();
+    } else {
+      setProducts(products);
+    }
+  }, [searchResult, products, deleteProduct]);
+
   return (
-    <Container>
+    <Container style={{ minHeight: "400px" }}>
       <h1 className="text-center text-white mt-5">Product {action} List</h1>
       <Row
         className="mt-5 p-3 rounded-3"
         style={{
           backgroundColor: theme ? "#FFF6E3" : "#d9d9d9",
-          minHeight: "400px",
         }}
       >
         <Table className="rounded-3">

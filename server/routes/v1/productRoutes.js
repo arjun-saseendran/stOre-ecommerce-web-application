@@ -8,6 +8,7 @@ import {
   productCategory,
   searchProduct,
   getSellerProducts,
+  searchSellerProducts,
 } from "../../controllers/productControllers.js";
 import { upload } from "../../middlewares/multer.js";
 import { sellerAuth } from "../../middlewares/sellerAuth.js";
@@ -48,3 +49,6 @@ productRouter.put(
 
 // Delete product
 productRouter.delete("/delete-product", sellerAuth, deleteProduct);
+
+// Search seller products
+productRouter.post("/search-seller-products", sellerAuth, searchSellerProducts);

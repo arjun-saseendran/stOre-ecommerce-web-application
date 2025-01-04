@@ -232,4 +232,57 @@ export const getSellerProducts = async (req, res) => {
   }
 };
 
+// Search seller products
+export const searchSellerProducts = async (req, res) => {
+  try {
+    // Get user id
+    const userId = req.user.id;
 
+    // Get search value
+    const { searchResult } = req.body;
+
+    // Validate search value
+    if (searchResult && searchResult.trim() !== "") {
+      // Search for products by title, description, or category
+      const searchResults = await Product.find({
+        seller: userId,
+        $or: [
+          { title: { $regex: searchResult, $options: "i" } },
+          { description: { $regex: searchResult, $options: "i" } },
+          { category: { $regex: searchResult, $options: "i" } },
+        ],
+      });
+
+      // Handle search result
+      if (!searchResults || searchResults.length === 0) {
+        return res.status(404).json({ message: "No matching products found" });
+      }
+
+      // Return search results
+      return res
+        .status(200)
+        .json({ message: "Products found", data: searchResults });
+    } else {
+      // If no search value, return all products for the seller
+      const sellerProducts = await Seller.findById(userId).populate("products");
+
+      // Check if seller has products
+      if (!sellerProducts || !sellerProducts.products.length) {
+        return res
+          .status(404)
+          .json({ message: "No products found for this seller" });
+      }
+
+      // Send data to frontend
+      return res
+        .status(200)
+        .json({
+          message: "Products fetched successfully",
+          data: sellerProducts.products,
+        });
+    }
+  } catch (error) {
+    // Handle catch error
+    catchErrorHandler(res, error);
+  }
+};

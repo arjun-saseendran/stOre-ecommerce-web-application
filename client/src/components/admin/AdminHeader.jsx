@@ -1,8 +1,10 @@
-import { Container, NavDropdown, Navbar } from "react-bootstrap";
-import { useSelector } from "react-redux";
+import { Container, NavDropdown, Navbar, Form, Button } from "react-bootstrap";
+import { useSelector, useDispatch } from "react-redux";
+import { setSearchValue } from "../../redux/features/searchSlice";
 import { Link, useNavigate } from "react-router-dom";
 import { DarkMode } from "../shared/DarkMode";
 import { axiosInstance } from "../../config/axiosInstance";
+import { useRef } from "react";
 
 export const AdminHeader = () => {
   // Get current theme
@@ -11,12 +13,18 @@ export const AdminHeader = () => {
   // Config navigate
   const navigate = useNavigate();
 
+  // Config dispatch
+  const dispatch = useDispatch();
+
+  // Config ref
+  const inputValue = useRef();
+
   // Handle logout
   const handleLogout = async () => {
     try {
       const response = await axiosInstance({
         method: "PUT",
-        url: "/seller/logout",
+        url: "/admin/logout",
       });
 
       if (response) {
@@ -27,6 +35,25 @@ export const AdminHeader = () => {
     }
   };
 
+  // Search value
+  const handleSearch = (e) => {
+    e.preventDefault();
+    dispatch(setSearchValue(inputValue.current.value));
+  };
+
+  // Handler enter key press
+  const handleKeyDown = (e) => {
+    e.preventDefault();
+    if (e.key === "Enter") {
+      handleSearch();
+    }
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    handleSearch();
+  };
+
   return (
     <Navbar
       expand="lg"
@@ -35,7 +62,7 @@ export const AdminHeader = () => {
       }
     >
       <Container fluid>
-        <Navbar.Brand className="mb-2 me-4" >
+        <Navbar.Brand className="mb-2 me-4">
           <Link to={"/admin"} className="nav-link hover">
             <span className="text-white h1 fw-bold">st</span>
             <span className="text-secondary h1 fw-bolder">O</span>
@@ -115,7 +142,12 @@ export const AdminHeader = () => {
             id="navbarScrollingDropdown"
           >
             <NavDropdown.Item as={Link} to={"/admin/products"}>
-              <span className="text-black hover">Products</span>
+              <span
+                className="text-black hover"
+                onClick={() => dispatch(setSearchValue(""))}
+              >
+                Products
+              </span>
             </NavDropdown.Item>
             <NavDropdown.Divider />
             <NavDropdown.Item as={Link} to={"/admin/add-product"}>
@@ -125,7 +157,12 @@ export const AdminHeader = () => {
             <NavDropdown.Divider />
 
             <NavDropdown.Item as={Link} to={"/admin/delete-product"}>
-              <span className="text-black hover">Delete</span>
+              <span
+                className="text-black hover"
+                onClick={() => dispatch(setSearchValue(""))}
+              >
+                Delete
+              </span>
             </NavDropdown.Item>
           </NavDropdown>
           <NavDropdown
@@ -142,7 +179,7 @@ export const AdminHeader = () => {
             </NavDropdown.Item>
           </NavDropdown>
           <NavDropdown
-            className="mt-2  my-2 my-lg-0 text-white me-auto"
+            className="mt-2  my-2 my-lg-0 text-white me-5"
             title={<span className="text-white h5 hover">Order</span>}
             id="navbarScrollingDropdown"
           >
@@ -169,6 +206,24 @@ export const AdminHeader = () => {
               <span className="text-black hover">Delivered</span>
             </NavDropdown.Item>
           </NavDropdown>
+          <Form className="d-flex me-auto w-100" onSubmit={handleSubmit}>
+            <Form.Control
+              type="search"
+              placeholder="Search"
+              className="me-2"
+              aria-label="Search"
+              ref={inputValue}
+              style={{ background: theme ? "#F5F0CD" : "#D9D9D9" }}
+            />
+            <Button
+              variant="outline-light"
+              onClick={handleSearch}
+              onKeyDown={handleKeyDown}
+              className="me-2"
+            >
+              Search
+            </Button>
+          </Form>
 
           <span className="mx-2 mt-1">
             <DarkMode />

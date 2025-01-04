@@ -6,7 +6,7 @@ import { useFetch } from "../../hooks/useFetch";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { axiosInstance } from "../../config/axiosInstance";
-import {Loading} from '../../components/shared/Loading'
+import { Loading } from "../../components/shared/Loading";
 
 export const ProductList = () => {
   // Get category global state
