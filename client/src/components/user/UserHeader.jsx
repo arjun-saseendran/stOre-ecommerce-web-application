@@ -220,10 +220,10 @@ export const UserHeader = () => {
                 </span>
               </NavDropdown.Item>
             </NavDropdown>
-            <NavItem className="mt-2 me-3">
+            <NavItem className="mx-2" style={{ marginTop: 12 }}>
               <DarkMode />
             </NavItem>
-            <NavItem className="mt-2 me-3">
+            <NavItem className=" mx-2" style={{ marginTop: 15 }}>
               <HideBanner />
             </NavItem>
           </Nav>
