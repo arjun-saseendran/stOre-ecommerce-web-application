@@ -23,13 +23,12 @@ export const ProductList = () => {
   const [products, loading, error] = useFetch("/product/products");
 
   // Handle product rendering
-
-  if (!products || loading) {
-    <Loading />;
-  } else if (!products || error) {
-    <Error />;
+  if (loading) {
+    return <Loading />;
+  } else if (error) {
+    return <Error />;
   }
-
+  
   // Category base search
   useEffect(() => {
     const fetchCategory = async () => {
