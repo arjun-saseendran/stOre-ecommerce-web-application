@@ -39,6 +39,7 @@ import { CookiePolicy } from "../pages/stOre/CookiePolicy";
 import { Jobs } from "../pages/stOre/Jobs";
 import { PressKit } from "../pages/stOre/PressKit";
 import { Design } from "../pages/stOre/Design";
+import { Marketing } from "../pages/stOre/Marketing";
 
 export const router = createBrowserRouter([
   {
@@ -101,6 +102,10 @@ export const router = createBrowserRouter([
       {
         path: "design",
         element: <Design />,
+      },
+      {
+        path: "marketing",
+        element: <Marketing />,
       },
 
       {
