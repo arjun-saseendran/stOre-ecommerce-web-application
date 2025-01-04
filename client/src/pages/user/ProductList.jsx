@@ -6,7 +6,7 @@ import { useFetch } from "../../hooks/useFetch";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { axiosInstance } from "../../config/axiosInstance";
-import {Loading} from '../../components/shared/Loading'
+import { Loading } from "../../components/shared/Loading";
 
 export const ProductList = () => {
   // Get category global state
@@ -22,17 +22,17 @@ export const ProductList = () => {
   const [products, loading, error] = useFetch("/product/products");
 
   // Handle product rendering
-  if(loading){
- return   (<div className="text-center mt-5">
-      <Loading/>
-    </div>)
+  if (loading) {
+    return (
+      
+        <Loading />
+    
+    );
   }
 
   // Handle error
-  if(error){
-    return(
-      <div>Error!</div>
-    )
+  if (error) {
+    return <div>Error!</div>;
   }
 
   // Category base search
