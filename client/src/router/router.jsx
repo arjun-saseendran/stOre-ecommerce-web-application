@@ -32,6 +32,7 @@ import { UserOrders } from "../pages/user/UserOrders";
 import { OrderList } from "../pages/shared/OrderList";
 import { OrderDetails } from "../pages/shared/OrderDetails";
 import { AdminHome } from "../pages/admin/AdminHome";
+import { SellerHome } from "../pages/seller/SellerHome";
 
 export const router = createBrowserRouter([
   {
@@ -138,7 +139,8 @@ export const router = createBrowserRouter([
       {
         element: <ProtectedRouteSeller />,
         children: [
-          { path: "", element: <Products role="seller" action="Update" /> },
+          { path: "", element: <SellerHome role="seller"/> },
+          { path: "seller-product", element: <Products role="seller" action="Update" /> },
           {
             path: "delete-product",
             element: <Products role="seller" action="Delete" />,
@@ -227,7 +229,7 @@ export const router = createBrowserRouter([
       {
         element: <ProtectedRouteAdmin />,
         children: [
-          { path: "", element: <AdminHome /> },
+          { path: "", element: <AdminHome role="admin" /> },
           { path: "products", element: <Products action="Update" role="admin" /> },
           {
             path: "delete-product",

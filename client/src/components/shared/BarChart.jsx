@@ -1,14 +1,12 @@
-import { Line } from "react-chartjs-2";
+import { Bar } from "react-chartjs-2";
 import {
   Chart as ChartJS,
-  LineElement,
-  PointElement,
+  BarElement,
+  CategoryScale,
   LinearScale,
   Title,
   Tooltip,
   Legend,
-  Filler,
-  CategoryScale,
 } from "chart.js";
 import { useEffect, useState } from "react";
 import { axiosInstance } from "../../config/axiosInstance";
@@ -16,23 +14,31 @@ import { useSelector } from "react-redux";
 
 // Register chartjs components
 ChartJS.register(
-  LineElement,
-  PointElement,
+  BarElement,
+  CategoryScale,
   LinearScale,
   Title,
   Tooltip,
-  Legend,
-  CategoryScale,
-  Filler
+  Legend
 );
 
-export const LineChart = () => {
+export const BarChart = (role = 'admin') => {
   // Get current theme
   const { theme } = useSelector((state) => state.theme);
 
   // Store chart data
   const [chart, setChart] = useState(null);
-  const [category, setCategory] = useState([]);
+
+  // Handle role
+  const user = {
+    role: "admin",
+    chart: "/order/get-orders",
+  };
+
+  // Handle seller role
+  if (role === "seller") {
+    (user.role = "seller"), (user.chart = "order/get-seller-orders");
+  }
 
   // Api call
   useEffect(() => {
@@ -40,7 +46,7 @@ export const LineChart = () => {
       try {
         const response = await axiosInstance({
           method: "GET",
-          url: "/order/get-orders",
+          url: user.chart,
         });
         const orders = response?.data?.data;
 
@@ -55,11 +61,11 @@ export const LineChart = () => {
           labels,
           datasets: [
             {
-              label: "Order Totals",
+              label: "Order Totals Price",
               data: totalPrices,
-              borderColor: "orange",
-              backgroundColor: "rgba(255, 165, 0, 0.3)",
-              pointBackgroundColor: "orange",
+              borderColor: "rgba(255, 206, 86, 1)",
+              backgroundColor: "rgba(255, 206, 86, 0.6)",
+              borderWidth: 1,
               fill: false,
             },
           ],
@@ -74,30 +80,11 @@ export const LineChart = () => {
     fetchOrderData();
   }, []);
 
-  useEffect(() => {
-    const test = async () => {
-      try {
-        const response = await axiosInstance({
-          method: "GET",
-          url: "/order/orders-by-category",
-        });
-
-        setCategory(response?.data?.data);
-        console.log(response?.data?.data);
-        
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    test()
-  }, []);
- 
-
   return (
     <div>
       <h1 className={theme ? "text-black" : "text-white"}>Sales Trends</h1>
 
-      {chart ? <Line data={chart} /> : <p>Loading...</p>}
+      {chart ? <Bar data={chart} /> : <p>Loading...</p>}
     </div>
   );
 };

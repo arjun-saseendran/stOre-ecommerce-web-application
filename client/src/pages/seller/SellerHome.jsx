@@ -3,7 +3,7 @@ import { BarChart } from '../../components/shared/BarChart'
 import { Container, Row, Col } from 'react-bootstrap'
 import { DoughnutChart } from '../../components/shared/DoughnutChart';
 
-export const AdminHome = () => {
+export const SellerHome = () => {
   return (
     <Container className="p-5" style={{ minHeight: 400 }}>
       <Row className='d-flex justify-content-center align-items-center'>

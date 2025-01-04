@@ -46,14 +46,14 @@ orderRouter.get("/get-user-orders", userAuth, getUserOrder);
 // Update stock
 orderRouter.post("/update-stock", userAuth, updateStock);
 
-// Get all order details by product category by total price
+// Get total price by product category from all orders
 orderRouter.get(
   "/orders-total-price-by-category",
   adminAuth,
   getOrderTotalPriceByCategory
 );
 
-// Get seller order details by product category by total price
+// Get total price by product category by seller orders
 orderRouter.get(
   "/seller-orders-total-price-by-category",
   sellerAuth,
