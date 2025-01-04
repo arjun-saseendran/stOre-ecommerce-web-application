@@ -70,9 +70,12 @@ export const Footer = () => {
         <h6 className="text-uppercase font-weight-bold mb-3">Legal</h6>
         <ul className="list-unstyled">
           <li>
-            <a href="#" className="text-decoration-none text-white">
+            <Link
+              to={"/terms-and-conditions"}
+              className="text-decoration-none text-white"
+            >
               Terms of use
-            </a>
+            </Link>
           </li>
           <li>
             <a href="#" className="text-decoration-none text-white">
@@ -86,7 +89,7 @@ export const Footer = () => {
           </li>
         </ul>
       </Col>
-      <span>Copyright &copy; 2024 store.com</span> 
+      <span>Copyright &copy; 2024 store.com</span>
     </Row>
   );
 };

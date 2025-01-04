@@ -33,6 +33,7 @@ import { OrderList } from "../pages/shared/OrderList";
 import { OrderDetails } from "../pages/shared/OrderDetails";
 import { AdminHome } from "../pages/admin/AdminHome";
 import { SellerHome } from "../pages/seller/SellerHome";
+import { TermsAndConditions } from "../pages/stOre/TermsAndConditions";
 
 export const router = createBrowserRouter([
   {
@@ -71,6 +72,10 @@ export const router = createBrowserRouter([
       {
         path: "contact",
         element: <Contact />,
+      },
+      {
+        path: "terms-and-conditions",
+        element: <TermsAndConditions />,
       },
       {
         path: "products",
