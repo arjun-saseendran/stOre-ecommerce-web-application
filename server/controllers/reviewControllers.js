@@ -1,27 +1,46 @@
 import { Product } from "../models/productModel.js";
 import { Review } from "../models/reviewModel.js";
+import { Order } from "../models/orderModel.js";
 import { catchErrorHandler } from "../utils/catchErrorHandler.js";
 
-// Add rating
+// Add review if user has purchased the product
 export const addReview = async (req, res) => {
   try {
-    // Get data from request body
+    // Destructure data from request body
     const { productId, rating, comment } = req.body;
 
-    // Get user id
+    // Get user
     const userId = req.user.id;
 
-    // Check product exists
+    // Check if the product exists
     const product = await Product.findById(productId);
-
-    // Handle product not found
     if (!product) {
       return res.status(404).json({ message: "Product not found" });
     }
 
-    // Check rating
-    if (rating < 1 || rating > 5) {
-      return res.status(400).json({ message: "Provide a valid proper rating" });
+    // Check the user has purchased the product
+    const order = await Order.findOne({
+      userId: userId,
+      "products.productId": productId,
+      orderStatus: "delivered",
+    });
+
+    if (!order) {
+      return res
+        .status(400)
+        .json({ message: "You must purchase the product to add your review!" });
+    }
+
+    // Check if the user has already reviewed this product
+    const existingReview = await Review.findOne({
+      productId: productId,
+      userId: userId,
+    });
+
+    if (existingReview) {
+      return res
+        .status(400)
+        .json({ message: "You have already reviewed this product" });
     }
 
     // Create or update the review
@@ -31,10 +50,15 @@ export const addReview = async (req, res) => {
       { new: true, upsert: true }
     );
 
-    // Send to frontend
-    res.status(201).json({ message: "Review created", data: review });
+    // Save review to data base
+    await review.save();
+
+    res.status(201).json({
+      message: "Review added successfully",
+      data: review,
+    });
   } catch (error) {
-    // Handle catch error
+    // Handle errors
     catchErrorHandler(res, error);
   }
 };

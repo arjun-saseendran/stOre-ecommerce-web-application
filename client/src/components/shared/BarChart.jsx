@@ -62,7 +62,7 @@ export const BarChart = ({role = 'admin'}) => {
           labels,
           datasets: [
             {
-              label: "Order Totals Price",
+              label: "Order Totals Price ₹",
               data: totalPrices,
               borderColor: "rgba(255, 206, 86, 1)",
               backgroundColor: "rgba(255, 206, 86, 0.6)",

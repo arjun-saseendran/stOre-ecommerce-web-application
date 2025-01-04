@@ -45,7 +45,7 @@ export const DoughnutChart = ({ role = "admin" }) => {
           labels: Object.keys(category),
           datasets: [
             {
-              label: "Sales by Category",
+              label: "Sales by Category ₹",
               data: Object.values(category),
               backgroundColor: [
                 "rgba(255, 99, 132, 0.6)",

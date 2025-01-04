@@ -31,7 +31,9 @@ export const AddReview = () => {
       }
       toast.success("Review added");
     } catch (error) {
-      toast.error("Something went wrong try again!");
+      console.log(error);
+      
+      toast.error(error.response?.data?.message || "Something went wrong!");
     }
   };
 
@@ -40,7 +42,7 @@ export const AddReview = () => {
       <form
         onSubmit={handleSubmit((data) => onSubmit(data, productId))}
         className=" login-box mx-auto mt-5 d-flex flex-column gap-2 align-items-center justify-content-center rounded-3"
-        style={{ backgroundColor: theme ? "#FFF6E3" : "#d9d9d9" }}
+        style={{ backgroundColor: theme ? "#FFF6E3" : "#d9d9d9", minHeight: '400px' }}
       >
         <h3 className="mt-2 fw-bold text-black">Add Review</h3>
 

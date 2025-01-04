@@ -230,7 +230,7 @@ export const getUserOrder = async (req, res) => {
     // Send data to frontend
     return res
       .status(200)
-      .json({ message: "User fetched successfully", data: userOrder });
+      .json({ message: "User order fetched successfully", data: userOrder });
   } catch (error) {
     // Handle catch error
     catchErrorHandler(res, error);
