@@ -11,6 +11,9 @@ export const Header = () => {
   // Config dispatch function
   const dispatch = useDispatch();
 
+  // Get current theme
+  const { theme } = useSelector((state) => state.theme);
+
   // Config ref
   const inputValue = useRef();
 
@@ -19,8 +22,18 @@ export const Header = () => {
     dispatch(setSearchValue(inputValue.current.value));
   };
 
-  // Get current theme
-  const { theme } = useSelector((state) => state.theme);
+  // Handler enter key press
+  const handleKeyDown = (e) => {
+    e.preventDefault();
+    if (e.key === "Enter") {
+      handleSearch();
+    }
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    handleSearch();
+  };
 
   return (
     <Navbar
@@ -113,7 +126,7 @@ export const Header = () => {
               <HideBanner />
             </NavItem>
           </Nav>
-          <Form className="d-flex me-auto w-100 mt-2">
+          <Form className="d-flex me-auto w-100 mt-2" onSubmit={handleSubmit}>
             <Form.Control
               type="search"
               placeholder="Search"
@@ -122,7 +135,11 @@ export const Header = () => {
               ref={inputValue}
               style={{ background: theme ? "#F5F0CD" : "#D9D9D9" }}
             />
-            <Button variant="outline-light" onClick={handleSearch}>
+            <Button
+              variant="outline-light"
+              onClick={handleSearch}
+              onKeyDown={handleKeyDown}
+            >
               Search
             </Button>
           </Form>
