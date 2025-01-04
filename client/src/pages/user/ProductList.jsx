@@ -23,7 +23,7 @@ export const ProductList = () => {
 
   // Handle product rendering
   if (loading) {
-    return (
+     (
       
         <Loading />
     
@@ -32,7 +32,7 @@ export const ProductList = () => {
 
   // Handle error
   if (error) {
-    return <div>Error!</div>;
+     <div>Error!</div>;
   }
 
   // Category base search
