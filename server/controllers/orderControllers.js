@@ -272,3 +272,161 @@ export const updateStock = async (req, res) => {
     catchErrorHandler(res, error);
   }
 };
+
+// Get total price by product category from all orders
+export const getOrderTotalPriceByCategory = async (req, res) => {
+  try {
+    // Find all products in the database
+    const products = await Product.find().select("_id category");
+
+    // Handle no products found
+    if (!products.length) {
+      return res.status(404).json({ message: "No products found" });
+    }
+
+    const productIds = products.map((product) => product._id);
+
+    // Find all orders containing products
+    const orders = await Order.find({
+      "products.productId": { $in: productIds },
+    })
+      // Populate category field from product
+      .populate("products.productId", "title price image category")
+
+      // Select product fields
+      .select("products orderStatus totalPrice createdAt");
+
+    if (!orders.length) {
+      return res.status(404).json({ message: "No orders found" });
+    }
+
+    // Create new object for storing category total price
+    const categoryTotalPrice = {};
+
+    orders.forEach((order) => {
+      order.products.forEach((product) => {
+        // Get category from populated product data
+        const category = product.productId.category;
+
+        // Get the product quantity
+        const quantity = product.quantity;
+
+        // Get product price
+        const price = product.productId.price;
+
+        // Calculate total price for the category (price * quantity)
+        const totalProductPrice = price * quantity;
+
+        // Aggregate the total price per category
+        if (categoryTotalPrice[category]) {
+          categoryTotalPrice[category] += totalProductPrice;
+        } else {
+          categoryTotalPrice[category] = totalProductPrice;
+        }
+      });
+    });
+
+    // Format the data for sending in response
+    const formattedCategoryTotalPrice = Object.keys(categoryTotalPrice).map(
+      (category) => ({
+        category,
+        totalPrice: categoryTotalPrice[category],
+      })
+    );
+
+    res.status(200).json({
+      message: "Total price by category fetched successfully",
+      data: formattedCategoryTotalPrice,
+    });
+  } catch (error) {
+    // Handle error
+    catchErrorHandler(res, error);
+  }
+};
+
+// Get total price by product category by seller orders
+export const getSellerOrderTotalPriceByCategory = async (req, res) => {
+  try {
+    // Get seller id
+    const userId = req.user.id;
+
+    // Handle seller not found
+    if (!userId) {
+      return res.status(400).json({ error: "Seller not found" });
+    }
+
+    // Find seller products
+    const sellerProducts = await Product.find({ seller: userId }).select(
+      "_id category price"
+    );
+
+    // Handle no products found
+    if (!sellerProducts.length) {
+      return res
+        .status(404)
+        .json({ message: "No products found for this seller" });
+    }
+
+    const productIds = sellerProducts.map((product) => product._id);
+
+    // Find seller orders
+    const orders = await Order.find({
+      "products.productId": { $in: productIds },
+    })
+
+      // Populate category and price from product
+      .populate("products.productId", "title price image category")
+
+      // Select product fields
+      .select("products totalPrice orderStatus createdAt");
+
+    if (!orders.length) {
+      return res
+        .status(404)
+        .json({ message: "No orders found for this seller" });
+    }
+
+    // Create new object to store category base total price data
+    const categoryTotalPrice = {};
+
+    orders.forEach((order) => {
+      order.products.forEach((product) => {
+        // Get category from populated product data
+        const category = product.productId.category;
+
+        // Get quantity from populated product data
+        const quantity = product.quantity;
+
+        // Get product price
+        const price = product.productId.price;
+
+        // Calculate the total
+        const totalProductPrice = price * quantity;
+
+        // Create total price category
+        if (categoryTotalPrice[category]) {
+          categoryTotalPrice[category] += totalProductPrice;
+        } else {
+          categoryTotalPrice[category] = totalProductPrice;
+        }
+      });
+    });
+
+    // Format the data for sending in response
+    const formattedCategoryTotalPrice = Object.keys(categoryTotalPrice).map(
+      (category) => ({
+        category,
+        totalPrice: categoryTotalPrice[category],
+      })
+    );
+
+    res.status(200).json({
+      message:
+        "Seller orders by category with total price fetched successfully",
+      data: formattedCategoryTotalPrice,
+    });
+  } catch (error) {
+    // Handle error
+    catchErrorHandler(res, error);
+  }
+};

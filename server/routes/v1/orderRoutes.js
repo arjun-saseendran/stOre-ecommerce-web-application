@@ -11,6 +11,7 @@ import {
   getUserOrder,
   handleOrderStatus,
   updateStock,
+  getTotalPriceByCategory,
 } from "../../controllers/orderControllers.js";
 
 // Configure router
@@ -22,12 +23,15 @@ orderRouter.get("/get-orders", adminAuth, getOrders);
 // Get seller all orders
 orderRouter.get("/get-seller-orders", sellerAuth, getSellerOrders);
 
-
 // Get  orders by status
 orderRouter.post("/get-orders-by-status", sellerAuth, getOrdersByStatus);
 
 // Get seller orders by status
-orderRouter.post("/get-seller-orders-by-status", sellerAuth, getSellerOrdersByStatus);
+orderRouter.post(
+  "/get-seller-orders-by-status",
+  sellerAuth,
+  getSellerOrdersByStatus
+);
 
 // Get  order details
 orderRouter.get("/get-order-details/:orderId", sellerAuth, getOrderDetails);
@@ -40,3 +44,6 @@ orderRouter.get("/get-user-orders", userAuth, getUserOrder);
 
 // Update stock
 orderRouter.post("/update-stock", userAuth, updateStock);
+
+// Get order details by product category
+orderRouter.get("/orders-by-category", adminAuth, getTotalPriceByCategory);

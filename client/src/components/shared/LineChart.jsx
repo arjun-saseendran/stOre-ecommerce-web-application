@@ -32,6 +32,7 @@ export const LineChart = () => {
 
   // Store chart data
   const [chart, setChart] = useState(null);
+  const [category, setCategory] = useState([]);
 
   // Api call
   useEffect(() => {
@@ -72,6 +73,25 @@ export const LineChart = () => {
     };
     fetchOrderData();
   }, []);
+
+  useEffect(() => {
+    const test = async () => {
+      try {
+        const response = await axiosInstance({
+          method: "GET",
+          url: "/order/orders-by-category",
+        });
+
+        setCategory(response?.data?.data);
+        console.log(response?.data?.data);
+        
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    test()
+  }, []);
+ 
 
   return (
     <div>
