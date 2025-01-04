@@ -36,6 +36,7 @@ import { SellerHome } from "../pages/seller/SellerHome";
 import { TermsAndConditions } from "../pages/stOre/TermsAndConditions";
 import { PrivacyPolicy } from "../pages/stOre/ PrivacyPolicy";
 import { CookiePolicy } from "../pages/stOre/CookiePolicy";
+import { Jobs } from "../pages/stOre/Jobs";
 
 export const router = createBrowserRouter([
   {
@@ -86,6 +87,10 @@ export const router = createBrowserRouter([
       {
         path: "cookie-policy",
         element: <CookiePolicy />,
+      },
+      {
+        path: "jobs",
+        element: <Jobs />,
       },
       {
         path: "products",

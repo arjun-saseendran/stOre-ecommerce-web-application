@@ -6,7 +6,7 @@ export const Jobs = () => {
   const { theme } = useSelector((state) => state.theme);
 
   return (
-    <Container fluid className="p-3">
+    <Container fluid className="p-5">
       <div className="text-white d-flex justify-content-center align-items-center my-5 flex-column gap-2 flex-wrap">
         <div className="my-5">
           <h1
@@ -31,7 +31,7 @@ export const Jobs = () => {
             build and maintain the stOre web platform, ensuring seamless user
             experiences and implementing new features. <br />
             <strong>Responsibilities:</strong>
-            <ul>
+            <ul style={{ listStyleType: "none", paddingLeft: 0 }}>
               <li>
                 Develop and maintain web applications using React and Node.js
               </li>
@@ -42,7 +42,7 @@ export const Jobs = () => {
               <li>Write clean, maintainable code</li>
             </ul>
             <strong>Requirements:</strong>
-            <ul>
+            <ul style={{ listStyleType: "none", paddingLeft: 0 }}>
               <li>Experience with React, Node.js, and web development</li>
               <li>Strong understanding of APIs and databases</li>
               <li>Excellent problem-solving and communication skills</li>
@@ -53,7 +53,7 @@ export const Jobs = () => {
             contact for our customers. You will assist with inquiries, resolve
             issues, and ensure customer satisfaction. <br />
             <strong>Responsibilities:</strong>
-            <ul>
+            <ul style={{ listStyleType: "none", paddingLeft: 0 }}>
               <li>
                 Provide excellent customer service through various channels
               </li>
@@ -62,7 +62,7 @@ export const Jobs = () => {
               <li>Maintain customer records and update account details</li>
             </ul>
             <strong>Requirements:</strong>
-            <ul>
+            <ul style={{ listStyleType: "none", paddingLeft: 0 }}>
               <li>Excellent communication and interpersonal skills</li>
               <li>Experience in customer service is a plus</li>
               <li>Ability to work in a fast-paced environment</li>
