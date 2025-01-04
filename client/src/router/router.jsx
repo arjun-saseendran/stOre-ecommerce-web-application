@@ -359,6 +359,10 @@ export const router = createBrowserRouter([
             element: <Profile role="seller" action="Details" />,
           },
           {
+            path: "user-details/:userId",
+            element: <Profile role="user" action="Details" />,
+          },
+          {
             path: "inactive-sellers",
             element: (
               <Users role="seller" action="Activate" status="inactive" />
