@@ -227,7 +227,7 @@ export const UserHeader = () => {
               <HideBanner />
             </NavItem>
           </Nav>
-          <Form className="d-flex me-auto w-100" onSubmit={handleSubmit}>
+          <Form className="d-flex mt-2 me-auto w-100" onSubmit={handleSubmit}>
             <Form.Control
               type="search"
               placeholder="Search"
