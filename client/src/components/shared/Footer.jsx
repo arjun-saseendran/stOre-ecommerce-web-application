@@ -25,9 +25,9 @@ export const Footer = () => {
             </Link>
           </li>
           <li>
-            <a href="#" className="text-decoration-none text-white">
+            <Link to={'/design'} className="text-decoration-none text-white">
               Design
-            </a>
+            </Link>
           </li>
           <li>
             <a href="#" className="text-decoration-none text-white">

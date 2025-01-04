@@ -38,6 +38,7 @@ import { PrivacyPolicy } from "../pages/stOre/ PrivacyPolicy";
 import { CookiePolicy } from "../pages/stOre/CookiePolicy";
 import { Jobs } from "../pages/stOre/Jobs";
 import { PressKit } from "../pages/stOre/PressKit";
+import { Design } from "../pages/stOre/Design";
 
 export const router = createBrowserRouter([
   {
@@ -96,6 +97,10 @@ export const router = createBrowserRouter([
       {
         path: "press-kit",
         element: <PressKit />,
+      },
+      {
+        path: "design",
+        element: <Design />,
       },
 
       {
