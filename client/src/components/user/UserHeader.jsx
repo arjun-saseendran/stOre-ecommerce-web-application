@@ -246,7 +246,7 @@ export const UserHeader = () => {
             </Button>
           </Form>
           <Link to={"/user/cart"}>
-            <span className="mt-1 me-2">
+            <span className="me-2" style={{ marginTop: 12 }}>
               <CartIcon component={"header"} />
             </span>
           </Link>
