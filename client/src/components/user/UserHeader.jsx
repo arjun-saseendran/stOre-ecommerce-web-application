@@ -223,7 +223,7 @@ export const UserHeader = () => {
             <NavItem className="mx-2" style={{ marginTop: 12 }}>
               <DarkMode />
             </NavItem>
-            <NavItem className=" mx-2" style={{ marginTop: 12 }}>
+            <NavItem className=" mx-2" style={{ marginTop: 15 }}>
               <HideBanner />
             </NavItem>
           </Nav>
@@ -246,7 +246,7 @@ export const UserHeader = () => {
             </Button>
           </Form>
           <Link to={"/user/cart"}>
-            <span className="me-2" style={{ marginTop: 12 }}>
+            <span className="me-2" style={{ marginTop: 15 }}>
               <CartIcon component={"header"} />
             </span>
           </Link>
