@@ -86,9 +86,12 @@ export const Footer = () => {
             </Link>
           </li>
           <li>
-            <a href="#" className="text-decoration-none text-white">
+            <Link
+              to={"/cookie-policy"}
+              className="text-decoration-none text-white"
+            >
               Cookie policy
-            </a>
+            </Link>
           </li>
         </ul>
       </Col>
