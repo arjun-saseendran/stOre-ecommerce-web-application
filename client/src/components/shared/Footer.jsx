@@ -25,19 +25,22 @@ export const Footer = () => {
             </Link>
           </li>
           <li>
-            <Link to={'/design'} className="text-decoration-none text-white">
+            <Link to={"/design"} className="text-decoration-none text-white">
               Design
             </Link>
           </li>
           <li>
-            <Link to={'/marketing'} className="text-decoration-none text-white">
+            <Link to={"/marketing"} className="text-decoration-none text-white">
               Marketing
             </Link>
           </li>
           <li>
-            <a href="#" className="text-decoration-none text-white">
+            <Link
+              to={"/advertisement"}
+              className="text-decoration-none text-white"
+            >
               Advertisement
-            </a>
+            </Link>
           </li>
         </ul>
       </Col>
@@ -50,17 +53,17 @@ export const Footer = () => {
             </Link>
           </li>
           <li>
-            <Link to={'/contact'} className="text-decoration-none text-white">
+            <Link to={"/contact"} className="text-decoration-none text-white">
               Contact
             </Link>
           </li>
           <li>
-            <Link to={'/jobs'} className="text-decoration-none text-white">
+            <Link to={"/jobs"} className="text-decoration-none text-white">
               Jobs
             </Link>
           </li>
           <li>
-            <Link to={'/press-kit'} className="text-decoration-none text-white">
+            <Link to={"/press-kit"} className="text-decoration-none text-white">
               Press kit
             </Link>
           </li>
