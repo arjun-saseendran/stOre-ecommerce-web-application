@@ -6,6 +6,7 @@ import { useFetch } from "../../hooks/useFetch";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { axiosInstance } from "../../config/axiosInstance";
+import {Loading} from '../../components/shared/Loading'
 
 export const ProductList = () => {
   // Get category global state
@@ -70,20 +71,24 @@ export const ProductList = () => {
 
   return (
     <Container>
-      <Row className="mt-4" style={{ minHeight: "500px" }}>
-        {renderProducts?.map((product) => (
-          <Col
-            className="crd-col"
-            xs={12}
-            sm={6}
-            md={4}
-            xl={3}
-            key={product._id}
-          >
-            <ProductCard product={product} />
-          </Col>
-        ))}
-      </Row>
+      {loading ? (
+        <Loading />
+      ) : (
+        <Row className="mt-4" style={{ minHeight: "500px" }}>
+          {renderProducts?.map((product) => (
+            <Col
+              className="crd-col"
+              xs={12}
+              sm={6}
+              md={4}
+              xl={3}
+              key={product._id}
+            >
+              <ProductCard product={product} />
+            </Col>
+          ))}
+        </Row>
+      )}
     </Container>
   );
 };
