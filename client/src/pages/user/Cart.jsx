@@ -4,6 +4,7 @@ import { Button, Card, Row, Col, Container } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import { axiosInstance } from "../../config/axiosInstance";
 import { OrderIcon } from "../../components/shared/OrderIcon";
+import { CartEmpty } from "../../components/shared/CartEmpty";
 
 export const Cart = () => {
   // Get current theme
@@ -70,8 +71,12 @@ export const Cart = () => {
     }
   };
 
+  if (!cartData?.products?.length) {
+    return <CartEmpty />;
+  }
+
   return (
-    <Container style={{minHeight: '400px'}}>
+    <Container style={{ minHeight: "400px" }}>
       <h1 className="text-white h1 text-center fw-bold my-5">Cart</h1>
 
       {cartData?.products?.map((product) => (
