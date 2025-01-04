@@ -3,7 +3,6 @@ import { Button, Container, Form, Nav, Navbar, NavItem } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { setCategory } from "../../redux/features/categorySlice";
-import { axiosInstance } from "../../config/axiosInstance";
 import { setSearchValue } from "../../redux/features/searchSlice";
 import { DarkMode } from "../../components/shared/DarkMode";
 import { HideBanner } from "./HideBanner";
@@ -105,16 +104,16 @@ export const Header = () => {
               <span className="text-white h5 hover">Login</span>
             </Link>
 
-            <NavItem className="mx-2 mt-2">
+            <NavItem className="mx-2" style={{ marginTop: 12 }}>
               <span>
                 <DarkMode />
               </span>
             </NavItem>
-            <NavItem className="mt-2 me-3">
+            <NavItem className="mx-2" style={{ marginTop: 15 }}>
               <HideBanner />
             </NavItem>
           </Nav>
-          <Form className="d-flex me-auto w-100">
+          <Form className="d-flex me-auto w-100 mt-2">
             <Form.Control
               type="search"
               placeholder="Search"

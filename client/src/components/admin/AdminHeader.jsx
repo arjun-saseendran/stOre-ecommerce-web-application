@@ -2,7 +2,6 @@ import { Container, NavDropdown, Navbar } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { DarkMode } from "../shared/DarkMode";
-import { OrderIcon } from "../shared/OrderIcon";
 import { axiosInstance } from "../../config/axiosInstance";
 
 export const AdminHeader = () => {
@@ -37,7 +36,7 @@ export const AdminHeader = () => {
     >
       <Container fluid>
         <Navbar.Brand className="mb-2 me-4" href="#">
-          <Link to={'/admin'} className="text-decoration-none">
+          <Link to={"/admin"} className="text-decoration-none">
             <span className="text-white h1 fw-bold">st</span>
             <span className="text-secondary h1 fw-bolder">O</span>
             <span className="text-white h1 fw-bold">re</span>
@@ -173,9 +172,6 @@ export const AdminHeader = () => {
 
           <span className="mx-2 mt-1">
             <DarkMode />
-          </span>
-          <span className="mx-2 mt-1">
-            <OrderIcon />
           </span>
         </Navbar.Collapse>
       </Container>

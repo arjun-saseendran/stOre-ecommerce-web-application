@@ -2,7 +2,6 @@ import { Container, Navbar, NavDropdown } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { DarkMode } from "../shared/DarkMode";
-import { OrderIcon } from "../shared/OrderIcon";
 import { axiosInstance } from "../../config/axiosInstance";
 
 export const SellerHeader = () => {
@@ -36,7 +35,7 @@ export const SellerHeader = () => {
     >
       <Container fluid>
         <Navbar.Brand className="me-4">
-          <Link to={'/seller'} className="text-decoration-none">
+          <Link to={"/seller"} className="text-decoration-none">
             <span className="text-white h1 fw-bold">st</span>
             <span className="text-secondary h1 fw-bolder">O</span>
             <span className="text-white h1 fw-bold">re</span>
@@ -137,12 +136,8 @@ export const SellerHeader = () => {
               <span className="text-black hover">Delivered</span>
             </NavDropdown.Item>
           </NavDropdown>
-
           <span className="mx-2 mt-1">
             <DarkMode />
-          </span>
-          <span className="mx-2 mt-1">
-            <OrderIcon />
           </span>
         </Navbar.Collapse>
       </Container>
