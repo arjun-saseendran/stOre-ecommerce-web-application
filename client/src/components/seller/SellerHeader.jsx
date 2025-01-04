@@ -80,7 +80,7 @@ export const SellerHeader = () => {
             title={<span className="text-white h5 hover">Product</span>}
             id="navbarScrollingDropdown"
           >
-            <NavDropdown.Item as={Link} to={"/seller"}>
+            <NavDropdown.Item as={Link} to={"/seller/seller-products"}>
               <span className="text-black hover">Products</span>
             </NavDropdown.Item>
             <NavDropdown.Divider />

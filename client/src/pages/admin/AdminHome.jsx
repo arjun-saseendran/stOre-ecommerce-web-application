@@ -7,7 +7,7 @@ export const AdminHome = () => {
   return (
     <Container className="p-5" style={{ minHeight: 400 }}>
       <Row className='d-flex justify-content-center align-items-center'>
-        <Col xs={12} sm={6}>
+        <Col xs={12} sm={6} >
           <BarChart />
         </Col>
         <Col xs={12} sm={6}>
