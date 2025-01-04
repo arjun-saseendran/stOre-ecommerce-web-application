@@ -274,12 +274,10 @@ export const searchSellerProducts = async (req, res) => {
       }
 
       // Send data to frontend
-      return res
-        .status(200)
-        .json({
-          message: "Products fetched successfully",
-          data: sellerProducts.products,
-        });
+      return res.status(200).json({
+        message: "Products fetched successfully",
+        data: sellerProducts.products,
+      });
     }
   } catch (error) {
     // Handle catch error
