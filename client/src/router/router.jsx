@@ -34,6 +34,7 @@ import { OrderDetails } from "../pages/shared/OrderDetails";
 import { AdminHome } from "../pages/admin/AdminHome";
 import { SellerHome } from "../pages/seller/SellerHome";
 import { TermsAndConditions } from "../pages/stOre/TermsAndConditions";
+import { PrivacyPolicy } from "../pages/stOre/ PrivacyPolicy";
 
 export const router = createBrowserRouter([
   {
@@ -76,6 +77,10 @@ export const router = createBrowserRouter([
       {
         path: "terms-and-conditions",
         element: <TermsAndConditions />,
+      },
+      {
+        path: " privacy-policy",
+        element: <PrivacyPolicy />,
       },
       {
         path: "products",

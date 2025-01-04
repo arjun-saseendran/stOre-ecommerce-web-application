@@ -6,7 +6,7 @@ export const PrivacyPolicy = () => {
   const { theme } = useSelector((state) => state.theme);
 
   return (
-    <Container fluid className="p-3">
+    <Container fluid className="p-5">
       <div className="text-white d-flex justify-content-center align-items-center my-5 flex-column gap-2 flex-wrap">
         <div className="my-5">
           <h1
