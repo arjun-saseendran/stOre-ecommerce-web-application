@@ -223,7 +223,7 @@ export const UserHeader = () => {
             <NavItem className="mx-2" style={{ marginTop: 12 }}>
               <DarkMode />
             </NavItem>
-            <NavItem className=" mx-2" style={{ marginTop: 15 }}>
+            <NavItem className=" mx-2" style={{ marginTop: 12 }}>
               <HideBanner />
             </NavItem>
           </Nav>
