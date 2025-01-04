@@ -36,9 +36,11 @@ export const SellerHeader = () => {
     >
       <Container fluid>
         <Navbar.Brand className="me-4">
-          <span className="text-white h1 fw-bold">st</span>
-          <span className="text-secondary h1 fw-bolder">O</span>
-          <span className="text-white h1 fw-bold">re</span>
+          <Link to={'/seller'} className="text-decoration-none">
+            <span className="text-white h1 fw-bold">st</span>
+            <span className="text-secondary h1 fw-bolder">O</span>
+            <span className="text-white h1 fw-bold">re</span>
+          </Link>
         </Navbar.Brand>
         <Navbar.Toggle className="bg-white" aria-controls="navbarScroll" />
         <Navbar.Collapse id="navbarScroll">

@@ -139,8 +139,11 @@ export const router = createBrowserRouter([
       {
         element: <ProtectedRouteSeller />,
         children: [
-          { path: "", element: <SellerHome role="seller"/> },
-          { path: "seller-products", element: <Products role="seller" action="Update" /> },
+          { path: "", element: <SellerHome role="seller" /> },
+          {
+            path: "seller-products",
+            element: <Products role="seller" action="Update" />,
+          },
           {
             path: "delete-product",
             element: <Products role="seller" action="Delete" />,
@@ -230,7 +233,10 @@ export const router = createBrowserRouter([
         element: <ProtectedRouteAdmin />,
         children: [
           { path: "", element: <AdminHome role="admin" /> },
-          { path: "products", element: <Products action="Update" role="admin" /> },
+          {
+            path: "products",
+            element: <Products action="Update" role="admin" />,
+          },
           {
             path: "delete-product",
             element: <Products role="admin" action="Delete" />,

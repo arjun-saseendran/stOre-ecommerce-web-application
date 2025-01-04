@@ -7,7 +7,7 @@ import { useSelector } from "react-redux";
 // Register chartjs components
 ChartJS.register(ArcElement, Tooltip, Legend);
 
-export const DoughnutChart = (role = 'admin') => {
+export const DoughnutChart = ({ role = "admin" }) => {
   // Get current theme
   const { theme } = useSelector((state) => state.theme);
 
@@ -16,14 +16,14 @@ export const DoughnutChart = (role = 'admin') => {
 
   // Handle role
   const user = {
-    role: 'admin',
-    chart: '/order/orders-total-price-by-category'
-  }
+    role: "admin",
+    chart: "/order/orders-total-price-by-category",
+  };
 
   // Handle seller role
-  if(role === 'seller'){
-    user.role = 'seller',
-    user.chart = "/seller-orders-total-price-by-category"
+  if (role === "seller") {
+    (user.role = "seller"),
+      (user.chart = "/order/seller-orders-total-price-by-category");
   }
 
   // Api call

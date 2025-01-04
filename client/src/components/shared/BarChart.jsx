@@ -22,7 +22,7 @@ ChartJS.register(
   Legend
 );
 
-export const BarChart = (role = 'admin') => {
+export const BarChart = ({role = 'admin'}) => {
   // Get current theme
   const { theme } = useSelector((state) => state.theme);
 
@@ -37,7 +37,8 @@ export const BarChart = (role = 'admin') => {
 
   // Handle seller role
   if (role === "seller") {
-    (user.role = "seller"), (user.chart = "order/get-seller-orders");
+    (user.role = "seller"), 
+    (user.chart = "order/get-seller-orders");
   }
 
   // Api call

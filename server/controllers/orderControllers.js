@@ -373,10 +373,8 @@ export const getSellerOrderTotalPriceByCategory = async (req, res) => {
     const orders = await Order.find({
       "products.productId": { $in: productIds },
     })
-
-      // Populate category and price from product
+      // Populate category, title, price, and image from product
       .populate("products.productId", "title price image category")
-
       // Select product fields
       .select("products totalPrice orderStatus createdAt");
 
@@ -386,7 +384,7 @@ export const getSellerOrderTotalPriceByCategory = async (req, res) => {
         .json({ message: "No orders found for this seller" });
     }
 
-    // Create new object to store category base total price data
+    // Create new object to store category-based total price data
     const categoryTotalPrice = {};
 
     orders.forEach((order) => {
@@ -394,16 +392,16 @@ export const getSellerOrderTotalPriceByCategory = async (req, res) => {
         // Get category from populated product data
         const category = product.productId.category;
 
-        // Get quantity from populated product data
+        // Get quantity from the order
         const quantity = product.quantity;
 
         // Get product price
         const price = product.productId.price;
 
-        // Calculate the total
+        // Calculate the total product price
         const totalProductPrice = price * quantity;
 
-        // Create total price category
+        // Aggregate the total price by category
         if (categoryTotalPrice[category]) {
           categoryTotalPrice[category] += totalProductPrice;
         } else {
@@ -430,3 +428,4 @@ export const getSellerOrderTotalPriceByCategory = async (req, res) => {
     catchErrorHandler(res, error);
   }
 };
+
