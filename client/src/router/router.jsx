@@ -3,7 +3,7 @@ import { ProtectedRouteUser } from "./ProtectedRouteUser";
 import { UserLayout } from "../layout/UserLayout";
 import { Home } from "../pages/user/Home";
 import { AboutUs } from "../pages/stOre/AboutUs";
-import { Contact } from "../pages/user/Contact";
+import { Contact } from "../pages/stOre/Contact";
 import { ProductList } from "../pages/user/ProductList";
 import { ProductDetails } from "../pages/shared/ProductDetails";
 import { Signup } from "../pages/shared/Signup";
@@ -92,6 +92,7 @@ export const router = createBrowserRouter([
         path: "jobs",
         element: <Jobs />,
       },
+
       {
         path: "products",
         element: <ProductList />,

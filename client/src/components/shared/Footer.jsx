@@ -50,9 +50,9 @@ export const Footer = () => {
             </Link>
           </li>
           <li>
-            <a href="#" className="text-decoration-none text-white">
+            <Link to={'/contact'} className="text-decoration-none text-white">
               Contact
-            </a>
+            </Link>
           </li>
           <li>
             <Link to={'/jobs'} className="text-decoration-none text-white">
