@@ -1,4 +1,4 @@
-import { Container, Navbar, NavDropdown, Form, Button  } from "react-bootstrap";
+import { Container, Navbar, NavDropdown, Form, Button } from "react-bootstrap";
 import { useSelector, useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { DarkMode } from "../shared/DarkMode";
@@ -11,10 +11,10 @@ export const SellerHeader = () => {
   const { theme } = useSelector((state) => state.theme);
 
   // Config dispatch
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
   // Config ref
-    const inputValue = useRef();
+  const inputValue = useRef();
 
   // Config navigate
   const navigate = useNavigate();
@@ -36,23 +36,22 @@ export const SellerHeader = () => {
   };
 
   // Search value
-    const handleSearch = (e) => {
-      e.preventDefault();
-      dispatch(setSearchValue(inputValue.current.value));
-    };
-  
-    // Handler enter key press
-    const handleKeyDown = (e) => {
-      e.preventDefault();
-      if (e.key === "Enter") {
-        handleSearch();
-      }
-    };
-  
-    const handleSubmit = (e) => {
-      e.preventDefault();
+  const handleSearch = () => {
+    dispatch(setSearchValue(inputValue.current.value));
+  };
+
+  // Handler enter key press
+  const handleKeyDown = (e) => {
+    e.preventDefault();
+    if (e.key === "Enter") {
       handleSearch();
-    };
+    }
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    handleSearch();
+  };
   return (
     <Navbar
       expand="lg"

@@ -36,8 +36,7 @@ export const AdminHeader = () => {
   };
 
   // Search value
-  const handleSearch = (e) => {
-    e.preventDefault();
+  const handleSearch = () => {
     dispatch(setSearchValue(inputValue.current.value));
   };
 
