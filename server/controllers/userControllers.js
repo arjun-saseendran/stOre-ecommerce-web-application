@@ -430,3 +430,96 @@ export const userResetPassword = async (req, res) => {
     catchErrorHandler(res, error);
   }
 };
+
+// Search active users
+export const searchActiveUsers = async (req, res) => {
+  try {
+    // Get search value
+    const { searchResult } = req.body;
+
+    // Check if search value 
+    if (searchResult && searchResult.trim() !== "") {
+      
+      // Search for active users 
+      const activeUsers = await User.find({
+        isActive: true,
+        $or: [
+          { name: { $regex: searchResult, $options: "i" } },
+          { email: { $regex: searchResult, $options: "i" } },
+        ],
+      });
+
+      if (!activeUsers || activeUsers.length === 0) {
+        return res.status(404).json({ message: "No matching active users found in search" });
+      }
+
+      return res.status(200).json({
+        message: "Active users found",
+        data: activeUsers,
+      });
+    } else {
+      // If no search value, return all active users
+      const activeUsers = await User.find({ isActive: true });
+
+      if (!activeUsers || activeUsers.length === 0) {
+        return res.status(404).json({ message: "No search active users found" });
+      }
+
+      // Send response to frontend
+      return res.status(200).json({
+        message: "No search active users fetched successfully",
+        data: activeUsers,
+      });
+    }
+  } catch (error) {
+    // Handle catch error
+    catchErrorHandler(res, error);
+  }
+};
+
+// Search inactive users
+export const searchInactiveUsers = async (req, res) => {
+  try {
+    // Get search value
+    const { searchResult } = req.body;
+
+    // Check if search value 
+    if (searchResult && searchResult.trim() !== "") {
+      
+      // Search for inactive users 
+      const inactiveUsers = await User.find({
+        isActive: false,
+        $or: [
+          { name: { $regex: searchResult, $options: "i" } },
+          { email: { $regex: searchResult, $options: "i" } },
+        ],
+      });
+
+      if (!inactiveUsers || inactiveUsers.length === 0) {
+        return res.status(404).json({ message: "No matching inactive users found in search" });
+      }
+
+      return res.status(200).json({
+        message: "Inactive users found",
+        data: inactiveUsers,
+      });
+    } else {
+      // If no search value, return all inactive users
+      const inactiveUsers = await User.find({ isActive: false });
+
+      if (!inactiveUsers || inactiveUsers.length === 0) {
+        return res.status(404).json({ message: "No search inactive users found" });
+      }
+
+      // Send response to frontend
+      return res.status(200).json({
+        message: "No search inactive users fetched successfully",
+        data: inactiveUsers,
+      });
+    }
+  } catch (error) {
+    // Handle catch error
+    catchErrorHandler(res, error);
+  }
+};
+
