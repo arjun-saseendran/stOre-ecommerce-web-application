@@ -13,6 +13,7 @@ import {
   updateStock,
   getOrderTotalPriceByCategory,
   getSellerOrderTotalPriceByCategory,
+  searchOrders,
 } from "../../controllers/orderControllers.js";
 
 // Configure router
@@ -59,3 +60,6 @@ orderRouter.get(
   sellerAuth,
   getSellerOrderTotalPriceByCategory
 );
+
+// Search orders
+orderRouter.post("/search-orders", sellerAuth, searchOrders);

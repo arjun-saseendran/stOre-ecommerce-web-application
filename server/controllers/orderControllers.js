@@ -429,3 +429,32 @@ export const getSellerOrderTotalPriceByCategory = async (req, res) => {
   }
 };
 
+// Search orders by status, orderId
+export const searchOrders = async (req, res) => {
+  try {
+    // Get search value
+    const { searchResult, status } = req.body;
+
+    // Validate search value
+    if (searchResult && searchResult.trim() !== "") {
+      // Search for order by order id and status
+      const searchResults = await Order.find({
+        orderStatus: status,
+        $or: [{ _id: { $regex: searchResult, $options: "i" } }],
+      });
+
+      // Handle search result
+      if (!searchResults || searchResults.length === 0) {
+        return res.status(404).json({ message: "No matching orders found" });
+      }
+
+      // Return search results
+      return res
+        .status(200)
+        .json({ message: "orders fetched successfully", data: searchResults });
+    }
+  } catch (error) {
+    // Handle catch error
+    catchErrorHandler(res, error);
+  }
+};
