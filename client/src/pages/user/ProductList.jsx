@@ -68,13 +68,12 @@ export const ProductList = () => {
       setRenderProducts(products);
     }
   }, [searchResult, products]);
-
   return (
-    <Container>
+    <Container style={{minHeight:400}}>
       {loading ? (
         <Loading />
       ) : (
-        <Row className="mt-4" style={{ minHeight: "500px" }}>
+        <Row className="mt-4">
           {renderProducts?.map((product) => (
             <Col
               className="crd-col"
@@ -88,7 +87,7 @@ export const ProductList = () => {
             </Col>
           ))}
         </Row>
-      )}
+      )} 
     </Container>
   );
 };

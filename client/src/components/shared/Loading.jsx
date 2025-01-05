@@ -5,18 +5,15 @@ export const Loading = () => {
   // Get current theme
   const { theme } = useSelector((state) => state.theme);
   return (
-    <div
-      className="d-flex justify-content-center align-items-center flex-column"
-      style={{ minHeight: 400 }}
-    >
+    <div className="d-flex justify-content-center align-items-center flex-column">
       <svg
         xmlns="http://www.w3.org/2000/svg"
         fill="none"
         viewBox="0 0 24 24"
         strokeWidth={1.5}
         stroke="currentColor"
+        height={300}
         className={theme ? "size-6 text-black" : "size-6 text-white"}
-        Height={300}
       >
         <path
           strokeLinecap="round"
