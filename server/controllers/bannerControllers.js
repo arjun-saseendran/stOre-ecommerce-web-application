@@ -75,7 +75,9 @@ export const getSellerBanners = async (req, res) => {
 
     // Handle case where seller or banners are not found
     if (!seller || !seller.banners || seller.banners.length === 0) {
-      return res.status(404).json({ message: "No banners found for this seller" });
+      return res
+        .status(404)
+        .json({ message: "No banners found for this seller" });
     }
 
     // Respond with seller banners
@@ -88,7 +90,6 @@ export const getSellerBanners = async (req, res) => {
     catchErrorHandler(res, error);
   }
 };
-
 
 // Get banner black banner
 export const getBlackBanner = async (req, res) => {

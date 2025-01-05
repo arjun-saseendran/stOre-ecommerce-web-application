@@ -11,7 +11,7 @@ export const createCheckoutSession = async (req, res, next) => {
     const { products } = req.body;
     const userId = req.user.id;
 
-    // Prepare the line items for the checkout session
+    // Line items
     const lineItems = products.map((product) => ({
       price_data: {
         currency: "inr",
@@ -30,7 +30,7 @@ export const createCheckoutSession = async (req, res, next) => {
         return total + item.price_data.unit_amount * item.quantity;
       }, 0) / 100;
 
-    // Create a new Stripe checkout session with shipping address collection
+    // Create a new Stripe checkout session 
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ["card"],
       line_items: lineItems,
