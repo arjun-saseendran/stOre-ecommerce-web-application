@@ -489,4 +489,51 @@ export const searchActiveSellers = async (req, res) => {
   }
 };
 
+// Search inactive sellers
+export const searchInactiveSellers = async (req, res) => {
+  try {
+    // Get search value
+    const { searchResult } = req.body;
+
+    // Check if search value 
+    if (searchResult && searchResult.trim() !== "") {
+      
+      // Search for inactive sellers 
+      const inactiveSellers = await Seller.find({
+        isActive: false,
+        $or: [
+          { name: { $regex: searchResult, $options: "i" } },
+          { email: { $regex: searchResult, $options: "i" } },
+          { category: { $regex: searchResult, $options: "i" } },
+        ],
+      });
+
+      if (!inactiveSellers || inactiveSellers.length === 0) {
+        return res.status(404).json({ message: "No matching inactive sellers found in search" });
+      }
+
+      return res.status(200).json({
+        message: "Inactive sellers found",
+        data: inactiveSellers,
+      });
+    } else {
+      // If no search value, return all inactive sellers
+      const inactiveSellers = await Seller.find({ isActive: false });
+
+      if (!inactiveSellers || inactiveSellers.length === 0) {
+        return res.status(404).json({ message: "No search inactive sellers found" });
+      }
+
+      // Send response to frontend
+      return res.status(200).json({
+        message: "No search inactive sellers fetched successfully",
+        data: inactiveSellers,
+      });
+    }
+  } catch (error) {
+    // Handle catch error
+    catchErrorHandler(res, error);
+  }
+};
+
 

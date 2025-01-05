@@ -26,6 +26,7 @@ export const Users = ({
     activateUser: "/user/activate-user",
     deactivateUser: "/user/deactivate-profile",
     userDetails: "/user/user-details",
+    searchUsers: "/search-active-sellers",
   };
 
   // Handle status
