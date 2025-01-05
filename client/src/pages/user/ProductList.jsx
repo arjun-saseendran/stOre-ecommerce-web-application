@@ -69,7 +69,7 @@ export const ProductList = () => {
     }
   }, [searchResult, products]);
   return (
-    <Container style={{minHeight:400}}>
+    <Container style={{minHeight:500}}>
       {loading ? (
         <Loading />
       ) : (
