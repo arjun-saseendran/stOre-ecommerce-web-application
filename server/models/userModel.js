@@ -21,14 +21,6 @@ const userSchema = new Schema(
       required: true,
     },
 
-    address: {
-      line1: { type: String, default: "" },
-      line2: { type: String, default: "" },
-      city: { type: String, default: "" },
-      state: { type: String, default: "" },
-      postal_code: { type: String, default: "" },
-      country: { type: String, default: "" },
-    },
     password: {
       type: String,
       required: true,

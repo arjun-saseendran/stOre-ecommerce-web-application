@@ -11,10 +11,6 @@ export const createCheckoutSession = async (req, res, next) => {
     const { products } = req.body;
     const userId = req.user.id;
 
-    // Fetch the user data, including the address
-    const user = await User.findById(userId);
-    const userAddress = user.address;
-
     // Prepare the line items for the checkout session
     const lineItems = products.map((product) => ({
       price_data: {
