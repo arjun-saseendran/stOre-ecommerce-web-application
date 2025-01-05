@@ -109,7 +109,12 @@ export const SellerHeader = () => {
             id="navbarScrollingDropdown"
           >
             <NavDropdown.Item as={Link} to={"/seller/seller-products"}>
-              <span className="text-black hover"  onClick={() => dispatch(setSearchValue(""))}>Products</span>
+              <span
+                className="text-black hover"
+                onClick={() => dispatch(setSearchValue(""))}
+              >
+                Products
+              </span>
             </NavDropdown.Item>
             <NavDropdown.Divider />
             <NavDropdown.Item as={Link} to={"/seller/add-product"}>
@@ -118,7 +123,12 @@ export const SellerHeader = () => {
 
             <NavDropdown.Divider />
             <NavDropdown.Item as={Link} to={"/seller/delete-product"}>
-              <span className="text-black hover"  onClick={() => dispatch(setSearchValue(""))}>Delete</span>
+              <span
+                className="text-black hover"
+                onClick={() => dispatch(setSearchValue(""))}
+              >
+                Delete
+              </span>
             </NavDropdown.Item>
           </NavDropdown>
           <NavDropdown
@@ -141,26 +151,51 @@ export const SellerHeader = () => {
             id="navbarScrollingDropdown"
           >
             <NavDropdown.Item as={Link} to={"/seller/orders-processing"}>
-              <span className="text-black hover">Processing</span>
+              <span
+                className="text-black hover"
+                onClick={() => dispatch(setSearchValue(""))}
+              >
+                Processing
+              </span>
             </NavDropdown.Item>
             <NavDropdown.Divider />
             <NavDropdown.Item as={Link} to={"/seller/orders-success"}>
-              <span className="text-black hover">Success</span>
+              <span
+                className="text-black hover"
+                onClick={() => dispatch(setSearchValue(""))}
+              >
+                Success
+              </span>
             </NavDropdown.Item>
 
             <NavDropdown.Divider />
 
             <NavDropdown.Item as={Link} to={"/seller/orders-shipping"}>
-              <span className="text-black hover">Shipping</span>
+              <span
+                className="text-black hover"
+                onClick={() => dispatch(setSearchValue(""))}
+              >
+                Shipping
+              </span>
             </NavDropdown.Item>
 
             <NavDropdown.Divider />
             <NavDropdown.Item as={Link} to={"/seller/orders-delivery"}>
-              <span className="text-black hover">Out for delivery</span>
+              <span
+                className="text-black hover"
+                onClick={() => dispatch(setSearchValue(""))}
+              >
+                Out for delivery
+              </span>
             </NavDropdown.Item>
             <NavDropdown.Divider />
             <NavDropdown.Item as={Link} to={"/seller/orders-delivered"}>
-              <span className="text-black hover">Delivered</span>
+              <span
+                className="text-black hover"
+                onClick={() => dispatch(setSearchValue(""))}
+              >
+                Delivered
+              </span>
             </NavDropdown.Item>
           </NavDropdown>
           <Form className="d-flex mt-2 me-auto w-100" onSubmit={handleSubmit}>

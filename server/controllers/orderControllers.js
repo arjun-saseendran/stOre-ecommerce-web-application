@@ -429,32 +429,76 @@ export const getSellerOrderTotalPriceByCategory = async (req, res) => {
   }
 };
 
-// Search orders by status, orderId
+// Search orders by status and orderId as string match
 export const searchOrders = async (req, res) => {
   try {
-    // Get search value
     const { searchResult, status } = req.body;
 
-    // Validate search value
     if (searchResult && searchResult.trim() !== "") {
-      // Search for order by order id and status
+      // Search by orderStatus and treat orderId as string match
       const searchResults = await Order.find({
         orderStatus: status,
-        $or: [{ _id: { $regex: searchResult, $options: "i" } }],
+        _id: searchResult, // Direct match for the provided ID
       });
 
-      // Handle search result
       if (!searchResults || searchResults.length === 0) {
         return res.status(404).json({ message: "No matching orders found" });
       }
 
-      // Return search results
-      return res
-        .status(200)
-        .json({ message: "orders fetched successfully", data: searchResults });
+      return res.status(200).json({
+        message: "Orders fetched successfully",
+        data: searchResults,
+      });
+    } else {
+      return res.status(400).json({ message: "Invalid search input" });
     }
   } catch (error) {
-    // Handle catch error
-    catchErrorHandler(res, error);
+    res.status(500).json({ message: "An error occurred", error: error.message });
+  }
+};
+
+// Search seller orders by status and orderId as string match
+export const searchSellerOrders = async (req, res) => {
+  try {
+    const userId = req.user.id;  // Seller ID from authenticated user
+    const { searchResult, status } = req.body;
+
+    // Validate sellerId
+    if (!userId) {
+      return res.status(400).json({ error: "Seller not found" });
+    }
+
+    // Find all product IDs associated with the seller
+    const sellerProducts = await Product.find({ seller: userId }).select("_id");
+
+    if (!sellerProducts.length) {
+      return res
+        .status(404)
+        .json({ message: "No products found for this seller" });
+    }
+
+    const productIds = sellerProducts.map((product) => product._id);
+
+    if (searchResult && searchResult.trim() !== "") {
+      // Search by orderStatus and treat orderId as string match
+      const searchResults = await Order.find({
+        _id: searchResult, // Direct match for order ID
+        orderStatus: status,
+        "products.productId": { $in: productIds },
+      }).populate("products.productId", "title price image");
+
+      if (!searchResults || searchResults.length === 0) {
+        return res.status(404).json({ message: "No matching orders found" });
+      }
+
+      return res.status(200).json({
+        message: "Orders fetched successfully",
+        data: searchResults,
+      });
+    } else {
+      return res.status(400).json({ message: "Invalid search input" });
+    }
+  } catch (error) {
+    res.status(500).json({ message: "An error occurred", error: error.message });
   }
 };

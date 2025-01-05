@@ -8,6 +8,9 @@ export const OrderList = ({ action = "processing", role = "admin" }) => {
   // Get theme
   const { theme } = useSelector((state) => state.theme);
 
+  // Get search value
+  const { searchResult } = useSelector((state) => state.search);
+
   // Store orders
   const [orders, setOrders] = useState([]);
 
@@ -15,11 +18,13 @@ export const OrderList = ({ action = "processing", role = "admin" }) => {
   const user = {
     role: "admin",
     orders: "/order/get-orders-by-status",
+    searchOrders: "/order/search-orders"
   };
 
   if (role === "seller") {
     (user.role = "seller"),
       (user.orders = "/order/get-seller-orders-by-status");
+      user.searchOrders = "/order/search-seller-orders";
   }
 
   // Api call
@@ -31,7 +36,7 @@ export const OrderList = ({ action = "processing", role = "admin" }) => {
           url: user.orders,
           data: { status: action },
         });
-        console.log(response.data.data);
+
         setOrders(response?.data?.data);
       } catch (error) {
         console.log(error);
@@ -39,7 +44,42 @@ export const OrderList = ({ action = "processing", role = "admin" }) => {
     };
 
     fetchOrders();
-  }, [action, role]);
+  }, [action, user.orders]);
+
+  // Search orders
+  useEffect(() => {
+    const handleSearch = async () => {
+      if (searchResult) {
+        try {
+          const response = await axiosInstance({
+            method: "POST",
+            url: user.searchOrders,
+            data: { searchResult, status: action },
+          });
+          setOrders(response?.data?.data);
+        } catch (error) {
+          console.log(error);
+        }
+      } else {
+        // When no searchResult, fetch orders again
+        const fetchOrders = async () => {
+          try {
+            const response = await axiosInstance({
+              method: "POST",
+              url: user.orders,
+              data: { status: action },
+            });
+            setOrders(response?.data?.data);
+          } catch (error) {
+            console.log(error);
+          }
+        };
+        fetchOrders();
+      }
+    };
+    handleSearch();
+  }, [searchResult, action, user.orders]);
+
 
   return (
     <Container style={{ minHeight: "400px" }}>

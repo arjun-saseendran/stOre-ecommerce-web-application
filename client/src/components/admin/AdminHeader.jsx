@@ -214,26 +214,51 @@ export const AdminHeader = () => {
             id="navbarScrollingDropdown"
           >
             <NavDropdown.Item as={Link} to={"/admin/orders-processing"}>
-              <span className="text-black hover">Processing</span>
+              <span
+                className="text-black hover"
+                onClick={() => dispatch(setSearchValue(""))}
+              >
+                Processing
+              </span>
             </NavDropdown.Item>
             <NavDropdown.Divider />
             <NavDropdown.Item as={Link} to={"/admin/orders-success"}>
-              <span className="text-black hover">Success</span>
+              <span
+                className="text-black hover"
+                onClick={() => dispatch(setSearchValue(""))}
+              >
+                Success
+              </span>
             </NavDropdown.Item>
 
             <NavDropdown.Divider />
 
             <NavDropdown.Item as={Link} to={"/admin/orders-shipping"}>
-              <span className="text-black hover">Shipping</span>
+              <span
+                className="text-black hover"
+                onClick={() => dispatch(setSearchValue(""))}
+              >
+                Shipping
+              </span>
             </NavDropdown.Item>
 
             <NavDropdown.Divider />
             <NavDropdown.Item as={Link} to={"/admin/orders-delivery"}>
-              <span className="text-black hover">Out for delivery</span>
+              <span
+                className="text-black hover"
+                onClick={() => dispatch(setSearchValue(""))}
+              >
+                Out for delivery
+              </span>
             </NavDropdown.Item>
             <NavDropdown.Divider />
             <NavDropdown.Item as={Link} to={"/admin/orders-delivered"}>
-              <span className="text-black hover">Delivered</span>
+              <span
+                className="text-black hover"
+                onClick={() => dispatch(setSearchValue(""))}
+              >
+                Delivered
+              </span>
             </NavDropdown.Item>
           </NavDropdown>
           <Form className="d-flex me-auto w-100" onSubmit={handleSubmit}>

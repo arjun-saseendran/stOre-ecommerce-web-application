@@ -14,6 +14,7 @@ import {
   getOrderTotalPriceByCategory,
   getSellerOrderTotalPriceByCategory,
   searchOrders,
+  searchSellerOrders,
 } from "../../controllers/orderControllers.js";
 
 // Configure router
@@ -62,4 +63,7 @@ orderRouter.get(
 );
 
 // Search orders
-orderRouter.post("/search-orders", sellerAuth, searchOrders);
+orderRouter.post("/search-orders", adminAuth, searchOrders);
+
+// Search seller orders
+orderRouter.post("/search-seller-orders", sellerAuth, searchSellerOrders);
