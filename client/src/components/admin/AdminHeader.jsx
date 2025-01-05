@@ -105,16 +105,31 @@ export const AdminHeader = () => {
             id="navbarScrollingDropdown"
           >
             <NavDropdown.Item as={Link} to={"/admin/sellers"}>
-              <span className="text-black hover">Sellers</span>
+              <span
+                className="text-black hover"
+                onClick={() => dispatch(setSearchValue(""))}
+              >
+                Sellers
+              </span>
             </NavDropdown.Item>
             <NavDropdown.Divider />
             <NavDropdown.Item as={Link} to={"/admin/inactive-sellers"}>
-              <span className="text-black hover">Inactive</span>
+              <span
+                className="text-black hover"
+                onClick={() => dispatch(setSearchValue(""))}
+              >
+                Inactive
+              </span>
             </NavDropdown.Item>
             <NavDropdown.Divider />
 
             <NavDropdown.Item as={Link} to={"/admin/delete-seller"}>
-              <span className="text-black hover">Delete</span>
+              <span
+                className="text-black hover"
+                onClick={() => dispatch(setSearchValue(""))}
+              >
+                Delete
+              </span>
             </NavDropdown.Item>
           </NavDropdown>
           <NavDropdown
@@ -123,17 +138,32 @@ export const AdminHeader = () => {
             id="navbarScrollingDropdown"
           >
             <NavDropdown.Item as={Link} to={"/admin/users"}>
-              <span className="text-black hover">Users</span>
+              <span
+                className="text-black hover"
+                onClick={() => dispatch(setSearchValue(""))}
+              >
+                Users
+              </span>
             </NavDropdown.Item>
             <NavDropdown.Divider />
             <NavDropdown.Item as={Link} to={"/admin/inactive-users"}>
-              <span className="text-black hover">Inactive</span>
+              <span
+                className="text-black hover"
+                onClick={() => dispatch(setSearchValue(""))}
+              >
+                Inactive
+              </span>
             </NavDropdown.Item>
 
             <NavDropdown.Divider />
 
             <NavDropdown.Item as={Link} to={"/admin/delete-user"}>
-              <span className="text-black hover">Delete</span>
+              <span
+                className="text-black hover"
+                onClick={() => dispatch(setSearchValue(""))}
+              >
+                Delete
+              </span>
             </NavDropdown.Item>
           </NavDropdown>
           <NavDropdown

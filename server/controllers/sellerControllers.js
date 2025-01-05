@@ -241,8 +241,6 @@ export const updateSellerProfile = async (req, res) => {
   }
 };
 
-
-
 // Check seller
 export const checkSeller = async (req, res) => {
   try {
@@ -363,8 +361,6 @@ export const deleteSeller = async (req, res) => {
   }
 };
 
-
-
 // Forgot password
 export const sellerForgotPassword = async (req, res) => {
   // Get seller email from body
@@ -448,21 +444,21 @@ export const searchActiveSellers = async (req, res) => {
     // Get search value
     const { searchResult } = req.body;
 
-    // Check if search value 
+    // Check if search value
     if (searchResult && searchResult.trim() !== "") {
-      
-      // Search for active sellers 
+      // Search for active sellers
       const activeSellers = await Seller.find({
         isActive: true,
         $or: [
           { name: { $regex: searchResult, $options: "i" } },
           { email: { $regex: searchResult, $options: "i" } },
-          { category: { $regex: searchResult, $options: "i" } },
         ],
       });
 
       if (!activeSellers || activeSellers.length === 0) {
-        return res.status(404).json({ message: "No matching active sellers found in search" });
+        return res
+          .status(404)
+          .json({ message: "No matching active sellers found in search" });
       }
 
       return res.status(200).json({
@@ -474,7 +470,9 @@ export const searchActiveSellers = async (req, res) => {
       const activeSellers = await Seller.find({ isActive: true });
 
       if (!activeSellers || activeSellers.length === 0) {
-        return res.status(404).json({ message: "No search active sellers found" });
+        return res
+          .status(404)
+          .json({ message: "No search active sellers found" });
       }
 
       // Send response to frontend
@@ -495,21 +493,21 @@ export const searchInactiveSellers = async (req, res) => {
     // Get search value
     const { searchResult } = req.body;
 
-    // Check if search value 
+    // Check if search value
     if (searchResult && searchResult.trim() !== "") {
-      
-      // Search for inactive sellers 
+      // Search for inactive sellers
       const inactiveSellers = await Seller.find({
         isActive: false,
         $or: [
           { name: { $regex: searchResult, $options: "i" } },
           { email: { $regex: searchResult, $options: "i" } },
-          { category: { $regex: searchResult, $options: "i" } },
         ],
       });
 
       if (!inactiveSellers || inactiveSellers.length === 0) {
-        return res.status(404).json({ message: "No matching inactive sellers found in search" });
+        return res
+          .status(404)
+          .json({ message: "No matching inactive sellers found in search" });
       }
 
       return res.status(200).json({
@@ -521,7 +519,9 @@ export const searchInactiveSellers = async (req, res) => {
       const inactiveSellers = await Seller.find({ isActive: false });
 
       if (!inactiveSellers || inactiveSellers.length === 0) {
-        return res.status(404).json({ message: "No search inactive sellers found" });
+        return res
+          .status(404)
+          .json({ message: "No search inactive sellers found" });
       }
 
       // Send response to frontend
@@ -535,5 +535,3 @@ export const searchInactiveSellers = async (req, res) => {
     catchErrorHandler(res, error);
   }
 };
-
-

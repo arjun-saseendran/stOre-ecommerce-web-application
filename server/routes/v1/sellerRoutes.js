@@ -78,5 +78,5 @@ sellerRouter.post("/reset-password/:token", sellerResetPassword);
 // Search active sellers
 sellerRouter.post("/search-active-sellers", adminAuth, searchActiveSellers);
 
-// Search active sellers
+// Search inactive sellers
 sellerRouter.post("/search-inactive-sellers", adminAuth, searchInactiveSellers);

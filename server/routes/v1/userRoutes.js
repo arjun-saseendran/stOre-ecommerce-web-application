@@ -15,6 +15,8 @@ import {
   userForgotPassword,
   userResetPassword,
   userDetails,
+  searchActiveUsers,
+  searchInactiveUsers,
 } from "../../controllers/userControllers.js";
 import { userAuth } from "../../middlewares/userAuth.js";
 import { adminAuth } from "../../middlewares/adminAuth.js";
@@ -70,3 +72,10 @@ userRouter.post("/forgot-password", userForgotPassword  );
 
 // Reset password
 userRouter.post("/reset-password/:token", userResetPassword);
+
+// Search active users
+userRouter.post("/search-active-users", adminAuth, searchActiveUsers);
+
+// Search inactive users
+userRouter.post("/search-inactive-users", adminAuth, searchInactiveUsers);
+

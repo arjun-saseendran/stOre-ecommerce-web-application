@@ -16,7 +16,7 @@ export const Users = ({
   const navigate = useNavigate();
 
   // Get search value
-  const { searchResult } = useSelector(status.search);
+  const { searchResult } = useSelector((state) => state.search);
 
   // Set user role
   const user = {
@@ -26,18 +26,22 @@ export const Users = ({
     activateUser: "/user/activate-user",
     deactivateUser: "/user/deactivate-profile",
     userDetails: "/user/user-details",
-    searchUsers: "/search-active-sellers",
+    searchUsers: "user/search-active-users",
   };
 
   // Handle status
   if (role === "user" && status === "active") {
     user.users = "/user/active-users";
+    user.searchUsers = "user/search-active-users";
   } else if (role === "user" && status === "inactive") {
     user.users = "/user/inactive-users";
+    user.searchUsers = "user/search-inactive-users";
   } else if (role === "seller" && status === "active") {
     user.users = "/seller/active-sellers";
+    user.searchUsers = "seller/search-active-sellers";
   } else if (role === "seller" && status === "inactive") {
     user.users = "/seller/inactive-sellers";
+    user.searchUsers = "seller/search-inactive-sellers";
   }
 
   // Handle action
@@ -57,13 +61,10 @@ export const Users = ({
 
   // Store users data
   const [users, setUsers] = useState([]);
-  const [userDelete, setUserDelete] = useState({});
-  const [activeUser, setActiveUser] = useState({});
-  const [inactiveUser, setInactiveUser] = useState({});
 
   // Api call
   useEffect(() => {
-    (async () => {
+    const fetchUserData = async () => {
       try {
         const response = await axiosInstance({
           method: "GET",
@@ -74,10 +75,9 @@ export const Users = ({
       } catch (error) {
         console.log(error);
       }
-    })();
-  }, [userDelete, inactiveUser, activeUser, user.users]);
-
-  console.log(users);
+    };
+    fetchUserData();
+  }, [user.users, searchResult]);
 
   const actionHandler = async (userId, action) => {
     try {
@@ -87,7 +87,7 @@ export const Users = ({
           url: user.userDelete,
           data: { userId },
         });
-        setUserDelete(response.data.data);
+        setUsers((prevUsers) => prevUsers.filter((u) => u._id !== userId));
       } else if (action === "View" && role === "user") {
         navigate(`/admin/user-details/${userId}`);
         return;
@@ -98,7 +98,11 @@ export const Users = ({
           data: { userId },
         });
 
-        setInactiveUser(response.data.data);
+        setUsers((prevUsers) =>
+          prevUsers.map((u) =>
+            u._id === userId ? { ...u, status: "inactive" } : u
+          )
+        );
       } else if (action === "Activate") {
         const response = await axiosInstance({
           method: "PUT",
@@ -106,7 +110,9 @@ export const Users = ({
           data: { userId },
         });
 
-        setActiveUser(response.data.data);
+        setUsers((prevUsers) =>
+          prevUsers.map((u) => (u._id === userId ? response.data.data : u))
+        );
       } else {
         console.log("Something went wrong!");
       }
@@ -131,10 +137,10 @@ export const Users = ({
       try {
         const response = await axiosInstance({
           method: "POST",
-          url: product.searchProducts,
+          url: user.searchUsers,
           data: { searchResult },
         });
-        setProducts(response?.data?.data);
+        setUsers(response?.data?.data);
       } catch (error) {
         console.log(error);
       }
@@ -143,9 +149,9 @@ export const Users = ({
     if (searchResult) {
       fetchSearchData();
     } else {
-      setProducts(products);
+      setUsers(users);
     }
-  }, [searchResult, products, deleteProduct]);
+  }, [searchResult, user.searchUsers]);
 
   return (
     <Container style={{ minHeight: "500px" }}>
@@ -210,5 +216,3 @@ export const Users = ({
     </Container>
   );
 };
-
-
