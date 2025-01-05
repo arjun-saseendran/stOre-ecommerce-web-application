@@ -80,11 +80,6 @@ export const AdminHeader = () => {
                 <span className="text-black hover">Profile</span>
               </Link>
             </NavDropdown.Item>
-            <NavDropdown.Divider />
-
-            <NavDropdown.Item as={Link} to={"user/cart"}>
-              <span className="text-black hover">Cart</span>
-            </NavDropdown.Item>
 
             <NavDropdown.Divider />
 

@@ -80,16 +80,6 @@ export const SellerHeader = () => {
               </Link>
             </NavDropdown.Item>
             <NavDropdown.Divider />
-            <NavDropdown.Item>
-              <span className="text-black hover">Orders</span>
-            </NavDropdown.Item>
-
-            <NavDropdown.Divider />
-
-            <NavDropdown.Item as={Link} to={"user/cart"}>
-              <span className="text-black hover">Cart</span>
-            </NavDropdown.Item>
-            <NavDropdown.Divider />
 
             <NavDropdown.Item>
               <span
