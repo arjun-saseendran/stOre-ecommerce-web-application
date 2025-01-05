@@ -65,6 +65,30 @@ export const getBanners = async (req, res) => {
     catchErrorHandler(res, error);
   }
 };
+// Get seller banners
+export const getSellerBanners = async (req, res) => {
+  try {
+    
+    // Get user 
+    const userid = req.user.id
+    
+    const sellerBanners = await Banner.findById(userid);
+
+    // Handle banner not found
+    if (!banners.length) {
+      return res.status(404).json({ message: "No banners found for this seller" });
+    }
+    res
+      .status(200)
+      .json({
+        message: "Seller banners rendered successfully",
+        data: sellerBanners,
+      });
+  } catch (error) {
+    // Handle catch error
+    catchErrorHandler(res, error);
+  }
+};
 
 // Get banner black banner
 export const getBlackBanner = async (req, res) => {

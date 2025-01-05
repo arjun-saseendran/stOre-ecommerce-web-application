@@ -202,7 +202,7 @@ export const router = createBrowserRouter([
           { path: "profile", element: <Profile role="seller" /> },
           {
             path: "banners",
-            element: <Banners />,
+            element: <Banners role='seller' />,
           },
 
           {
@@ -379,7 +379,7 @@ export const router = createBrowserRouter([
           },
           {
             path: "banners",
-            element: <Banners />,
+            element: <Banners role="admin" />,
           },
           {
             path: "delete/banner",

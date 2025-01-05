@@ -3,7 +3,7 @@ import { Table, Container, Button, Row } from "react-bootstrap";
 import { axiosInstance } from "../../config/axiosInstance";
 import { useSelector } from "react-redux";
 
-export const Banners = () => {
+export const Banners = ({ role = "admin" }) => {
   // Get theme
   const { theme } = useSelector((state) => state.theme);
 
@@ -11,13 +11,25 @@ export const Banners = () => {
   const [banners, setBanners] = useState([]);
   const [deleteBanner, setDeleteBanner] = useState({});
 
+  // Handle role
+  const user = {
+    role: "admin",
+    banners: "/banner/banners",
+  };
+
+  if (role === "admin") {
+    user.banners = "/banner/banners";
+  } else {
+    user.banners = "/banner/seller-banners";
+  }
+
   // Api call
   useEffect(() => {
     (async () => {
       try {
         const response = await axiosInstance({
           method: "GET",
-          url: "/banner/banners",
+          url: user.banners,
         });
         setBanners(response?.data?.data);
       } catch (error) {
