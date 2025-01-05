@@ -151,3 +151,35 @@ export const deleteBanner = async (req, res) => {
     catchErrorHandler(res, error);
   }
 };
+
+// Search banner
+export const searchBanner = async (req, res) => {
+  try {
+    // Get data from body
+    const { searchResult } = req.body;
+
+    // Validate input
+    if (!searchResult || searchResult.trim() === "") {
+      return res.status(400).json({ message: "Search query is required" });
+    }
+
+    // Find banner
+    const searchResults = await Banner.find({
+      $or: [
+        { title: { $regex: searchResult, $options: "i" } },
+        
+      ],
+    });
+
+    // Handle response
+    if (!searchResults) {
+      return res.status(404).json({ message: "Banner not found" });
+    }
+
+    // Send response to frontend
+    res.status(200).json({ message: "Banner fetched", data: searchResults });
+  } catch (error) {
+    // Handel error
+    catchErrorHandler(res, error);
+  }
+};
