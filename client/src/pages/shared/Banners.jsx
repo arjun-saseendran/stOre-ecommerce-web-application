@@ -7,6 +7,9 @@ export const Banners = ({ role = "admin" }) => {
   // Get theme
   const { theme } = useSelector((state) => state.theme);
 
+  // Get search value
+  const { searchResult } = useSelector((state) => state.search);
+
   // Store banners
   const [banners, setBanners] = useState([]);
   const [deleteBanner, setDeleteBanner] = useState({});
@@ -15,17 +18,20 @@ export const Banners = ({ role = "admin" }) => {
   const user = {
     role: "admin",
     banners: "/banner/banners",
+    searchBanner: "/banner/search-banners",
   };
 
   if (role === "admin") {
     user.banners = "/banner/banners";
-  } else {
+    user.searchBanner = "/banner/search-banners";
+  } else if(role === 'seller') {
     user.banners = "/banner/seller-banners";
+    user.searchBanner = "/banner/search-seller-banners";
   }
 
   // Api call
   useEffect(() => {
-    (async () => {
+    const fetchBanners = async () => {
       try {
         const response = await axiosInstance({
           method: "GET",
@@ -35,8 +41,9 @@ export const Banners = ({ role = "admin" }) => {
       } catch (error) {
         console.log(error);
       }
-    })();
-  }, [deleteBanner, banners]);
+    };
+    fetchBanners();
+  }, [deleteBanner, user.banners, searchResult]);
 
   // Handle delete
   const handleDelete = async (bannerId) => {
@@ -51,8 +58,31 @@ export const Banners = ({ role = "admin" }) => {
       console.log(error);
     }
   };
+
+  // Api call
+  useEffect(() => {
+    const fetchSearchData = async () => {
+      try {
+        const response = await axiosInstance({
+          method: "POST",
+          url: user.searchBanner,
+          data: { searchResult },
+        });
+        setBanners(response?.data?.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    if (searchResult) {
+      fetchSearchData();
+    } else {
+      setBanners(banners);
+    }
+  }, [searchResult, banners, user.searchBanner]);
+
   return (
-    <Container>
+    <Container style={{minHeight:400}}>
       <h1 className="text-center text-white mt-5">Banner List</h1>
       <Row
         className="mt-5 p-3 rounded-3"

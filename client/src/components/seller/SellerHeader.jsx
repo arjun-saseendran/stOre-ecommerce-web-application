@@ -137,7 +137,12 @@ export const SellerHeader = () => {
             id="navbarScrollingDropdown"
           >
             <NavDropdown.Item as={Link} to={"/seller/banners"}>
-              <span className="text-black hover">Banners</span>
+              <span
+                className="text-black hover"
+                onClick={() => dispatch(setSearchValue(""))}
+              >
+                Banners
+              </span>
             </NavDropdown.Item>
             <NavDropdown.Divider />
             <NavDropdown.Item as={Link} to={"/seller/add-banner"}>

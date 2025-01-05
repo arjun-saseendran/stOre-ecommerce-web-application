@@ -6,6 +6,8 @@ import {
   getBlackBanner,
   getYellowBanner,
   getSellerBanners,
+  searchBanner,
+  searchSellerBanners,
 } from "../../controllers/bannerControllers.js";
 import { upload } from "../../middlewares/multer.js";
 import { sellerAuth } from "../../middlewares/sellerAuth.js";
@@ -19,6 +21,12 @@ bannerRouter.post("/add-banner", sellerAuth, upload.single("image"), addBanner);
 
 // Get banners
 bannerRouter.get("/banners", adminAuth, getBanners);
+
+// Search banners
+bannerRouter.post("/search-banners", adminAuth, searchBanner);
+
+// Get banners
+bannerRouter.post("/search-seller-banners", sellerAuth, searchSellerBanners);
 
 // Get seller banners
 bannerRouter.get("/seller-banners", sellerAuth, getSellerBanners);

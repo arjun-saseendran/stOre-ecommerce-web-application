@@ -54,41 +54,41 @@ export const getBanners = async (req, res) => {
     if (!banners.length) {
       return res.status(404).json({ message: "No banners found" });
     }
-    res
-      .status(200)
-      .json({
-        message: "Banners rendered successfully",
-        data: banners,
-      });
+    res.status(200).json({
+      message: "Banners rendered successfully",
+      data: banners,
+    });
   } catch (error) {
     // Handle catch error
     catchErrorHandler(res, error);
   }
 };
+
 // Get seller banners
 export const getSellerBanners = async (req, res) => {
   try {
-    
-    // Get user 
-    const userid = req.user.id
-    
-    const sellerBanners = await Banner.findById(userid);
+    // Get user ID from request
+    const userId = req.user.id;
 
-    // Handle banner not found
-    if (!banners.length) {
+    // Find the seller by userId and populate the banners field
+    const seller = await Seller.findById(userId).populate("banners");
+
+    // Handle case where seller or banners are not found
+    if (!seller || !seller.banners || seller.banners.length === 0) {
       return res.status(404).json({ message: "No banners found for this seller" });
     }
-    res
-      .status(200)
-      .json({
-        message: "Seller banners rendered successfully",
-        data: sellerBanners,
-      });
+
+    // Respond with seller banners
+    res.status(200).json({
+      message: "Seller banners rendered successfully",
+      data: seller.banners,
+    });
   } catch (error) {
-    // Handle catch error
+    // Handle error using a custom error handler
     catchErrorHandler(res, error);
   }
 };
+
 
 // Get banner black banner
 export const getBlackBanner = async (req, res) => {
@@ -99,12 +99,10 @@ export const getBlackBanner = async (req, res) => {
     if (!blackBanners.length) {
       return res.status(404).json({ message: "No black banner found" });
     }
-    res
-      .status(200)
-      .json({
-        message: "Black banners rendered successfully",
-        data: blackBanners,
-      });
+    res.status(200).json({
+      message: "Black banners rendered successfully",
+      data: blackBanners,
+    });
   } catch (error) {
     // Handle catch error
     catchErrorHandler(res, error);
@@ -120,12 +118,10 @@ export const getYellowBanner = async (req, res) => {
     if (!yellowBanners.length) {
       return res.status(404).json({ message: "No yellow banner found" });
     }
-    res
-      .status(200)
-      .json({
-        message: "Yellow banners rendered successfully",
-        data: yellowBanners,
-      });
+    res.status(200).json({
+      message: "Yellow banners rendered successfully",
+      data: yellowBanners,
+    });
   } catch (error) {
     // Handle catch error
     catchErrorHandler(res, error);
@@ -165,10 +161,7 @@ export const searchBanner = async (req, res) => {
 
     // Find banner
     const searchResults = await Banner.find({
-      $or: [
-        { title: { $regex: searchResult, $options: "i" } },
-        
-      ],
+      $or: [{ title: { $regex: searchResult, $options: "i" } }],
     });
 
     // Handle response
@@ -180,6 +173,38 @@ export const searchBanner = async (req, res) => {
     res.status(200).json({ message: "Banner fetched", data: searchResults });
   } catch (error) {
     // Handel error
+    catchErrorHandler(res, error);
+  }
+};
+
+// Search seller banners
+export const searchSellerBanners = async (req, res) => {
+  try {
+    // Get user id
+    const userId = req.user.id;
+
+    // Get search value
+    const { searchResult } = req.body;
+
+    // Validate search value
+    if (searchResult && searchResult.trim() !== "") {
+      // Search for banners by title
+      const searchResults = await Banner.find({
+        seller: userId,
+        $or: [{ title: { $regex: searchResult, $options: "i" } }],
+      });
+
+      // Handle search result
+      if (!searchResults || searchResults.length === 0) {
+        return res.status(404).json({ message: "No matching banner found" });
+      }
+
+      // Return search results
+      return res
+        .status(200)
+        .json({ message: "Banners found", data: searchResults });
+    }
+  } catch (error) {
     catchErrorHandler(res, error);
   }
 };
