@@ -15,6 +15,9 @@ export const Users = ({
   // Config navigate
   const navigate = useNavigate();
 
+  // Get search value
+  const { searchResult } = useSelector(status.search);
+
   // Set user role
   const user = {
     role: "user",
@@ -113,16 +116,38 @@ export const Users = ({
 
   const viewProfile = (userId) => {
     if (role === "seller") {
-        navigate(`/admin/seller-details/${userId}`);
-        return;
-      }else if(role === 'user'){
-        navigate(`/admin/user-details/${userId}`);
-        return;
+      navigate(`/admin/seller-details/${userId}`);
+      return;
+    } else if (role === "user") {
+      navigate(`/admin/user-details/${userId}`);
+      return;
+    }
+  };
+
+  // Api call
+  useEffect(() => {
+    const fetchSearchData = async () => {
+      try {
+        const response = await axiosInstance({
+          method: "POST",
+          url: product.searchProducts,
+          data: { searchResult },
+        });
+        setProducts(response?.data?.data);
+      } catch (error) {
+        console.log(error);
       }
-  }
+    };
+
+    if (searchResult) {
+      fetchSearchData();
+    } else {
+      setProducts(products);
+    }
+  }, [searchResult, products, deleteProduct]);
 
   return (
-    <Container style={{minHeight:'500px'}} >
+    <Container style={{ minHeight: "500px" }}>
       <h1 className="text-center text-white mt-5">
         List {status} {role}
       </h1>

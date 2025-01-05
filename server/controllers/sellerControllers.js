@@ -442,3 +442,51 @@ export const sellerResetPassword = async (req, res) => {
   }
 };
 
+// Search active sellers
+export const searchActiveSellers = async (req, res) => {
+  try {
+    // Get search value
+    const { searchResult } = req.body;
+
+    // Check if search value 
+    if (searchResult && searchResult.trim() !== "") {
+      
+      // Search for active sellers 
+      const activeSellers = await Seller.find({
+        isActive: true,
+        $or: [
+          { name: { $regex: searchResult, $options: "i" } },
+          { email: { $regex: searchResult, $options: "i" } },
+          { category: { $regex: searchResult, $options: "i" } },
+        ],
+      });
+
+      if (!activeSellers || activeSellers.length === 0) {
+        return res.status(404).json({ message: "No matching active sellers found in search" });
+      }
+
+      return res.status(200).json({
+        message: "Active sellers found",
+        data: activeSellers,
+      });
+    } else {
+      // If no search value, return all active sellers
+      const activeSellers = await Seller.find({ isActive: true });
+
+      if (!activeSellers || activeSellers.length === 0) {
+        return res.status(404).json({ message: "No search active sellers found" });
+      }
+
+      // Send response to frontend
+      return res.status(200).json({
+        message: "No search active sellers fetched successfully",
+        data: activeSellers,
+      });
+    }
+  } catch (error) {
+    // Handle catch error
+    catchErrorHandler(res, error);
+  }
+};
+
+

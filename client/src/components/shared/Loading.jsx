@@ -13,7 +13,7 @@ export const Loading = () => {
         strokeWidth={1.5}
         stroke="currentColor"
         className={theme ? "size-6 text-black" : "size-6 text-white"}
-        height={500}
+        maxHeight={500}
       >
         <path
           strokeLinecap="round"
