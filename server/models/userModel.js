@@ -20,6 +20,21 @@ const userSchema = new Schema(
       unique: true,
       required: true,
     },
+
+    address: {
+      line1: String,
+      default: "",
+      line2: String,
+      default: "",
+      city: String,
+      default: "",
+      state: String,
+      default: "",
+      postal_code: String,
+      default: "",
+      country: String,
+      default: "",
+    },
     password: {
       type: String,
       required: true,

@@ -5,7 +5,10 @@ export const CartEmpty = () => {
   // Get current theme
   const { theme } = useSelector((state) => state.theme);
   return (
-    <div className="d-flex justify-content-center align-items-center flex-column">
+    <div
+      className="d-flex justify-content-center align-items-center flex-column"
+      style={{ minHeight: 450 }}
+    >
       <svg
         xmlns="http://www.w3.org/2000/svg"
         fill="none"
@@ -13,7 +16,7 @@ export const CartEmpty = () => {
         strokeWidth={1.5}
         stroke="currentColor"
         className={theme ? "size-6 text-black" : "size-6 text-white"}
-        maxHeight={300}
+        height={300}
       >
         <path
           strokeLinecap="round"

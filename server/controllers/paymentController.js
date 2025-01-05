@@ -1,4 +1,5 @@
 import { Order } from "../models/orderModel.js";
+import { User } from "../models/userModel.js";
 import Stripe from "stripe";
 
 // Config stripe
@@ -8,7 +9,13 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 export const createCheckoutSession = async (req, res, next) => {
   try {
     const { products } = req.body;
+    const userId = req.user.id;
 
+    // Fetch the user data, including the address
+    const user = await User.findById(userId);
+    const userAddress = user.address;
+
+    // Prepare the line items for the checkout session
     const lineItems = products.map((product) => ({
       price_data: {
         currency: "inr",
@@ -27,13 +34,16 @@ export const createCheckoutSession = async (req, res, next) => {
         return total + item.price_data.unit_amount * item.quantity;
       }, 0) / 100;
 
-    // Create a new Stripe checkout session
+    // Create a new Stripe checkout session with shipping address collection
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ["card"],
       line_items: lineItems,
       mode: "payment",
       success_url: `${process.env.CORS}/user/payment-success`,
       cancel_url: `${process.env.CORS}/user/payment-cancel`,
+      shipping_address_collection: {
+        allowed_countries: ["IN"],
+      },
     });
 
     // Save order details to the database
