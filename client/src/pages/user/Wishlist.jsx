@@ -1,7 +1,8 @@
 import { Container, Button, Row, Col } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { axiosInstance } from "../../config/axiosInstance";
+import { axiosInstance } from "../../config/axiosInstance"
+import toast from "react-hot-toast";
 
 export const Wishlist = () => {
   // Get current theme
@@ -9,6 +10,23 @@ export const Wishlist = () => {
 
   // Get current wishlist data
   const { wishlistData } = useSelector((state) => state.wishlist);
+
+  // Add to cart
+  const addToCart = async (productId) => {
+    try {
+      // Api call
+      const response = await axiosInstance({
+        method: "POST",
+        url: "/cart/add-product-wishlist-to-cart",
+        data: { productId },
+      });
+      toast.success("Product added to cart");
+      console.log(response);
+    } catch (error) {
+      toast.error("Something went wrong!");
+      console.log(error);
+    }
+  };
 
   // Remove product
   const removeProduct = async (productId) => {
@@ -24,7 +42,7 @@ export const Wishlist = () => {
   };
 
   return (
-    <Container style={{minHeight: '400px'}}>
+    <Container style={{ minHeight: "400px" }}>
       <h1 className="text-white h1 text-center fw-bold my-5">Wishlist</h1>
 
       {wishlistData?.products?.map((product) => (
@@ -62,6 +80,7 @@ export const Wishlist = () => {
             <Col className="d-flex gap-2 mt-3">
               <div className="fw-normal ">
                 <Button
+                  onClick={() => addToCart(product.productId._id)}
                   className="text-white"
                   variant={theme ? "warning" : "dark"}
                 >
