@@ -68,7 +68,7 @@ export const AddReview = () => {
 
         <div>
           <Button
-            className="rounded-2 border-0 px-4 py-2 hover text-black text-center text-white mt-1"
+            className="rounded-2 border-0 px-4 py-2 hover text-center text-white mt-1"
             type="submit"
             variant={theme ? "warning" : "dark"}
           >
