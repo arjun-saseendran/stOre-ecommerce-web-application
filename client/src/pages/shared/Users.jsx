@@ -20,7 +20,6 @@ export const Users = ({
 
   // Set user role
   const user = {
-    role: "user",
     users: "/user/users",
     userDelete: "user/delete-user",
     activateUser: "/user/activate-user",
@@ -29,19 +28,24 @@ export const Users = ({
     searchUsers: "user/search-active-users",
   };
 
-  // Handle status
-  if (role === "user" && status === "active") {
-    user.users = "/user/active-users";
-    user.searchUsers = "user/search-active-users";
-  } else if (role === "user" && status === "inactive") {
+  // Handle seller role
+  if (role === "seller") {
+    user.users =
+      status === "active"
+        ? "/seller/active-sellers"
+        : "/seller/inactive-sellers";
+    user.userDelete = "/seller/delete-seller";
+    user.activateUser = "/seller/activate-seller";
+    (user.deactivateUser = "seller/deactivate/profile"),
+      (user.searchUsers =
+        status === "active"
+          ? "/seller/search-active-sellers"
+          : "seller/search-inactive-sellers");
+  } else if (status === "inactive") {
     user.users = "/user/inactive-users";
-    user.searchUsers = "user/search-inactive-users";
-  } else if (role === "seller" && status === "active") {
-    user.users = "/seller/active-sellers";
-    user.searchUsers = "seller/search-active-sellers";
-  } else if (role === "seller" && status === "inactive") {
-    user.users = "/seller/inactive-sellers";
-    user.searchUsers = "seller/search-inactive-sellers";
+    user.searchUsers = "/user/search-inactive-users";
+  } else if (status === "active") {
+    user.users = "/user/active-users";
   }
 
   // Handle action
@@ -61,6 +65,8 @@ export const Users = ({
 
   // Store users data
   const [users, setUsers] = useState([]);
+  const [userStatus, setUserStatus] = useState(false);
+  const [deleteUser, setDeleteUser] = useState(false);
 
   // Api call
   useEffect(() => {
@@ -77,7 +83,7 @@ export const Users = ({
       }
     };
     fetchUserData();
-  }, [user.users, searchResult]);
+  }, [user.users, userStatus, deleteUser, searchResult]);
 
   const actionHandler = async (userId, action) => {
     try {
@@ -88,9 +94,10 @@ export const Users = ({
           data: { userId },
         });
         setUsers((prevUsers) => prevUsers.filter((u) => u._id !== userId));
+        // Update userdata
+        setDeleteUser(true);
       } else if (action === "View" && role === "user") {
         navigate(`/admin/user-details/${userId}`);
-        return;
       } else if (action === "Deactivate") {
         const response = await axiosInstance({
           method: "PUT",
@@ -100,19 +107,28 @@ export const Users = ({
 
         setUsers((prevUsers) =>
           prevUsers.map((u) =>
-            u._id === userId ? { ...u, status: "inactive" } : u
+            u._id === userId
+              ? { ...u, status: "inactive", ...response.data.data }
+              : u
           )
         );
+        // Update user data
+        setUserStatus(false);
       } else if (action === "Activate") {
         const response = await axiosInstance({
           method: "PUT",
           url: user.activateUser,
           data: { userId },
         });
-
         setUsers((prevUsers) =>
-          prevUsers.map((u) => (u._id === userId ? response.data.data : u))
+          prevUsers.map((u) =>
+            u._id === userId
+              ? { ...u, status: "active", ...response.data.data }
+              : u
+          )
         );
+        // Update user data
+        setUserStatus(true);
       } else {
         console.log("Something went wrong!");
       }
