@@ -7,7 +7,7 @@ import { CartIcon } from "../shared/CartIcon";
 import { useState } from "react";
 import { AverageRatings } from "../shared/AverageRatings";
 import { WishlistIcon } from "../shared/WishlistIcon";
-import toast from 'react-hot-toast'
+import toast from "react-hot-toast";
 
 export const ProductCard = ({ product }) => {
   // Get theme
@@ -28,10 +28,10 @@ export const ProductCard = ({ product }) => {
         url: "/cart/add-product",
         data: { productId },
       });
-      toast.success('Product added to cart')
+      toast.success("Product added to cart");
       console.log(response);
     } catch (error) {
-      toast.error('Something went wrong!')
+      toast.error("Something went wrong!");
       console.log(error);
     }
   };
@@ -53,7 +53,7 @@ export const ProductCard = ({ product }) => {
           url: "/wishlist/remove-product",
           data: { productId },
         });
-        toast.success('Product removed from wishlist!')
+        toast.success("Product removed from wishlist!");
       } catch (error) {
         console.log(error);
       }
@@ -66,11 +66,10 @@ export const ProductCard = ({ product }) => {
           url: "/wishlist/add-product",
           data: { productId },
         });
-        toast.success('Product added to wishlist!')
+        toast.success("Product added to wishlist!");
       } catch (error) {
-        toast('Something went wrong!')
+        toast("Something went wrong!");
         console.log(error);
-        
       }
     }
   };
@@ -90,7 +89,11 @@ export const ProductCard = ({ product }) => {
         style={{ cursor: "pointer" }}
       >
         <WishlistIcon productId={product?._id} />
-        {product.stock === 0 && <span className="ms-2">Out of stock!</span>}
+        {product.stock !== 0 ? (
+          <span className="ms-2">Available: {product.stock}</span>
+        ) : (
+          <span className="ms-2">Out of stock!</span>
+        )}
       </span>
 
       <Card.Img
