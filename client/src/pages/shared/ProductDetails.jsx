@@ -5,6 +5,7 @@ import { useFetch } from "../../hooks/useFetch";
 import BuyNow from "./BuyNow";
 import { axiosInstance } from "../../config/axiosInstance";
 import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 
 export const ProductDetails = () => {
   // Get current theme
@@ -34,6 +35,23 @@ export const ProductDetails = () => {
 
   // Api call
   const [productData] = useFetch(`/product/product-details/${productId}`);
+
+  // Add to cart
+  const addToCart = async () => {
+    try {
+      // Api call
+      const response = await axiosInstance({
+        method: "POST",
+        url: "/cart/add-product",
+        data: { productId },
+      });
+      toast.success("Product added to cart");
+      console.log(response);
+    } catch (error) {
+      toast.error("Something went wrong!");
+      console.log(error);
+    }
+  };
 
   // Delete review
   const handleDelete = async (reviewId) => {
@@ -79,6 +97,7 @@ export const ProductDetails = () => {
                 ₹{productData?.price}
               </Card.Text>
               <Button
+                onClick={addToCart}
                 className={
                   theme ? "w-100 mt-1 text-white" : "w-100 mt-1 text-white"
                 }
