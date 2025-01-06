@@ -39,6 +39,7 @@ export const addToCart = async (req, res) => {
 
     // Handle product found in the cart
     if (productExists) {
+    
       // Handle stock not enough
       if (productExists.quantity + 1 > product.stock) {
         return res
@@ -116,23 +117,22 @@ export const removeProductFromCart = async (req, res) => {
 
     // Remove product
     cart.products = cart.products
-      .map(
-        (product) => {
-          // Find product
-          if (product.productId.equals(productId)) {
-            // Check quantity greathan 1
-            if (product.quantity > 1) {
-              // Spred the array and decrese product quantity
-              return { ...product, quantity: product.quantity - 1 };
-            }
-            // Remove product when quantity reaches 0
-            return null;
+      .map((product) => {
+        // Find product
+        if (product.productId.equals(productId)) {
+          // Check quantity greaterthan 1
+          if (product.quantity > 1) {
+            // Spread the array and decrease product quantity
+            return { ...product, quantity: product.quantity - 1 };
           }
-          // Keep other product unchanged
-          return product;
+
+          // Remove product when quantity reaches 0
+          return null;
         }
-        // Remove null entries
-      )
+        // Keep other product unchanged
+        return product;
+      })
+      // Remove null entries
       .filter(Boolean);
 
     // Recalculate total price
@@ -143,7 +143,8 @@ export const removeProductFromCart = async (req, res) => {
 
     // Send response to frontend
     res.status(200).json({ message: "Product removed", data: cart, new: true });
-  } catch (error) {
+  }
+   catch (error) {
     // Handle catch error
     catchErrorHandler(res, error);
   }
@@ -160,7 +161,7 @@ export const clearCart = async (req, res) => {
     // Set cart empty
     cart.products = [];
 
-    // Recalulate total price
+    // Recalculate total price
     cart.calculateTotalPrice();
 
     // Save cart
@@ -169,6 +170,8 @@ export const clearCart = async (req, res) => {
     // Send response to frontend
     res.status(200).json({ message: "Cart cleared successfully", data: cart });
   } catch (error) {
+    
+    // Handle catch error
     catchErrorHandler(res, error);
   }
 };

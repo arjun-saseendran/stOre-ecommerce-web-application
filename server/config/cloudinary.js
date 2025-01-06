@@ -4,7 +4,7 @@ import dotenv from "dotenv";
 // Config dotenv
 dotenv.config();
 
-// Cloudinary configuraion
+// Cloudinary configuration
 cloudinary.config({
   cloud_name: process.env.CLOUD_NAME,
   api_key: process.env.CLOUD_API_KEY,

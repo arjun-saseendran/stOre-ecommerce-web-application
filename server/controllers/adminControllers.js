@@ -35,7 +35,7 @@ export const adminSignup = async (req, res) => {
     }
 
     // Checking admin exists or not
-    const adminExist = await Seller.findOne({ email, role: 'admin' });
+    const adminExist = await Seller.findOne({ email, role: "admin" });
     if (adminExist) {
       return res
         .status(400)
@@ -55,7 +55,7 @@ export const adminSignup = async (req, res) => {
       name,
       email,
       mobile,
-      role: 'admin',
+      role: "admin",
       profilePicture: uploadResult.url,
       password: hashedPassword,
     });
@@ -66,6 +66,7 @@ export const adminSignup = async (req, res) => {
     // Exclude password
     const { password: _, ...adminWithoutPassword } = newAdmin.toObject();
 
+    // Send response to frontend
     res.json({
       message: "Admin created successfully",
       data: adminWithoutPassword,
@@ -86,10 +87,10 @@ export const adminLogin = async (req, res) => {
       return res.status(400).json({ message: "All fields are required" });
     }
 
-    // Checking seller
+    // Checking admin
     let admin = await Seller.findOne({ email, role: "admin" });
 
-    // Admin not found
+    // Handle admin not found
     if (!admin) {
       return res.status(400).json({ message: "Admin not exist" });
     }
@@ -101,6 +102,7 @@ export const adminLogin = async (req, res) => {
       res
     );
 
+    // Handle password not matching
     if (!matchedPassword) {
       return res.status(400).json({ message: "Incorrect password" });
     }
@@ -123,6 +125,7 @@ export const adminLogin = async (req, res) => {
     // Exclude password
     const { password: _, ...adminWithoutPassword } = admin.toObject();
 
+    // Send response to frontend
     res
       .status(200)
       .json({ message: "Login successful", data: adminWithoutPassword });
@@ -187,6 +190,7 @@ export const updateAdminProfile = async (req, res) => {
       { new: true }
     );
 
+    // Send response to frontend
     res.status(200).json({
       message: "Admin profile details updated",
       data: updatedAdminData,
@@ -224,6 +228,7 @@ export const adminForgotPassword = async (req, res) => {
     // Set rest link
     const resetLink = `${process.env.CORS}/admin/reset-password/${resetToken}`;
 
+    // Setup mail
     await transporter.sendMail({
       from: process.env.EMAIL_USER,
       to: email,
@@ -231,6 +236,7 @@ export const adminForgotPassword = async (req, res) => {
       text: `Click the link to reset your password: ${resetLink}`,
     });
 
+    // Send response to frontend
     res.status(200).json({ message: "Reset email send!" });
   } catch (error) {
     catchErrorHandler(res, error);
@@ -242,6 +248,7 @@ export const adminResetPassword = async (req, res) => {
   // Get data from request body
   const { password } = req.body;
 
+  // Get token from url
   const { token } = req.params;
 
   try {
@@ -269,6 +276,7 @@ export const adminResetPassword = async (req, res) => {
     // Save admin data
     await admin.save();
 
+    // Send response to frontend
     res.status(200).json({ message: "Password reset successful!" });
   } catch (error) {
     catchErrorHandler(res, error);
@@ -280,8 +288,11 @@ export const adminDetails = async (req, res) => {
   try {
     // Get admin id
     const { userId } = req.params;
+
+    // Find admin
     const admin = await Seller.findById(userId);
 
+    // Send response to frontend
     res.status(200).json({ message: "Admin details fetched", data: admin });
   } catch (error) {
     // Handle catch error
@@ -299,6 +310,7 @@ export const adminLogout = async (req, res) => {
       httpOnly: NODE_ENV === "production",
     });
 
+    // Send response to frontend
     res.status(200).json({ message: "Admin logout success" });
   } catch (error) {
     // Handle catch error
@@ -309,6 +321,7 @@ export const adminLogout = async (req, res) => {
 // Check admin
 export const checkAdmin = async (req, res) => {
   try {
+    // Send response to frontend
     res.status(200).json({ message: "Authorized admin" });
   } catch (error) {
     // Handle catch error

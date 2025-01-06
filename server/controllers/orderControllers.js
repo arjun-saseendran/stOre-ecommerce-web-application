@@ -5,14 +5,15 @@ import { catchErrorHandler } from "../utils/catchErrorHandler.js";
 // Get all orders
 export const getOrders = async (req, res) => {
   try {
-    // Find all data
+    // Get orders
     const orders = await Order.find();
 
+    // Handle order not found
     if (!orders) {
       return res.status(404).json({ message: "No orders found!" });
     }
 
-    // Send data to frontend
+    // Send response to frontend
     res
       .status(200)
       .json({ message: "Orders fetched successfully!", data: orders });
@@ -24,14 +25,17 @@ export const getOrders = async (req, res) => {
 // Filter orders by status
 export const getOrdersByStatus = async (req, res) => {
   try {
+    
+    // Get status from request body
     const { status } = req.body;
 
-    // Find all data
+    // Find and populate order data
     const ordersByStatus = await Order.find({ orderStatus: status }).populate(
       "products.productId",
       "title"
     );
 
+    // Handle no data found
     if (!ordersByStatus) {
       return res.status(404).json({ message: "No orders found!" });
     }
@@ -42,6 +46,7 @@ export const getOrdersByStatus = async (req, res) => {
       data: ordersByStatus,
     });
   } catch (error) {
+    // Handle catch error
     catchErrorHandler(res, error);
   }
 };
@@ -49,6 +54,7 @@ export const getOrdersByStatus = async (req, res) => {
 // Get order details
 export const getOrderDetails = async (req, res) => {
   try {
+    // Get order id from url
     const { orderId } = req.params;
 
     // Get order details
@@ -57,6 +63,7 @@ export const getOrderDetails = async (req, res) => {
       "title image price"
     );
 
+    // Handle no order details found
     if (!ordersDetails) {
       return res.status(404).json({ message: "No order details found!" });
     }
@@ -67,6 +74,7 @@ export const getOrderDetails = async (req, res) => {
       data: ordersDetails,
     });
   } catch (error) {
+    // Handle catch error
     catchErrorHandler(res, error);
   }
 };
@@ -92,6 +100,7 @@ export const getSellerOrders = async (req, res) => {
         .json({ message: "No products found for this seller" });
     }
 
+    // Collect seller product ids
     const productIds = sellerProducts.map((product) => product._id);
 
     // Find all orders containing products associated with this seller
@@ -99,12 +108,13 @@ export const getSellerOrders = async (req, res) => {
       "products.productId": { $in: productIds },
     }).populate("products.productId", "title price image");
 
+    // Handle no data
     if (!orders.length) {
       return res
         .status(404)
         .json({ message: "No orders found for this seller" });
     }
-
+    // Send response to frontend
     res.status(200).json({
       message: "Orders fetched successfully",
       data: orders,
@@ -123,7 +133,7 @@ export const getSellerOrdersByStatus = async (req, res) => {
     // Get status
     const { status } = req.body;
 
-    // Validate sellerId
+    // Handle seller not found
     if (!userId) {
       return res.status(400).json({ error: "Seller not found" });
     }
@@ -138,6 +148,7 @@ export const getSellerOrdersByStatus = async (req, res) => {
         .json({ message: "No products found for this seller" });
     }
 
+    // Collect seller product ids
     const productIds = sellerProducts.map((product) => product._id);
 
     // Find all orders containing products associated with this seller
@@ -145,6 +156,7 @@ export const getSellerOrdersByStatus = async (req, res) => {
       "products.productId": { $in: productIds },
     }).populate("products.productId", "title price image");
 
+    // Handle order status not found
     if (!ordersByStatus.length) {
       return res
         .status(404)
@@ -157,7 +169,7 @@ export const getSellerOrdersByStatus = async (req, res) => {
         (order) => order.orderStatus === status
       );
     }
-
+    // Send response to frontend
     res.status(200).json({
       message: "Orders fetched successfully",
       data: ordersByStatus,

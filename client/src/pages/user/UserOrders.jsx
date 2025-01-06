@@ -1,16 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import { Container, Row, Col, Button, Card } from "react-bootstrap";
+import { Container, Row, Col, Card } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import { axiosInstance } from "../../config/axiosInstance";
-import toast from "react-hot-toast";
 
 export const UserOrders = () => {
   // Get theme
   const { theme } = useSelector((state) => state.theme);
-
-  // Config navigate
-  const navigate = useNavigate();
 
   // Store order data
   const [orders, setOrders] = useState([]);
@@ -32,8 +27,6 @@ export const UserOrders = () => {
 
     fetchOrderDetails();
   }, []);
-
-  console.log(orders);
 
   // Handle actions
   const actionHandler = async () => {};
@@ -87,7 +80,6 @@ export const UserOrders = () => {
             </Row>
           ))}
 
-          {/* Display total price for this order */}
           <Row
             style={{ backgroundColor: theme ? "#FFF6E3" : "#d9d9d9" }}
             className="d-flex justify-content-between align-items-center p-5 rounded-3 mx-1 mt-2 gap-3"
@@ -98,15 +90,6 @@ export const UserOrders = () => {
               {order.products.reduce((total, product) => {
                 return total + product.productId.price * product.quantity;
               }, 0)}
-            </Col>
-            <Col>
-              <Button
-                className="w-100 text-white"
-                variant={theme ? "warning" : "dark"}
-                onClick={() => actionHandler(order._id)}
-              >
-                <span className="me-1"></span>Return
-              </Button>
             </Col>
           </Row>
         </div>

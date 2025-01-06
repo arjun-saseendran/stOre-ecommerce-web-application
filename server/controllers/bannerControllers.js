@@ -8,6 +8,8 @@ export const addBanner = async (req, res) => {
   try {
     // Destructing data from request body
     const { title, color } = req.body;
+
+    // Check data
     if (!title || !color) {
       return res.status(400).json({ message: "All fields required" });
     }
@@ -38,6 +40,7 @@ export const addBanner = async (req, res) => {
       { new: true }
     );
 
+    // Send response to frontend
     res.json({ message: "Banner added successfully", data: banner });
   } catch (error) {
     // Handle catch error
@@ -48,12 +51,15 @@ export const addBanner = async (req, res) => {
 // Get banners
 export const getBanners = async (req, res) => {
   try {
+    // Get banners from database
     const banners = await Banner.find();
 
     // Handle banner not found
     if (!banners.length) {
       return res.status(404).json({ message: "No banners found" });
     }
+
+    // Send response to frontend
     res.status(200).json({
       message: "Banners rendered successfully",
       data: banners,
@@ -67,26 +73,27 @@ export const getBanners = async (req, res) => {
 // Get seller banners
 export const getSellerBanners = async (req, res) => {
   try {
-    // Get user ID from request
+    // Get user id
     const userId = req.user.id;
 
-    // Find the seller by userId and populate the banners field
+    // Find the seller by userId and populate the banners 
     const seller = await Seller.findById(userId).populate("banners");
 
-    // Handle case where seller or banners are not found
+    // Handle seller and banner not found
     if (!seller || !seller.banners || seller.banners.length === 0) {
       return res
+      // Send not found response to frontend
         .status(404)
         .json({ message: "No banners found for this seller" });
     }
 
-    // Respond with seller banners
+    // Send response to frontend
     res.status(200).json({
       message: "Seller banners rendered successfully",
       data: seller.banners,
     });
   } catch (error) {
-    // Handle error using a custom error handler
+    // Handle catch error
     catchErrorHandler(res, error);
   }
 };
@@ -100,6 +107,8 @@ export const getBlackBanner = async (req, res) => {
     if (!blackBanners.length) {
       return res.status(404).json({ message: "No black banner found" });
     }
+
+    // Send response to frontend
     res.status(200).json({
       message: "Black banners rendered successfully",
       data: blackBanners,
@@ -119,6 +128,7 @@ export const getYellowBanner = async (req, res) => {
     if (!yellowBanners.length) {
       return res.status(404).json({ message: "No yellow banner found" });
     }
+    // Send response to frontend
     res.status(200).json({
       message: "Yellow banners rendered successfully",
       data: yellowBanners,
@@ -134,6 +144,8 @@ export const deleteBanner = async (req, res) => {
   try {
     // Get banner id
     const { bannerId } = req.body;
+
+    // Find banner and delete
     const banner = await Banner.findByIdAndDelete(bannerId);
 
     // Handle banner not found
@@ -155,7 +167,7 @@ export const searchBanner = async (req, res) => {
     // Get data from body
     const { searchResult } = req.body;
 
-    // Validate input
+    // Handle data
     if (!searchResult || searchResult.trim() === "") {
       return res.status(400).json({ message: "Search query is required" });
     }
@@ -189,6 +201,7 @@ export const searchSellerBanners = async (req, res) => {
 
     // Validate search value
     if (searchResult && searchResult.trim() !== "") {
+      
       // Search for banners by title
       const searchResults = await Banner.find({
         seller: userId,
@@ -206,6 +219,7 @@ export const searchSellerBanners = async (req, res) => {
         .json({ message: "Banners found", data: searchResults });
     }
   } catch (error) {
+    // Handle catch error
     catchErrorHandler(res, error);
   }
 };
