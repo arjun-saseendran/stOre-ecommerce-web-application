@@ -82,7 +82,7 @@ export const Footer = () => {
           </li>
           <li>
             <Link
-              to={"/ privacy-policy"}
+              to={"/privacy-policy"}
               className="text-decoration-none text-white"
             >
               Privacy policy
