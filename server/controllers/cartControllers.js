@@ -40,7 +40,6 @@ export const addToCart = async (req, res) => {
 
     // Handle product found in the cart
     if (productExists) {
-    
       // Handle stock not enough
       if (productExists.quantity + 1 > product.stock) {
         return res
@@ -55,7 +54,7 @@ export const addToCart = async (req, res) => {
       cart.calculateTotalPrice();
     } else {
       // Handle case when stock is zero
-      if (product.stock < 1 ) {
+      if (product.stock < 1) {
         return res.status(400).json({ message: "Product is out of stock" });
       }
 
@@ -113,7 +112,6 @@ export const addToFromWishlistCart = async (req, res) => {
 
     // Handle product found in the cart
     if (productExists) {
-    
       // Handle stock not enough
       if (productExists.quantity + 1 > product.stock) {
         return res
@@ -128,7 +126,7 @@ export const addToFromWishlistCart = async (req, res) => {
       cart.calculateTotalPrice();
     } else {
       // Handle case when stock is zero
-      if (product.stock < 1 ) {
+      if (product.stock < 1) {
         return res.status(400).json({ message: "Product is out of stock" });
       }
 
@@ -223,8 +221,7 @@ export const removeProductFromCart = async (req, res) => {
 
     // Send response to frontend
     res.status(200).json({ message: "Product removed", data: cart, new: true });
-  }
-   catch (error) {
+  } catch (error) {
     // Handle catch error
     catchErrorHandler(res, error);
   }
@@ -250,7 +247,6 @@ export const clearCart = async (req, res) => {
     // Send response to frontend
     res.status(200).json({ message: "Cart cleared successfully", data: cart });
   } catch (error) {
-    
     // Handle catch error
     catchErrorHandler(res, error);
   }
