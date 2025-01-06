@@ -109,7 +109,7 @@ export const ProductDetails = () => {
                     <p>{review?.comment}</p>
                     <Button
                       onClick={() => handleDelete(review._id)}
-                      className="btn-sm"
+                      className="btn-sm text-white"
                       variant={theme ? "warning" : "dark"}
                     >
                       Delete
