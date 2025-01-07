@@ -1,5 +1,5 @@
 import { Container, Card, Button, Row, Col } from "react-bootstrap";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useFetch } from "../../hooks/useFetch";
 import BuyNow from "./BuyNow";
@@ -11,8 +11,14 @@ export const ProductDetails = () => {
   // Get current theme
   const { theme } = useSelector((state) => state.theme);
 
+  // Get user status
+  const {isUserAuth} = useSelector(state => state.user)
+
   // Config params
   const { productId } = useParams();
+
+  // Config navigate
+  const navigate = useNavigate()
 
   // Store data
   const [reviewData, setReviewData] = useState([]);
@@ -38,18 +44,22 @@ export const ProductDetails = () => {
 
   // Add to cart
   const addToCart = async () => {
-    try {
-      // Api call
-      const response = await axiosInstance({
-        method: "POST",
-        url: "/cart/add-product",
-        data: { productId },
-      });
-      toast.success("Product added to cart");
-      console.log(response);
-    } catch (error) {
-      toast.error("Something went wrong!");
-      console.log(error);
+    if(isUserAuth){
+      try {
+        // Api call
+        const response = await axiosInstance({
+          method: "POST",
+          url: "/cart/add-product",
+          data: { productId },
+        });
+        toast.success("Product added to cart");
+        console.log(response);
+      } catch (error) {
+        toast.error("Please login!");
+        console.log(error);
+      }
+    }else{
+      navigate('/login')
     }
   };
 

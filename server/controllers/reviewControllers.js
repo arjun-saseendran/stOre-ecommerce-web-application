@@ -12,6 +12,11 @@ export const addReview = async (req, res) => {
     // Get user
     const userId = req.user.id;
 
+    // Handle no user login
+    if(!userId){
+      return res.status(401).json({message: 'User not authorized'})
+    }
+
     // Check if the product exists
     const product = await Product.findById(productId);
     if (!product) {

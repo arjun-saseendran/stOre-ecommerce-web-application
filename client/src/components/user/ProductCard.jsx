@@ -1,5 +1,5 @@
 import { Card, Button } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { axiosInstance } from "../../config/axiosInstance";
 import { StarRatings } from "../shared/StarRatings";
@@ -13,6 +13,12 @@ export const ProductCard = ({ product }) => {
   // Get theme
   const { theme } = useSelector((state) => state.theme);
 
+  // Config navigate
+  const navigate = useNavigate();
+
+  // Get user status
+  const { isUserAuth } = useSelector((state) => state.user);
+
   // Store average rating
   const [average, setAverage] = useState(0);
 
@@ -21,18 +27,22 @@ export const ProductCard = ({ product }) => {
 
   // Add to cart
   const addToCart = async (productId) => {
-    try {
-      // Api call
-      const response = await axiosInstance({
-        method: "POST",
-        url: "/cart/add-product",
-        data: { productId },
-      });
-      toast.success("Product added to cart");
-      console.log(response);
-    } catch (error) {
-      toast.error("Something went wrong!");
-      console.log(error);
+    if (isUserAuth) {
+      try {
+        // Api call
+        const response = await axiosInstance({
+          method: "POST",
+          url: "/cart/add-product",
+          data: { productId },
+        });
+        toast.success("Product added to cart");
+        console.log(response);
+      } catch (error) {
+        toast.error("Please login!");
+        console.log(error);
+      }
+    } else {
+      navigate("/login");
     }
   };
 
@@ -44,34 +54,41 @@ export const ProductCard = ({ product }) => {
       (product) => product?.productId?._id === productId
     );
 
-    if (found) {
-      try {
-        productId = found.productId._id;
+    if(isUserAuth){
+       if (found) {
+         try {
+           productId = found.productId._id;
 
-        const response = await axiosInstance({
-          method: "DELETE",
-          url: "/wishlist/remove-product",
-          data: { productId },
-        });
-        toast.success("Product removed from wishlist!");
-      } catch (error) {
-        console.log(error);
-      }
+           const response = await axiosInstance({
+             method: "DELETE",
+             url: "/wishlist/remove-product",
+             data: { productId },
+           });
+           toast.success("Product removed from wishlist!");
+         } catch (error) {
+           console.log(error);
+         }
 
-      console.log(response);
-    } else {
-      try {
-        const response = await axiosInstance({
-          method: "POST",
-          url: "/wishlist/add-product",
-          data: { productId },
-        });
-        toast.success("Product added to wishlist!");
-      } catch (error) {
-        toast("Something went wrong!");
-        console.log(error);
-      }
+         console.log(response);
+       } else {
+         try {
+           const response = await axiosInstance({
+             method: "POST",
+             url: "/wishlist/add-product",
+             data: { productId },
+           });
+           toast.success("Product added to wishlist!");
+         } catch (error) {
+           toast("Please login!");
+           console.log(error);
+         }
+       }
+
+    }else{
+      navigate('/login')
     }
+
+   
   };
 
   // Get average rating from child
@@ -119,7 +136,13 @@ export const ProductCard = ({ product }) => {
         </Card.Text>
 
         <div className="d-flex justify-content-center">
-          <Link to={`/user/add-review/${product?._id}`}>
+          <Link
+            to={
+              isUserAuth && product
+                ? `/product-details/${product._id}`
+                : "/login"
+            }
+          >
             <StarRatings
               productId={product?._id}
               getAverageRating={getAverageRating}
