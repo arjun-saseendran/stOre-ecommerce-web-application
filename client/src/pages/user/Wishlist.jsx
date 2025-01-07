@@ -23,7 +23,7 @@ export const Wishlist = () => {
       toast.success("Product added to cart");
       console.log(response);
     } catch (error) {
-      toast.error("Something went wrong!");
+      toast.error(error.response.data.message);
       console.log(error);
     }
   };

@@ -19,11 +19,11 @@ export const Cart = () => {
       // Api call
       await axiosInstance({
         method: "POST",
-        url: "/cart/add-product",
+        url: "/cart/add-cartQuantity",
         data: { productId },
       });
 
-      toast.success("Product added to cart");
+      toast.success("Quantity increased");
     } catch (error) {
       console.log(error);
 
@@ -42,7 +42,7 @@ export const Cart = () => {
         data: { productId },
       });
 
-      toast.success("Product removed from cart");
+      toast.success("Quantity decreased");
     } catch (error) {
       console.log(error);
       toast.error(

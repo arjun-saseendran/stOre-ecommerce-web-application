@@ -55,7 +55,7 @@ export const ProductDetails = () => {
         toast.success("Product added to cart");
         console.log(response);
       } catch (error) {
-        toast.error("Please login!");
+        toast.error(error.response.data.message);
         console.log(error);
       }
     }else{

@@ -9,8 +9,8 @@ export const Footer = () => {
     <Row
       className={
         theme
-          ? "bg-warning text-white mt-5 p-5 w-100"
-          : "bg-black text-white mt-5 p-5 w-100"
+          ? "bg-warning text-white mt-5 p-5 w-100 m-auto"
+          : "bg-black text-white mt-5 p-5 w-100 m-auto"
       }
     >
       <Col xs={6} sm={4}>
