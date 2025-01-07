@@ -54,41 +54,38 @@ export const ProductCard = ({ product }) => {
       (product) => product?.productId?._id === productId
     );
 
-    if(isUserAuth){
-       if (found) {
-         try {
-           productId = found.productId._id;
+    if (isUserAuth) {
+      if (found) {
+        try {
+          productId = found.productId._id;
 
-           const response = await axiosInstance({
-             method: "DELETE",
-             url: "/wishlist/remove-product",
-             data: { productId },
-           });
-           toast.success("Product removed from wishlist!");
-         } catch (error) {
-           console.log(error);
-         }
+          const response = await axiosInstance({
+            method: "DELETE",
+            url: "/wishlist/remove-product",
+            data: { productId },
+          });
+          toast.success("Product removed from wishlist!");
+        } catch (error) {
+          console.log(error);
+        }
 
-         console.log(response);
-       } else {
-         try {
-           const response = await axiosInstance({
-             method: "POST",
-             url: "/wishlist/add-product",
-             data: { productId },
-           });
-           toast.success("Product added to wishlist!");
-         } catch (error) {
-           toast("Please login!");
-           console.log(error);
-         }
-       }
-
-    }else{
-      navigate('/login')
+        console.log(response);
+      } else {
+        try {
+          const response = await axiosInstance({
+            method: "POST",
+            url: "/wishlist/add-product",
+            data: { productId },
+          });
+          toast.success("Product added to wishlist!");
+        } catch (error) {
+          toast("Please login!");
+          console.log(error);
+        }
+      }
+    } else {
+      navigate("/login");
     }
-
-   
   };
 
   // Get average rating from child
