@@ -248,56 +248,6 @@ export const getUserOrder = async (req, res) => {
   }
 };
 
-export const updateStock = async (req, res) => {
-  try {
-    // Get user
-    const userId = req.user.id;
-
-    // Find the latest successful order of the user that has not yet had its stock updated
-    const latestOrder = await Order.findOne({
-      userId,
-      orderStatus: "processing", // Or another status to indicate it's being processed
-      stockUpdated: { $ne: true }, // Check if stock has already been updated for this order
-    }).populate("products.productId");
-
-    // Handle order not found case
-    if (!latestOrder) {
-      return res
-        .status(404)
-        .json({ message: "No pending orders found or stock already updated." });
-    }
-
-    // Update stock for products in the order
-    await Promise.all(
-      latestOrder.products.map(async (item) => {
-        const product = await Product.findById(item.productId);
-        if (product) {
-          // Decrease product stock
-          product.stock = Math.max(0, product.stock - item.quantity);
-          await product.save();
-
-          // Log updated stock
-          console.log(
-            `Updated stock for product: ${product._id}, New stock: ${product.stock}`
-          );
-        } else {
-          console.log(`Product not found: ${item.productId}`);
-        }
-      })
-    );
-
-    // Mark order as processed and stock updated
-    latestOrder.stockUpdated = true; // Add this field to the order schema if necessary
-    await latestOrder.save();
-
-    return res.status(200).json({ message: "Stock updated successfully" });
-  } catch (error) {
-    // Handle any errors that occur during the process
-    catchErrorHandler(res, error);
-  }
-};
-
-
 // Get total price by product category from all orders
 export const getOrderTotalPriceByCategory = async (req, res) => {
   try {

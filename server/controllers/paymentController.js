@@ -1,4 +1,5 @@
 import { Order } from "../models/orderModel.js";
+import { Product } from "../models/productModel.js";
 import Stripe from "stripe";
 
 // Config stripe
@@ -29,7 +30,7 @@ export const createCheckoutSession = async (req, res, next) => {
         return total + item.price_data.unit_amount * item.quantity;
       }, 0) / 100;
 
-    // Create a new Stripe checkout session 
+    // Create a new Stripe checkout session
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ["card"],
       line_items: lineItems,
@@ -53,6 +54,22 @@ export const createCheckoutSession = async (req, res, next) => {
       orderStatus: "processing",
     });
     await order.save();
+
+    // Update stock for each product in the order
+    await Promise.all(
+      products.map(async (item) => {
+        const product = await Product.findById(item.productId._id);
+        if (product) {
+          // Decrease product stock (ensure stock doesn't go below zero)
+          product.stock = Math.max(0, product.stock - item.quantity);
+          await product.save();
+
+          console.log(
+            `Updated stock for product: ${product._id}, New stock: ${product.stock}`
+          );
+        }
+      })
+    );
 
     // Send response to the client
     res.json({ success: true, sessionId: session.id });
