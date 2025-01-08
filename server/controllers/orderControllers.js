@@ -248,6 +248,46 @@ export const getUserOrder = async (req, res) => {
   }
 };
 
+export const updateStock = async (req, res) => {
+  try {
+    // Get user ID from the authenticated user (assuming the user ID is available in req.user)
+    const userId = req.user.id;
+
+    // Find the most recent order for the user and populate product details
+    const order = await Order.findOne({ userId: userId })
+      .sort({ createdAt: -1 })
+      .populate("products.productId");
+
+    if (!order) {
+      return res.status(404).json({ message: "No orders found for this user" });
+    }
+
+    // Update stock for each product in the order
+    await Promise.all(
+      order.products.map(async (item) => {
+        const product = item.productId; // productId is populated, no need for extra query
+        if (product) {
+          // Decrease product stock (ensure stock doesn't go below zero)
+          product.stock = Math.max(0, product.stock - item.quantity);
+          await product.save();
+
+          console.log(
+            `Updated stock for product: ${product._id}, New stock: ${product.stock}`
+          );
+        }
+      })
+    );
+
+    // Send response
+    return res.status(200).json({ message: "Stock updated successfully" });
+  } catch (error) {
+    // Handle any errors that occur during the process
+    console.error("Error updating stock:", error); // Log error details for debugging
+    catchErrorHandler(res, error); // Pass the error to the centralized error handler
+  }
+};
+
+
 // Get total price by product category from all orders
 export const getOrderTotalPriceByCategory = async (req, res) => {
   try {

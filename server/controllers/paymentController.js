@@ -1,5 +1,4 @@
 import { Order } from "../models/orderModel.js";
-import { Product } from "../models/productModel.js";
 import Stripe from "stripe";
 
 // Config stripe
@@ -9,7 +8,6 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 export const createCheckoutSession = async (req, res, next) => {
   try {
     const { products } = req.body;
-    const userId = req.user.id;
 
     // Line items
     const lineItems = products.map((product) => ({
@@ -54,22 +52,6 @@ export const createCheckoutSession = async (req, res, next) => {
       orderStatus: "processing",
     });
     await order.save();
-
-    // Update stock for each product in the order
-    await Promise.all(
-      products.map(async (item) => {
-        const product = await Product.findById(item.productId._id);
-        if (product) {
-          // Decrease product stock (ensure stock doesn't go below zero)
-          product.stock = Math.max(0, product.stock - item.quantity);
-          await product.save();
-
-          console.log(
-            `Updated stock for product: ${product._id}, New stock: ${product.stock}`
-          );
-        }
-      })
-    );
 
     // Send response to the client
     res.json({ success: true, sessionId: session.id });

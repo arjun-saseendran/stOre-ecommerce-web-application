@@ -10,6 +10,7 @@ import {
   getSellerOrdersByStatus,
   getUserOrder,
   handleOrderStatus,
+  updateStock,
   getOrderTotalPriceByCategory,
   getSellerOrderTotalPriceByCategory,
   searchOrders,
@@ -55,6 +56,9 @@ orderRouter.post("/change-order-status", sellerAuth, handleOrderStatus);
 
 // Get your order
 orderRouter.get("/get-user-orders", userAuth, getUserOrder);
+
+// Update stock
+orderRouter.get("/update-stock", userAuth, updateStock);
 
 // Get total price by product category from all orders
 orderRouter.get(
@@ -133,3 +137,4 @@ orderRouter.post(
   sellerAuth,
   searchSellerOrdersByReturnStatus
 );
+

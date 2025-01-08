@@ -75,13 +75,16 @@ export const UserOrders = () => {
                 </Card.Text>
               </Col>
               <Col xs={12} md={2}>
-                {order.returnStatus === "returned" ? (
-                  <Card.Text className={theme ? "warning text-white" : "dark "}>
-                    Returned ({new Date(order?.updatedAt).toLocaleDateString()})
-                  </Card.Text>
-                ) : returnExpired ? (
-                  <Card.Text className={theme ? "warning text-white" : "dark "}>
-                    Return Period Ended
+                {order.returnApprovalStatus === "approved" ||
+                order.returnApprovalStatus === "rejected" ? (
+                  <Card.Text className={theme ? "warning text-white" : "dark"}>
+                    {order.returnApprovalStatus === "approved"
+                      ? `Returned (${new Date(
+                          order.updatedAt
+                        ).toLocaleDateString()})`
+                      : `Rejected (${new Date(
+                          order.updatedAt
+                        ).toLocaleDateString()})`}
                   </Card.Text>
                 ) : (
                   <Link to={`/user/return/${order._id}`}>

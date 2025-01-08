@@ -10,7 +10,7 @@ export const PaymentSuccess = () => {
 
   useEffect(() => {
     // Handle stock and clear cart
-    const clearCart = async () => {
+    const clearCartAndUpdateStock = async () => {
       try {
         // Clear cart
         const clearCart = await axiosInstance({
@@ -18,11 +18,17 @@ export const PaymentSuccess = () => {
           url: "/cart/clear-cart",
         });
         console.log(clearCart);
+        // Update stock
+        const updateStock = await axiosInstance({
+          method: "GET",
+          url: "/order/update-stock",
+        });
+        console.log(updateStock);
       } catch (error) {
         console.log(error);
       }
     };
-    clearCart();
+    clearCartAndUpdateStock();
   }, []);
 
   return (
