@@ -279,7 +279,7 @@ export const updateStock = async (req, res) => {
     return res.status(200).json({ message: "Stock updated successfully" });
   } catch (error) {
     // Handle catch error
-    catchErrorHandler(res, error); // Pass the error to the centralized error handler
+    catchErrorHandler(res, error);
   }
 };
 
@@ -294,6 +294,7 @@ export const getOrderTotalPriceByCategory = async (req, res) => {
       return res.status(404).json({ message: "No products found" });
     }
 
+    // Store product ids
     const productIds = products.map((product) => product._id);
 
     // Find all orders containing products
@@ -306,6 +307,7 @@ export const getOrderTotalPriceByCategory = async (req, res) => {
       // Select product fields
       .select("products orderStatus totalPrice createdAt");
 
+    // Handle order not found
     if (!orders.length) {
       return res.status(404).json({ message: "No orders found" });
     }
@@ -324,10 +326,10 @@ export const getOrderTotalPriceByCategory = async (req, res) => {
         // Get product price
         const price = product.productId.price;
 
-        // Calculate total price for the category (price * quantity)
+        // Calculate total price for the category
         const totalProductPrice = price * quantity;
 
-        // Aggregate the total price per category
+        // Calculate the total price per category
         if (categoryTotalPrice[category]) {
           categoryTotalPrice[category] += totalProductPrice;
         } else {
@@ -336,7 +338,7 @@ export const getOrderTotalPriceByCategory = async (req, res) => {
       });
     });
 
-    // Format the data for sending in response
+    // Format the data
     const formattedCategoryTotalPrice = Object.keys(categoryTotalPrice).map(
       (category) => ({
         category,
@@ -344,6 +346,7 @@ export const getOrderTotalPriceByCategory = async (req, res) => {
       })
     );
 
+    // Send response to the frontend
     res.status(200).json({
       message: "Total price by category fetched successfully",
       data: formattedCategoryTotalPrice,
@@ -377,6 +380,7 @@ export const getSellerOrderTotalPriceByCategory = async (req, res) => {
         .json({ message: "No products found for this seller" });
     }
 
+    // Store seller product ids
     const productIds = sellerProducts.map((product) => product._id);
 
     // Find seller orders
@@ -385,16 +389,18 @@ export const getSellerOrderTotalPriceByCategory = async (req, res) => {
     })
       // Populate category, title, price, and image from product
       .populate("products.productId", "title price image category")
+
       // Select product fields
       .select("products totalPrice orderStatus createdAt");
 
+    // Handle order not found
     if (!orders.length) {
       return res
         .status(404)
         .json({ message: "No orders found for this seller" });
     }
 
-    // Create new object to store category-based total price data
+    // Create new object to store category based total price data
     const categoryTotalPrice = {};
 
     orders.forEach((order) => {
@@ -411,7 +417,7 @@ export const getSellerOrderTotalPriceByCategory = async (req, res) => {
         // Calculate the total product price
         const totalProductPrice = price * quantity;
 
-        // Aggregate the total price by category
+        // Calculate total price by category
         if (categoryTotalPrice[category]) {
           categoryTotalPrice[category] += totalProductPrice;
         } else {
@@ -420,7 +426,7 @@ export const getSellerOrderTotalPriceByCategory = async (req, res) => {
       });
     });
 
-    // Format the data for sending in response
+    // Format the data
     const formattedCategoryTotalPrice = Object.keys(categoryTotalPrice).map(
       (category) => ({
         category,
@@ -428,9 +434,9 @@ export const getSellerOrderTotalPriceByCategory = async (req, res) => {
       })
     );
 
+    // Send response to frontend
     res.status(200).json({
-      message:
-        "Seller orders by category with total price fetched successfully",
+      message: "Seller orders by category total price fetched successfully",
       data: formattedCategoryTotalPrice,
     });
   } catch (error) {
@@ -439,22 +445,25 @@ export const getSellerOrderTotalPriceByCategory = async (req, res) => {
   }
 };
 
-// Search orders by status and orderId as string match
+// Search orders by orderId
 export const searchOrders = async (req, res) => {
   try {
     const { searchResult, status } = req.body;
 
+    // Trim search query
     if (searchResult && searchResult.trim() !== "") {
-      // Search by orderStatus and treat orderId as string match
+      // Search by orderStatus and orderId
       const searchResults = await Order.find({
         orderStatus: status,
-        _id: searchResult, // Direct match for the provided ID
+        _id: searchResult,
       });
 
+      // Handle search query not found
       if (!searchResults || searchResults.length === 0) {
         return res.status(404).json({ message: "No matching orders found" });
       }
 
+      // Send response to frontend
       return res.status(200).json({
         message: "Orders fetched successfully",
         data: searchResults,
@@ -463,57 +472,66 @@ export const searchOrders = async (req, res) => {
       return res.status(400).json({ message: "Invalid search input" });
     }
   } catch (error) {
-    res
-      .status(500)
-      .json({ message: "An error occurred", error: error.message });
+    // Handle catch error
+    catchErrorHandler(res, error);
   }
 };
 
-// Search seller orders by status and orderId as string match
+// Search seller orders by status and orderId
 export const searchSellerOrders = async (req, res) => {
   try {
-    const userId = req.user.id; // Seller ID from authenticated user
+    // Get user id from request user
+    const userId = req.user.id;
+
+    // Get data from request body
     const { searchResult, status } = req.body;
 
-    // Validate sellerId
+    // Handle user id not found
     if (!userId) {
-      return res.status(400).json({ error: "Seller not found" });
+      return res.status(400).json({ message: "Seller not found" });
     }
 
     // Find all product IDs associated with the seller
     const sellerProducts = await Product.find({ seller: userId }).select("_id");
 
+    // Handle seller product not found
     if (!sellerProducts.length) {
       return res
         .status(404)
         .json({ message: "No products found for this seller" });
     }
 
+    // Store seller products ids
     const productIds = sellerProducts.map((product) => product._id);
 
+    // Handle search query
     if (searchResult && searchResult.trim() !== "") {
-      // Search by orderStatus and treat orderId as string match
+      // Search by orderStatus and  orderId
       const searchResults = await Order.find({
-        _id: searchResult, // Direct match for order ID
+        _id: searchResult,
         orderStatus: status,
         "products.productId": { $in: productIds },
+
+        // Populate data
       }).populate("products.productId", "title price image");
 
+      // Handle search query not found
       if (!searchResults || searchResults.length === 0) {
         return res.status(404).json({ message: "No matching orders found" });
       }
 
+      // Send response to frontend
       return res.status(200).json({
         message: "Orders fetched successfully",
         data: searchResults,
       });
     } else {
+      // Handle invalid input
       return res.status(400).json({ message: "Invalid search input" });
     }
   } catch (error) {
-    res
-      .status(500)
-      .json({ message: "An error occurred", error: error.message });
+    // Handle catch error
+    catchErrorHandler(res, error);
   }
 };
 
@@ -563,9 +581,10 @@ export const getOrdersByReturnStatus = async (req, res) => {
     // Get return status from request body
     const { status } = req.body;
 
-    // Find orders with specified return status or default to "eligible"
+    // Find orders with return status
     const orders = await Order.find({
       returnStatus: status || "eligible",
+      // Populate data
     }).populate("products.productId");
 
     // Handle no matching orders found
@@ -575,7 +594,7 @@ export const getOrdersByReturnStatus = async (req, res) => {
         .json({ message: "No orders found for the specified return status" });
     }
 
-    // Send orders data in response
+    // Send response to fronted
     res.status(200).json({ data: orders });
   } catch (error) {
     // Handle errors
@@ -589,9 +608,9 @@ export const getSellerOrdersByReturnStatus = async (req, res) => {
     // Get seller id from authenticated user
     const userId = req.user.id;
 
-    // Validate sellerId
+    // Handle user id not found
     if (!userId) {
-      return res.status(400).json({ error: "Seller not found" });
+      return res.status(400).json({ message: "Seller not found" });
     }
 
     // Find all products associated with the seller
@@ -604,7 +623,7 @@ export const getSellerOrdersByReturnStatus = async (req, res) => {
         .json({ message: "No products found for this seller" });
     }
 
-    // Collect seller product IDs
+    // Save seller products ids
     const productIds = sellerProducts.map((product) => product._id);
 
     // Get return status from request body
@@ -614,6 +633,7 @@ export const getSellerOrdersByReturnStatus = async (req, res) => {
     const orders = await Order.find({
       "products.productId": { $in: productIds },
       returnStatus: status || "eligible",
+      // Populate data
     }).populate("products.productId", "title price image");
 
     // Handle no matching orders found
@@ -644,6 +664,7 @@ export const getReturnRequests = async (req, res) => {
     // Find orders with status pending
     const orders = await Order.find({
       returnApprovalStatus: status || "pending",
+      // Populate the data
     }).populate("products.productId");
 
     // Handle order not found
@@ -662,10 +683,8 @@ export const getReturnRequests = async (req, res) => {
 // Get return details
 export const getReturnDetails = async (req, res) => {
   try {
-    // Get order id from URL parameters
+    // Get order id from url
     const { orderId } = req.params;
-
-    console.log(orderId);
 
     // Get the order details by orderId
     const order = await Order.findById(orderId).populate(
@@ -678,7 +697,7 @@ export const getReturnDetails = async (req, res) => {
       return res.status(404).json({ message: "Order not found!" });
     }
 
-    // Fetch the return approval status and reason (if any)
+    // Get return details
     const returnDetails = {
       returnApprovalStatus: order.returnApprovalStatus,
       returnReason: order.returnReason || "No reason provided",
@@ -687,29 +706,26 @@ export const getReturnDetails = async (req, res) => {
       products: order.products,
     };
 
-    // Send return details to frontend
+    // Send response to frontend
     res.status(200).json({
       message: "Return details fetched successfully!",
       data: returnDetails,
     });
   } catch (error) {
-    // Handle any errors that occur
-    console.error(error);
-    res
-      .status(500)
-      .json({ message: "Server error while fetching return details" });
+    // Handle catch
+    catchErrorHandler(res, error)
   }
 };
 
 // Get seller return requests
 export const getSellerReturnRequests = async (req, res) => {
   try {
-    // Get seller id from authenticated user
+    // Get seller id from request user
     const userId = req.user.id;
 
-    // Validate sellerId
+    // Handle user id not found
     if (!userId) {
-      return res.status(400).json({ error: "Seller not found" });
+      return res.status(400).json({ message: "Seller not found" });
     }
 
     // Find all products associated with the seller
@@ -722,7 +738,7 @@ export const getSellerReturnRequests = async (req, res) => {
         .json({ message: "No products found for this seller" });
     }
 
-    // Collect seller product ids
+    // Save seller product ids
     const productIds = sellerProducts.map((product) => product._id);
 
     // Get status from request body
@@ -752,39 +768,39 @@ export const getSellerReturnRequests = async (req, res) => {
   }
 };
 
-// Get seller-specific return details
+// Get seller return details
 export const getSellerReturnDetails = async (req, res) => {
   try {
-    // Get seller id from authenticated user
+    // Get seller id from request user
     const userId = req.user.id;
 
-    // Get order id from URL parameters
+    // Get order id from url
     const { orderId } = req.params;
 
-    // Fetch the order details
+    // Find the order and populate details
     const order = await Order.findById(orderId).populate(
       "products.productId",
       "title image price seller"
     );
 
-    // Handle case where order is not found
+    // Handle order not found
     if (!order) {
       return res.status(404).json({ message: "Order not found!" });
     }
 
-    // Filter the products belonging to the seller
+    // Find the seller products
     const sellerProducts = order.products.filter(
       (product) => product.productId.seller.toString() === userId.toString()
     );
 
-    // Handle case where no products belong to the seller in this order
+    // Handle no products found
     if (!sellerProducts.length) {
       return res
-        .status(403)
-        .json({ message: "You do not have permission to view this return" });
+        .status(400)
+        .json({ message: "No seller product found" });
     }
 
-    // Extract and structure return details
+    // Get return details
     const returnDetails = {
       returnApprovalStatus: order.returnApprovalStatus,
       returnReason: order.returnReason || "No reason provided",
@@ -799,13 +815,12 @@ export const getSellerReturnDetails = async (req, res) => {
       data: returnDetails,
     });
   } catch (error) {
-    // Handle errors
-    console.error(error);
-    res
-      .status(500)
-      .json({ message: "Server error while fetching seller return details" });
-  }
+    // Handle catch error
+    catchErrorHandler(res, error)
+    
 };
+
+}
 
 // Handle return approval or rejection
 export const handleReturn = async (req, res) => {
@@ -858,168 +873,202 @@ export const handleReturn = async (req, res) => {
   }
 };
 
-// Search return requests by status and orderId as string match
+// Search return requests by  orderId 
 export const searchReturnRequests = async (req, res) => {
   try {
     const { searchResult, status } = req.body;
 
+    // Handle data
     if (searchResult && searchResult.trim() !== "") {
+      
       // Search by returnApprovalStatus and orderId match
       const searchResults = await Order.find({
         returnApprovalStatus: status,
-        _id: searchResult, // Direct match for the provided ID
+        _id: searchResult,
       }).populate("products.productId", "title price image");
 
+      // Handle not search result found
       if (!searchResults || searchResults.length === 0) {
         return res
           .status(404)
           .json({ message: "No matching return requests found" });
       }
-
+      // Send response to frontend
       return res.status(200).json({
         message: "Return requests fetched successfully",
         data: searchResults,
       });
     } else {
+      // Handle invalid input
       return res.status(400).json({ message: "Invalid search input" });
     }
   } catch (error) {
-    res
-      .status(500)
-      .json({ message: "An error occurred", error: error.message });
+    // Handle catch error
+    catchErrorHandler(res, error)
   }
 };
 
-// Search seller return requests by status and orderId as string match
+// Search seller return requests by status and orderId 
 export const searchSellerReturnRequests = async (req, res) => {
   try {
-    const userId = req.user.id; // Seller ID from authenticated user
+
+    // Get seller id from request user
+    const userId = req.user.id;
+
+    // Get data from request body
     const { searchResult, status } = req.body;
 
-    // Validate sellerId
+    // Handle user id not found
     if (!userId) {
-      return res.status(400).json({ error: "Seller not found" });
+      return res.status(400).json({ message: "Seller not found" });
     }
 
-    // Find all product IDs associated with the seller
+    // Find all product ids associated with the seller
     const sellerProducts = await Product.find({ seller: userId }).select("_id");
 
+    // Handle seller products not found
     if (!sellerProducts.length) {
       return res
         .status(404)
         .json({ message: "No products found for this seller" });
     }
 
+    // Save seller product ids
     const productIds = sellerProducts.map((product) => product._id);
 
+    // Handle data
     if (searchResult && searchResult.trim() !== "") {
-      // Search by returnApprovalStatus and treat orderId as string match
+      
+      // Search by returnApprovalStatus and orderId 
       const searchResults = await Order.find({
         _id: searchResult, // Direct match for order ID
         returnApprovalStatus: status,
         "products.productId": { $in: productIds },
+
+        // Populate data
       }).populate("products.productId", "title price image");
 
+      // Handle search query not found
       if (!searchResults || searchResults.length === 0) {
         return res
           .status(404)
           .json({ message: "No matching return requests found" });
       }
 
+      // Send response to frontend
       return res.status(200).json({
         message: "Return requests fetched successfully",
         data: searchResults,
       });
     } else {
+
+      // Handle invalid input
       return res.status(400).json({ message: "Invalid search input" });
     }
   } catch (error) {
-    res
-      .status(500)
-      .json({ message: "An error occurred", error: error.message });
+   // Handle catch error
+   catchErrorHandler(res, error)
   }
 };
 
-// Search orders by return status for admin
+// Search orders by return status 
 export const searchOrdersByReturnStatus = async (req, res) => {
   try {
+    // Get data from request body
     const { status, searchResult } = req.body;
 
+    // Handle data
     if (status && status.trim() !== "") {
-      // Check if searchResult is provided, which could be orderId or other identifiers
+      
+      // Check  search query
       const searchQuery =
         searchResult && searchResult.trim() !== "" ? { _id: searchResult } : {};
 
-      // Find all orders with the specified returnStatus
+      // Find all orders with returnStatus
       const orders = await Order.find({
         ...searchQuery,
-        returnStatus: status || "eligible", // Default to "eligible" if no status provided
+        returnStatus: status || "eligible", 
+        // Populate data
       }).populate("products.productId", "title price image");
 
+      // Handle order not found
       if (!orders.length) {
         return res.status(404).json({
           message: "No orders found with the specified return status",
         });
       }
 
+      // Send response to frontend
       return res.status(200).json({
         message: "Orders with specified return status fetched successfully",
         data: orders,
       });
     } else {
+
+      // Handle invalid input
       return res.status(400).json({ message: "Invalid return status" });
     }
   } catch (error) {
-    res
-      .status(500)
-      .json({ message: "An error occurred", error: error.message });
+    // Handle catch error
+    catchErrorHandler(res, error)
   }
 };
 
-// Search seller orders by return status and orderId as string match
+// Search seller orders by return status and orderId 
 export const searchSellerOrdersByReturnStatus = async (req, res) => {
   try {
-    const userId = req.user.id; // Seller ID from authenticated user
+
+    // Get user id from request body
+    const userId = req.user.id;
+
+    // Get data from request body
     const { searchResult, status } = req.body;
 
-    // Validate sellerId
+    // Handle user id not found
     if (!userId) {
-      return res.status(400).json({ error: "Seller not found" });
+      return res.status(400).json({ message: "Seller not found" });
     }
 
-    // Find all product IDs associated with the seller
+    // Find all product ids associated with the seller
     const sellerProducts = await Product.find({ seller: userId }).select("_id");
 
+    // Handle seller products not found
     if (!sellerProducts.length) {
       return res
         .status(404)
         .json({ message: "No products found for this seller" });
     }
 
+    // Save seller products ids
     const productIds = sellerProducts.map((product) => product._id);
 
+    // Handle data
     if (searchResult && searchResult.trim() !== "") {
+      
       // Search by returnStatus and orderId as string match
       const searchResults = await Order.find({
-        _id: searchResult, // Direct match for order ID
-        returnStatus: status || "eligible", // Default status if not provided
+        _id: searchResult, 
+        returnStatus: status || "eligible", 
         "products.productId": { $in: productIds },
+        // Populate data
       }).populate("products.productId", "title price image");
 
+      // Handle search query not found
       if (!searchResults || searchResults.length === 0) {
         return res.status(404).json({ message: "No matching orders found" });
       }
 
+      // Send response to frontend
       return res.status(200).json({
         message: "Orders fetched successfully",
         data: searchResults,
       });
     } else {
+      // Handle invalid input
       return res.status(400).json({ message: "Invalid search input" });
     }
   } catch (error) {
-    res
-      .status(500)
-      .json({ message: "An error occurred", error: error.message });
+    // Handle catch error
+    catchErrorHandler(res, error)
   }
 };
