@@ -21,25 +21,46 @@ const orderSchema = new Schema(
         quantity: {
           type: Number,
           required: true,
+        },
       },
-  }],
+    ],
     totalPrice: {
       type: Number,
       required: true,
     },
     orderStatus: {
       type: String,
-      enum: [
-        "processing",
-        "success",
-        "shipping",
-        "delivery",
-        "delivered",
-      ],
+      enum: ["processing", "success", "shipping", "delivery", "delivered"],
       default: "processing",
+    },
+    returnStatus: {
+      type: String,
+      enum: ["eligible", "not eligible", "returned"],
+      default: "eligible",
+    },
+    returnApprovalStatus: {
+      type: String,
+      enum: ["pending", "approved", "rejected"],
+      default: "pending",
+    },
+    returnValidUntil: {
+      type: Date,
+      default: function () {
+        const now = new Date();
+        now.setDate(now.getDate() + 7);
+        return now;
+      },
+    },
+    returnReason: {
+      type: String,
+      default: null,
     },
   },
   { timestamps: true }
 );
+
+orderSchema.methods.returnEligible = function () {
+  return Date.now() <= this.returnValidUntil.getTime();
+};
 
 export const Order = model("Order", orderSchema);

@@ -119,6 +119,35 @@ export const SellerHeader = () => {
                 Delete
               </span>
             </NavDropdown.Item>
+            <NavDropdown.Divider />
+            <NavDropdown.Item as={Link} to={"/seller/return-list-returned"}>
+              <span
+                className="text-black hover"
+                onClick={() => dispatch(setSearchValue(""))}
+              >
+                Returns
+              </span>
+            </NavDropdown.Item>
+
+            <NavDropdown.Divider />
+            <NavDropdown.Item as={Link} to={"/seller/return-list-approved"}>
+              <span
+                className="text-black hover"
+                onClick={() => dispatch(setSearchValue(""))}
+              >
+                Return: Approved
+              </span>
+            </NavDropdown.Item>
+
+            <NavDropdown.Divider />
+            <NavDropdown.Item as={Link} to={"/seller/return-list-rejected"}>
+              <span
+                className="text-black hover"
+                onClick={() => dispatch(setSearchValue(""))}
+              >
+                Return: Rejected
+              </span>
+            </NavDropdown.Item>
           </NavDropdown>
           <NavDropdown
             className="mt-2 me-4 text-white"

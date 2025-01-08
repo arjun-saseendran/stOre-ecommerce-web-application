@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { Container, Row, Col, Card } from "react-bootstrap";
+import { Container, Row, Col, Card, Button } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import { axiosInstance } from "../../config/axiosInstance";
+import { Link } from "react-router-dom";
 
 export const UserOrders = () => {
   // Get theme
@@ -19,7 +20,12 @@ export const UserOrders = () => {
           url: "/order/get-user-orders",
         });
 
-        setOrders(response?.data?.data);
+        // Sort orders by createdAt field
+        const sortedOrders = response?.data?.data?.sort((a, b) => {
+          return new Date(b?.createdAt) - new Date(a?.createdAt); // sorting in descending order
+        });
+
+        setOrders(sortedOrders);
       } catch (error) {
         console.log(error);
       }
@@ -27,9 +33,6 @@ export const UserOrders = () => {
 
     fetchOrderDetails();
   }, []);
-
-  // Handle actions
-  const actionHandler = async () => {};
 
   return (
     <Container style={{ minHeight: "400px" }}>
@@ -72,26 +75,26 @@ export const UserOrders = () => {
                 </Card.Text>
               </Col>
               <Col xs={12} md={2}>
-                <Card.Text className="fw-normal">
-                  {order?.orderStatus} (
-                  {new Date(order?.createdAt).toLocaleDateString()})
-                </Card.Text>
+                {order.returnStatus === "returned" ? (
+                  <Card.Text className={theme ? "warning text-white" : "dark "}>
+                    Returned ({new Date(order?.updatedAt).toLocaleDateString()})
+                  </Card.Text>
+                ) : returnExpired ? (
+                  <Card.Text className={theme ? "warning text-white" : "dark "}>
+                    Return Period Ended
+                  </Card.Text>
+                ) : (
+                  <Link to={`/user/return/${order._id}`}>
+                    <Button
+                      variant={theme ? "warning text-white" : "dark text-white"}
+                    >
+                      Return
+                    </Button>
+                  </Link>
+                )}
               </Col>
             </Row>
           ))}
-
-          <Row
-            style={{ backgroundColor: theme ? "#FFF6E3" : "#d9d9d9" }}
-            className="d-flex justify-content-between align-items-center p-5 rounded-3 mx-1 mt-2 gap-3"
-          >
-            <Col className="fw-normal">Total</Col>
-            <Col className="fw-normal">
-              ₹{" "}
-              {order.products.reduce((total, product) => {
-                return total + product.productId.price * product.quantity;
-              }, 0)}
-            </Col>
-          </Row>
         </div>
       ))}
     </Container>

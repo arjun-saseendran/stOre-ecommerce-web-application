@@ -48,6 +48,10 @@ export const addToCart = async (req, res) => {
     // Add new product to cart
     cart.products.push({ productId, price: product.price, quantity: 1 });
 
+    // Decrease stock by 1 after adding to cart
+    product.stock -= 1;
+    await product.save();
+
     // Recalculate total price
     cart.calculateTotalPrice();
 
@@ -55,16 +59,14 @@ export const addToCart = async (req, res) => {
     await cart.save();
 
     // Send response to frontend
-    res.status(200).json({ message: "Product added to cart", data: cart }); 
-  
+    res.status(200).json({ message: "Product added to cart", data: cart });
   } catch (error) {
     // Handle catch error
     catchErrorHandler(res, error);
   }
 };
 
-
-// Add product to cart
+// Add product to cart from wishlist
 export const addToFromWishlistCart = async (req, res) => {
   try {
     // Get user id
@@ -111,6 +113,10 @@ export const addToFromWishlistCart = async (req, res) => {
       // Increase product quantity
       productExists.quantity += 1;
 
+      // Decrease stock by 1 after adding to cart
+      product.stock -= 1;
+      await product.save();
+
       // Recalculate total
       cart.calculateTotalPrice();
     } else {
@@ -121,6 +127,10 @@ export const addToFromWishlistCart = async (req, res) => {
 
       // Add product to cart
       cart.products.push({ productId, price: product.price, quantity: 1 });
+
+      // Decrease stock by 1 after adding to cart
+      product.stock -= 1;
+      await product.save();
     }
 
     // Recalculate total
@@ -207,6 +217,10 @@ export const addCartQuantity = async (req, res) => {
       // Increase product quantity
       productExists.quantity += 1;
 
+      // Decrease stock by 1 after adding to cart
+      product.stock -= 1;
+      await product.save();
+
       // Recalculate total
       cart.calculateTotalPrice();
     } else {
@@ -217,6 +231,10 @@ export const addCartQuantity = async (req, res) => {
 
       // Add product to cart
       cart.products.push({ productId, price: product.price, quantity: 1 });
+
+      // Decrease stock by 1 after adding to cart
+      product.stock -= 1;
+      await product.save();
     }
 
     // Recalculate total
@@ -233,8 +251,7 @@ export const addCartQuantity = async (req, res) => {
   }
 };
 
-
-// Remove product
+// Remove product from cart
 export const removeProductFromCart = async (req, res) => {
   try {
     // Get user id
@@ -271,6 +288,15 @@ export const removeProductFromCart = async (req, res) => {
       // Remove null entries
       .filter(Boolean);
 
+    // Find the product
+    const product = await Product.findById(productId);
+
+    // Increase stock by 1 after removing from cart
+    if (product) {
+      product.stock += 1;
+      await product.save();
+    }
+
     // Recalculate total price
     cart.calculateTotalPrice();
 
@@ -293,17 +319,29 @@ export const clearCart = async (req, res) => {
     // Find cart
     const cart = await Cart.findOne({ userId });
 
-    // Set cart empty
-    cart.products = [];
+    // Handle cart not found
+    if (!cart) {
+      return res.status(404).json({ message: "Cart not found" });
+    }
 
-    // Recalculate total price
-    cart.calculateTotalPrice();
+    // Reset products in cart
+    for (let item of cart.products) {
+      const product = await Product.findById(item.productId);
+      if (product) {
+        product.stock += item.quantity;
+        await product.save();
+      }
+    }
+
+    // Clear the cart
+    cart.products = [];
+    cart.totalPrice = 0;
 
     // Save cart
     await cart.save();
 
     // Send response to frontend
-    res.status(200).json({ message: "Cart cleared successfully", data: cart });
+    res.status(200).json({ message: "Cart cleared", data: cart });
   } catch (error) {
     // Handle catch error
     catchErrorHandler(res, error);

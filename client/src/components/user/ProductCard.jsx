@@ -135,9 +135,7 @@ export const ProductCard = ({ product }) => {
         <div className="d-flex justify-content-center">
           <Link
             to={
-              isUserAuth && product
-                ? `/product-details/${product._id}`
-                : "/login"
+              isUserAuth && product ? `/user/add-review/${product._id}` : "/login"
             }
           >
             <StarRatings

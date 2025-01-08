@@ -188,6 +188,35 @@ export const AdminHeader = () => {
                 Delete
               </span>
             </NavDropdown.Item>
+            <NavDropdown.Divider />
+            <NavDropdown.Item as={Link} to={"/admin/return-list-returned"}>
+              <span
+                className="text-black hover"
+                onClick={() => dispatch(setSearchValue(""))}
+              >
+                Returns
+              </span>
+            </NavDropdown.Item>
+
+            <NavDropdown.Divider />
+            <NavDropdown.Item as={Link} to={"/admin/return-list-approved"}>
+              <span
+                className="text-black hover"
+                onClick={() => dispatch(setSearchValue(""))}
+              >
+                Return: Approved
+              </span>
+            </NavDropdown.Item>
+
+            <NavDropdown.Divider />
+            <NavDropdown.Item as={Link} to={"/admin/return-list-rejected"}>
+              <span
+                className="text-black hover"
+                onClick={() => dispatch(setSearchValue(""))}
+              >
+                Return: Rejected
+              </span>
+            </NavDropdown.Item>
           </NavDropdown>
           <NavDropdown
             className="mt-2  my-2 my-lg-0 me-3 text-white"

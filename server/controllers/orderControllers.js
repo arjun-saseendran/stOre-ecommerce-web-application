@@ -25,7 +25,6 @@ export const getOrders = async (req, res) => {
 // Filter orders by status
 export const getOrdersByStatus = async (req, res) => {
   try {
-    
     // Get status from request body
     const { status } = req.body;
 
@@ -249,21 +248,23 @@ export const getUserOrder = async (req, res) => {
   }
 };
 
-// Handle stock
 export const updateStock = async (req, res) => {
   try {
     // Get user
     const userId = req.user.id;
 
-    // Find latest successful order of the user
+    // Find the latest successful order of the user that has not yet had its stock updated
     const latestOrder = await Order.findOne({
       userId,
-      orderStatus: "processing",
+      orderStatus: "processing", // Or another status to indicate it's being processed
+      stockUpdated: { $ne: true }, // Check if stock has already been updated for this order
     }).populate("products.productId");
 
     // Handle order not found case
     if (!latestOrder) {
-      return res.status(404).json({ message: "No completed orders found" });
+      return res
+        .status(404)
+        .json({ message: "No pending orders found or stock already updated." });
     }
 
     // Update stock for products in the order
@@ -274,16 +275,28 @@ export const updateStock = async (req, res) => {
           // Decrease product stock
           product.stock = Math.max(0, product.stock - item.quantity);
           await product.save();
+
+          // Log updated stock
+          console.log(
+            `Updated stock for product: ${product._id}, New stock: ${product.stock}`
+          );
+        } else {
+          console.log(`Product not found: ${item.productId}`);
         }
       })
     );
 
+    // Mark order as processed and stock updated
+    latestOrder.stockUpdated = true; // Add this field to the order schema if necessary
+    await latestOrder.save();
+
     return res.status(200).json({ message: "Stock updated successfully" });
   } catch (error) {
-    // Handle catch error
+    // Handle any errors that occur during the process
     catchErrorHandler(res, error);
   }
 };
+
 
 // Get total price by product category from all orders
 export const getOrderTotalPriceByCategory = async (req, res) => {
@@ -465,14 +478,16 @@ export const searchOrders = async (req, res) => {
       return res.status(400).json({ message: "Invalid search input" });
     }
   } catch (error) {
-    res.status(500).json({ message: "An error occurred", error: error.message });
+    res
+      .status(500)
+      .json({ message: "An error occurred", error: error.message });
   }
 };
 
 // Search seller orders by status and orderId as string match
 export const searchSellerOrders = async (req, res) => {
   try {
-    const userId = req.user.id;  // Seller ID from authenticated user
+    const userId = req.user.id; // Seller ID from authenticated user
     const { searchResult, status } = req.body;
 
     // Validate sellerId
@@ -511,6 +526,515 @@ export const searchSellerOrders = async (req, res) => {
       return res.status(400).json({ message: "Invalid search input" });
     }
   } catch (error) {
-    res.status(500).json({ message: "An error occurred", error: error.message });
+    res
+      .status(500)
+      .json({ message: "An error occurred", error: error.message });
+  }
+};
+
+// Handle user return request
+export const requestReturn = async (req, res) => {
+  try {
+    // Get order id from url
+    const { orderId } = req.params;
+
+    // Get order id from request body
+    const { returnReason } = req.body;
+
+    // Fine the order
+    const order = await Order.findById(orderId);
+
+    // Handle order not found
+    if (!order) {
+      return res.status(404).json({ message: "Order not found" });
+    }
+
+    // Handle return status pending
+    if (order.returnApprovalStatus !== "pending") {
+      return res
+        .status(400)
+        .json({ message: "Return request already processed or expired" });
+    }
+
+    // Set return status
+    order.returnStatus = "returned";
+
+    // Save return reason
+    order.returnReason = returnReason || "No reason provided";
+    await order.save();
+
+    // Send response to frontend
+    res
+      .status(200)
+      .json({ message: "Return request submitted successfully", data: order });
+  } catch (error) {
+    catchErrorHandler(res, error);
+  }
+};
+
+// Get orders by return status
+export const getOrdersByReturnStatus = async (req, res) => {
+  try {
+    // Get return status from request body
+    const { status } = req.body;
+
+    // Find orders with specified return status or default to "eligible"
+    const orders = await Order.find({
+      returnStatus: status || "eligible",
+    }).populate("products.productId");
+
+    // Handle no matching orders found
+    if (!orders || orders.length === 0) {
+      return res
+        .status(404)
+        .json({ message: "No orders found for the specified return status" });
+    }
+
+    // Send orders data in response
+    res.status(200).json({ data: orders });
+  } catch (error) {
+    // Handle errors
+    catchErrorHandler(res, error);
+  }
+};
+
+// Get seller orders by return status
+export const getSellerOrdersByReturnStatus = async (req, res) => {
+  try {
+    // Get seller id from authenticated user
+    const userId = req.user.id;
+
+    // Validate sellerId
+    if (!userId) {
+      return res.status(400).json({ error: "Seller not found" });
+    }
+
+    // Find all products associated with the seller
+    const sellerProducts = await Product.find({ seller: userId }).select("_id");
+
+    // Handle no products found
+    if (!sellerProducts.length) {
+      return res
+        .status(404)
+        .json({ message: "No products found for this seller" });
+    }
+
+    // Collect seller product IDs
+    const productIds = sellerProducts.map((product) => product._id);
+
+    // Get return status from request body
+    const { status } = req.body;
+
+    // Find all orders with return status for the seller's products
+    const orders = await Order.find({
+      "products.productId": { $in: productIds },
+      returnStatus: status || "eligible",
+    }).populate("products.productId", "title price image");
+
+    // Handle no matching orders found
+    if (!orders.length) {
+      return res.status(404).json({
+        message:
+          "No orders found for this seller with the specified return status",
+      });
+    }
+
+    // Send response to frontend
+    res.status(200).json({
+      message: "Orders with specified return status fetched successfully",
+      data: orders,
+    });
+  } catch (error) {
+    // Handle errors
+    catchErrorHandler(res, error);
+  }
+};
+
+// Get return requests
+export const getReturnRequests = async (req, res) => {
+  try {
+    // Get status from request body
+    const { status } = req.body;
+
+    // Find orders with status pending
+    const orders = await Order.find({
+      returnApprovalStatus: status || "pending",
+    }).populate("products.productId");
+
+    // Handle order not found
+    if (!orders) {
+      return res.status(404).json({ message: "No return requests found" });
+    }
+
+    // Send response to frontend
+    res.status(200).json({ data: orders });
+  } catch (error) {
+    // Handle catch error
+    catchErrorHandler(res, error);
+  }
+};
+
+// Get return details
+export const getReturnDetails = async (req, res) => {
+  try {
+    // Get order id from URL parameters
+    const { orderId } = req.params;
+
+    console.log(orderId);
+
+    // Get the order details by orderId
+    const order = await Order.findById(orderId).populate(
+      "products.productId",
+      "title image price"
+    );
+
+    // Handle case where no order is found
+    if (!order) {
+      return res.status(404).json({ message: "Order not found!" });
+    }
+
+    // Fetch the return approval status and reason (if any)
+    const returnDetails = {
+      returnApprovalStatus: order.returnApprovalStatus,
+      returnReason: order.returnReason || "No reason provided",
+      orderStatus: order.orderStatus,
+      createdAt: order.createdAt,
+      products: order.products,
+    };
+
+    // Send return details to frontend
+    res.status(200).json({
+      message: "Return details fetched successfully!",
+      data: returnDetails,
+    });
+  } catch (error) {
+    // Handle any errors that occur
+    console.error(error);
+    res
+      .status(500)
+      .json({ message: "Server error while fetching return details" });
+  }
+};
+
+// Get seller return requests
+export const getSellerReturnRequests = async (req, res) => {
+  try {
+    // Get seller id from authenticated user
+    const userId = req.user.id;
+
+    // Validate sellerId
+    if (!userId) {
+      return res.status(400).json({ error: "Seller not found" });
+    }
+
+    // Find all products associated with the seller
+    const sellerProducts = await Product.find({ seller: userId }).select("_id");
+
+    // Handle no product found
+    if (!sellerProducts.length) {
+      return res
+        .status(404)
+        .json({ message: "No products found for this seller" });
+    }
+
+    // Collect seller product ids
+    const productIds = sellerProducts.map((product) => product._id);
+
+    // Get status from request body
+    const { status } = req.body;
+
+    // Find all orders with return requests for the seller's products
+    const orders = await Order.find({
+      "products.productId": { $in: productIds },
+      returnApprovalStatus: status || "pending",
+    }).populate("products.productId", "title price image");
+
+    // Handle no return requests found
+    if (!orders.length) {
+      return res
+        .status(404)
+        .json({ message: "No return requests found for this seller" });
+    }
+
+    // Send response to frontend
+    res.status(200).json({
+      message: "Return requests fetched successfully",
+      data: orders,
+    });
+  } catch (error) {
+    // Handle catch error
+    catchErrorHandler(res, error);
+  }
+};
+
+// Get seller-specific return details
+export const getSellerReturnDetails = async (req, res) => {
+  try {
+    // Get seller id from authenticated user
+    const userId = req.user.id;
+
+    // Get order id from URL parameters
+    const { orderId } = req.params;
+
+    // Fetch the order details
+    const order = await Order.findById(orderId).populate(
+      "products.productId",
+      "title image price seller"
+    );
+
+    // Handle case where order is not found
+    if (!order) {
+      return res.status(404).json({ message: "Order not found!" });
+    }
+
+    // Filter the products belonging to the seller
+    const sellerProducts = order.products.filter(
+      (product) => product.productId.seller.toString() === userId.toString()
+    );
+
+    // Handle case where no products belong to the seller in this order
+    if (!sellerProducts.length) {
+      return res
+        .status(403)
+        .json({ message: "You do not have permission to view this return" });
+    }
+
+    // Extract and structure return details
+    const returnDetails = {
+      returnApprovalStatus: order.returnApprovalStatus,
+      returnReason: order.returnReason || "No reason provided",
+      orderStatus: order.orderStatus,
+      createdAt: order.createdAt,
+      products: sellerProducts,
+    };
+
+    // Send response to frontend
+    res.status(200).json({
+      message: "Return details fetched successfully!",
+      data: returnDetails,
+    });
+  } catch (error) {
+    // Handle errors
+    console.error(error);
+    res
+      .status(500)
+      .json({ message: "Server error while fetching seller return details" });
+  }
+};
+
+// Handle return approval or rejection
+export const handleReturn = async (req, res) => {
+  try {
+    // Get action, order id and reason from request body
+    const { orderId, action, reason } = req.body;
+
+    // Find the order
+    const order = await Order.findById(orderId);
+
+    // Handle order not found
+    if (!order) {
+      return res.status(404).json({ message: "Order not found" });
+    }
+
+    // Handle order status pending
+    if (order.returnApprovalStatus !== "pending") {
+      return res
+        .status(400)
+        .json({ message: "Return request already processed" });
+    }
+
+    // Handle approve action
+    if (action === "approve") {
+      for (const item of order.products) {
+        const product = await Product.findById(item.productId);
+        if (product) {
+          product.stock += item.quantity;
+          await product.save();
+        }
+      }
+      // Set order return status to approved
+      order.returnApprovalStatus = "approved";
+    } else if (action === "reject") {
+      // Set order return status to rejected
+      order.returnApprovalStatus = "rejected";
+    } else {
+      // Handle bad request
+      return res.status(400).json({ message: "Invalid action" });
+    }
+
+    // Save the reason
+    order.returnReason = reason || order.returnReason;
+    await order.save();
+
+    // Save response to front end
+    res.status(200).json({ message: `Return ${action}d successfully`, order });
+  } catch (error) {
+    catchErrorHandler(res, error);
+  }
+};
+
+// Search return requests by status and orderId as string match
+export const searchReturnRequests = async (req, res) => {
+  try {
+    const { searchResult, status } = req.body;
+
+    if (searchResult && searchResult.trim() !== "") {
+      // Search by returnApprovalStatus and orderId match
+      const searchResults = await Order.find({
+        returnApprovalStatus: status,
+        _id: searchResult, // Direct match for the provided ID
+      }).populate("products.productId", "title price image");
+
+      if (!searchResults || searchResults.length === 0) {
+        return res
+          .status(404)
+          .json({ message: "No matching return requests found" });
+      }
+
+      return res.status(200).json({
+        message: "Return requests fetched successfully",
+        data: searchResults,
+      });
+    } else {
+      return res.status(400).json({ message: "Invalid search input" });
+    }
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "An error occurred", error: error.message });
+  }
+};
+
+// Search seller return requests by status and orderId as string match
+export const searchSellerReturnRequests = async (req, res) => {
+  try {
+    const userId = req.user.id; // Seller ID from authenticated user
+    const { searchResult, status } = req.body;
+
+    // Validate sellerId
+    if (!userId) {
+      return res.status(400).json({ error: "Seller not found" });
+    }
+
+    // Find all product IDs associated with the seller
+    const sellerProducts = await Product.find({ seller: userId }).select("_id");
+
+    if (!sellerProducts.length) {
+      return res
+        .status(404)
+        .json({ message: "No products found for this seller" });
+    }
+
+    const productIds = sellerProducts.map((product) => product._id);
+
+    if (searchResult && searchResult.trim() !== "") {
+      // Search by returnApprovalStatus and treat orderId as string match
+      const searchResults = await Order.find({
+        _id: searchResult, // Direct match for order ID
+        returnApprovalStatus: status,
+        "products.productId": { $in: productIds },
+      }).populate("products.productId", "title price image");
+
+      if (!searchResults || searchResults.length === 0) {
+        return res
+          .status(404)
+          .json({ message: "No matching return requests found" });
+      }
+
+      return res.status(200).json({
+        message: "Return requests fetched successfully",
+        data: searchResults,
+      });
+    } else {
+      return res.status(400).json({ message: "Invalid search input" });
+    }
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "An error occurred", error: error.message });
+  }
+};
+
+// Search orders by return status for admin
+export const searchOrdersByReturnStatus = async (req, res) => {
+  try {
+    const { status, searchResult } = req.body;
+
+    if (status && status.trim() !== "") {
+      // Check if searchResult is provided, which could be orderId or other identifiers
+      const searchQuery =
+        searchResult && searchResult.trim() !== "" ? { _id: searchResult } : {};
+
+      // Find all orders with the specified returnStatus
+      const orders = await Order.find({
+        ...searchQuery,
+        returnStatus: status || "eligible", // Default to "eligible" if no status provided
+      }).populate("products.productId", "title price image");
+
+      if (!orders.length) {
+        return res.status(404).json({
+          message: "No orders found with the specified return status",
+        });
+      }
+
+      return res.status(200).json({
+        message: "Orders with specified return status fetched successfully",
+        data: orders,
+      });
+    } else {
+      return res.status(400).json({ message: "Invalid return status" });
+    }
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "An error occurred", error: error.message });
+  }
+};
+
+// Search seller orders by return status and orderId as string match
+export const searchSellerOrdersByReturnStatus = async (req, res) => {
+  try {
+    const userId = req.user.id; // Seller ID from authenticated user
+    const { searchResult, status } = req.body;
+
+    // Validate sellerId
+    if (!userId) {
+      return res.status(400).json({ error: "Seller not found" });
+    }
+
+    // Find all product IDs associated with the seller
+    const sellerProducts = await Product.find({ seller: userId }).select("_id");
+
+    if (!sellerProducts.length) {
+      return res
+        .status(404)
+        .json({ message: "No products found for this seller" });
+    }
+
+    const productIds = sellerProducts.map((product) => product._id);
+
+    if (searchResult && searchResult.trim() !== "") {
+      // Search by returnStatus and orderId as string match
+      const searchResults = await Order.find({
+        _id: searchResult, // Direct match for order ID
+        returnStatus: status || "eligible", // Default status if not provided
+        "products.productId": { $in: productIds },
+      }).populate("products.productId", "title price image");
+
+      if (!searchResults || searchResults.length === 0) {
+        return res.status(404).json({ message: "No matching orders found" });
+      }
+
+      return res.status(200).json({
+        message: "Orders fetched successfully",
+        data: searchResults,
+      });
+    } else {
+      return res.status(400).json({ message: "Invalid search input" });
+    }
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "An error occurred", error: error.message });
   }
 };
