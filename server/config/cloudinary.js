@@ -11,4 +11,5 @@ cloudinary.config({
   api_secret: process.env.CLOUD_API_SECRET,
 });
 
+// Export cloudinary instance
 export const cloudinaryInstance = cloudinary;

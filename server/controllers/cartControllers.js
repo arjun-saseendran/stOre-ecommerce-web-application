@@ -12,18 +12,23 @@ export const addToCart = async (req, res) => {
     // Get productId from request body
     const { productId } = req.body;
 
+    // Handle product id not found
     if (!productId) {
       return res.status(400).json({ message: "Please provide product id" });
     }
 
     // Find the product
     const product = await Product.findById(productId);
+
+    // Handle product not found
     if (!product) {
       return res.status(404).json({ message: "Product not found" });
     }
 
-    // Find the user's cart or create a new one if it doesn't exist
+    // Find the user cart
     let cart = await Cart.findOne({ userId });
+
+    // Create new cart doesn't exist
     if (!cart) {
       cart = new Cart({ userId, products: [] });
     }
@@ -50,6 +55,8 @@ export const addToCart = async (req, res) => {
 
     // Decrease stock by 1 after adding to cart
     product.stock -= 1;
+
+    // Save product
     await product.save();
 
     // Recalculate total price
@@ -88,10 +95,10 @@ export const addToFromWishlistCart = async (req, res) => {
       return res.status(404).json({ message: "Product not found" });
     }
 
-    // Find the user's cart or create new one if it doesn't exist
+    // Find the user cart
     let cart = await Cart.findOne({ userId });
 
-    // Handle cart not found
+    // Create new cart if cart doesn't exist
     if (!cart) {
       cart = new Cart({ userId, products: [] });
     }
@@ -167,7 +174,7 @@ export const getCart = async (req, res) => {
       return res.status(404).json({ message: "Cart not found" });
     }
 
-    // Display cart
+    // Send response to frontend
     res.status(200).json({ message: "Cart fetched successfully", data: cart });
   } catch (error) {
     // Handle catch error
@@ -197,7 +204,7 @@ export const addCartQuantity = async (req, res) => {
       return res.status(404).json({ message: "Product not found" });
     }
 
-    // Find the user's cart or create new one if it doesn't exist
+    // Find the user cart
     let cart = await Cart.findOne({ userId });
 
     // Check the product already in the cart

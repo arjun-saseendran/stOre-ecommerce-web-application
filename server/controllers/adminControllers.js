@@ -23,6 +23,8 @@ export const adminSignup = async (req, res) => {
   try {
     // Destructing data from request body
     const { name, email, password, mobile, confirmPassword } = req.body;
+
+    // Handle any field is empty
     if (!name || !email || !mobile || !password || !confirmPassword) {
       return res.status(400).json({ message: "All fields required" });
     }
@@ -36,6 +38,8 @@ export const adminSignup = async (req, res) => {
 
     // Checking admin exists or not
     const adminExist = await Seller.findOne({ email, role: "admin" });
+
+    // Handle admin found with same email id
     if (adminExist) {
       return res
         .status(400)
@@ -77,7 +81,7 @@ export const adminSignup = async (req, res) => {
   }
 };
 
-// admin login
+// Admin login
 export const adminLogin = async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -102,7 +106,7 @@ export const adminLogin = async (req, res) => {
       res
     );
 
-    // Handle password not matching
+    // Handle password not match
     if (!matchedPassword) {
       return res.status(400).json({ message: "Incorrect password" });
     }
@@ -171,6 +175,7 @@ export const updateAdminProfile = async (req, res) => {
     // Handle upload image
     let profilePictureUrl = null;
 
+    // Upload file to cloudinary
     if (req.file) {
       const uploadResult = await cloudinaryInstance.uploader.upload(
         req.file.path
@@ -209,6 +214,7 @@ export const adminForgotPassword = async (req, res) => {
     // Find admin found
     const admin = await Seller.findOne({ email, role: "admin" });
 
+    // Handle admin not found
     if (!admin) {
       return res.status(404).json({ message: "Admin not found" });
     }
@@ -239,6 +245,7 @@ export const adminForgotPassword = async (req, res) => {
     // Send response to frontend
     res.status(200).json({ message: "Reset email send!" });
   } catch (error) {
+    // Handle catch error
     catchErrorHandler(res, error);
   }
 };
@@ -279,6 +286,7 @@ export const adminResetPassword = async (req, res) => {
     // Send response to frontend
     res.status(200).json({ message: "Password reset successful!" });
   } catch (error) {
+    // Handle catch error
     catchErrorHandler(res, error);
   }
 };

@@ -9,7 +9,7 @@ export const addBanner = async (req, res) => {
     // Destructing data from request body
     const { title, color } = req.body;
 
-    // Check data
+    // Check fields
     if (!title || !color) {
       return res.status(400).json({ message: "All fields required" });
     }
@@ -82,7 +82,7 @@ export const getSellerBanners = async (req, res) => {
     // Handle seller and banner not found
     if (!seller || !seller.banners || seller.banners.length === 0) {
       return res
-      // Send not found response to frontend
+      // Handle not found response
         .status(404)
         .json({ message: "No banners found for this seller" });
     }
@@ -98,9 +98,11 @@ export const getSellerBanners = async (req, res) => {
   }
 };
 
-// Get banner black banner
+// Get black banner
 export const getBlackBanner = async (req, res) => {
   try {
+
+    // Find black banner
     const blackBanners = await Banner.find({ color: "black" });
 
     // Check product cart empty
@@ -119,12 +121,14 @@ export const getBlackBanner = async (req, res) => {
   }
 };
 
-// Get banner yellow banner
+// Get yellow banner
 export const getYellowBanner = async (req, res) => {
   try {
+
+    // Find yellow banner
     const yellowBanners = await Banner.find({ color: "yellow" });
 
-    // Check product cart empty
+    // Handle yellow banner not found
     if (!yellowBanners.length) {
       return res.status(404).json({ message: "No yellow banner found" });
     }
@@ -177,7 +181,7 @@ export const searchBanner = async (req, res) => {
       $or: [{ title: { $regex: searchResult, $options: "i" } }],
     });
 
-    // Handle response
+    // Handle not found
     if (!searchResults) {
       return res.status(404).json({ message: "Banner not found" });
     }
@@ -208,12 +212,12 @@ export const searchSellerBanners = async (req, res) => {
         $or: [{ title: { $regex: searchResult, $options: "i" } }],
       });
 
-      // Handle search result
+      // Handle not found
       if (!searchResults || searchResults.length === 0) {
         return res.status(404).json({ message: "No matching banner found" });
       }
 
-      // Return search results
+      // Send response to frontend
       return res
         .status(200)
         .json({ message: "Banners found", data: searchResults });
