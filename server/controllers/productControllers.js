@@ -6,8 +6,10 @@ import { cloudinaryInstance } from "../config/cloudinary.js";
 // Add product
 export const addProduct = async (req, res) => {
   try {
-    // Destructing data from request body
+    // Get data from request body
     const { title, description, price, stock, category } = req.body;
+
+    // Handle input fields not to be empty
     if (!title || !description || !price || !stock || !category) {
       return res.status(400).json({ message: "All fields required" });
     }
@@ -41,6 +43,7 @@ export const addProduct = async (req, res) => {
       { new: true }
     );
 
+    // Send response to frontend
     res.json({ message: "Product created successfully", data: product });
   } catch (error) {
     // Handle catch error
@@ -48,14 +51,18 @@ export const addProduct = async (req, res) => {
   }
 };
 
+// Get all products
 export const getProducts = async (req, res) => {
   try {
+    // Get all products
     const products = await Product.find();
 
-    // Check product cart empty
+    // Handle no product found
     if (!products.length) {
       return res.status(404).json({ message: "No product found" });
     }
+
+    // Send response to frontend
     res
       .status(200)
       .json({ message: "Products render successfully", data: products });
@@ -65,13 +72,16 @@ export const getProducts = async (req, res) => {
   }
 };
 
-// Product details
+// Get product details
 export const productDetails = async (req, res) => {
   try {
     // Get product id
     const { productId } = req.params;
+
+    // Find product by id
     const productData = await Product.findById(productId);
 
+    // Send response to front end
     res
       .status(200)
       .json({ message: "Product details fetched", data: productData });
@@ -87,8 +97,10 @@ export const updateProductData = async (req, res) => {
     // Get product id
     const { productId } = req.params;
 
-    // Destructing data from request body
+    // Get data from request body
     const { title, description, price, stock, category } = req.body;
+
+    // Handle input field not be empty
     if (!title || !description || !price || !stock || !category) {
       return res.status(400).json({ message: "All fields required" });
     }
@@ -96,13 +108,13 @@ export const updateProductData = async (req, res) => {
     // Handle upload image
     let imageUrl = null;
 
+    // Upload image to cloudinary
     if (req.file) {
       const uploadResult = await cloudinaryInstance.uploader.upload(
         req.file.path
       );
       imageUrl = uploadResult.url;
     }
-    console.log(req.file);
 
     // Update product data
     const updatedProductData = await Product.findByIdAndUpdate(
@@ -117,7 +129,7 @@ export const updateProductData = async (req, res) => {
       },
       { new: true }
     );
-
+    // Send response to frontend
     res
       .status(200)
       .json({ message: "Product details updated", data: updatedProductData });
@@ -127,10 +139,13 @@ export const updateProductData = async (req, res) => {
   }
 };
 
+// Delete product
 export const deleteProduct = async (req, res) => {
   try {
     // Get product id
     const { productId } = req.body;
+
+    // Find the product by id
     const product = await Product.findByIdAndDelete(productId);
 
     // Handle product not found
@@ -152,7 +167,7 @@ export const productCategory = async (req, res) => {
     // Get data from body
     const { category } = req.body;
 
-    // Validate input
+    // Handle input field not to be empty
     if (!category || category.trim() === "") {
       return res.status(400).json({ message: "Category is required" });
     }
@@ -181,12 +196,12 @@ export const searchProduct = async (req, res) => {
     // Get data from body
     const { searchResult } = req.body;
 
-    // Validate input
+    // Handle search query
     if (!searchResult || searchResult.trim() === "") {
       return res.status(400).json({ message: "Search query is required" });
     }
 
-    // Find product
+    // Get the search products by mongodb regular expression
     const searchResults = await Product.find({
       $or: [
         { title: { $regex: searchResult, $options: "i" } },
@@ -222,7 +237,7 @@ export const getSellerProducts = async (req, res) => {
       return res.status(404).json({ message: "Products not found" });
     }
 
-    // Display products
+    // Send response to frontend
     res
       .status(200)
       .json({ message: "Products fetched successfully", data: products });
@@ -241,9 +256,9 @@ export const searchSellerProducts = async (req, res) => {
     // Get search value
     const { searchResult } = req.body;
 
-    // Validate search value
+    // Handle search query
     if (searchResult && searchResult.trim() !== "") {
-      // Search for products by title, description, or category
+      // Search for products by title, description, or category with mongodb regular expression
       const searchResults = await Product.find({
         seller: userId,
         $or: [
@@ -258,7 +273,7 @@ export const searchSellerProducts = async (req, res) => {
         return res.status(404).json({ message: "No matching products found" });
       }
 
-      // Return search results
+      // Send response to frontend
       return res
         .status(200)
         .json({ message: "Products found", data: searchResults });
@@ -266,14 +281,14 @@ export const searchSellerProducts = async (req, res) => {
       // If no search value, return all products for the seller
       const sellerProducts = await Seller.findById(userId).populate("products");
 
-      // Check if seller has products
+      // Handle seller product not found
       if (!sellerProducts || !sellerProducts.products.length) {
         return res
           .status(404)
           .json({ message: "No products found for this seller" });
       }
 
-      // Send data to frontend
+      // Send response to frontend
       return res.status(200).json({
         message: "Products fetched successfully",
         data: sellerProducts.products,

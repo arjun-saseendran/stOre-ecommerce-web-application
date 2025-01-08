@@ -21,8 +21,10 @@ const transporter = nodemailer.createTransport({
 // User signup
 export const userSignup = async (req, res) => {
   try {
-    // Destructing data from request body
+    // Get data from request body
     const { name, email, mobile, password, confirmPassword } = req.body;
+
+    // Handle input field not to be empty
     if (!name || !email || !mobile || !password || !confirmPassword) {
       return res.status(400).json({ message: "All fields required" });
     }
@@ -45,7 +47,7 @@ export const userSignup = async (req, res) => {
     // Hashing password
     const hashedPassword = await passwordHandler(password, undefined, res);
 
-    // Handle upload image
+    // Upload profile picture to cloudinary
     const uploadResult = await cloudinaryInstance.uploader.upload(
       req.file.path
     );
@@ -65,7 +67,8 @@ export const userSignup = async (req, res) => {
     // Exclude password
     const { password: _, ...userWithoutPassword } = newUser.toObject();
 
-    res.json({
+    // Send response to frontend
+    res.status(200).json({
       message: "User created successfully",
       data: userWithoutPassword,
     });
@@ -78,9 +81,10 @@ export const userSignup = async (req, res) => {
 // User login
 export const userLogin = async (req, res) => {
   try {
+    // Get data from request body
     const { email, password } = req.body;
 
-    // Checking fields
+    // Handle fields not to be empty
     if (!email || !password) {
       return res.status(400).json({ message: "All fields are required" });
     }
@@ -88,6 +92,7 @@ export const userLogin = async (req, res) => {
     // Checking user
     const user = await User.findOne({ email });
 
+    // Handle user not found
     if (!user) {
       return res.status(404).json({ message: "User not exist" });
     }
@@ -95,6 +100,7 @@ export const userLogin = async (req, res) => {
     // Checking password
     const matchedPassword = await passwordHandler(password, user.password, res);
 
+    // Handle password does not match
     if (!matchedPassword) {
       return res.status(400).json({ message: "Incorrect password" });
     }
@@ -117,6 +123,7 @@ export const userLogin = async (req, res) => {
     // Exclude password
     const { password: _, ...userWithoutPassword } = user.toObject();
 
+    // Send response to frontend
     res
       .status(200)
       .json({ message: "Login successful", data: userWithoutPassword });
@@ -131,7 +138,7 @@ export const getUsers = async (req, res) => {
   try {
     // Get all users
     const users = await User.find();
-
+    // Send response to frontend
     res
       .status(200)
       .json({ message: "All users fetched successfully", data: users });
@@ -147,8 +154,10 @@ export const userProfile = async (req, res) => {
     // Get user id
     const { id } = req.user;
 
+    // Find user profile
     const profile = await User.findById(id).select("-password");
 
+    // Send response to frontend
     res
       .status(200)
       .json({ message: "user profile details fetched", data: profile });
@@ -168,6 +177,7 @@ export const userLogout = async (req, res) => {
       httpOnly: NODE_ENV === "production",
     });
 
+    // Send response to frontend
     res.status(200).json({ message: "User logout success" });
   } catch (error) {
     // Handle catch error
@@ -178,10 +188,10 @@ export const userLogout = async (req, res) => {
 // Update user profile details
 export const updateUserProfile = async (req, res) => {
   try {
-    // Destructure request body
+    // Get data from request body
     const { name, email, mobile } = req.body;
 
-    // Check if name, email, or mobile are missing
+    // Handle field not be empty
     if (!name || !email || !mobile) {
       return res
         .status(400)
@@ -193,6 +203,7 @@ export const updateUserProfile = async (req, res) => {
     // Handle upload image
     let profilePictureUrl = null;
 
+    // Save profile picture to cloudinary
     if (req.file) {
       const uploadResult = await cloudinaryInstance.uploader.upload(
         req.file.path
@@ -211,7 +222,7 @@ export const updateUserProfile = async (req, res) => {
       },
       { new: true }
     );
-
+    // Send response to frontend
     res
       .status(200)
       .json({ message: "user profile details updated", data: updatedUserData });
@@ -226,8 +237,11 @@ export const userDetails = async (req, res) => {
   try {
     // Get user id
     const { userId } = req.params;
+
+    // Find the user
     const user = await User.findById(userId);
 
+    // Send response to frontend
     res.status(200).json({ message: "User details fetched", data: user });
   } catch (error) {
     // Handle catch error
@@ -238,6 +252,7 @@ export const userDetails = async (req, res) => {
 // Checking user
 export const checkUser = async (req, res) => {
   try {
+    // Send response to frontend
     res.status(200).json({ message: "Authorized user" });
   } catch (error) {
     // Handle catch error
@@ -255,7 +270,7 @@ export const getInactiveUsers = async (req, res) => {
     if (!inactiveUsers) {
       return res.status(404).json({ message: "No inactive user found" });
     }
-
+    // Send response to frontend
     res
       .status(200)
       .json({ message: "Inactive users fetched", data: inactiveUsers });
@@ -265,6 +280,7 @@ export const getInactiveUsers = async (req, res) => {
   }
 };
 
+// Deactivate user
 export const deactivateUser = async (req, res) => {
   try {
     // Get user id
@@ -284,7 +300,8 @@ export const deactivateUser = async (req, res) => {
     // Save data
     await user.save();
 
-    res.status(202).json({ message: "User deactivated", data: user });
+    // Send response to frontend
+    res.status(200).json({ message: "User deactivated", data: user });
   } catch (error) {
     // Handle catch error
     catchErrorHandler(res, error);
@@ -311,7 +328,8 @@ export const activateUser = async (req, res) => {
     // Save data
     await inactiveUser.save();
 
-    res.status(202).json({ message: "User activated" });
+    // Send response to frontend
+    res.status(200).json({ message: "User activated" });
   } catch (error) {
     // Handle catch error
     catchErrorHandler(res, error);
@@ -326,7 +344,7 @@ export const deleteUser = async (req, res) => {
 
     // Get user
     const user = await User.findByIdAndDelete(userId);
-
+    // Send response to frontend
     res.status(200).json({ message: "User deleted", data: user });
   } catch (error) {
     // Handle catch error
@@ -344,7 +362,7 @@ export const getActiveUsers = async (req, res) => {
     if (!activeUsers) {
       return res.status(404).json({ message: "No active users found" });
     }
-
+    // Get response to frontend
     res
       .status(200)
       .json({ message: "Active Users fetched", data: activeUsers });
@@ -361,7 +379,7 @@ export const userForgotPassword = async (req, res) => {
   try {
     // Find user found
     const user = await User.findOne({ email });
-
+    // Handle user not found
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
@@ -380,16 +398,17 @@ export const userForgotPassword = async (req, res) => {
 
     // Set rest link
     const resetLink = `${process.env.CORS}/reset-password/${resetToken}`;
-
+    // Set up mail
     await transporter.sendMail({
       from: process.env.EMAIL_USER,
       to: email,
       subject: "Password reset request",
       text: `Click the link to reset your password: ${resetLink}`,
     });
-
+    // Send response to frontend
     res.status(200).json({ message: "Reset email send!" });
   } catch (error) {
+    // Handle catch error
     catchErrorHandler(res, error);
   }
 };
@@ -398,7 +417,7 @@ export const userForgotPassword = async (req, res) => {
 export const userResetPassword = async (req, res) => {
   // Get data from request body
   const { password } = req.body;
-
+  // Get token
   const { token } = req.params;
 
   try {
@@ -424,9 +443,10 @@ export const userResetPassword = async (req, res) => {
 
     // Save user data
     await user.save();
-
+    // Send response to frontend
     res.status(200).json({ message: "Password reset successful!" });
   } catch (error) {
+    // Handle catch error
     catchErrorHandler(res, error);
   }
 };
@@ -437,10 +457,9 @@ export const searchActiveUsers = async (req, res) => {
     // Get search value
     const { searchResult } = req.body;
 
-    // Check if search value 
+    // Check if search value
     if (searchResult && searchResult.trim() !== "") {
-      
-      // Search for active users 
+      // Search for active users with mongodb regular expression
       const activeUsers = await User.find({
         isActive: true,
         $or: [
@@ -448,11 +467,13 @@ export const searchActiveUsers = async (req, res) => {
           { email: { $regex: searchResult, $options: "i" } },
         ],
       });
-
+      // Handle active users not found
       if (!activeUsers || activeUsers.length === 0) {
-        return res.status(404).json({ message: "No matching active users found in search" });
+        return res
+          .status(404)
+          .json({ message: "No matching active users found in search" });
       }
-
+      // Send response to frontend
       return res.status(200).json({
         message: "Active users found",
         data: activeUsers,
@@ -460,9 +481,11 @@ export const searchActiveUsers = async (req, res) => {
     } else {
       // If no search value, return all active users
       const activeUsers = await User.find({ isActive: true });
-
+      // Handle data not found
       if (!activeUsers || activeUsers.length === 0) {
-        return res.status(404).json({ message: "No search active users found" });
+        return res
+          .status(404)
+          .json({ message: "No search active users found" });
       }
 
       // Send response to frontend
@@ -483,10 +506,9 @@ export const searchInactiveUsers = async (req, res) => {
     // Get search value
     const { searchResult } = req.body;
 
-    // Check if search value 
+    // Check if search value
     if (searchResult && searchResult.trim() !== "") {
-      
-      // Search for inactive users 
+      // Search for inactive  users by mongodb regular expression
       const inactiveUsers = await User.find({
         isActive: false,
         $or: [
@@ -496,9 +518,11 @@ export const searchInactiveUsers = async (req, res) => {
       });
 
       if (!inactiveUsers || inactiveUsers.length === 0) {
-        return res.status(404).json({ message: "No matching inactive users found in search" });
+        return res
+          .status(404)
+          .json({ message: "No matching inactive users found in search" });
       }
-
+      // Send response to frontend
       return res.status(200).json({
         message: "Inactive users found",
         data: inactiveUsers,
@@ -506,9 +530,11 @@ export const searchInactiveUsers = async (req, res) => {
     } else {
       // If no search value, return all inactive users
       const inactiveUsers = await User.find({ isActive: false });
-
+      // Handle no data found
       if (!inactiveUsers || inactiveUsers.length === 0) {
-        return res.status(404).json({ message: "No search inactive users found" });
+        return res
+          .status(404)
+          .json({ message: "No search inactive users found" });
       }
 
       // Send response to frontend
@@ -522,4 +548,3 @@ export const searchInactiveUsers = async (req, res) => {
     catchErrorHandler(res, error);
   }
 };
-

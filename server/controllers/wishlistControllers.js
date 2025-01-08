@@ -11,7 +11,7 @@ export const addToWishlist = async (req, res) => {
     // Get productId
     const { productId } = req.body;
 
-    // Check productId field
+    // Handle product id not found
     if (!productId) {
       return res.status(400).json({ message: "Please provide product id" });
     }
@@ -24,10 +24,10 @@ export const addToWishlist = async (req, res) => {
       return res.status(404).json({ message: "Product not found" });
     }
 
-    // Find the user's wishlist or create new one if it doesn't exist
+    // Find the user wishlist
     let wishlist = await Wishlist.findOne({ userId });
 
-    // Handle wishlist not found
+    // Handle wishlist not found by create new one
     if (!wishlist) {
       wishlist = new Wishlist({ userId, products: [] });
     }
@@ -60,7 +60,7 @@ export const addToWishlist = async (req, res) => {
   }
 };
 
-// Render wishlist products
+// Display wishlist products
 export const getWishlist = async (req, res) => {
   try {
     // Get user id
@@ -76,7 +76,7 @@ export const getWishlist = async (req, res) => {
       return res.status(404).json({ message: "wishlist not found" });
     }
 
-    // Display wishlist
+    // Send response to frontend
     res
       .status(200)
       .json({ message: "Wishlist fetched successfully", data: wishlist });
@@ -95,7 +95,7 @@ export const removeProductFromWishlist = async (req, res) => {
     // Get product id
     const { productId } = req.body;
 
-    // Find the user's wishlist
+    // Find the user  wishlist
     let wishlist = await Wishlist.findOne({ userId });
 
     // Handle wishlist not found

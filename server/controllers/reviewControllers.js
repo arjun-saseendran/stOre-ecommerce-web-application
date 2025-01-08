@@ -3,22 +3,24 @@ import { Review } from "../models/reviewModel.js";
 import { Order } from "../models/orderModel.js";
 import { catchErrorHandler } from "../utils/catchErrorHandler.js";
 
-// Add review if user has purchased the product
+// Add new review
 export const addReview = async (req, res) => {
   try {
-    // Destructure data from request body
+    // Get data from request body
     const { productId, rating, comment } = req.body;
 
     // Get user
     const userId = req.user.id;
 
-    // Handle no user login
-    if(!userId){
-      return res.status(401).json({message: 'User not authorized'})
+    // Handle no user id
+    if (!userId) {
+      return res.status(401).json({ message: "User not authorized" });
     }
 
-    // Check if the product exists
+    // Find the product with product id
     const product = await Product.findById(productId);
+
+    // Handle product not found
     if (!product) {
       return res.status(404).json({ message: "Product not found" });
     }
@@ -30,6 +32,7 @@ export const addReview = async (req, res) => {
       orderStatus: "delivered",
     });
 
+    // Handle user has not purchased product
     if (!order) {
       return res
         .status(400)
@@ -42,6 +45,7 @@ export const addReview = async (req, res) => {
       userId: userId,
     });
 
+    // Handle already reviewed
     if (existingReview) {
       return res
         .status(400)
@@ -58,7 +62,8 @@ export const addReview = async (req, res) => {
     // Save review to data base
     await review.save();
 
-    res.status(201).json({
+    // Send response to frontend
+    res.status(200).json({
       message: "Review added successfully",
       data: review,
     });
@@ -115,7 +120,7 @@ export const deleteReview = async (req, res) => {
     }
 
     // Send response to frontend
-    res.status(202).json({ message: "Review deleted successfully" });
+    res.status(200).json({ message: "Review deleted successfully" });
   } catch (error) {
     // Handle catch error
     catchErrorHandler(res, error);
@@ -131,11 +136,11 @@ export const getAverageRating = async (req, res) => {
     // Find reviews
     const reviews = await Review.find({ productId });
 
-    // // Handle reviews not found
+    // Handle reviews not found
     if (!reviews.length) {
       // Send response to frontend
       return res
-        .status(200)
+        .status(404)
         .json({ message: "No reviews found for this product", data: 0 });
     }
 
@@ -147,6 +152,7 @@ export const getAverageRating = async (req, res) => {
     res
       .status(200)
       .json({ message: "Average rating fetched", data: averageRating });
+
     // Handle catch error
     catchErrorHandler(res, error);
   } catch (error) {}

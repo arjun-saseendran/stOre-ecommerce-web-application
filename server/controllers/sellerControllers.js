@@ -23,6 +23,8 @@ export const sellerSignup = async (req, res) => {
   try {
     // Destructing data from request body
     const { name, email, password, mobile, confirmPassword } = req.body;
+
+    // Handle input field not be empty
     if (!name || !email || !mobile || !password || !confirmPassword) {
       return res.status(400).json({ message: "All fields required" });
     }
@@ -45,7 +47,7 @@ export const sellerSignup = async (req, res) => {
     // Hashing password
     const hashedPassword = await passwordHandler(password, undefined, res);
 
-    // Handle upload image
+    // Upload profile picture to cloudinary
     const uploadResult = await cloudinaryInstance.uploader.upload(
       req.file.path
     );
@@ -65,7 +67,8 @@ export const sellerSignup = async (req, res) => {
     // Exclude password
     const { password: _, ...sellerWithoutPassword } = newSeller.toObject();
 
-    res.json({
+    // Send response to frontend
+    res.status(200).json({
       message: "Seller created successfully",
       data: sellerWithoutPassword,
     });
@@ -78,6 +81,7 @@ export const sellerSignup = async (req, res) => {
 // Seller login
 export const sellerLogin = async (req, res) => {
   try {
+    // Get data from request body
     const { email, password } = req.body;
 
     // Checking fields
@@ -99,6 +103,7 @@ export const sellerLogin = async (req, res) => {
       res
     );
 
+    // Handle password does not match
     if (!matchedPassword) {
       return res.status(400).json({ message: "Incorrect password" });
     }
@@ -137,6 +142,7 @@ export const sellerProfile = async (req, res) => {
     const userId = req.user.id;
     const profile = await Seller.findById(userId).select("-password");
 
+    // Send response to frontend
     res.status(200).json({
       message: "Seller profile details fetched",
       data: profile,
@@ -153,8 +159,11 @@ export const sellerDetails = async (req, res) => {
   try {
     // Get seller id
     const { userId } = req.params;
+
+    // Find seller
     const seller = await Seller.findById(userId);
 
+    // Send response to frontend
     res.status(200).json({ message: "Seller details fetched", data: seller });
   } catch (error) {
     // Handle catch error
@@ -168,6 +177,7 @@ export const getSellers = async (req, res) => {
     // Get all sellers
     const seller = await Seller.find({ role: "seller" });
 
+    // Send response to frontend
     res
       .status(200)
       .json({ message: "All sellers fetched successfully", data: seller });
@@ -187,6 +197,7 @@ export const sellerLogout = async (req, res) => {
       httpOnly: NODE_ENV === "production",
     });
 
+    // Send response to frontend
     res.status(200).json({ message: "Seller logout success" });
   } catch (error) {
     // Handle catch error
@@ -197,10 +208,10 @@ export const sellerLogout = async (req, res) => {
 // Update seller profile details
 export const updateSellerProfile = async (req, res) => {
   try {
-    // Destructure request body
+    // Get data from request body
     const { name, email, mobile } = req.body;
 
-    // Check if name, email, or mobile are missing
+    // Handle field not to be empty
     if (!name || !email || !mobile) {
       return res
         .status(400)
@@ -212,6 +223,7 @@ export const updateSellerProfile = async (req, res) => {
     // Handle upload image
     let profilePictureUrl = null;
 
+    // Upload data to cloudinary
     if (req.file) {
       const uploadResult = await cloudinaryInstance.uploader.upload(
         req.file.path
@@ -230,7 +242,7 @@ export const updateSellerProfile = async (req, res) => {
       },
       { new: true }
     );
-
+    // Send response to frontend
     res.status(200).json({
       message: "Seller profile details updated",
       data: updatedSellerData,
@@ -244,6 +256,7 @@ export const updateSellerProfile = async (req, res) => {
 // Check seller
 export const checkSeller = async (req, res) => {
   try {
+    // Send response to frontend
     res.status(200).json({ message: "Authorized seller" });
   } catch (error) {
     // Handle catch error
@@ -251,6 +264,7 @@ export const checkSeller = async (req, res) => {
   }
 };
 
+// Deactivate seller
 export const deactivateSeller = async (req, res) => {
   try {
     // Get user id
@@ -270,7 +284,8 @@ export const deactivateSeller = async (req, res) => {
     // Save data
     await seller.save();
 
-    res.status(202).json({ message: "Seller deactivated", data: seller });
+    // Send response to frontend
+    res.status(200).json({ message: "Seller deactivated", data: seller });
   } catch (error) {
     // Handle catch error
     catchErrorHandler(res, error);
@@ -287,7 +302,7 @@ export const getInactiveSellers = async (req, res) => {
     if (!inactiveSellers) {
       return res.status(404).json({ message: "No inactive seller found" });
     }
-
+    // Send response to frontend
     res
       .status(200)
       .json({ message: "Inactive sellers fetched", data: inactiveSellers });
@@ -306,7 +321,7 @@ export const getActiveSellers = async (req, res) => {
     if (!activeSellers) {
       return res.status(404).json({ message: "No active sellers found" });
     }
-
+    // Send response to frontend
     res
       .status(200)
       .json({ message: "Active sellers fetched", data: activeSellers });
@@ -336,7 +351,8 @@ export const activateSeller = async (req, res) => {
     // Save data
     await seller.save();
 
-    res.status(202).json({ message: "Seller activated", data: seller });
+    // Send response to frontend
+    res.status(200).json({ message: "Seller activated", data: seller });
   } catch (error) {
     // Handle catch error
     catchErrorHandler(res, error);
@@ -351,9 +367,9 @@ export const deleteSeller = async (req, res) => {
 
     // Get seller
     const seller = await Seller.findByIdAndDelete(userId);
-
+    // Send response to frontend
     res
-      .status(202)
+      .status(200)
       .json({ message: "Seller deleted successfully", data: seller });
   } catch (error) {
     // Handle catch error
@@ -363,12 +379,13 @@ export const deleteSeller = async (req, res) => {
 
 // Forgot password
 export const sellerForgotPassword = async (req, res) => {
-  // Get seller email from body
+  // Get data request body
   const { email } = req.body;
   try {
     // Find seller found
     const seller = await Seller.findOne({ email });
 
+    // Handle seller not found
     if (!seller) {
       return res.status(404).json({ message: "Seller not found" });
     }
@@ -387,16 +404,17 @@ export const sellerForgotPassword = async (req, res) => {
 
     // Set rest link
     const resetLink = `${process.env.CORS}/seller/reset-password/${resetToken}`;
-
+    // Set up mail
     await transporter.sendMail({
       from: process.env.EMAIL_USER,
       to: email,
       subject: "Password reset request",
       text: `Click the link to reset your password: ${resetLink}`,
     });
-
+    // Send response to frontend
     res.status(200).json({ message: "Reset email send!" });
   } catch (error) {
+    // Handle catch error
     catchErrorHandler(res, error);
   }
 };
@@ -406,6 +424,7 @@ export const sellerResetPassword = async (req, res) => {
   // Get data from request body
   const { password } = req.body;
 
+  // Get token from url
   const { token } = req.params;
 
   try {
@@ -431,9 +450,10 @@ export const sellerResetPassword = async (req, res) => {
 
     // Save seller data
     await seller.save();
-
+    // Send response to frontend
     res.status(200).json({ message: "Password reset successful!" });
   } catch (error) {
+    // Handle catch error
     catchErrorHandler(res, error);
   }
 };
@@ -455,12 +475,13 @@ export const searchActiveSellers = async (req, res) => {
         ],
       });
 
+      // Handle search query
       if (!activeSellers || activeSellers.length === 0) {
         return res
           .status(404)
           .json({ message: "No matching active sellers found in search" });
       }
-
+      // Send response to frontend
       return res.status(200).json({
         message: "Active sellers found",
         data: activeSellers,
@@ -469,6 +490,7 @@ export const searchActiveSellers = async (req, res) => {
       // If no search value, return all active sellers
       const activeSellers = await Seller.find({ isActive: true });
 
+      // Handle data not found
       if (!activeSellers || activeSellers.length === 0) {
         return res
           .status(404)
@@ -495,7 +517,7 @@ export const searchInactiveSellers = async (req, res) => {
 
     // Check if search value
     if (searchResult && searchResult.trim() !== "") {
-      // Search for inactive sellers
+      // Search for inactive sellers by mongodb regular expression
       const inactiveSellers = await Seller.find({
         isActive: false,
         $or: [
@@ -503,13 +525,13 @@ export const searchInactiveSellers = async (req, res) => {
           { email: { $regex: searchResult, $options: "i" } },
         ],
       });
-
+      // Handle data not found
       if (!inactiveSellers || inactiveSellers.length === 0) {
         return res
           .status(404)
           .json({ message: "No matching inactive sellers found in search" });
       }
-
+      // Send response to frontend
       return res.status(200).json({
         message: "Inactive sellers found",
         data: inactiveSellers,
@@ -517,7 +539,7 @@ export const searchInactiveSellers = async (req, res) => {
     } else {
       // If no search value, return all inactive sellers
       const inactiveSellers = await Seller.find({ isActive: false });
-
+      // Handle no data found
       if (!inactiveSellers || inactiveSellers.length === 0) {
         return res
           .status(404)
