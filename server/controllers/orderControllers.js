@@ -713,7 +713,7 @@ export const getReturnDetails = async (req, res) => {
     });
   } catch (error) {
     // Handle catch
-    catchErrorHandler(res, error)
+    catchErrorHandler(res, error);
   }
 };
 
@@ -795,9 +795,7 @@ export const getSellerReturnDetails = async (req, res) => {
 
     // Handle no products found
     if (!sellerProducts.length) {
-      return res
-        .status(400)
-        .json({ message: "No seller product found" });
+      return res.status(400).json({ message: "No seller product found" });
     }
 
     // Get return details
@@ -816,11 +814,9 @@ export const getSellerReturnDetails = async (req, res) => {
     });
   } catch (error) {
     // Handle catch error
-    catchErrorHandler(res, error)
-    
+    catchErrorHandler(res, error);
+  }
 };
-
-}
 
 // Handle return approval or rejection
 export const handleReturn = async (req, res) => {
@@ -873,14 +869,13 @@ export const handleReturn = async (req, res) => {
   }
 };
 
-// Search return requests by  orderId 
+// Search return requests by  orderId
 export const searchReturnRequests = async (req, res) => {
   try {
     const { searchResult, status } = req.body;
 
     // Handle data
     if (searchResult && searchResult.trim() !== "") {
-      
       // Search by returnApprovalStatus and orderId match
       const searchResults = await Order.find({
         returnApprovalStatus: status,
@@ -904,14 +899,13 @@ export const searchReturnRequests = async (req, res) => {
     }
   } catch (error) {
     // Handle catch error
-    catchErrorHandler(res, error)
+    catchErrorHandler(res, error);
   }
 };
 
-// Search seller return requests by status and orderId 
+// Search seller return requests by status and orderId
 export const searchSellerReturnRequests = async (req, res) => {
   try {
-
     // Get seller id from request user
     const userId = req.user.id;
 
@@ -938,8 +932,7 @@ export const searchSellerReturnRequests = async (req, res) => {
 
     // Handle data
     if (searchResult && searchResult.trim() !== "") {
-      
-      // Search by returnApprovalStatus and orderId 
+      // Search by returnApprovalStatus and orderId
       const searchResults = await Order.find({
         _id: searchResult, // Direct match for order ID
         returnApprovalStatus: status,
@@ -961,17 +954,16 @@ export const searchSellerReturnRequests = async (req, res) => {
         data: searchResults,
       });
     } else {
-
       // Handle invalid input
       return res.status(400).json({ message: "Invalid search input" });
     }
   } catch (error) {
-   // Handle catch error
-   catchErrorHandler(res, error)
+    // Handle catch error
+    catchErrorHandler(res, error);
   }
 };
 
-// Search orders by return status 
+// Search orders by return status
 export const searchOrdersByReturnStatus = async (req, res) => {
   try {
     // Get data from request body
@@ -979,7 +971,6 @@ export const searchOrdersByReturnStatus = async (req, res) => {
 
     // Handle data
     if (status && status.trim() !== "") {
-      
       // Check  search query
       const searchQuery =
         searchResult && searchResult.trim() !== "" ? { _id: searchResult } : {};
@@ -987,7 +978,7 @@ export const searchOrdersByReturnStatus = async (req, res) => {
       // Find all orders with returnStatus
       const orders = await Order.find({
         ...searchQuery,
-        returnStatus: status || "eligible", 
+        returnStatus: status || "eligible",
         // Populate data
       }).populate("products.productId", "title price image");
 
@@ -1004,20 +995,18 @@ export const searchOrdersByReturnStatus = async (req, res) => {
         data: orders,
       });
     } else {
-
       // Handle invalid input
       return res.status(400).json({ message: "Invalid return status" });
     }
   } catch (error) {
     // Handle catch error
-    catchErrorHandler(res, error)
+    catchErrorHandler(res, error);
   }
 };
 
-// Search seller orders by return status and orderId 
+// Search seller orders by return status and orderId
 export const searchSellerOrdersByReturnStatus = async (req, res) => {
   try {
-
     // Get user id from request body
     const userId = req.user.id;
 
@@ -1044,11 +1033,10 @@ export const searchSellerOrdersByReturnStatus = async (req, res) => {
 
     // Handle data
     if (searchResult && searchResult.trim() !== "") {
-      
       // Search by returnStatus and orderId as string match
       const searchResults = await Order.find({
-        _id: searchResult, 
-        returnStatus: status || "eligible", 
+        _id: searchResult,
+        returnStatus: status || "eligible",
         "products.productId": { $in: productIds },
         // Populate data
       }).populate("products.productId", "title price image");
@@ -1069,6 +1057,6 @@ export const searchSellerOrdersByReturnStatus = async (req, res) => {
     }
   } catch (error) {
     // Handle catch error
-    catchErrorHandler(res, error)
+    catchErrorHandler(res, error);
   }
 };

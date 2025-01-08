@@ -7,6 +7,7 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 // Handle checkout
 export const createCheckoutSession = async (req, res, next) => {
   try {
+    // Get products from request body
     const { products } = req.body;
 
     // Line items
@@ -17,8 +18,10 @@ export const createCheckoutSession = async (req, res, next) => {
           name: product?.productId?.title,
           images: [product?.productId?.image],
         },
+        // Set product price
         unit_amount: Math.round(product?.productId?.price * 100),
       },
+      // Set product quantity
       quantity: product?.quantity,
     }));
 
@@ -51,6 +54,7 @@ export const createCheckoutSession = async (req, res, next) => {
       totalPrice,
       orderStatus: "processing",
     });
+    // Save order
     await order.save();
 
     // Send response to the client
@@ -63,20 +67,26 @@ export const createCheckoutSession = async (req, res, next) => {
 // Get session status
 export const getSessionStatus = async (req, res) => {
   try {
+    // Get user id from request user
     const userId = req.user.id;
 
+    // Get order details
     const orderDetails = await Order.findOne({ userId });
 
+    // Get order detailed details
     const sessionId = orderDetails.sessionId;
 
+    // Get session data
     const session = await stripe.checkout.sessions.retrieve(sessionId);
 
+    // Send response to frontend
     res.json({
       status: session?.status,
       customer_email: session?.customer_details?.email,
       session_data: session,
     });
   } catch (error) {
+    // Handle catch error
     catchErrorHandler(res, error);
   }
 };
