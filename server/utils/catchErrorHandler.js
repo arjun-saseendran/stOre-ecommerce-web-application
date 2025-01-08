@@ -1,4 +1,5 @@
 
+// Handle catch error
 export const catchErrorHandler = (res, error) =>{
     return res
       .status(error.status || 500)
