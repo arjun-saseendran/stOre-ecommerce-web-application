@@ -24,7 +24,7 @@ export const Banners = ({ role = "admin" }) => {
   if (role === "admin") {
     user.banners = "/banner/banners";
     user.searchBanner = "/banner/search-banners";
-  } else if(role === 'seller') {
+  } else if (role === "seller") {
     user.banners = "/banner/seller-banners";
     user.searchBanner = "/banner/search-seller-banners";
   }
@@ -82,8 +82,14 @@ export const Banners = ({ role = "admin" }) => {
   }, [searchResult, banners, user.searchBanner]);
 
   return (
-    <Container style={{minHeight:400}}>
-      <h1 className="text-center text-white mt-5">Banner List</h1>
+    <Container style={{ minHeight: 400 }}>
+      <h1
+        className={
+          theme ? "text-center text-black mt-5" : "text-center text-white mt-5"
+        }
+      >
+        Banner List
+      </h1>
       <Row
         className="mt-5 p-3 rounded-3"
         style={{ backgroundColor: theme ? "#FFF6E3" : "#d9d9d9" }}
