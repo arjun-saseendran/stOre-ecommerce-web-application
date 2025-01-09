@@ -1,10 +1,11 @@
 import toast from "react-hot-toast";
+import { Link } from "react-router-dom";
 import { loadStripe } from "@stripe/stripe-js";
 import { Button, Card, Row, Col, Container } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import { axiosInstance } from "../../config/axiosInstance";
 import { OrderIcon } from "../../components/shared/OrderIcon";
-import { CartEmpty } from "../../components/shared/CartEmpty";
+import { UnHappy } from "../../components/shared/UnHappy";
 
 export const Cart = () => {
   // Get current theme
@@ -72,7 +73,9 @@ export const Cart = () => {
   };
 
   if (!cartData?.products?.length) {
-    return <CartEmpty />;
+    return (<Link className="text-decoration-none" to={"/"}>
+      <UnHappy message={"Your cart is empty!"} theme={theme} />;
+    </Link>)
   }
 
   return (

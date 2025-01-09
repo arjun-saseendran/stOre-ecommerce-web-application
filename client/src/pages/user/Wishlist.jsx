@@ -44,9 +44,13 @@ export const Wishlist = () => {
 
   return (
     <Container style={{ minHeight: "400px" }}>
-      <h1 className="text-white h1 text-center fw-bold my-5">Wishlist</h1>
+      {wishlistData?.products?.length !== 0 && (
+        <h1 className="text-white h1 text-center fw-bold my-5">Wishlist</h1>
+      )}
       {wishlistData?.products?.length === 0 && (
-        <UnHappy message={"Your wishlist is empty!"} theme={theme} />
+        <Link className="text-decoration-none" to={"/"}>
+          <UnHappy message={"Your wishlist is empty!"} theme={theme} />
+        </Link>
       )}
       {wishlistData?.products?.map((product) => (
         <Row

@@ -1,5 +1,4 @@
 import { useEffect } from "react";
-import { Container, Button } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { axiosInstance } from "../../config/axiosInstance";
@@ -28,7 +27,9 @@ export const PaymentCancel = () => {
 
   return (
     <>
-    <UnHappy message={"Your payment has cancelled!"} theme={theme}/>
+      <Link className="text-decoration-none" to={"/"}>
+        <UnHappy message={"Your payment has cancelled!"} theme={theme} />
+      </Link>
     </>
   );
 };

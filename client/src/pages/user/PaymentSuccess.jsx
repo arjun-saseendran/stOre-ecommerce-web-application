@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { axiosInstance } from "../../config/axiosInstance";
 import { Happy } from "../../components/shared/Happy";
+import { Link } from "react-router-dom";
 
 export const PaymentSuccess = () => {
   // Get current theme
@@ -37,7 +38,9 @@ export const PaymentSuccess = () => {
 
   return (
     <>
+    <Link className="text-decoration-none" to={"/"}>
     <Happy message={'Your payment success!'} theme={theme}/>
+    </Link>
     </>
   );
-};
+}
