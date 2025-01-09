@@ -1,3 +1,4 @@
+import toast from "react-hot-toast";
 import { useNavigate, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { Button, Container } from "react-bootstrap";
@@ -5,7 +6,7 @@ import { axiosInstance } from "../../config/axiosInstance";
 import { useFetch } from "../../hooks/useFetch";
 import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
-import toast from "react-hot-toast";
+import { Loading } from "../../components/shared/Loading";
 
 export const Profile = ({ role = "user", action }) => {
   // Config navigate
@@ -128,6 +129,7 @@ export const Profile = ({ role = "user", action }) => {
 
   return (
     <Container>
+      {loading && <Loading />}
       <form
         onSubmit={handleSubmit(onSubmit)}
         encType="multipart/form-data"

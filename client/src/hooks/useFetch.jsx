@@ -5,9 +5,11 @@ export const useFetch = (url) => {
   // Handle data, loading, error
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(true);
+  const [error, setError] = useState(null);
 
   const fetchData = useCallback( async () => {
+    // When fetching
+    setLoading(true)
     try {
         // Get response
       const response = await axiosInstance({
@@ -21,7 +23,7 @@ export const useFetch = (url) => {
       }, 1000)
     } catch (error) {
         // Set error
-        setError(error)
+        setError(error.message || 'Something went wrong!')
     }finally{
         // Set loading
         setLoading(false)
