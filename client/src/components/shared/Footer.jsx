@@ -98,7 +98,7 @@ export const Footer = () => {
           </li>
         </ul>
       </Col>
-      <span>Copyright &copy; 2024 store.com</span>
+      <span>Copyright &copy; 2024-2025 store.com</span>
     </Row>
   );
 };
