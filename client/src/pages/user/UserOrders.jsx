@@ -3,6 +3,7 @@ import { Container, Row, Col, Card, Button } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import { axiosInstance } from "../../config/axiosInstance";
 import { Link } from "react-router-dom";
+import {UnHappy} from '../../components/shared/UnHappy'
 
 export const UserOrders = () => {
   // Get theme
@@ -34,6 +35,9 @@ export const UserOrders = () => {
     fetchOrderDetails();
   }, []);
 
+  
+  
+
   return (
     <Container style={{ minHeight: "400px" }}>
       <h1
@@ -43,9 +47,9 @@ export const UserOrders = () => {
             : "text-white h1 text-center fw-bold my-5"
         }
       >
-        Order Details
+        Orders 
       </h1>
-
+{orders.length === 0 && <UnHappy message={"We are still waiting to take your first order!"} theme={theme}/>}
       {orders?.map((order) => (
         <div key={order._id}>
           {order.products.map((product) => (

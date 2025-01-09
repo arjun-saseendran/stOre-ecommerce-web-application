@@ -1,9 +1,6 @@
-import React from "react";
-import { useSelector } from "react-redux";
+import React from 'react'
 
-export const CartEmpty = () => {
-  // Get current theme
-  const { theme } = useSelector((state) => state.theme);
+export const UnHappy = ({message, theme}) => {
   return (
     <div
       className="d-flex justify-content-center align-items-center flex-column"
@@ -26,10 +23,10 @@ export const CartEmpty = () => {
       </svg>
 
       <div>
-        <span className={theme ? "text-black" : "text-white"}>
-          Your cart is empty!
+        <span className={theme ? "text-black " : "text-white"}>
+          {message}
         </span>
       </div>
     </div>
   );
-};
+}

@@ -90,3 +90,74 @@ export const getSessionStatus = async (req, res) => {
     catchErrorHandler(res, error);
   }
 };
+
+// Handle payment complete
+export const handlePaymentComplete = async (req, res) => {
+  try {
+    // Get user id from request user
+    const userId = req.user.id;
+
+    // Find the most recent order for the user
+    const order = await Order.findOne({ userId: userId }).sort({
+      createdAt: -1,
+    });
+
+    // Handle case if no order is found
+    if (!order) {
+      return res.status(404).json({ message: "No orders found for this user" });
+    }
+
+    // Update payment status to 'completed'
+    order.paymentStatus = "completed";
+
+    // Save the order
+    await order.save();
+
+    // Send response to frontend
+    return res
+      .status(200)
+      .json({ message: "Payment completed, order status updated" });
+  } catch (error) {
+    // Handle catch error
+    catchErrorHandler(res, error);
+  }
+};
+
+
+// Handle payment incomplete
+export const handlePaymentIncomplete = async (req, res) => {
+  try {
+    // Get user is from request user
+    const userId = req.user.id;
+
+    // Find the most recent order for the user
+    const order = await Order.findOne({ userId: userId }).sort({
+      createdAt: -1,
+    });
+
+    // Handle case if no order is found
+    if (!order) {
+      return res.status(404).json({ message: "No orders found for this user" });
+    }
+
+    // Check if the order payment status is incomplete
+    if (order.paymentStatus !== "completed") {
+      
+      // Delete the order
+      await Order.findByIdAndDelete(order._id);
+      
+      // Send response to frontend
+      return res
+        .status(200)
+        .json({ message: "Incomplete order deleted successfully" });
+    }
+
+    // Handle payment already completed
+    return res
+      .status(400)
+      .json({ message: "Order payment already completed, cannot delete" });
+  } catch (error) {
+    // Handle catch error
+    catchErrorHandler(res, error);
+  }
+};

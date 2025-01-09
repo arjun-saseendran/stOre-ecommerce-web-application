@@ -250,7 +250,7 @@ export const getUserOrder = async (req, res) => {
 
 export const updateStock = async (req, res) => {
   try {
-    // Get uer id from middleware
+    // Get uer id from request user
     const userId = req.user.id;
 
     // Find the most recent order for the user and populate product details
@@ -274,7 +274,6 @@ export const updateStock = async (req, res) => {
         }
       })
     );
-
     // Send response to frontend
     return res.status(200).json({ message: "Stock updated successfully" });
   } catch (error) {

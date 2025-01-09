@@ -1,6 +1,6 @@
-import React from 'react'
+import React from "react";
 
-export default function BuyNow() {
+export const BuyNow = () => {
   return (
     <>
       <svg
@@ -20,4 +20,4 @@ export default function BuyNow() {
       </svg>
     </>
   );
-}
+};

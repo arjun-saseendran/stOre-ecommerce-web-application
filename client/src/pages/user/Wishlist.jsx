@@ -1,8 +1,9 @@
+import toast from "react-hot-toast";
 import { Container, Button, Row, Col } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { axiosInstance } from "../../config/axiosInstance"
-import toast from "react-hot-toast";
+import { axiosInstance } from "../../config/axiosInstance";
+import { UnHappy } from "../../components/shared/UnHappy";
 
 export const Wishlist = () => {
   // Get current theme
@@ -44,7 +45,9 @@ export const Wishlist = () => {
   return (
     <Container style={{ minHeight: "400px" }}>
       <h1 className="text-white h1 text-center fw-bold my-5">Wishlist</h1>
-
+      {wishlistData?.products?.length === 0 && (
+        <UnHappy message={"Your wishlist is empty!"} theme={theme} />
+      )}
       {wishlistData?.products?.map((product) => (
         <Row
           className="d-flex justify-content-between align-items-center p-3 rounded-3 mx-2   my-3 "
