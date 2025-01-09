@@ -171,7 +171,11 @@ export const Users = ({
 
   return (
     <Container style={{ minHeight: "500px" }}>
-      <h1 className="text-center text-white mt-5">
+      <h1
+        className={
+          theme ? "text-center text-black mt-5" : "text-center text-white mt-5"
+        }
+      >
         List {status} {role}
       </h1>
       <Row

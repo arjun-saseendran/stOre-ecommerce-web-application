@@ -100,7 +100,13 @@ export const Products = ({ action = "Update", role = "admin" }) => {
 
   return (
     <Container style={{ minHeight: "400px" }}>
-      <h1 className="text-center text-white mt-5">Product {action} List</h1>
+      <h1
+        className={
+          theme ? "text-center text-black mt-5" : "text-center text-white mt-5"
+        }
+      >
+        Product {action} List
+      </h1>
       <Row
         className="mt-5 p-3 rounded-3"
         style={{
