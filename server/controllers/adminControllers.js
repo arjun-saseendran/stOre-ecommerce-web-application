@@ -22,7 +22,14 @@ const transporter = nodemailer.createTransport({
 export const adminSignup = async (req, res) => {
   try {
     // Destructing data from request body
-    const { name, email, password, mobile, confirmPassword } = req.body;
+    const {
+      name,
+      email,
+      password,
+      mobile,
+      confirmPassword,
+      role = "admin",
+    } = req.body;
 
     // Handle any field is empty
     if (!name || !email || !mobile || !password || !confirmPassword) {
@@ -36,21 +43,22 @@ export const adminSignup = async (req, res) => {
         .json({ message: "Password and Confirm password not match" });
     }
 
-    // Checking admin exists 
+    // Checking admin exists
     const adminExist = await Seller.findOne({ email, role: "admin" }).select(
       "-password"
     );
 
-    // Handle admin found 
+    // Handle admin found
     if (adminExist) {
       return res.status(400).json({ message: "Admin already exists!" });
     }
 
-    // Checking mobile number exists 
+    // Checking mobile number exists
     const mobileNumberExist = await Seller.findOne({
       mobile,
       role: "admin",
     }).select("-password");
+
     if (mobileNumberExist) {
       return res.status(400).json({ message: "Mobile number already exists!" });
     }
@@ -73,7 +81,7 @@ export const adminSignup = async (req, res) => {
       name,
       email,
       mobile,
-      role: "admin",
+      role,
       profilePicture: uploadResult.url,
       password: hashedPassword,
     });

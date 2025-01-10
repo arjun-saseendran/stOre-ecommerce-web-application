@@ -46,12 +46,15 @@ export const sellerSignup = async (req, res) => {
     }
 
     // Checking mobile number exists or not
-    const mobileNumberExist = await Seller.findOne({ mobile });
+    const mobileNumberExist = await Seller.findOne({ mobile }).select(
+      "-password"
+    );
+    
     if (mobileNumberExist) {
       return res
         .status(400)
         .json({ message: "Mobile number already exist!" })
-        .select("-password");
+        
     }
 
     // Hashing password
