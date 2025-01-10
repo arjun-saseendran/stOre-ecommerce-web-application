@@ -45,18 +45,29 @@ export const userSignup = async (req, res) => {
         .select("-password");
     }
 
+    // Checking mobile number exists or not
+    const mobileNumberExist = await User.findOne({ mobile });
+    if (mobileNumberExist) {
+      return res
+        .status(400)
+        .json({ message: "Mobile number already exist!" })
+        .select("-password");
+    }
+
     // Hashing password
     const hashedPassword = await passwordHandler(password, undefined, res);
+
+    // Handle profile picture not found
+    if (!req.file || !req.file.path) {
+      return res.status(400).json({ message: "Profile picture required!" });
+    }
 
     // Upload profile picture to cloudinary
     const uploadResult = await cloudinaryInstance.uploader.upload(
       req.file.path
     );
 
-    // Handle profile picture not found
-    if (!req.file) {
-      return res.status(400).json({ message: "Profile picture required!" });
-    }
+    
 
     // Creating new user object
     const newUser = new User({
