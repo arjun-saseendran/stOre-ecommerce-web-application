@@ -44,8 +44,23 @@ export const sellerSignup = async (req, res) => {
         .json({ message: "Seller already exist" })
         .select("-password");
     }
+
+    // Checking mobile number exists or not
+    const mobileNumberExist = await Seller.findOne({ mobile });
+    if (mobileNumberExist) {
+      return res
+        .status(400)
+        .json({ message: "Mobile number already exist!" })
+        .select("-password");
+    }
+
     // Hashing password
     const hashedPassword = await passwordHandler(password, undefined, res);
+
+    // Handle profile picture not found
+    if (!req.file || !req.file.path) {
+      return res.status(400).json({ message: "Profile picture required!" });
+    }
 
     // Upload profile picture to cloudinary
     const uploadResult = await cloudinaryInstance.uploader.upload(

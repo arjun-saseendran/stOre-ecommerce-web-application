@@ -36,18 +36,32 @@ export const adminSignup = async (req, res) => {
         .json({ message: "Password and Confirm password not match" });
     }
 
-    // Checking admin exists or not
-    const adminExist = await Seller.findOne({ email, role: "admin" });
+    // Checking admin exists 
+    const adminExist = await Seller.findOne({ email, role: "admin" }).select(
+      "-password"
+    );
 
-    // Handle admin found with same email id
+    // Handle admin found 
     if (adminExist) {
-      return res
-        .status(400)
-        .json({ message: "Admin already exist" })
-        .select("-password");
+      return res.status(400).json({ message: "Admin already exists!" });
     }
+
+    // Checking mobile number exists 
+    const mobileNumberExist = await Seller.findOne({
+      mobile,
+      role: "admin",
+    }).select("-password");
+    if (mobileNumberExist) {
+      return res.status(400).json({ message: "Mobile number already exists!" });
+    }
+
     // Hashing password
     const hashedPassword = await passwordHandler(password, undefined, res);
+
+    // Handle profile picture not found
+    if (!req.file || !req.file.path) {
+      return res.status(400).json({ message: "Profile picture required!" });
+    }
 
     // Handle upload image
     const uploadResult = await cloudinaryInstance.uploader.upload(
