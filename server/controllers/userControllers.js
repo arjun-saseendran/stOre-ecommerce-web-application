@@ -44,6 +44,7 @@ export const userSignup = async (req, res) => {
         .json({ message: "User already exist" })
         .select("-password");
     }
+
     // Hashing password
     const hashedPassword = await passwordHandler(password, undefined, res);
 
@@ -51,6 +52,11 @@ export const userSignup = async (req, res) => {
     const uploadResult = await cloudinaryInstance.uploader.upload(
       req.file.path
     );
+
+    // Handle profile picture not found
+    if (!req.file) {
+      return res.status(400).json({ message: "Profile picture required!" });
+    }
 
     // Creating new user object
     const newUser = new User({

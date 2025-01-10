@@ -65,7 +65,7 @@ export const Signup = ({ role = "user" }) => {
 
       navigate(user.login_route);
     } catch (error) {
-      toast.error("Signup failed. Please try again!");
+      toast.error(error?.response?.data?.message || 'Something went wrong!');
     }
   };
 
