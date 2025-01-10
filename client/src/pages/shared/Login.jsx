@@ -59,7 +59,7 @@ export const Login = ({ role = "user" }) => {
       // Navigate to profile page
       navigate(user.home_route);
     } catch (error) {
-      toast.error("Login failed");
+      toast.error(error.response.data.message);
     }
   };
 
