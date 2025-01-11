@@ -7,7 +7,7 @@ import crypto from "crypto";
 import nodemailer from "nodemailer";
 
 // Config node env
-const NODE_ENV = process.env.NODE_ENV;
+// const NODE_ENV = process.env.NODE_ENV;
 
 // Config nodemailer
 const transporter = nodemailer.createTransport({
@@ -135,10 +135,17 @@ export const sellerLogin = async (req, res) => {
     const token = generateToken(seller, "seller", res);
 
     // Set token to cookie
-    res.cookie("token", token, {
+    /* res.cookie("token", token, {
       sameSite: NODE_ENV === "production" ? "None" : "Lax",
       secure: NODE_ENV === "production",
       httpOnly: NODE_ENV === "production",
+    });*/
+
+    // Set the token as a cookie
+    res.cookie("token", token, {
+      sameSite: "None",
+      httpOnly: true,
+      secure: true,
     });
 
     // Exclude password
@@ -209,10 +216,17 @@ export const getSellers = async (req, res) => {
 export const sellerLogout = async (req, res) => {
   // Clearing token from cookies
   try {
-    res.clearCookie("token", {
+    /*res.clearCookie("token", {
       sameSite: NODE_ENV === "production" ? "None" : "Lax",
       secure: NODE_ENV === "production",
       httpOnly: NODE_ENV === "production",
+    });*/
+
+    // Clear cookies
+    res.clearCookie("token", {
+      sameSite: "None",
+      secure: true,
+      httpOnly: true,
     });
 
     // Send response to frontend
