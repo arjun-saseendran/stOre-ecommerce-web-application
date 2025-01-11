@@ -7,7 +7,7 @@ import { passwordHandler } from "../utils/passwordHandler.js";
 import { cloudinaryInstance } from "../config/cloudinary.js";
 
 // Config node env
-// const NODE_ENV = process.env.NODE_ENV;
+const NODE_ENV = process.env.NODE_ENV;
 
 // Config nodemailer
 const transporter = nodemailer.createTransport({
@@ -142,17 +142,10 @@ export const adminLogin = async (req, res) => {
     const token = generateToken(admin, "admin", res);
 
     // Set token to cookie
-    /* res.cookie("token", token, {
+    res.cookie("token", token, {
       sameSite: NODE_ENV === "production" ? "None" : "Lax",
       secure: NODE_ENV === "production",
       httpOnly: NODE_ENV === "production",
-    }); */
-
-    // Set the token as a cookie
-    res.cookie("token", token, {
-      sameSite: "None",
-      httpOnly: true,
-      secure: true,
     });
 
     // Exclude password
@@ -339,20 +332,12 @@ export const adminDetails = async (req, res) => {
 
 // Admin logout
 export const adminLogout = async (req, res) => {
-  // Clearing token from cookies
   try {
-    
-    /*res.clearCookie("token", {
+    // Clearing token from cookies
+      res.clearCookie("token", {
       sameSite: NODE_ENV === "production" ? "None" : "Lax",
       secure: NODE_ENV === "production",
       httpOnly: NODE_ENV === "production",
-    });*/
-
-    // Clear cookies
-    res.clearCookie("token", {
-      sameSite: "None",
-      secure: true,
-      httpOnly: true,
     });
 
     // Send response to frontend
