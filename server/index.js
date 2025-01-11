@@ -1,6 +1,6 @@
 import express from "express";
 import dotenv from "dotenv";
-import cors from 'cors'
+import cors from "cors";
 import cookieParser from "cookie-parser";
 import { connectDB } from "./config/db.js";
 import { apiRouter } from "./routes/index.js";
@@ -19,7 +19,6 @@ app.use(
     methods: ["GET", "POST", "PUT", "DELETE"],
   })
 );
-
 
 // Configure port
 const PORT = process.env.PORT;
