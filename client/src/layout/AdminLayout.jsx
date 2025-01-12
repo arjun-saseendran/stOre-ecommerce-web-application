@@ -32,6 +32,7 @@ export const AdminLayout = () => {
    const response =   await axiosInstance({
         method: "GET",
         url: "/admin/check-admin",
+        withCredentials: true
       });
 
       // set admin

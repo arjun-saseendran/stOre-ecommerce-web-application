@@ -33,6 +33,7 @@ export const UserLayout = () => {
     const response =  await axiosInstance({
         method: "GET",
         url: "/user/check-user",
+        withCredentials: true
       });
 
       // set user
