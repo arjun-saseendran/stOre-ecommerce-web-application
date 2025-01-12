@@ -29,13 +29,13 @@ export const AdminLayout = () => {
   const checkAdmin = async () => {
     try {
       // Api call
-      await axiosInstance({
+   const response =   await axiosInstance({
         method: "GET",
         url: "/admin/check-admin",
       });
 
       // set admin
-      dispatch(saveAdminData());
+      dispatch(saveAdminData(response.data.data));
     } catch (error) {
       console.log(error);
 

@@ -30,13 +30,13 @@ export const UserLayout = () => {
   const checkUser = async () => {
     try {
       // Api call
-      await axiosInstance({
+    const response =  await axiosInstance({
         method: "GET",
         url: "/user/check-user",
       });
 
       // set user
-      dispatch(saveUserData());
+      dispatch(saveUserData(response.data.data));
     } catch (error) {
       console.log(error);
 
