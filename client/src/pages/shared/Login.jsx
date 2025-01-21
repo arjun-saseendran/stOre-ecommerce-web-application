@@ -22,7 +22,7 @@ export const Login = ({ role = "user" }) => {
     profile_route: "/user/profile",
     signup_route: "/signup",
     home_route: "/",
-    forgotPassword: '/forgot-password'
+    forgotPassword: "/forgot-password",
   };
 
   // Handle seller role
@@ -32,7 +32,7 @@ export const Login = ({ role = "user" }) => {
     user.profile_route = "/seller/profile";
     user.signup_route = "/seller/signup";
     user.home_route = "/seller";
-    user.forgotPassword = '/seller/forgot-password'
+    user.forgotPassword = "/seller/forgot-password";
   }
 
   // Handle admin role
@@ -42,8 +42,7 @@ export const Login = ({ role = "user" }) => {
     user.profile_route = "/admin/profile";
     user.signup_route = "/admin/signup";
     user.home_route = "/admin";
-    user.forgotPassword = '/admin/forgot-password'
-
+    user.forgotPassword = "/admin/forgot-password";
   }
 
   const onSubmit = async (data) => {
@@ -55,9 +54,10 @@ export const Login = ({ role = "user" }) => {
         data,
       });
       toast.success("Login success");
-
-      // Navigate to profile page
-      navigate(user.home_route);
+      if (response) {
+        // Navigate to profile page
+        navigate(user.home_route);
+      }
     } catch (error) {
       toast.error(error.response.data.message);
     }
