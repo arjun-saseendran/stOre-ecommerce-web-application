@@ -147,8 +147,9 @@ export const Profile = ({ role = "user", action }) => {
                   <img
                     src={profilePicturePreview}
                     alt="Preview"
-                    className="img-fluid ms-3 rounded"
-                    style={{ maxHeight: "150px" }}
+                    height={"150px"}
+                    width={"150px"}
+                    className="ms-3 rounded"
                   />
                 </div>
               )}
@@ -246,7 +247,7 @@ export const Profile = ({ role = "user", action }) => {
           <div>
             <Button
               onClick={() => (edit ? handleSubmit(onSubmit)() : setEdit(!edit))}
-              className="rounded-2 border-0  hover py-2 px-5 text-center 
+              className="rounded-2 border-0  hover py-2 px-5 text-center
             text-white mt-1 me-1"
               type="button"
               variant={theme ? "warning" : "dark"}
