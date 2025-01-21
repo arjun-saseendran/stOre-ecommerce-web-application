@@ -37,7 +37,7 @@ adminRouter.put(
 adminRouter.get("/details/:userId", adminAuth, adminDetails);
 
 // Logout admin
-adminRouter.put("/logout", adminAuth, adminLogout);
+adminRouter.post("/logout", adminAuth, adminLogout);
 
 // Forgot password
 adminRouter.post("/admin/forgot-password", adminForgotPassword);

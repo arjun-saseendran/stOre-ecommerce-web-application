@@ -35,7 +35,7 @@ userRouter.post("/login", userLogin);
 userRouter.get('/users', adminAuth, getUsers)
 
 // Logout user
-userRouter.put("/logout", userAuth, userLogout);
+userRouter.post("/logout", userAuth, userLogout);
 
 // Display user profile
 userRouter.get("/profile", userAuth, userProfile);

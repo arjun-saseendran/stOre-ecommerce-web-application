@@ -35,7 +35,7 @@ sellerRouter.post("/login", sellerLogin);
 sellerRouter.get("/sellers", adminAuth, getSellers);
 
 // Logout seller
-sellerRouter.put("/logout", sellerAuth, sellerLogout);
+sellerRouter.post("/logout", sellerAuth, sellerLogout);
 
 // Display seller profile
 sellerRouter.get("/profile", sellerAuth, sellerProfile);

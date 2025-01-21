@@ -57,7 +57,7 @@ export const UserHeader = () => {
   const handleLogout = async () => {
     try {
       const response = await axiosInstance({
-        method: "PUT",
+        method: "POST",
         url: "/user/logout",
       });
 

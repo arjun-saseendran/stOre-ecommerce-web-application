@@ -23,7 +23,7 @@ export const AdminHeader = () => {
   const handleLogout = async () => {
     try {
       const response = await axiosInstance({
-        method: "PUT",
+        method: "POST",
         url: "/admin/logout",
       });
 
