@@ -30,10 +30,10 @@ export const Signup = ({ role = "user" }) => {
   }
 
   // Handle admin role
-  if(role === 'admin'){
-    user.role = "admin",
-    user.signup_api = 'admin/signup',
-    user.login_route = 'admin/login'
+  if (role === "admin") {
+    (user.role = "admin"),
+      (user.signup_api = "admin/signup"),
+      (user.login_route = "admin/login");
   }
 
   // Handle on submit
@@ -60,17 +60,19 @@ export const Signup = ({ role = "user" }) => {
         data: formData,
         headers: { "Content-Type": "multipart/form-data" },
       });
-
-      toast.success("Signup successful");
-
-      navigate(user.login_route);
+      if (response) {
+        // Display result
+        toast.success("Signup successful");
+        // Navigate to login
+        navigate(user.login_route);
+      }
     } catch (error) {
-      toast.error(error?.response?.data?.message || 'Something went wrong!');
+      toast.error(error?.response?.data?.message || "Something went wrong!");
     }
   };
 
   return (
-    <div style={{minHeight: '400px'}} className="mx-2">
+    <div style={{ minHeight: "400px" }} className="mx-2">
       <form
         onSubmit={handleSubmit(onSubmit)}
         encType="multipart/form-data"
@@ -149,7 +151,7 @@ export const Signup = ({ role = "user" }) => {
         </div>
         <div>
           <Button
-            className="rounded-2 border-0 px-4 hover py-2 text-center 
+            className="rounded-2 border-0 px-4 hover py-2 text-center
             text-white mt-1"
             type="submit"
             variant={theme ? "warning" : "dark"}
