@@ -153,6 +153,7 @@ export const getUsers = async (req, res) => {
   try {
     // Get all users
     const users = await User.find();
+    
     // Send response to frontend
     res
       .status(200)
