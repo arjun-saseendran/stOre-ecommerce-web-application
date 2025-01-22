@@ -132,7 +132,8 @@ export const userLogin = async (req, res) => {
     res.cookie("token", token, {
       sameSite: NODE_ENV === "production" ? "None" : "Lax",
       secure: NODE_ENV === "production",
-      httpOnly: NODE_ENV === "production",
+      httpOnly: true,
+      // httpOnly: NODE_ENV === "production",
     });
 
     // Exclude password
@@ -190,7 +191,8 @@ export const userLogout = async (req, res) => {
     res.clearCookie("token", {
       sameSite: NODE_ENV === "production" ? "None" : "Lax",
       secure: NODE_ENV === "production",
-      httpOnly: NODE_ENV === "production",
+      httpOnly: true
+      // httpOnly: NODE_ENV === "production",
     });
 
     // Send response to frontend
