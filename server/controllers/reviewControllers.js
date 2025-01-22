@@ -85,11 +85,11 @@ export const getProductReview = async (req, res) => {
       .sort({ createdAt: -1 });
 
     // Handle review not found
-    if (!reviews) {
-      return res
-        .status(404)
-        .json({ message: "No reviews found for this product" });
-    }
+    // if (!reviews) {
+    //   return res
+    //     .status(404)
+    //     .json({ message: "No reviews found for this product" });
+    // }
 
     // Send response to frontend
     res
@@ -137,12 +137,12 @@ export const getAverageRating = async (req, res) => {
     const reviews = await Review.find({ productId });
 
     // Handle reviews not found
-    if (!reviews.length) {
-      // Send response to frontend
-      return res
-        .status(404)
-        .json({ message: "No reviews found for this product", data: 0 });
-    }
+    // if (!reviews.length) {
+    //   // Send response to frontend
+    //   return res
+    //     .status(404)
+    //     .json({ message: "No reviews found for this product", data: 0 });
+    // }
 
     // Calculate average rating
     const averageRating =
