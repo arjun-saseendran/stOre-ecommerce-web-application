@@ -12,7 +12,7 @@ export const Signup = ({ role = "user" }) => {
   // Config navigate
   const navigate = useNavigate();
 
-  // Config useForm
+  // Config use form
   const { register, handleSubmit } = useForm();
 
   // Set user role
