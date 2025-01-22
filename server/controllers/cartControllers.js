@@ -110,6 +110,7 @@ export const addToFromWishlistCart = async (req, res) => {
 
     // Handle product found in the cart
     if (productExists) {
+      
       // Handle stock not enough
       if (productExists.quantity + 1 > product.stock) {
         return res
@@ -177,6 +178,7 @@ export const getCart = async (req, res) => {
     // Send response to frontend
     res.status(200).json({ message: "Cart fetched successfully", data: cart });
   } catch (error) {
+    
     // Handle catch error
     catchErrorHandler(res, error);
   }
