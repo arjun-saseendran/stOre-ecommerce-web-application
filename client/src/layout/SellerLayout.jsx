@@ -32,7 +32,6 @@ export const SellerLayout = () => {
       const response = await axiosInstance({
         method: "GET",
         url: "/seller/check-seller",
-        withCredentials: true
       });
 
       // set seller data

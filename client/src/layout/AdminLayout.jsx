@@ -29,10 +29,9 @@ export const AdminLayout = () => {
   const checkAdmin = async () => {
     try {
       // Api call
-   const response =   await axiosInstance({
+      const response = await axiosInstance({
         method: "GET",
         url: "/admin/check-admin",
-        withCredentials: true
       });
 
       // set admin

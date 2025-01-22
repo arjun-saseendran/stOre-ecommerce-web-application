@@ -30,10 +30,9 @@ export const UserLayout = () => {
   const checkUser = async () => {
     try {
       // Api call
-    const response =  await axiosInstance({
+      const response = await axiosInstance({
         method: "GET",
         url: "/user/check-user",
-        withCredentials: true
       });
 
       // set user
@@ -51,9 +50,7 @@ export const UserLayout = () => {
 
   return (
     <>
-      <header>
-        {isUserAuth ? <UserHeader/> : <Header />}
-      </header>
+      <header>{isUserAuth ? <UserHeader /> : <Header />}</header>
 
       <main>
         <Outlet />
