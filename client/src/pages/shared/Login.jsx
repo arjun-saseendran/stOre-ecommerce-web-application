@@ -46,10 +46,6 @@ export const Login = ({ role = "user" }) => {
   }
 
   const onSubmit = async (data) => {
-    // Set headers
-    const headers = {
-          "Content-Type": "application/json",
-        };
     try {
       // Api call
       const response = await axiosInstance({
@@ -57,7 +53,6 @@ export const Login = ({ role = "user" }) => {
         url: user.login_api,
         withCredentials: true,
         data,
-        headers
       });
       toast.success("Login success");
       if (response) {
