@@ -129,12 +129,19 @@ export const userLogin = async (req, res) => {
     const token = generateToken(user, "user", res);
 
     // Set token to cookie
+    // res.cookie("token", token, {
+    //   sameSite: NODE_ENV === "production" ? "None" : "Lax",
+    //   secure: NODE_ENV === "production",
+    //   httpOnly: NODE_ENV === "production",
+    // });
+    
     res.cookie("token", token, {
-      sameSite: NODE_ENV === "production" ? "None" : "Lax",
-      secure: NODE_ENV === "production",
       httpOnly: true,
-      // httpOnly: NODE_ENV === "production",
+      secure: true,
+      sameSite: "None",
+      maxAge: 3600000
     });
+
 
     // Exclude password
     const { password: _, ...userWithoutPassword } = user.toObject();
@@ -188,11 +195,18 @@ export const userProfile = async (req, res) => {
 export const userLogout = async (req, res) => {
   try {
     // Clearing token from cookies
-    res.clearCookie("token", {
-      sameSite: NODE_ENV === "production" ? "None" : "Lax",
-      secure: NODE_ENV === "production",
-      httpOnly: true
-      // httpOnly: NODE_ENV === "production",
+    // res.clearCookie("token", {
+    //   sameSite: NODE_ENV === "production" ? "None" : "Lax",
+    //   secure: NODE_ENV === "production",
+    //   httpOnly: true
+    //   // httpOnly: NODE_ENV === "production",
+    // });
+    
+    res.clearCookie("token",{
+      httpOnly: true,
+      secure: true,
+      sameSite: "None",
+      maxAge: 3600000
     });
 
     // Send response to frontend
