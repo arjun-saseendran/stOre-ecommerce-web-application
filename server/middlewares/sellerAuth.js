@@ -4,7 +4,8 @@ import { catchErrorHandler } from "../utils/catchErrorHandler.js";
 export const sellerAuth = (req, res, next) => {
   try {
     // Get token
-    const { token } = req.cookies;
+    const authHeader = req.headers["authorization"];
+    const token = authHeader && authHeader.split(" ")[1];
 
     // Handle no token
     if (!token) {

@@ -4,9 +4,6 @@ import { catchErrorHandler } from "../utils/catchErrorHandler.js";
 export const userAuth = async (req, res, next) => {
   try {
     // Get token
-    // const { token } = req.cookies;
-
-    // Get token
     const authHeader = req.headers["authorization"];
     const token = authHeader && authHeader.split(" ")[1];
 

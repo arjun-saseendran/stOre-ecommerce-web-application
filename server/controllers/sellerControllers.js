@@ -47,7 +47,7 @@ export const sellerSignup = async (req, res) => {
 
     // Checking mobile number exists or not
     const mobileNumberExist = await Seller.findOne({ mobile }).select(
-      "-password"
+      "-password",
     );
 
     if (mobileNumberExist) {
@@ -64,7 +64,7 @@ export const sellerSignup = async (req, res) => {
 
     // Upload profile picture to cloudinary
     const uploadResult = await cloudinaryInstance.uploader.upload(
-      req.file.path
+      req.file.path,
     );
 
     // Creating new seller object
@@ -115,7 +115,7 @@ export const sellerLogin = async (req, res) => {
     const matchedPassword = await passwordHandler(
       password,
       seller.password,
-      res
+      res,
     );
 
     // Handle password does not match
@@ -131,19 +131,14 @@ export const sellerLogin = async (req, res) => {
     // Generating token and set role
     const token = generateToken(seller, "seller", res);
 
-    // Set token to cookie
-    res.cookie("token", token, {
-      sameSite: NODE_ENV === "production" ? "None" : "Lax",
-      secure: NODE_ENV === "production",
-      httpOnly: NODE_ENV === "production",
-    });
-
     // Exclude password
     const { password: _, ...sellerWithoutPassword } = seller.toObject();
 
-    res
-      .status(200)
-      .json({ message: "Login successful", data: sellerWithoutPassword });
+    res.status(200).json({
+      message: "Login successful",
+      data: sellerWithoutPassword,
+      token,
+    });
   } catch (error) {
     // Handle catch error
     catchErrorHandler(res, error);
@@ -205,20 +200,6 @@ export const getSellers = async (req, res) => {
 export const sellerLogout = async (req, res) => {
   // Clearing token from cookies
   try {
-    // Seller logout
-    res.clearCookie("token", {
-      sameSite: NODE_ENV === "production" ? "None" : "Lax",
-      secure: NODE_ENV === "production",
-      httpOnly: NODE_ENV === "production",
-    });
-
-    // Clear cookies
-    res.clearCookie("token", {
-      sameSite: "None",
-      secure: true,
-      httpOnly: true,
-    });
-
     // Send response to frontend
     res.status(200).json({ message: "Seller logout success" });
   } catch (error) {
@@ -248,7 +229,7 @@ export const updateSellerProfile = async (req, res) => {
     // Upload data to cloudinary
     if (req.file) {
       const uploadResult = await cloudinaryInstance.uploader.upload(
-        req.file.path
+        req.file.path,
       );
       profilePictureUrl = uploadResult.url;
     }
@@ -262,7 +243,7 @@ export const updateSellerProfile = async (req, res) => {
         mobile,
         profilePicture: profilePictureUrl || undefined,
       },
-      { new: true }
+      { new: true },
     );
     // Send response to frontend
     res.status(200).json({

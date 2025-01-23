@@ -28,6 +28,8 @@ export const AdminHeader = () => {
       });
 
       if (response) {
+        // Reset token
+        localStorage.removeItem("token");
         navigate("/admin/login");
       }
     } catch (error) {

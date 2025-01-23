@@ -6,9 +6,6 @@ import { Seller } from "../models/sellerModel.js";
 import { passwordHandler } from "../utils/passwordHandler.js";
 import { cloudinaryInstance } from "../config/cloudinary.js";
 
-// Config node env
-const NODE_ENV = process.env.NODE_ENV;
-
 // Config nodemailer
 const transporter = nodemailer.createTransport({
   service: process.env.EMAIL_SERVICE,
@@ -45,7 +42,7 @@ export const adminSignup = async (req, res) => {
 
     // Checking admin exists
     const adminExist = await Seller.findOne({ email, role: "admin" }).select(
-      "-password"
+      "-password",
     );
 
     // Handle admin found
@@ -73,7 +70,7 @@ export const adminSignup = async (req, res) => {
 
     // Handle upload image
     const uploadResult = await cloudinaryInstance.uploader.upload(
-      req.file.path
+      req.file.path,
     );
 
     // Creating new admin object
@@ -125,7 +122,7 @@ export const adminLogin = async (req, res) => {
     const matchedPassword = await passwordHandler(
       password,
       admin.password,
-      res
+      res,
     );
 
     // Handle password not match
@@ -141,20 +138,13 @@ export const adminLogin = async (req, res) => {
     // Generating token and set role
     const token = generateToken(admin, "admin", res);
 
-    // Set token to cookie
-    res.cookie("token", token, {
-      sameSite: NODE_ENV === "production" ? "None" : "Lax",
-      secure: NODE_ENV === "production",
-      httpOnly: NODE_ENV === "production",
-    });
-
     // Exclude password
     const { password: _, ...adminWithoutPassword } = admin.toObject();
 
     // Send response to frontend
     res
       .status(200)
-      .json({ message: "Login successful", data: adminWithoutPassword });
+      .json({ message: "Login successful", data: adminWithoutPassword, token });
   } catch (error) {
     // Handle catch error
     catchErrorHandler(res, error);
@@ -200,7 +190,7 @@ export const updateAdminProfile = async (req, res) => {
     // Upload file to cloudinary
     if (req.file) {
       const uploadResult = await cloudinaryInstance.uploader.upload(
-        req.file.path
+        req.file.path,
       );
       profilePictureUrl = uploadResult.url;
     }
@@ -214,7 +204,7 @@ export const updateAdminProfile = async (req, res) => {
         mobile,
         profilePicture: profilePictureUrl || undefined,
       },
-      { new: true }
+      { new: true },
     );
 
     // Send response to frontend
@@ -333,13 +323,6 @@ export const adminDetails = async (req, res) => {
 // Admin logout
 export const adminLogout = async (req, res) => {
   try {
-    // Clearing token from cookies
-      res.clearCookie("token", {
-      sameSite: NODE_ENV === "production" ? "None" : "Lax",
-      secure: NODE_ENV === "production",
-      httpOnly: NODE_ENV === "production",
-    });
-
     // Send response to frontend
     res.status(200).json({ message: "Admin logout success" });
   } catch (error) {

@@ -6,9 +6,6 @@ import { generateToken } from "../utils/tokenHandler.js";
 import { catchErrorHandler } from "../utils/catchErrorHandler.js";
 import { cloudinaryInstance } from "../config/cloudinary.js";
 
-// Config node env
-const NODE_ENV = process.env.NODE_ENV;
-
 // Config nodemailer
 const transporter = nodemailer.createTransport({
   service: process.env.EMAIL_SERVICE,
@@ -64,7 +61,7 @@ export const userSignup = async (req, res) => {
 
     // Upload profile picture to cloudinary
     const uploadResult = await cloudinaryInstance.uploader.upload(
-      req.file.path
+      req.file.path,
     );
 
     // Creating new user object
@@ -128,21 +125,6 @@ export const userLogin = async (req, res) => {
     // Generating token
     const token = generateToken(user, "user", res);
 
-    // Set token to cookie
-    // res.cookie("token", token, {
-    //   sameSite: NODE_ENV === "production" ? "None" : "Lax",
-    //   secure: NODE_ENV === "production",
-    //   httpOnly: NODE_ENV === "production",
-    // });
-    
-    // res.cookie("token", token, {
-    //   httpOnly: true,
-    //   secure: true,
-    //   sameSite: "None",
-    //   maxAge: 3600000
-    // });
-
-
     // Exclude password
     const { password: _, ...userWithoutPassword } = user.toObject();
 
@@ -161,7 +143,7 @@ export const getUsers = async (req, res) => {
   try {
     // Get all users
     const users = await User.find();
-    
+
     // Send response to frontend
     res
       .status(200)
@@ -194,21 +176,6 @@ export const userProfile = async (req, res) => {
 // User logout
 export const userLogout = async (req, res) => {
   try {
-    // Clearing token from cookies
-    // res.clearCookie("token", {
-    //   sameSite: NODE_ENV === "production" ? "None" : "Lax",
-    //   secure: NODE_ENV === "production",
-    //   httpOnly: true
-    //   // httpOnly: NODE_ENV === "production",
-    // });
-    
-    // res.clearCookie("token",{
-    //   httpOnly: true,
-    //   secure: true,
-    //   sameSite: "None",
-    //   maxAge: 3600000
-    // });
-
     // Send response to frontend
     res.status(200).json({ message: "User logout success" });
   } catch (error) {
@@ -238,7 +205,7 @@ export const updateUserProfile = async (req, res) => {
     // Save profile picture to cloudinary
     if (req.file) {
       const uploadResult = await cloudinaryInstance.uploader.upload(
-        req.file.path
+        req.file.path,
       );
       profilePictureUrl = uploadResult.url;
     }
@@ -252,7 +219,7 @@ export const updateUserProfile = async (req, res) => {
         mobile,
         profilePicture: profilePictureUrl || undefined,
       },
-      { new: true }
+      { new: true },
     );
     // Send response to frontend
     res

@@ -28,6 +28,8 @@ export const SellerHeader = () => {
       });
 
       if (response) {
+        // Reset token
+        localStorage.removeItem("token");
         navigate("/seller/login");
       }
     } catch (error) {
