@@ -21,8 +21,9 @@ export const userAuth = async (req, res, next) => {
 
     // Set user
     req.user = decoded;
-
+    
     next();
+  
   } catch (error) {
     // Handle catch error
     catchErrorHandler(res, error);
