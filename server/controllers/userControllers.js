@@ -135,12 +135,12 @@ export const userLogin = async (req, res) => {
     //   httpOnly: NODE_ENV === "production",
     // });
     
-    res.cookie("token", token, {
-      httpOnly: true,
-      secure: true,
-      sameSite: "None",
-      maxAge: 3600000
-    });
+    // res.cookie("token", token, {
+    //   httpOnly: true,
+    //   secure: true,
+    //   sameSite: "None",
+    //   maxAge: 3600000
+    // });
 
 
     // Exclude password
@@ -149,7 +149,7 @@ export const userLogin = async (req, res) => {
     // Send response to frontend
     res
       .status(200)
-      .json({ message: "Login successful", data: userWithoutPassword });
+      .json({ message: "Login successful", data: userWithoutPassword, token });
   } catch (error) {
     // Handle catch error
     catchErrorHandler(res, error);
@@ -202,12 +202,12 @@ export const userLogout = async (req, res) => {
     //   // httpOnly: NODE_ENV === "production",
     // });
     
-    res.clearCookie("token",{
-      httpOnly: true,
-      secure: true,
-      sameSite: "None",
-      maxAge: 3600000
-    });
+    // res.clearCookie("token",{
+    //   httpOnly: true,
+    //   secure: true,
+    //   sameSite: "None",
+    //   maxAge: 3600000
+    // });
 
     // Send response to frontend
     res.status(200).json({ message: "User logout success" });

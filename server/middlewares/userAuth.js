@@ -4,7 +4,11 @@ import { catchErrorHandler } from "../utils/catchErrorHandler.js";
 export const userAuth = async (req, res, next) => {
   try {
     // Get token
-    const { token } = req.cookies;
+    // const { token } = req.cookies;
+
+    // Get token
+    const authHeader = req.headers["authorization"];
+    const token = authHeader && authHeader.split(" ")[1];
 
     // Handle no token
     if (!token) {
@@ -13,7 +17,7 @@ export const userAuth = async (req, res, next) => {
 
     // Decoding token
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-// Handle no decoded
+    // Handle no decoded
     if (!decoded) {
       return res.status(401).json({ message: "User not autherized" });
     }

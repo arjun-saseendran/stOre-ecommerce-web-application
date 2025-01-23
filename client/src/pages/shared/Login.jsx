@@ -54,8 +54,16 @@ export const Login = ({ role = "user" }) => {
         withCredentials: true,
         data,
       });
-      toast.success("Login success");
+      
       if (response) {
+        
+        // Set token to local storage
+        const { token } = response.data;
+            if (token) {
+              localStorage.setItem("token", token);
+             // Display result 
+              toast.success("Login success");
+            }
         // Navigate to profile page
         navigate(user.home_route);
       }

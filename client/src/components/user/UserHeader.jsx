@@ -62,6 +62,8 @@ export const UserHeader = () => {
       });
 
       if (response) {
+        // Reset token
+        localStorage.removeItem("token");
         navigate("/login");
       }
     } catch (error) {
