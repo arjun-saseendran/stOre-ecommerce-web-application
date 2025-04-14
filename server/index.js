@@ -14,7 +14,7 @@ const app = express();
 // Config cors
 app.use(
   cors({
-    origin: [process.env.CORS,'http://localhost:5173','https://inklude.onrender.com'],
+    origin: [process.env.CORS,'http://localhost:5173','https://inklude.onrender.com','http://16.170.230.209'],
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE"],
   })
