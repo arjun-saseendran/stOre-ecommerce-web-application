@@ -4,8 +4,8 @@ import { catchErrorHandler } from "../utils/catchErrorHandler.js";
 export const userAuth = async (req, res, next) => {
   try {
     // Get token
-    const authHeader = req.headers["authorization"];
-    const token = authHeader && authHeader.split(" ")[1];
+
+    const { token } = req.cookies;
 
     // Handle no token
     if (!token) {
@@ -21,9 +21,8 @@ export const userAuth = async (req, res, next) => {
 
     // Set user
     req.user = decoded;
-    
+
     next();
-  
   } catch (error) {
     // Handle catch error
     catchErrorHandler(res, error);

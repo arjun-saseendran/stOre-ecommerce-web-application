@@ -18,6 +18,7 @@ import { CartIcon } from "../shared/CartIcon";
 import { HideBanner } from "../shared/HideBanner";
 import { setCartData } from "../../redux/features/cartSlice";
 import { setWishlistData } from "../../redux/features/wishlistSlice";
+import { clearUserData } from "../../redux/features/userSlice";
 
 export const UserHeader = () => {
   // Store cart data
@@ -29,29 +30,33 @@ export const UserHeader = () => {
   // Config ref
   const inputValue = useRef();
 
+  // Config navigate
+  const navigate = useNavigate("");
+
   // Config dispatch
   const dispatch = useDispatch();
 
   // Get current theme
   const { theme } = useSelector((state) => state.theme);
 
-  // Config navigate
-  const navigate = useNavigate();
+  // Fetch cart
 
-  // Api call
+  const fetchCart = async () => {
+    try {
+      const response = await axiosInstance({
+        method: "GET",
+        url: "/cart/cart",
+        withCredentials: true,
+      });
+      setCart(response?.data?.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
-    (async () => {
-      try {
-        const response = await axiosInstance({
-          method: "GET",
-          url: "/cart/cart",
-        });
-        setCart(response?.data?.data);
-      } catch (error) {
-        console.log(error);
-      }
-    })();
-  }, [cart]);
+    fetchCart();
+  }, []);
 
   // Handle logout
   const handleLogout = async () => {
@@ -60,31 +65,30 @@ export const UserHeader = () => {
         method: "POST",
         url: "/user/logout",
       });
-
-      if (response) {
-        // Reset token
-        localStorage.removeItem("token");
-        navigate("/login");
-      }
+      navigate("/login");
+      dispatch(clearUserData());
     } catch (error) {
       console.log(error);
     }
   };
 
-  // Api call for wishlist
+  // Fetch wishlist
+  const fetchWishlist = async () => {
+    try {
+      const response = await axiosInstance({
+        method: "GET",
+        url: "/wishlist/wishlist",
+      });
+      setWishlist(response.data.data);
+     
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
-    (async () => {
-      try {
-        const response = await axiosInstance({
-          method: "GET",
-          url: "/wishlist/wishlist",
-        });
-        setWishlist(response.data.data);
-      } catch (error) {
-        console.log(error);
-      }
-    })();
-  }, [wishlist]);
+    fetchWishlist();
+  }, []);
 
   // Search value
   const handleSearch = () => {

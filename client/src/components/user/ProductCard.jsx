@@ -17,7 +17,7 @@ export const ProductCard = ({ product }) => {
   const navigate = useNavigate();
 
   // Get user status
-  const { isUserAuth } = useSelector((state) => state.user);
+  const  isUserAuth  = useSelector((store) => store.user);
 
   // Store average rating
   const [average, setAverage] = useState(0);

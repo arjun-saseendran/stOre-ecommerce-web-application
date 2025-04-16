@@ -12,7 +12,7 @@ export const AdminLayout = () => {
   const { theme } = useSelector((state) => state.theme);
 
   // Get current user status
-  const { isAdminAuth } = useSelector((state) => state.admin);
+  const admin = useSelector((store) => store.admin);
 
   // Change body theme
   useEffect(() => {
@@ -32,10 +32,11 @@ export const AdminLayout = () => {
       const response = await axiosInstance({
         method: "GET",
         url: "/admin/check-admin",
+        withCredentials:true
       });
 
       // set admin
-      dispatch(saveAdminData(response.data.data));
+      dispatch(saveAdminData(response?.data?.data));
     } catch (error) {
       console.log(error);
 
@@ -49,7 +50,7 @@ export const AdminLayout = () => {
 
   return (
     <>
-      {isAdminAuth ? <AdminHeader /> : <Header />}
+      {admin && admin._id ? <AdminHeader /> : <Header />}
 
       <main>
         <Outlet />

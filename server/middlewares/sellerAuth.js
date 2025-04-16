@@ -4,8 +4,8 @@ import { catchErrorHandler } from "../utils/catchErrorHandler.js";
 export const sellerAuth = (req, res, next) => {
   try {
     // Get token
-    const authHeader = req.headers["authorization"];
-    const token = authHeader && authHeader.split(" ")[1];
+
+    const { token } = req.cookies;
 
     // Handle no token
     if (!token) {
@@ -17,7 +17,7 @@ export const sellerAuth = (req, res, next) => {
 
     // Handle no decoded
     if (!decoded) {
-      return res.status(401).json({ message: "Seller not autherzied" });
+      return res.status(401).json({ message: "Seller not authorized" });
     }
 
     // Checking role

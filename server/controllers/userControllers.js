@@ -61,7 +61,7 @@ export const userSignup = async (req, res) => {
 
     // Upload profile picture to cloudinary
     const uploadResult = await cloudinaryInstance.uploader.upload(
-      req.file.path,
+      req.file.path
     );
 
     // Creating new user object
@@ -125,13 +125,18 @@ export const userLogin = async (req, res) => {
     // Generating token
     const token = generateToken(user, "user", res);
 
+    // Set token
+    res.cookie("token", token, {
+      expires: new Date(Date.now() + 8 * 3600000),
+    });
+
     // Exclude password
     const { password: _, ...userWithoutPassword } = user.toObject();
 
     // Send response to frontend
     res
       .status(200)
-      .json({ message: "Login successful", data: userWithoutPassword, token });
+      .json({ message: "Login successful", data: userWithoutPassword });
   } catch (error) {
     // Handle catch error
     catchErrorHandler(res, error);
@@ -175,9 +180,13 @@ export const userProfile = async (req, res) => {
 
 // User logout
 export const userLogout = async (req, res) => {
+  
   try {
-    // Send response to frontend
-    res.status(200).json({ message: "User logout success" });
+    // Clear token
+    res.cookie("token", null, {
+      expires: new Date(Date.now()),
+    });
+  res.status(200).json({ message: "Logout successful!" });
   } catch (error) {
     // Handle catch error
     catchErrorHandler(res, error);
@@ -205,7 +214,7 @@ export const updateUserProfile = async (req, res) => {
     // Save profile picture to cloudinary
     if (req.file) {
       const uploadResult = await cloudinaryInstance.uploader.upload(
-        req.file.path,
+        req.file.path
       );
       profilePictureUrl = uploadResult.url;
     }
@@ -219,7 +228,7 @@ export const updateUserProfile = async (req, res) => {
         mobile,
         profilePicture: profilePictureUrl || undefined,
       },
-      { new: true },
+      { new: true }
     );
     // Send response to frontend
     res
@@ -251,8 +260,14 @@ export const userDetails = async (req, res) => {
 // Checking user
 export const checkUser = async (req, res) => {
   try {
+    // Check user
+    const userId = req.user.id;
+
+    // Get user details
+    const user = await User.findById(userId);
+
     // Send response to frontend
-    res.status(200).json({ message: "Authorized user" });
+    res.status(200).json({ message: "Authorized user", data: user });
   } catch (error) {
     // Handle catch error
     catchErrorHandler(res, error);

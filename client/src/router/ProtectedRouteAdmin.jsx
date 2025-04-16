@@ -1,18 +1,14 @@
 import { useSelector } from "react-redux";
-import { Outlet, useNavigate } from "react-router-dom";
+import { Outlet, Navigate } from "react-router-dom";
 
 export const ProtectedRouteAdmin = () => {
-  // Config navigate
-  const navigate = useNavigate();
-
-  // Get seller authentication status
-  const { isAdminAuth } = useSelector((state) => state.admin);
+  // Get admin authentication status
+  const admin = useSelector((store) => store.admin);
 
   // Redirect
-  if (!isAdminAuth) {
-    navigate("/admin/login");
-    return;
+  if (!admin || !admin._id) {
+    return <Navigate to="/admin/login" />;
   }
 
-  return isAdminAuth && <Outlet />;
+  return <Outlet />;
 };

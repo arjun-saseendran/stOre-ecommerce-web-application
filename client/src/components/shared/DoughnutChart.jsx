@@ -33,6 +33,7 @@ export const DoughnutChart = ({ role = "admin" }) => {
         const response = await axiosInstance({
           method: "GET",
           url: user.chart,
+          withCredentials:true
         });
         const orders = response?.data?.data;
 

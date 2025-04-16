@@ -17,7 +17,9 @@ export const SellerLayout = () => {
   }, [theme]);
 
   // Get current user status
-  const { isSellerAuth } = useSelector((state) => state.seller);
+  const seller = useSelector((store) => store.seller);
+
+  
 
   // Config dispatch
   const dispatch = useDispatch();
@@ -32,10 +34,11 @@ export const SellerLayout = () => {
       const response = await axiosInstance({
         method: "GET",
         url: "/seller/check-seller",
+        withCredentials: true
       });
 
       // set seller data
-      dispatch(saveSellerData(response.data.data));
+      dispatch(saveSellerData(response?.data?.data));
     } catch (error) {
       console.log(error);
 
@@ -51,7 +54,7 @@ export const SellerLayout = () => {
 
   return (
     <>
-      {isSellerAuth ? <SellerHeader /> : <Header />}
+      {seller && seller._id ? <SellerHeader /> : <Header />}
 
       <main>
         <Outlet />

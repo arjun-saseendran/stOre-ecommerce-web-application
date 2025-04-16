@@ -10,7 +10,7 @@ import { clearUserData, saveUserData } from "../redux/features/userSlice";
 // Set user layout
 export const UserLayout = () => {
   // Get global user set state
-  const { isUserAuth } = useSelector((state) => state.user);
+  const user = useSelector((store) => store.user);
 
   // Config location path
   const location = useLocation();
@@ -33,10 +33,11 @@ export const UserLayout = () => {
       const response = await axiosInstance({
         method: "GET",
         url: "/user/check-user",
+        withCredentials: true,
       });
 
       // set user
-      dispatch(saveUserData(response.data.data));
+      dispatch(saveUserData(response?.data?.data));
     } catch (error) {
       console.log(error);
 
@@ -50,7 +51,7 @@ export const UserLayout = () => {
 
   return (
     <>
-      <header>{isUserAuth ? <UserHeader /> : <Header />}</header>
+      <header>{user && user._id ? <UserHeader /> : <Header />}</header>
 
       <main>
         <Outlet />

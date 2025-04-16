@@ -5,8 +5,8 @@ import { catchErrorHandler } from "../utils/catchErrorHandler.js";
 export const adminAuth = async (req, res, next) => {
   try {
     // Get token
-    const authHeader = req.headers["authorization"];
-    const token = authHeader && authHeader.split(" ")[1];
+
+    const { token } = req.cookies;
 
     // Handle token not found
     if (!token) {

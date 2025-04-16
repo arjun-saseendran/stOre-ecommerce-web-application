@@ -42,7 +42,7 @@ export const adminSignup = async (req, res) => {
 
     // Checking admin exists
     const adminExist = await Seller.findOne({ email, role: "admin" }).select(
-      "-password",
+      "-password"
     );
 
     // Handle admin found
@@ -70,7 +70,7 @@ export const adminSignup = async (req, res) => {
 
     // Handle upload image
     const uploadResult = await cloudinaryInstance.uploader.upload(
-      req.file.path,
+      req.file.path
     );
 
     // Creating new admin object
@@ -122,7 +122,7 @@ export const adminLogin = async (req, res) => {
     const matchedPassword = await passwordHandler(
       password,
       admin.password,
-      res,
+      res
     );
 
     // Handle password not match
@@ -138,13 +138,18 @@ export const adminLogin = async (req, res) => {
     // Generating token and set role
     const token = generateToken(admin, "admin", res);
 
+    // Set token
+    res.cookie("token", token, {
+      expires: new Date(Date.now() + 8 * 3600000),
+    });
+    
     // Exclude password
     const { password: _, ...adminWithoutPassword } = admin.toObject();
 
     // Send response to frontend
     res
       .status(200)
-      .json({ message: "Login successful", data: adminWithoutPassword, token });
+      .json({ message: "Login successful", data: adminWithoutPassword });
   } catch (error) {
     // Handle catch error
     catchErrorHandler(res, error);
@@ -190,7 +195,7 @@ export const updateAdminProfile = async (req, res) => {
     // Upload file to cloudinary
     if (req.file) {
       const uploadResult = await cloudinaryInstance.uploader.upload(
-        req.file.path,
+        req.file.path
       );
       profilePictureUrl = uploadResult.url;
     }
@@ -204,7 +209,7 @@ export const updateAdminProfile = async (req, res) => {
         mobile,
         profilePicture: profilePictureUrl || undefined,
       },
-      { new: true },
+      { new: true }
     );
 
     // Send response to frontend
@@ -323,6 +328,11 @@ export const adminDetails = async (req, res) => {
 // Admin logout
 export const adminLogout = async (req, res) => {
   try {
+    // Clear token
+    res.cookie("token", null, {
+      expires: new Date(Date.now()),
+    });
+
     // Send response to frontend
     res.status(200).json({ message: "Admin logout success" });
   } catch (error) {
@@ -334,8 +344,17 @@ export const adminLogout = async (req, res) => {
 // Check admin
 export const checkAdmin = async (req, res) => {
   try {
+    // Check user
+        const userId = req.user.id;
+    
+        // Get admin details
+        const admin = await Seller.findById(userId);
+    
+
+
+
     // Send response to frontend
-    res.status(200).json({ message: "Authorized admin" });
+    res.status(200).json({ message: "Authorized admin", data: admin });
   } catch (error) {
     // Handle catch error
     catchErrorHandler(res, error);

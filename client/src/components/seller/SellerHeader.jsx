@@ -5,6 +5,7 @@ import { DarkMode } from "../shared/DarkMode";
 import { axiosInstance } from "../../config/axiosInstance";
 import { useRef } from "react";
 import { setSearchValue } from "../../redux/features/searchSlice";
+import { clearSellerData } from "../../redux/features/sellerSlice";
 
 export const SellerHeader = () => {
   // Get current theme
@@ -27,11 +28,7 @@ export const SellerHeader = () => {
         url: "/seller/logout",
       });
 
-      if (response) {
-        // Reset token
-        localStorage.removeItem("token");
-        navigate("/seller/login");
-      }
+      if (response?.data?.data) {dispatch(clearSellerData())};
     } catch (error) {
       console.log(error);
     }

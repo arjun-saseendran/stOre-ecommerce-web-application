@@ -5,6 +5,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { DarkMode } from "../shared/DarkMode";
 import { axiosInstance } from "../../config/axiosInstance";
 import { useRef } from "react";
+import { clearAdminData } from "../../redux/features/adminSlice";
 
 export const AdminHeader = () => {
   // Get current theme
@@ -28,9 +29,7 @@ export const AdminHeader = () => {
       });
 
       if (response) {
-        // Reset token
-        localStorage.removeItem("token");
-        navigate("/admin/login");
+        dispatch(clearAdminData());
       }
     } catch (error) {
       console.log(error);

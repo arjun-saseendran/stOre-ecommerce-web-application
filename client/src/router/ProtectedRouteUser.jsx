@@ -1,18 +1,12 @@
 import { useSelector } from "react-redux";
-import { useNavigate, Outlet } from "react-router-dom";
+import { Navigate, Outlet } from "react-router-dom";
 
 export const ProtectedRouteUser = () => {
-  // Get user authentication status
-  const { isUserAuth } = useSelector((state) => state.user);
+  const user = useSelector((store) => store.user);
 
-  // Config navigate
-  const navigate = useNavigate();
+  if (!user || !user._id) {
+    return <Navigate to="/login" />;
+  }
 
-  
-    if (!isUserAuth) {
-    return  navigate("/login");
-    }
-  
-
-  return isUserAuth && <Outlet /> 
+  return <Outlet />;
 };

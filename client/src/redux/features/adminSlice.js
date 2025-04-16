@@ -1,24 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-// Set initial value
-const initialState = {
-  isAdminAuth: false,
-  adminData: {},
-};
-
 // Create admin slice
 export const adminSlice = createSlice({
   name: "admin",
-  initialState,
+  initialState: null,
   reducers: {
-    saveAdminData: (state, action) => {
-      (state.isAdminAuth = true); 
-      (state.adminData = action.payload);
-    },
-    clearAdminData: (state) => {
-      (state.isAdminAuth = false);
-      (state.adminData = {});
-    },
+    saveAdminData: (_, action) => action.payload,
+    clearAdminData: () => null,
   },
 });
 

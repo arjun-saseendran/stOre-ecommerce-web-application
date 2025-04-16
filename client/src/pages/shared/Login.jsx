@@ -3,7 +3,10 @@ import { Link, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import { axiosInstance } from "../../config/axiosInstance";
 import Button from "react-bootstrap/esm/Button";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { saveUserData } from "../../redux/features/userSlice";
+import { saveSellerData } from "../../redux/features/sellerSlice";
+import { saveAdminData } from "../../redux/features/adminSlice";
 
 export const Login = ({ role = "user" }) => {
   // Get theme
@@ -14,6 +17,9 @@ export const Login = ({ role = "user" }) => {
 
   // config navigate
   const navigate = useNavigate();
+
+  // config dispatch
+  const dispatch = useDispatch();
 
   // Set user
   const user = {
@@ -54,21 +60,18 @@ export const Login = ({ role = "user" }) => {
         withCredentials: true,
         data,
       });
-      
-      if (response) {
-        
-        // Set token to local storage
-        const { token } = response.data;
-            if (token) {
-              localStorage.setItem("token", token);
-             // Display result 
-              toast.success("Login success");
-            }
-        // Navigate to profile page
-        navigate(user.home_route);
+
+      if (role === "user") {
+        dispatch(saveUserData(response?.data?.data)) && navigate("/");
+      }
+      if (role === "seller") {
+        dispatch(saveSellerData(response?.data?.data)) && navigate("/seller");
+      }
+      if (role === "admin") {
+        dispatch(saveAdminData(response?.data?.data)) && navigate("/admin");
       }
     } catch (error) {
-      toast.error(error.response.data.message);
+      toast.error(error?.response?.data?.message);
     }
   };
 

@@ -47,7 +47,7 @@ export const sellerSignup = async (req, res) => {
 
     // Checking mobile number exists or not
     const mobileNumberExist = await Seller.findOne({ mobile }).select(
-      "-password",
+      "-password"
     );
 
     if (mobileNumberExist) {
@@ -64,7 +64,7 @@ export const sellerSignup = async (req, res) => {
 
     // Upload profile picture to cloudinary
     const uploadResult = await cloudinaryInstance.uploader.upload(
-      req.file.path,
+      req.file.path
     );
 
     // Creating new seller object
@@ -115,7 +115,7 @@ export const sellerLogin = async (req, res) => {
     const matchedPassword = await passwordHandler(
       password,
       seller.password,
-      res,
+      res
     );
 
     // Handle password does not match
@@ -130,6 +130,11 @@ export const sellerLogin = async (req, res) => {
 
     // Generating token and set role
     const token = generateToken(seller, "seller", res);
+
+    // Set token
+    res.cookie("token", token, {
+      expires: new Date(Date.now() + 8 * 3600000),
+    });
 
     // Exclude password
     const { password: _, ...sellerWithoutPassword } = seller.toObject();
@@ -200,6 +205,11 @@ export const getSellers = async (req, res) => {
 export const sellerLogout = async (req, res) => {
   // Clearing token from cookies
   try {
+    // Clear token
+    res.cookie("token", null, {
+      expires: new Date(Date.now()),
+    });
+
     // Send response to frontend
     res.status(200).json({ message: "Seller logout success" });
   } catch (error) {
@@ -229,7 +239,7 @@ export const updateSellerProfile = async (req, res) => {
     // Upload data to cloudinary
     if (req.file) {
       const uploadResult = await cloudinaryInstance.uploader.upload(
-        req.file.path,
+        req.file.path
       );
       profilePictureUrl = uploadResult.url;
     }
@@ -243,7 +253,7 @@ export const updateSellerProfile = async (req, res) => {
         mobile,
         profilePicture: profilePictureUrl || undefined,
       },
-      { new: true },
+      { new: true }
     );
     // Send response to frontend
     res.status(200).json({
@@ -259,8 +269,14 @@ export const updateSellerProfile = async (req, res) => {
 // Check seller
 export const checkSeller = async (req, res) => {
   try {
+    // Check seller
+    const userId = req.user.id;
+
+    // Get seller details
+    const seller = await Seller.findById(userId);
+
     // Send response to frontend
-    res.status(200).json({ message: "Authorized seller" });
+    res.status(200).json({ message: "Authorized seller", data: seller });
   } catch (error) {
     // Handle catch error
     catchErrorHandler(res, error);
