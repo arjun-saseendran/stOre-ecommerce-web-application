@@ -29,6 +29,8 @@ export const SellerHeader = () => {
         withCredentials: true
       });
 
+      navigate('/seller/login')
+
       if (response?.data?.data) {dispatch(clearSellerData())};
     } catch (error) {
       console.log(error);

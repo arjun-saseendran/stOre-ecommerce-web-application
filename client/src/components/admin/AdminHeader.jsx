@@ -29,6 +29,8 @@ export const AdminHeader = () => {
         withCredentials: true
       });
 
+      navigate('/admin/login')
+
       if (response) {
         dispatch(clearAdminData());
       }
