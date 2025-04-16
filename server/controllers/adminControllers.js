@@ -139,8 +139,14 @@ export const adminLogin = async (req, res) => {
     const token = generateToken(admin, "admin", res);
 
     // Set token
+    // res.cookie("token", token, {
+    //   expires: new Date(Date.now() + 8 * 3600000),
+    // });
+
     res.cookie("token", token, {
-      expires: new Date(Date.now() + 8 * 3600000),
+      sameSite: process.env.NODE_ENV === "production" ? "None" : "Lax",
+      secure: process.env.NODE_ENV === "production",
+      httpOnly: process.env.NODE_ENV === "production",
     });
     
     // Exclude password
@@ -329,9 +335,15 @@ export const adminDetails = async (req, res) => {
 export const adminLogout = async (req, res) => {
   try {
     // Clear token
-    res.cookie("token", null, {
-      expires: new Date(Date.now()),
-    });
+    // res.cookie("token", null, {
+    //   expires: new Date(Date.now()),
+    // });
+
+    res.clearCookie("token", {
+      sameSite: "None",
+      secure: true,
+      httpOnly: true,
+  });
 
     // Send response to frontend
     res.status(200).json({ message: "Admin logout success" });

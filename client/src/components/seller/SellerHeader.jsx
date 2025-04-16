@@ -26,6 +26,7 @@ export const SellerHeader = () => {
       const response = await axiosInstance({
         method: "POST",
         url: "/seller/logout",
+        withCredentials: true
       });
 
       if (response?.data?.data) {dispatch(clearSellerData())};

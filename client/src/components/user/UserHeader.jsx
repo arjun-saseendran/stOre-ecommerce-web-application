@@ -64,6 +64,7 @@ export const UserHeader = () => {
       const response = await axiosInstance({
         method: "POST",
         url: "/user/logout",
+        withCredentials:true
       });
       navigate("/login");
       dispatch(clearUserData());

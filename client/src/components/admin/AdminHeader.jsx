@@ -26,6 +26,7 @@ export const AdminHeader = () => {
       const response = await axiosInstance({
         method: "POST",
         url: "/admin/logout",
+        withCredentials: true
       });
 
       if (response) {
