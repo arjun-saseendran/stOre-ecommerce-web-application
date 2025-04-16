@@ -126,8 +126,14 @@ export const userLogin = async (req, res) => {
     const token = generateToken(user, "user", res);
 
     // Set token
+    // res.cookie("token", token, {
+    //   expires: new Date(Date.now() + 8 * 3600000),
+    // });
+
     res.cookie("token", token, {
-      expires: new Date(Date.now() + 8 * 3600000),
+      sameSite: process.env.NODE_ENV === "production" ? "None" : "Lax",
+      secure: process.env.NODE_ENV === "production",
+      httpOnly: process.env.NODE_ENV === "production",
     });
 
     // Exclude password
@@ -180,13 +186,19 @@ export const userProfile = async (req, res) => {
 
 // User logout
 export const userLogout = async (req, res) => {
-  
   try {
     // Clear token
-    res.cookie("token", null, {
-      expires: new Date(Date.now()),
-    });
-  res.status(200).json({ message: "Logout successful!" });
+    // res.cookie("token", null, {
+    //   expires: new Date(Date.now()),
+    // });
+
+    res.clearCookie("token", {
+      sameSite: "None",
+      secure: true,
+      httpOnly: true,
+  });
+
+    res.status(200).json({ message: "Logout successful!" });
   } catch (error) {
     // Handle catch error
     catchErrorHandler(res, error);
