@@ -1,13 +1,22 @@
+import { useEffect } from "react";
 import { useSelector } from "react-redux";
-import { Outlet, Navigate } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 
 export const ProtectedRouteAdmin = () => {
+  const navigate = useNavigate();
+
   // Get admin authentication status
   const admin = useSelector((store) => store.admin);
 
-  // Redirect
-  if (!admin || !admin._id) {
-    return <Navigate to="/admin/login" />;
+  useEffect(() => {
+    if (!admin) {
+      navigate("/admin/login");
+      return;
+    }
+  }, [navigate, admin]);
+
+  if (!admin) {
+    return null;
   }
 
   return <Outlet />;
