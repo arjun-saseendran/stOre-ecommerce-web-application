@@ -1,11 +1,21 @@
+import { useEffect } from "react";
 import { useSelector } from "react-redux";
-import { Navigate, Outlet } from "react-router-dom";
+import { useNavigate, Outlet } from "react-router-dom";
 
 export const ProtectedRouteUser = () => {
+  const navigate = useNavigate();
   const user = useSelector((store) => store.user);
+  
+  useEffect(()=>{
+    if (!user) {
+      navigate("/login")
+      return
+    }
+    
+  }, [user, navigate])
 
-  if (!user || !user._id) {
-    return <Navigate to="/login" />;
+  if (!user) {
+    return null;
   }
 
   return <Outlet />;
