@@ -1,22 +1,14 @@
 import { useEffect } from "react";
 import { Header } from "../components/shared/Header";
 import { Footer } from "../components/shared/Footer";
-import { Outlet, useLocation } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 import { UserHeader } from "../components/user/UserHeader";
-import { useSelector, useDispatch } from "react-redux";
-import { axiosInstance } from "../config/axiosInstance";
-import { clearUserData, saveUserData } from "../redux/features/userSlice";
+import { useSelector } from "react-redux";
 
 // Set user layout
 export const UserLayout = () => {
   // Get global user set state
   const user = useSelector((store) => store.user);
-
-  // Config location path
-  const location = useLocation();
-
-  // Config dispatch
-  const dispatch = useDispatch();
 
   // Get theme
   const { theme } = useSelector((state) => state.theme);
@@ -26,32 +18,9 @@ export const UserLayout = () => {
     document.body.style.background = theme ? "#F2E5BF" : "#31363f";
   }, [theme]);
 
-  // Check user
-  const checkUser = async () => {
-    try {
-      // Api call
-      const response = await axiosInstance({
-        method: "GET",
-        url: "/user/check-user",
-        withCredentials: true,
-      });
-
-      // set user
-      dispatch(saveUserData(response?.data?.data));
-    } catch (error) {
-      console.log(error);
-
-      // clear user data when error
-      dispatch(clearUserData());
-    }
-  };
-  useEffect(() => {
-    checkUser();
-  }, [location.pathname]);
-
   return (
     <>
-      <header>{user && user._id ? <UserHeader /> : <Header />}</header>
+      <header>{user ? <UserHeader /> : <Header />}</header>
 
       <main>
         <Outlet />
